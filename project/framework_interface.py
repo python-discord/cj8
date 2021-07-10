@@ -55,7 +55,7 @@ def printhelp(header, textl):
         elif type(words) == str:
             retstring = printhelp_str(retstring, words)
         else:
-            print("error in printhelp: input should be str or list of str")
+            print("error in printhelp: second input should be a list containing strings and/or lists of strings")
     retstring += str(cl[8] + cl[1] * (BLANK_LINES - 2) + cl[10])
     return retstring
     
