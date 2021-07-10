@@ -39,9 +39,7 @@ def start():
     list_files("OS")
     print(term.green_on_black("┌─ /CMD/ ────────"))
 
-def reset_menu():
-    print(term.home +  term.clear + term.move_y(term.height // 2))
-    user_input_cmd()
+
 
 def user_input_cmd():
     print(term.green_on_black(""))
@@ -50,19 +48,17 @@ def user_input_cmd():
         userInput = input(">>>  ").lower()
         #commands list V
         if userInput[:4] == "help" or userInput[:1] == "h":
-            reset_menu()
             startHelp(userInput)
             showing_input_menu = False
         if userInput[:3] == "add":
-            reset_menu()
             startAdd(userInput)
             showing_input_menu = False
         if userInput[:3] == "dir":
-            reset_menu()
             startDir(userInput)
             showing_input_menu = False
 
 def startHelp(input):
+    print(term.home +  term.clear + term.move_y(term.height // 2))
     input += " 1 2 3 " #place holder inputs which stops the user from entering errors
     input = input.split()
     if input[1] == "add":
@@ -78,6 +74,7 @@ def startHelp(input):
     user_input_cmd()
 
 def startAdd(input):
+    print(term.home +  term.clear + term.move_y(term.height // 2))
     input = input.split()
     print(term.green_on_black("┌─ /Add/ ────────────────────────────────────────┐"))
     print(term.green_on_black("└────────────────────────────────────────────────┘"))
@@ -87,6 +84,7 @@ def startAdd(input):
     user_input_cmd()
 
 def startDir(input):
+    print(term.home +  term.clear + term.move_y(term.height // 2))
     list_files("OS")
     input = input.split()
 
