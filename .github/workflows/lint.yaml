@@ -14,8 +14,6 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      # Set an environment variable to select pip's cache directory for us to actually cache between runs.
-      PIP_CACHE_DIR: /tmp/pip-cache-dir
       # The Python version your project uses. Feel free to change this if required.
       PYTHON_VERSION: 3.9
 
@@ -31,44 +29,22 @@ jobs:
         with:
           python-version: ${{ env.PYTHON_VERSION }}
 
-      # This step caches our Python dependencies. To make sure we
-      # only restore a cache when the dependencies, the python version and
-      # the runner operating system we create a cache key
-      # that is a composite of those states.
-      # Only when the context is exactly the same, we will restore the cache.
-      - name: Restore pip cache
-        uses: actions/cache@v2
+      - name: Run pre-commit hooks.
+        uses: pre-commit/action@v2.0.3
+
+  # this is a seperate job because `pip install` is used, polluting global packages.
+  types:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-python@v2
         with:
-          path: ${{ env.PIP_CACHE_DIR }}
-          key: "python-pip-${{ runner.os }}-\
-          ${{ steps.python.outputs.python-version }}-\
-          ${{ hashFiles('./Pipfile', './Pipfile.lock') }}"
+          python-version: 3.9
 
-      # Uncomment the step that matches your setup.
+      - name: Get dependencies
+        run: pip install -r dev-requirements.txt
 
-      # Default Env setup
-      - name: Run hooks through our requirement file
-        run: |
-          pip install -r dev-requirements.txt
-          pre-commit run --all-files
-        env:
-          # Force pre-commit to do a system install.
-          PIP_USER: 0
-
-        # Pipenv setup
-        # - name: Run hooks through our Pipenv environment.
-        #  run: |
-        #    pipenv install --system --dev
-        #    pipenv run python -m pre-commit run --all-files
-        #  env:
-        #    # Force pre-commit to do a system install.
-        #    PIP_USER: 0
-
-        # Poetry setup
-        # - name: Run hooks through our Poetry environment.
-        #  run: |
-        #    poetry install
-        #    poetry run python -m pre-commit run --all-files
-        #  env:
-        #    # Force pre-commit to do a system install.
-        #    PIP_USER: 0
+      - name: Run mypy
+        run: mypy main.py
