@@ -1,8 +1,6 @@
 from os import walk, path, sep
 import os
-from project.fs2.File import File
 import binary_file_library
-import fs2/File
 
 from blessed import Terminal
 term = Terminal()
