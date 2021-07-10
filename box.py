@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 from __future__ import division
+from asciimatics.event import KeyboardEvent
 from asciimatics.effects import Print, Sprite
 from asciimatics.renderers import FigletText, StaticRenderer
 from asciimatics.scene import Scene
@@ -9,7 +10,30 @@ from asciimatics.screen import Screen
 from asciimatics.paths import Path
 from asciimatics.exceptions import ResizeScreenError
 from sprites.sprites import characther_box
+from asciimatics.paths import DynamicPath
 import sys
+
+
+class KeyboardController(DynamicPath):
+    def process_event(self, event):
+        if isinstance(event, KeyboardEvent):
+            key = event.key_code
+            if key == Screen.KEY_UP:
+                self._y -= 1
+                self._y = max(self._y, 2)
+            elif key == Screen.KEY_DOWN:
+                self._y += 1
+                self._y = min(self._y, self._screen.height-2)
+            elif key == Screen.KEY_LEFT:
+                self._x -= 1
+                self._x = max(self._x, 3)
+            elif key == Screen.KEY_RIGHT:
+                self._x += 1
+                self._x = min(self._x, self._screen.width-3)
+            else:
+                return event
+        else:
+            return event
 
 
 def demo(screen: Screen) -> None:
@@ -43,6 +67,7 @@ def demo(screen: Screen) -> None:
 
     scenes.append(Scene(effects))
 
+    # Start Screen
     screen.play(scenes, stop_on_resize=True)
 
 
