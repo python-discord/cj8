@@ -1,13 +1,14 @@
-import os
+from os import walk, path, sep
+from blessed import Terminal
 
 #│ ─ ┌ ┬ ┐ ├ ┼ ┤ └ ┴ ┘
 
 def list_files(startpath):
     print('── /System/ ──')
-    for root, dirs, files in os.walk(startpath):
-        level = root.replace(startpath, '').count(os.sep)
+    for root, dirs, files in walk(startpath):
+        level = root.replace(startpath, '').count(sep)
         indent = ' ' * 4 * (level)
-        print('┌'+'{}{}/'.format(indent, os.path.basename(root)))
+        print('┌'+'{}{}/'.format(indent, path.basename(root)))
         subindent ='├' +'─' * 4 * (level + 1)
         for f in files:
             print('{}{}'.format(subindent, f))
