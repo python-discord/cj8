@@ -74,25 +74,32 @@ def startHelp(input):
         print(term.green_on_black(printhelp("Help", ["help (command)", "add [name] [dd/mm/yyyy] [time (13:12)]  (desc)", "remove [name]", "dir"])))
     user_input_cmd()
 
-def startAdd(input):
-    print(term.home +  term.clear + term.move_y(term.height // 2))
-    input = input.split()
-    print(term.green_on_black("┌─ /Add/ ────────────────────────────────────────┐"))
-    print(term.green_on_black("└────────────────────────────────────────────────┘"))
-    open(input[1], "a").close()
-    startDir("dire")
-    user_input_cmd()
-
 def startDir(input):
     print(term.home +  term.clear + term.move_y(term.height // 2))
     list_files("OS")
     
+def startAdd(input):
+    print(term.home +  term.clear + term.move_y(term.height // 2))
+    input = input.split()
+    pathl = input[1].split("/")
+    if os.path.isdir(pathl[0]) == False:
+        os.makedirs(pathl[0])
+        open(os.path.join(pathl[0], pathl[1])).close()
+    else:
+        if "." in pathl[0]:
+            open(pathl[0]).close()
+        else:
+            open(os.path.join(pathl[0], pathl[1])).close()
+    
+    startDir("dir")
+    user_input_cmd()
+
 #Just like in the binaryfilelibrary, encrypt and decrypt does the same thing.
 def encrypt_file(path, password):
-    binaryfilelibrary.modifyFile(path, password)
+    binary_file_library.modifyFile(path, password)
 
 def decrypt_file(path, password):
-    binaryfilelibrary.modifyFile(path, password)
+    binary_file_library.modifyFile(path, password)
 
 
 if __name__ == "__main__":
