@@ -12,8 +12,8 @@ from sprites.sprites import characther_box
 import sys
 
 
-def demo(screen: Screen):
-
+def demo(screen: Screen) -> None:
+    """Main Loop"""
     path = Path()
     path.jump_to(int(screen.width / 5), int(screen.height / 1.5))
 
