@@ -1,6 +1,6 @@
 # Idea 0
 
-The game would work like this: the player `@` is trapped in a box, to escape he has to realize that he is
+The game would work like this: the player `@` is trapped in a box, to escape he has to realize that he/she is
 inside the box and, for that, he has to find and tag the 4 walls that trap him/her.
 
 Additionaly, the player can only see a certain distance (in the examples below I will draw the entire map and a <span style="color:blue">&#x1F535; circle </span> to represent his vision, but in the actual game everything beyong the &#x1F535; circle would be black).
