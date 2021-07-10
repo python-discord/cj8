@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 from __future__ import division
-from asciimatics.event import KeyboardEvent
+from asciimatics.event import KeyboardEvent, Event
 from asciimatics.effects import Print, Sprite
 from asciimatics.renderers import FigletText, StaticRenderer
 from asciimatics.scene import Scene
@@ -15,7 +15,10 @@ import sys
 
 
 class KeyboardController(DynamicPath):
-    def process_event(self, event):
+    """Class for controlling input"""
+
+    def process_event(self, event: Event) -> Event:
+        """When the player press something, the processing is done here"""
         if isinstance(event, KeyboardEvent):
             key = event.key_code
             if key == Screen.KEY_UP:
