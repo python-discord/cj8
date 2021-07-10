@@ -3,26 +3,21 @@ from blessed import Terminal
 term = Terminal()
 
 print(term.home + term.clear + term.move_y(term.height // 2))
-print(term.black_on_darkkhaki(term.center('press any key to continue.')))
 
-with term.cbreak(), term.hidden_cursor():
-    inp = term.inkey()
-
-print(term.move_down(2) + 'You pressed ' + term.bold(repr(inp)))
 
 def createDir(file_system, indent=0):
     for key, value in file_system.items():
-        print('\t' * indent + str(key))
+        print(term.black_on_darkkhaki('\t' * indent + str(key)))
         if isinstance(value, dict):
             #INDENT BY 1 IF THE FILE IS A DIRECTORY
             createDir(value, indent+1)
         elif isinstance(value, list):
             for item in value:
                 #PRINT LISTS IN A COLUMN
-                print('\t' * (indent+1) + str(item))
+                print(term.black_on_darkkhaki('\t' * (indent+1) + str(item)))
         else:
             #PRINT NON DICTIONARY FILES AS THEY ARE
-            print('\t' * (indent+1) + str(value))
+            print(term.black_on_darkkhaki('\t' * (indent+1) + str(value)))
 
 
 # example nested dictionary for whole os directory
