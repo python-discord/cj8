@@ -1,0 +1,3 @@
+[submodule "asciimatics"]
+	path = asciimatics
+	url = https://github.com/peterbrittain/asciimatics
