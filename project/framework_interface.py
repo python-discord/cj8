@@ -2,7 +2,7 @@ from os import walk, path, sep
 import blessed
 term = blessed.Terminal
 
-#│ ─ ┌ ┬ ┐ ├ ┼ ┤ └ ┴ ┘
+cl = ["│", "─", "┌", "┬", "┐", "├", "┼", "┤", "└", "┴", "┘"]
 
 def list_files(startpath):
     print('── /System/ ──')
