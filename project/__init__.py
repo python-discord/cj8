@@ -1,6 +1,6 @@
 __version__ = '0.0.0a'
-
+from framework_interface import start
 
 def main() -> None:
-    """The main function."""
+    start()
     pass
