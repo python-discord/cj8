@@ -78,15 +78,14 @@ def startAdd(input):
     input = input.split()
     print(term.green_on_black("┌─ /Add/ ────────────────────────────────────────┐"))
     print(term.green_on_black("└────────────────────────────────────────────────┘"))
-   
-    input = input.split()
-    
+    open(input[1], "a").close()
+    startDir("dire")
     user_input_cmd()
 
 def startDir(input):
     print(term.home +  term.clear + term.move_y(term.height // 2))
     list_files("OS")
-    input = input.split()
+    
 
 if __name__ == "__main__":
     start()
