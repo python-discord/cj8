@@ -112,8 +112,7 @@ def encrypt_file(path, password):
     binary_file_library.modifyFile(path, password)
 
 def decrypt_file(path, password):
-    binary_file_library.modi
-    fyFile(path, password)
+    binary_file_library.modifyFile(path, password)
 
 
 if __name__ == "__main__":
