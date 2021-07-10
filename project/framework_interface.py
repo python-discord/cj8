@@ -16,4 +16,4 @@ def list_files(startpath):
         for f in files:
             print(term.black_on_darkkhaki('{}{}'.format(subindent, f)))
 
-list_files("Project")
+list_files("game_files/")
