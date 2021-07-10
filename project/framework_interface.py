@@ -1,6 +1,9 @@
 from os import walk, path, sep
 import os
+from project.fs2.File import File
 import binary_file_library
+import fs2/File
+
 from blessed import Terminal
 term = Terminal()
 
@@ -84,8 +87,9 @@ def startHelp(input):
     elif input[1] == "help":
         print(term.green_on_black(printhelp("Help", ["help (command)", "- explains what the specified command does"])))
     else:
-        print(term.green_on_black(printhelp("Help", ["help (command), add [name] [dd/mm/yyyy] [time (13:12)]  (desc), remove [name], dir"])))
+        print(term.green_on_black(printhelp("Help", ["help (command)\t add [name] [dd/mm/yyyy] [time (13:12)]  (desc)\t remove [name]\t dir"])))
     user_input_cmd()
+
 
 def startDir(input):
     print(term.home +  term.clear + term.move_y(term.height // 2))
