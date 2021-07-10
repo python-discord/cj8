@@ -1,5 +1,6 @@
 from os import walk, path, sep
-from blessed import Terminal
+import blessed
+term = blessed.Terminal
 
 #│ ─ ┌ ┬ ┐ ├ ┼ ┤ └ ┴ ┘
 
