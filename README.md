@@ -1,3 +1,15 @@
+# Installation (maybe will change)
+
+1. Clone this repo `git clone https://github.com/mirandazellnik/code-jam-2021 .` (will install on current dir, remove `.` if you want to make a new one).
+2. Create an environment `python -m venv .venv` (venv needs to be installed) 
+3. Activate env: `.\.venv\Scripts\activate.ps1` (might be different depending on OS)
+4. Install requirements `pip install -r requirements.txt` (might take a while)
+
+I installed `asciimatics` in editable mode, this might cause issues (hope not :D), but it has a folder `asciimatics\samples` full of examples that we can use as a base code.
+
+
+
+-----------------------------------------
 # Python Discord Code Jam Repository Template
 
 ## A Primer
