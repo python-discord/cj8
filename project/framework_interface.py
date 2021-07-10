@@ -1,5 +1,6 @@
 from os import walk, path, sep
 import os
+import binary_file_library
 from blessed import Terminal
 term = Terminal()
 
@@ -86,6 +87,13 @@ def startDir(input):
     print(term.home +  term.clear + term.move_y(term.height // 2))
     list_files("OS")
     
+#Just like in the binaryfilelibrary, encrypt and decrypt does the same thing.
+def encrypt_file(path, password):
+    binaryfilelibrary.modifyFile(path, password)
+
+def decrypt_file(path, password):
+    binaryfilelibrary.modifyFile(path, password)
+
 
 if __name__ == "__main__":
     start()
