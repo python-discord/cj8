@@ -12,16 +12,20 @@ def list_files(startpath):
     for root, dirs, files in walk(startpath):
         level = root.replace(startpath, '').count(sep)
         indent = '─' * 4 * (level)
+        # finds the length of the directory that is going to be printed
+        # takes away the length from the constant valriable to find 
+        # the amount of extra blank spaces needed
         current_line_length = len('├'+'{}{}/'.format(indent, path.basename(root)))
         extra_blank_needed = (BLANK_LINES - current_line_length -1) * " "
         print(term.green_on_black('├'+'{}{}/{}│'.format(indent, path.basename(root),extra_blank_needed)))
         subindent ='├' +'─' * 4 * (level + 1)
         for f in files:
+             # does the same as above but with the files
             current_line_length = len('{}{}'.format(subindent, f))
             extra_blank_needed = (BLANK_LINES - current_line_length -1) * " "
             print(term.green_on_black('{}{}{}│'.format(subindent, f,extra_blank_needed)))
     print(term.green_on_black('└─ /System/ ─────────────────────────────────────┘'))    
-    printLogo()
+    user_input_cmd()
 
 def printhelp(header, textl):
     retstring = ""
@@ -35,23 +39,27 @@ def start():
     list_files("OS")
     print(term.green_on_black("┌─ /CMD/ ────────"))
 
-def printLogo():
-    print(term.green_on_black(""))
-    schedule()
+def reset_menu():
+    print(term.home +  term.clear + term.move_y(term.height // 2))
+    user_input_cmd()
 
-def schedule():
-    schedule = True
-    while schedule == True:
+def user_input_cmd():
+    print(term.green_on_black(""))
+    showing_input_menu = True
+    while showing_input_menu == True:
         userInput = input(">>>  ").lower()
         if userInput[:4] == "help" or userInput[:1] == "h":
             startHelp(userInput)
-            schedule = False
+            reset_menu()
+            showing_input_menu = False
         if userInput[:3] == "add":
             startAdd(userInput)
-            schedule = False
+            reset_menu()
+            showing_input_menu = False
         if userInput[:3] == "dir":
             startDir(userInput)
-            schedule = False
+            reset_menu()
+            showing_input_menu = False
 
 def startHelp(input):
     input += " 1 2 3 " #place holder inputs which stops the user from entering errors
@@ -66,7 +74,7 @@ def startHelp(input):
         print(term.green_on_black(printhelp("Help", ["help (command)", "- explains what the specified command does"])))
     else:
         print(term.green_on_black(printhelp("Help", ["help (command)", "add [name] [dd/mm/yyyy] [time (13:12)]  (desc)", "remove [name]", "dir"])))
-    printLogo()
+    user_input_cmd()
 
 def startAdd(input):
     input = input.split()
@@ -75,7 +83,7 @@ def startAdd(input):
    
     input = input.split()
     
-    printLogo()
+    user_input_cmd()
 
 def startDir(input):
     list_files("OS")
