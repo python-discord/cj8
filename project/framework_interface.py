@@ -1,7 +1,7 @@
 from os import walk, path, sep
 from blessed import Terminal
 
-#│ ─ ┌ ┬ ┐ ├ ┼ ┤ └ ┴ ┘
+cl = ["│", "─", "┌", "┬", "┐", "├", "┼", "┤", "└", "┴", "┘"]
 
 def list_files(startpath):
     print('── /System/ ──')
