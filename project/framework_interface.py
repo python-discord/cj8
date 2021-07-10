@@ -25,7 +25,7 @@ def list_files(startpath):
 
 def start():
     list_files("OS")
-    print(term.black_on_darkkhaki("─────────CMD─────────"))
+    print(term.black_on_darkkhaki("┌─ /CMD/ ────────"))
 
 def printLogo():
     print(term.black_on_darkkhaki(""))
@@ -49,29 +49,29 @@ def startHelp(input):
     input += " 1 2 3 " #place holder inputs which stops the user from entering errors
     input = input.split()
     if input[1] == "add":
-        print(term.black_on_darkkhaki("┌─────────HELP───────────────────────────────────┐"))
+        print(term.black_on_darkkhaki("┌─ /Help/ ───────────────────────────────────────┐"))
         print(term.black_on_darkkhaki("│add [name] [dd/mm/yyyy] [time (13:12)]  (desc)  │"))
         print(term.black_on_darkkhaki("│- creates a new file with a specified name in   │"))
         print(term.black_on_darkkhaki("│  specified directory                           │"))
         print(term.black_on_darkkhaki("└────────────────────────────────────────────────┘"))
     elif input[1] == "remove":
-        print(term.black_on_darkkhaki("┌─────────HELP───────────────────────────────────┐"))
+        print(term.black_on_darkkhaki("┌─ /Help/ ───────────────────────────────────────┐"))
         print(term.black_on_darkkhaki("│remove [name]                                   │"))
         print(term.black_on_darkkhaki("│- deletes a  file with a specified name in      │"))
         print(term.black_on_darkkhaki("│  specified directory                           │"))
         print(term.black_on_darkkhaki("└────────────────────────────────────────────────┘"))
     elif input[1] == "dir":
-        print(term.black_on_darkkhaki("┌─────────HELP───────────────────────────────────┐"))
+        print(term.black_on_darkkhaki("┌─ /Help/ ───────────────────────────────────────┐"))
         print(term.black_on_darkkhaki("│dir                                             │"))
         print(term.black_on_darkkhaki("│- shows full  user directory                    │"))
         print(term.black_on_darkkhaki("└────────────────────────────────────────────────┘"))
     elif input[1] == "help":
-        print(term.black_on_darkkhaki("┌─────────HELP───────────────────────────────────┐"))
+        print(term.black_on_darkkhaki("┌─ /Help/ ───────────────────────────────────────┐"))
         print(term.black_on_darkkhaki("│help (command)                                  │"))
         print(term.black_on_darkkhaki("│- explains what the specified command does      │"))
         print(term.black_on_darkkhaki("└────────────────────────────────────────────────┘"))
     else:
-        print(term.black_on_darkkhaki("┌─────────HELP───────────────────────────────────┐"))
+        print(term.black_on_darkkhaki("┌─ /Help/ ───────────────────────────────────────┐"))
         print(term.black_on_darkkhaki("│help (command)                                  │"))
         print(term.black_on_darkkhaki("│add [name] [dd/mm/yyyy] [time (13:12)]  (desc)  │"))
         print(term.black_on_darkkhaki("│remove [name]                                   │"))
@@ -81,8 +81,8 @@ def startHelp(input):
 
 def startAdd(input):
     input = input.split()
-    print(term.black_on_darkkhaki("┌─────────ADD─────────┐"))
-    print(term.black_on_darkkhaki("└─────────────────────┘"))
+    print(term.black_on_darkkhaki("┌─ /Add/ ────────────────────────────────────────┐"))
+    print(term.black_on_darkkhaki("└────────────────────────────────────────────────┘"))
    
     input = input.split()
     
