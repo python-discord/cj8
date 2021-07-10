@@ -8,7 +8,7 @@ BLANK_LINES = 50
 print(term.home +  term.clear + term.move_y(term.height // 2))
 
 def list_files(startpath):
-    print(term.black_on_darkkhaki('┌─ /System/ ──────────────────────────────────────'))
+    print(term.black_on_darkkhaki('┌─ /System/ ─────────────────────────────────────┐'))
     for root, dirs, files in walk(startpath):
         level = root.replace(startpath, '').count(sep)
         indent = '─' * 4 * (level)
@@ -20,7 +20,7 @@ def list_files(startpath):
             current_line_length = len('{}{}'.format(subindent, f))
             extra_blank_needed = (BLANK_LINES - current_line_length -1) * " "
             print(term.black_on_darkkhaki('{}{}{}│'.format(subindent, f,extra_blank_needed)))
-        
+    print(term.black_on_darkkhaki('└─ /System/ ─────────────────────────────────────┘'))    
     printLogo()
 
 def start():
