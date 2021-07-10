@@ -1,18 +1,14 @@
 #!/usr/bin/env python3
 
 from __future__ import division
-from builtins import range
-import copy
-import math
-from os import pardir
-from asciimatics.effects import Cycle, Print, Sprite, Stars
-from asciimatics.renderers import SpeechBubble, FigletText, Box, StaticRenderer
+from asciimatics.effects import Print, Sprite
+from asciimatics.renderers import FigletText, StaticRenderer
 from asciimatics.scene import Scene
 from asciimatics.screen import Screen
-from asciimatics.sprites import Arrow, Plot, Sam
+# from asciimatics.sprites import Arrow, Plot, Sam
 from asciimatics.paths import Path
 from asciimatics.exceptions import ResizeScreenError
-from sprites.sprites import characther, characther_box
+from sprites.sprites import characther_box
 import sys
 
 
