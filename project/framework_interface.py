@@ -30,11 +30,10 @@ def list_files(startpath):
     user_input_cmd()
 
 def printhelp(header, textl):
-    retstring = str(cl[2] + cl[1] + f" /{header}/ " + cl[1]*int(BLANK_LINES - 7 - len(header)) + cl[4] + "\n")
-    for words in textl:
+    def printhelp_str(retstring, words):
         # if fits in one line
         if len(words) <= BLANK_LINES - 2:
-            retstring += str(cl[0] + " " + words + " "*int(BLANK_LINES - 3 - len(words)) + cl[0] + "\n")
+            retstring += str(cl[0] + " " + words + " " * int(BLANK_LINES - 3 - len(words)) + cl[0] + "\n")
         # if longer than one line
         else:
             rows = len(words) // (BLANK_LINES - 2) + (len(words) % (BLANK_LINES - 2) != 0)
@@ -43,18 +42,27 @@ def printhelp(header, textl):
                 # for last row of long line
                 if row == rows - 1:
                     retstring += str(cl[0] + " " + words[startpos[-2]:-1] +
-                                     " "*int(BLANK_LINES - 3 - len(words[startpos[-2]:-1])) + cl[0] + "\n")
+                                     " " * int(BLANK_LINES - 3 - len(words[startpos[-2]:-1])) + cl[0] + "\n")
                 # for other rows of long line
                 else:
-                    retstring += str(cl[0] + " " + words[startpos[row]:startpos[row+1]] + " " + cl[0] + "\n")
-    retstring += str(cl[8] + cl[1]*(BLANK_LINES-2) + cl[10])
-    return(retstring)
+                    retstring += str(cl[0] + " " + words[startpos[row]:startpos[row + 1]] + " " + cl[0] + "\n")
+        return retstring
+
+    retstring = str(cl[2] + cl[1] + f" /{header}/ " + cl[1] * int(BLANK_LINES - 7 - len(header)) + cl[4] + "\n")
+    for words in textl:
+        if type(words) == list:
+            for word in words:
+                retstring = printhelp_str(retstring, word)
+        elif type(words) == str:
+            retstring = printhelp_str(retstring, words)
+        else:
+            print("error in printhelp: input should be str or list of str")
+    retstring += str(cl[8] + cl[1] * (BLANK_LINES - 2) + cl[10])
+    return retstring
     
 def start():
     list_files("OS")
     print(term.green_on_black("┌─ /CMD/ ────────"))
-
-
 
 def user_input_cmd():
     print(term.green_on_black(""))
