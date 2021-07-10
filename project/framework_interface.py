@@ -3,22 +3,27 @@ from blessed import Terminal
 term = Terminal()
 
 cl = ["│", "─", "┌", "┬", "┐", "├", "┼", "┤", "└", "┴", "┘"]
-
+BLANK_LINES = 50
 print(term.home +  term.clear + term.move_y(term.height // 2))
 
 def list_files(startpath):
-    print(term.black_on_darkkhaki('┌─ /System/ ──'))
+    print(term.black_on_darkkhaki('┌─ /System/ ──────────────────────────────────────'))
     for root, dirs, files in walk(startpath):
         level = root.replace(startpath, '').count(sep)
         indent = '─' * 4 * (level)
-        print(term.black_on_darkkhaki('├'+'{}{}/'.format(indent, path.basename(root))))
+        current_line_length = len('├'+'{}{}/'.format(indent, path.basename(root)))
+        extra_blank_needed = (BLANK_LINES - current_line_length) * " "
+        print(term.black_on_darkkhaki('├'+'{}{}/{}'.format(indent, path.basename(root),extra_blank_needed)))
         subindent ='├' +'─' * 4 * (level + 1)
         for f in files:
+            # current_line_length = len('{}{}'.format(subindent, f))
+            # extra_blank_needed = (BLANK_LINES - current_line_length) * " "
             print(term.black_on_darkkhaki('{}{}'.format(subindent, f)))
+        
     printLogo()
 
 def start():
-    list_files("OS")
+    list_files("project/OS")
     print(term.black_on_darkkhaki("─────────CMD─────────"))
 
 def printLogo():
