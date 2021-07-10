@@ -5,8 +5,8 @@ from blessed import Terminal
 term = Terminal()
 
 cl = ["│", "─", "┌", "┬", "┐", "├", "┼", "┤", "└", "┴", "┘"]
-BLANK_LINES = 50 #amount of lines each box should be
-print(term.home +  term.clear + term.move_y(term.height // 2))
+BLANK_LINES = 50  # number of characters each line should be
+print(term.home + term.clear + term.move_y(term.height // 2))
 
 def list_files(startpath):
     print(term.green_on_black('┌─ /System/ ─────────────────────────────────────┐'))
@@ -29,11 +29,24 @@ def list_files(startpath):
     user_input_cmd()
 
 def printhelp(header, textl):
-    retstring = ""
-    retstring += str(cl[2] + cl[1] + f" /{header}/ " + cl[1]*int(46-len(header)) + cl[4]) + "\n"
+    retstring = str(cl[2] + cl[1] + f" /{header}/ " + cl[1]*int(BLANK_LINES - 7 - len(header)) + cl[4] + "\n")
     for words in textl:
-        retstring += str(cl[0] + " " + words + " "*int(50 - len(words)) + cl[0] + "\n")
-    retstring += str(cl[8] + cl[1]*51 + cl[10])
+        # if fits in one line
+        if len(words) <= BLANK_LINES - 2:
+            retstring += str(cl[0] + " " + words + " "*int(BLANK_LINES - 3 - len(words)) + cl[0] + "\n")
+        # if longer than one line
+        else:
+            rows = len(words) // (BLANK_LINES - 2) + (len(words) % (BLANK_LINES - 2) != 0)
+            startpos = [(BLANK_LINES - 4) * row for row in range(rows + 1)]
+            for row in range(rows):
+                # for last row of long line
+                if row == rows - 1:
+                    retstring += str(cl[0] + " " + words[startpos[-2]:-1] +
+                                     " "*int(BLANK_LINES - 3 - len(words[startpos[-2]:-1])) + cl[0] + "\n")
+                # for other rows of long line
+                else:
+                    retstring += str(cl[0] + " " + words[startpos[row]:startpos[row+1]] + " " + cl[0] + "\n")
+    retstring += str(cl[8] + cl[1]*(BLANK_LINES-2) + cl[10])
     return(retstring)
     
 def start():
