@@ -1,6 +1,6 @@
 import os
 
-#│ ─ ┌ ┬ ┐ ├ ┼ ┤ └ ┴ ┘
+cl = ["│", "─", "┌", "┬", "┐", "├", "┼", "┤", "└", "┴", "┘"]
 
 def list_files(startpath):
     print('── /System/ ──')
