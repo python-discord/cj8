@@ -22,13 +22,13 @@ def start():
 
 def printLogo():
     print()
-    print(term.black_on_darkkhaki("---------------------CMD---------------------"))
+    print(term.black_on_darkkhaki("┌────────────────CMD"))
     schedule()
 
 def schedule():
     schedule = True
     while schedule == True:
-        userInput = input(term.black_on_darkkhaki(">>>  "))
+        userInput = input(">>>  ")
         if userInput[:4] == "help":
             startHelp(userInput)
             schedule = False
@@ -37,16 +37,16 @@ def schedule():
             schedule = False
 
 def startHelp(input):
-    print(term.black_on_darkkhaki("-----------------------Help-----------------------"))
-    print(term.black_on_darkkhaki("help (command)"))
-    print(term.black_on_darkkhaki("add [name] [dd/mm/yyyy] [time (13:12)]  (desc)"))
-    print(term.black_on_darkkhaki("remove [name]"))
+    print(term.black_on_darkkhaki("┌────────────────Help"))
+    print(term.black_on_darkkhaki("│help (command)"))
+    print(term.black_on_darkkhaki("│add [name] [dd/mm/yyyy] [time (13:12)]  (desc)"))
+    print(term.black_on_darkkhaki("│remove [name]"))
     input = input.split()
 
     printLogo()
 
 def startAdd(input):
-    print(term.black_on_darkkhaki("-----------------------Add------------------------"))
+    print(term.black_on_darkkhaki("┌────────────────Add"))
     input = input.split()
     
     printLogo()
