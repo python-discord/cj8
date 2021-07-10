@@ -93,7 +93,7 @@ def startHelp(input):
     elif input[1] == "help":
         print(term.green_on_black(printhelp("Help", ["help (command)", "- explains what the specified command does"])))
     else:
-        print(term.green_on_black(printhelp("Help", ["help (command)\t add [name] [dd/mm/yyyy] [time (13:12)]  (desc)\t remove [name]\t dir"])))
+        print(term.green_on_black(printhelp("Help", ["help (command)","add [name] [dd/mm/yyyy] [time (13:12)]  (desc)","remove [name]", "dir"])))
     user_input_cmd()
 
 
