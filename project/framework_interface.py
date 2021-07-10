@@ -48,17 +48,18 @@ def user_input_cmd():
     showing_input_menu = True
     while showing_input_menu == True:
         userInput = input(">>>  ").lower()
+        #commands list V
         if userInput[:4] == "help" or userInput[:1] == "h":
-            startHelp(userInput)
             reset_menu()
+            startHelp(userInput)
             showing_input_menu = False
         if userInput[:3] == "add":
-            startAdd(userInput)
             reset_menu()
+            startAdd(userInput)
             showing_input_menu = False
         if userInput[:3] == "dir":
-            startDir(userInput)
             reset_menu()
+            startDir(userInput)
             showing_input_menu = False
 
 def startHelp(input):
