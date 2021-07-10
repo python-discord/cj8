@@ -4,7 +4,7 @@ from blessed import Terminal
 term = Terminal()
 
 cl = ["│", "─", "┌", "┬", "┐", "├", "┼", "┤", "└", "┴", "┘"]
-BLANK_LINES = 50
+BLANK_LINES = 50 #amount of lines each box should be
 print(term.home +  term.clear + term.move_y(term.height // 2))
 
 def list_files(startpath):
@@ -23,6 +23,14 @@ def list_files(startpath):
     print(term.green_on_black('└─ /System/ ─────────────────────────────────────┘'))    
     printLogo()
 
+def printhelp(header, textl):
+    retstring = ""
+    retstring += str(cl[2] + cl[1] + f" /{header}/ " + cl[1]*int(46-len(header)) + cl[4]) + "\n"
+    for words in textl:
+        retstring += str(cl[0] + " " + words + " "*int(50 - len(words)) + cl[0] + "\n")
+    retstring += str(cl[8] + cl[1]*51 + cl[10])
+    return(retstring)
+    
 def start():
     list_files("OS")
     print(term.green_on_black("┌─ /CMD/ ────────"))
@@ -49,34 +57,15 @@ def startHelp(input):
     input += " 1 2 3 " #place holder inputs which stops the user from entering errors
     input = input.split()
     if input[1] == "add":
-        print(term.green_on_black("┌─ /Help/ ───────────────────────────────────────┐"))
-        print(term.green_on_black("│add [name] [dd/mm/yyyy] [time (13:12)]  (desc)  │"))
-        print(term.green_on_black("│- creates a new file with a specified name in   │"))
-        print(term.green_on_black("│  specified directory                           │"))
-        print(term.green_on_black("└────────────────────────────────────────────────┘"))
+        print(term.green_on_black(printhelp("Help", ["add [name] [dd/mm/yyyy] [time (13:12)]  (desc)", "- creates a new file with a specified name in","specified directory"])))
     elif input[1] == "remove":
-        print(term.green_on_black("┌─ /Help/ ───────────────────────────────────────┐"))
-        print(term.green_on_black("│remove [name]                                   │"))
-        print(term.green_on_black("│- deletes a  file with a specified name in      │"))
-        print(term.green_on_black("│  specified directory                           │"))
-        print(term.green_on_black("└────────────────────────────────────────────────┘"))
+        print(term.green_on_black(printhelp("Help", ["remove [name]", "- deletes a  file with a specified name in", "specified directory"])))
     elif input[1] == "dir":
-        print(term.green_on_black("┌─ /Help/ ───────────────────────────────────────┐"))
-        print(term.green_on_black("│dir                                             │"))
-        print(term.green_on_black("│- shows full  user directory                    │"))
-        print(term.green_on_black("└────────────────────────────────────────────────┘"))
+        print(term.green_on_black(printhelp("Help", ["dir", "- shows full  user directory"])))
     elif input[1] == "help":
-        print(term.green_on_black("┌─ /Help/ ───────────────────────────────────────┐"))
-        print(term.green_on_black("│help (command)                                  │"))
-        print(term.green_on_black("│- explains what the specified command does      │"))
-        print(term.green_on_black("└────────────────────────────────────────────────┘"))
+        print(term.green_on_black(printhelp("Help", ["help (command)", "- explains what the specified command does"])))
     else:
-        print(term.green_on_black("┌─ /Help/ ───────────────────────────────────────┐"))
-        print(term.green_on_black("│help (command)                                  │"))
-        print(term.green_on_black("│add [name] [dd/mm/yyyy] [time (13:12)]  (desc)  │"))
-        print(term.green_on_black("│remove [name]                                   │"))
-        print(term.green_on_black("│dir                                             │"))
-        print(term.green_on_black("└────────────────────────────────────────────────┘"))
+        print(term.green_on_black(printhelp("Help", ["help (command)", "add [name] [dd/mm/yyyy] [time (13:12)]  (desc)", "remove [name]", "dir"])))
     printLogo()
 
 def startAdd(input):
