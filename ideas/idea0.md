@@ -5,13 +5,13 @@ inside the box and, for that, he has to find and tag the 4 walls that trap him/h
 
 Additionaly, the player can only see a certain distance (in the examples below I will draw the entire map and a <span style="color:blue"> circle </span> to represent his vision, but in the actual game everything beyong the circle would be black).
 
-![fig1]('fig1.jpg')
+![fig1]('https://github.com/mirandazellnik/code-jam-2021/blob/main/ideas/fig2.jpg')
 
 On the picture above, the player would have to tag the walls <span style="color:red">1,2,3 and 4</span>. To be able to escape.
 
 Ok, seems pretty easy on a simple level, things can get bigger:
 
-![fig1]('fig2.jpg')
+![fig1]('https://github.com/mirandazellnik/code-jam-2021/blob/main/ideas/fig2.jpg')
 
 Now here, if the tagget wall <span style="color:red"> 5</span> he would have to try again.
 
