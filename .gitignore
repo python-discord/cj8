@@ -22,6 +22,9 @@ env
 dist/
 build/
 
+# mypy cache
+.mypy_cache
+
 # IDEs
 # PyCharm
 .idea/

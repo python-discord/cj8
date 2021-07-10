@@ -14,8 +14,6 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      # Set an environment variable to select pip's cache directory for us to actually cache between runs.
-      PIP_CACHE_DIR: /tmp/pip-cache-dir
       # The Python version your project uses. Feel free to change this if required.
       PYTHON_VERSION: 3.9
 
@@ -33,3 +31,20 @@ jobs:
 
       - name: Run pre-commit hooks.
         uses: pre-commit/action@v2.0.3
+
+  # this is a seperate job because `pip install` is used, polluting global packages.
+  types:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+
+      - name: Get dependencies
+        run: pip install -r dev-requirements.txt
+
+      - name: Run mypy
+        run: mypy main.py
