@@ -29,3 +29,6 @@ build/
 .vscode/
 # MacOS
 .DS_Store
+
+#added by richard
+test/*
