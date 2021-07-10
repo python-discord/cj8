@@ -76,15 +76,15 @@ def startHelp(input):
     input += " 1 2 3 " #place holder inputs which stops the user from entering errors
     input = input.split()
     if input[1] == "add":
-        print(term.green_on_black(printhelp("Help", ["add [name] [dd/mm/yyyy] [time (13:12)]  (desc)", "- creates a new file with a specified name in","specified directory"])))
+        print(term.green_on_black(printhelp("Help", ["add [name] [dd/mm/yyyy] [time (13:12)]  (desc)", "- creates a new file with a specified name in specified directory"])))
     elif input[1] == "remove":
-        print(term.green_on_black(printhelp("Help", ["remove [name]", "- deletes a  file with a specified name in", "specified directory"])))
+        print(term.green_on_black(printhelp("Help", ["remove [name]", "- deletes a  file with a specified name in specified directory"])))
     elif input[1] == "dir":
         print(term.green_on_black(printhelp("Help", ["dir", "- shows full  user directory"])))
     elif input[1] == "help":
         print(term.green_on_black(printhelp("Help", ["help (command)", "- explains what the specified command does"])))
     else:
-        print(term.green_on_black(printhelp("Help", ["help (command)", "add [name] [dd/mm/yyyy] [time (13:12)]  (desc)", "remove [name]", "dir"])))
+        print(term.green_on_black(printhelp("Help", ["help (command), add [name] [dd/mm/yyyy] [time (13:12)]  (desc), remove [name], dir"])))
     user_input_cmd()
 
 def startDir(input):
@@ -112,7 +112,8 @@ def encrypt_file(path, password):
     binary_file_library.modifyFile(path, password)
 
 def decrypt_file(path, password):
-    binary_file_library.modifyFile(path, password)
+    binary_file_library.modi
+    fyFile(path, password)
 
 
 if __name__ == "__main__":
