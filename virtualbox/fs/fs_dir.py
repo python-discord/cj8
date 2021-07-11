@@ -106,8 +106,9 @@ class Dir(AC):
     def walk(self, user):
         try:
             Result = []
-            for key, item in self.acl.items():
-                Result.append(key if isinstance(item, File) else (key, item.walk(user)))
+            for key, item in self.sub.items():
+                if key != "..":
+                    Result.append(key if isinstance(item, File) else (key, item.walk(user)))
 
             return Result
         except PermisionDenied:
