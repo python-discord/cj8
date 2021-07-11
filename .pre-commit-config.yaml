@@ -13,8 +13,6 @@ repos:
         name: Black
         entry: python -m black
         language: system
-        additional_dependencies:
-          - black
         types:
           - python
         require_serial: true
