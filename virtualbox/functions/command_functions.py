@@ -11,13 +11,11 @@ BLANK_LINES = 50
 
 # COMMAND LIST
 def start_walk(user_input, fs, user):
-    fs = fs
     print(term.green_on_black(print_box("Walk", fs.walk(user))))
     return fs
 
 
 def start_cd(user_input, fs, user):
-    fs = fs
     user_input = user_input.split()
     try:
         fs.getDir(user, user_input[1])
@@ -31,7 +29,6 @@ def start_cd(user_input, fs, user):
 
 
 def start_dir(user_input, fs, user):
-    fs = fs
     user_input += " 1 1 1 "
     user_input = user_input.split()
     print(term.home + term.clear + term.move_y(term.height // 2))
@@ -43,7 +40,6 @@ def start_dir(user_input, fs, user):
 
 
 def start_help(user_input, fs, user):
-    fs = fs
     print(term.home + term.clear + term.move_y(term.height // 2))
     user_input += " 1 2 3 "  # place holder inputs which stops the user from entering errors
     user_input = user_input.split()
@@ -77,7 +73,6 @@ def start_help(user_input, fs, user):
 
 
 def start_quickcrypt(user_input, fs, user):
-    fs = fs
     # "quickcrypt [file path] [password]"
     user_input += " 1 2 3 "  # place holder inputs which stops the user from entering errors
     user_input = user_input.split()
@@ -85,12 +80,10 @@ def start_quickcrypt(user_input, fs, user):
     return fs
 
 def start_read(user_input):
-    fs = fs
     user_input = user_input.split()
     return fs
 
 def start_search(user_input, fs, user):
-    fs = fs
     user_input = user_input.split()
     search_word = " ".join(user_input[1:])
     search_here = walk(START_PATH)
@@ -110,7 +103,6 @@ def start_search(user_input, fs, user):
 
 
 def start_portscanner(user_input, fs, user):
-    fs = fs
     ports = [22, 80, 9929, 8898, 22542, 187, 32312]
     outputs = ['not a hint', 'not a hint', 'not a hint', 'not a hint',\
                'not a hint', 'a hint', 'a hint', 'a hint', 'a hint']
