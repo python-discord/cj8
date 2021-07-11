@@ -2,8 +2,10 @@ __version__ = '0.0.0a'
 
 
 def main() -> None:
-    import main.main
-    main.main()
+    from main.main import main
+    from functions.command_functions import *
+    from functions.blessed_functions import *
+    main()
     pass
 
 
