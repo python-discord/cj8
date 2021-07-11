@@ -3,7 +3,7 @@ fs = Dir.FromPath("../OS", None, 7, 0, 0)
 
 
 class User:
-    """temporary user class"""
+    "temporary user class"
     uid = 0
 
 
@@ -31,5 +31,15 @@ while True:
     elif command[:2] == "rm":
         try:
             thisDir.rm(User, command[3:])
+        except Exception as e:
+            print(e)
+    elif command[:7] == "encrypt":
+        try:
+            thisDir.getFile(User, command[8:]).encrypt(User, bytes(input("password:"), "utf-8"), mode=int(input("mode:")))
+        except Exception as e:
+            print(e)
+    elif command[:7] == "decrypt":
+        try:
+            print(thisDir.getFile(User, command[8:]).decryptRead(User, bytes(input("password:"), "utf-8"), mode=int(input("mode:"))))
         except Exception as e:
             print(e)

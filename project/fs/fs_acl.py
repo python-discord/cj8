@@ -1,5 +1,5 @@
-from fs.fs_parser import readxml
-from fs.fs_parser import savexml
+from fs_parser import readxml
+from fs_parser import savexml
 
 
 class ACL:
@@ -23,3 +23,6 @@ class ACL:
     "iterator"
     def __iter__(self):
         return iter(self.dicit.items())
+
+    def __getitem__(self, key):
+        return self.dicit[key]

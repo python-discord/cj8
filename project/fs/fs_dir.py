@@ -1,10 +1,11 @@
-from fs.fs_acl import ACL
-from fs.fs_ac import AC
-from fs.fs_file import File
-from fs.fs_config import sep
-from fs.fs_exceptions import NoSuchFileOrDirectory
-from fs.fs_exceptions import FileOrDirectoryAlreadyExist
-from fs.fs_exceptions import NotAnDirectory
+from fs_acl import ACL
+from fs_ac import AC
+from fs_file import File
+from fs_config import sep
+from fs_exceptions import NoSuchFileOrDirectory
+from fs_exceptions import FileOrDirectoryAlreadyExist
+from fs_exceptions import NotAnDirectory
+from fs_exceptions import NotAnFile
 import os
 import shutil
 
@@ -82,7 +83,8 @@ class Dir(AC):
     def rm(self, user, name):
         self.sub[name].delete()
         del self.sub[name]
-        self.acl.remove(name)
+        if name in self.acl:
+            self.acl.remove(name)
 
     @AC.readcheck
     def ls(self, user):
@@ -100,13 +102,19 @@ class Dir(AC):
             result = result.shallowget(user, i)
         return result
 
-    def getDir(self, user, path):
+    def getType(self, user, path, Type, exception):
         result = self
         for i in path.split("/"):
             result = result.shallowget(user, i)
-            if type(result) != Dir:
-                raise NotAnDirectory()
+            if type(result) != Type:
+                raise exception()
         return result
+
+    def getDir(self, user, path):
+        return self.getType(user, path, Dir, NotAnDirectory)
+
+    def getFile(self, user, path):
+        return self.getType(user, path, File, NotAnFile)
 
     "permisions managment"
     @AC.owncheck
