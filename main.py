@@ -7,7 +7,6 @@ board = Board()
 
 # python 3.10 feature, but it works in python 3.9
 with term.fullscreen(), term.cbreak(), term.hidden_cursor():
-    val = " "
     board.draw_board(term)
 
     while (val := term.inkey()) != "q":
