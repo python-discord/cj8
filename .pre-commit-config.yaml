@@ -3,7 +3,19 @@
 
 # Make sure to edit the `additional_dependencies` list if you want to add plugins
 
+
+
+
 repos:
+  - repo: local
+    hooks:
+      - id: black
+        name: Black
+        entry: python -m black
+        language: system
+        types:
+          - python
+        require_serial: true
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v2.5.0
     hooks:
@@ -32,12 +44,3 @@ repos:
           - flake8-bandit~=2.1
           - flake8-docstrings~=1.5
           - flake8-isort~=4.0
-  - repo: local
-    hooks:
-      - id: black
-        name: Black
-        entry: python -m black
-        language: system
-        types:
-          - python
-        require_serial: true
