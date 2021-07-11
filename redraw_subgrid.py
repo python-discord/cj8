@@ -61,7 +61,6 @@ def build_board() -> None:
     print(middle_sperator())
     print(blank_row())
     print()
-    pass
 
 
 def redraw_subgrid(subgrid: np.array, number: str) -> None:
