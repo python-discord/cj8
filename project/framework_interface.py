@@ -1,21 +1,30 @@
 from os import walk, path, sep
 from blessed import Terminal
+
 # local modules
 import binary_file_library
+
+# file system imports
 from fs.fs_dir import Dir
 fs = Dir.FromPath("OS", None, 7, 0, 0)
+this_dir = fs
 
 term = Terminal()
+
+
+class User:
+    """temporary user class"""
+    uid = 0
+
 
 cl = ["│", "─", "┌", "┬", "┐", "├", "┼", "┤", "└", "┴", "┘"]
 START_PATH = "OS/game_files/"
 BLANK_LINES = 50  # number of characters each line should be
 print(term.home + term.clear + term.move_y(term.height // 2))
 
-
-def list_files():
-    print(term.green_on_black('┌─ /System/' + ('─' * (BLANK_LINES - 12)) + '┐'))
-    for root, dirs, files in walk(START_PATH):
+def printtree(header, location):
+    print(term.green_on_black(f'┌─ /{header}/' + ('─' * (BLANK_LINES - 6 - len(header))) + '┐'))
+    for root, dirs, files in walk(location):
         level = root.replace(START_PATH, '').count(sep)
         indent = '─' * 4 * level
         # finds the length of the directory that is going to be printed
@@ -30,8 +39,7 @@ def list_files():
             current_line_length = len('{}{}'.format(sub_indent, f))
             extra_blank_needed = (BLANK_LINES - current_line_length - 1) * " "  # -1 used to make space for edge of box
             print(term.green_on_black(f'{sub_indent}{f}{extra_blank_needed}│'))
-    print(term.green_on_black('└─ /System/' + ('─' * (BLANK_LINES - 12)) + '┘'))
-    user_input_cmd()
+    print(term.green_on_black(f'└─ /{header}/' + ('─' * (BLANK_LINES - 6 - len(header))) + '┘'))
 
 
 def print_box(header, textl):
@@ -67,8 +75,8 @@ def print_box(header, textl):
 
 
 def start():
-    list_files()
-    print(term.green_on_black("┌─ /CMD/ ────────"))
+    printtree("System", START_PATH)
+    user_input_cmd()
 
 
 def user_input_cmd():
@@ -89,93 +97,77 @@ def user_input_cmd():
         if user_input[:10] == "quickcrypt":
             start_quickcrypt(user_input)
             showing_input_menu = False
-        if user_input[:6] == "search":
-            start_search(user_input)
+        if user_input[:4] == "read":
+            start_read(user_input)
             showing_input_menu = False
-        # if user_input[:4] == "read":
-        #     start_read(user_input)
-        #     showing_input_menu = False
-        # if user_input == "ls":
-        #     for i in this_dir.ls(User).keys():
-        #         print(i)
-        # if user_input[:2] == "cd":
-        #     try:
-        #         this_dir = this_dir.getDir(User(), user_input[3:])
-        #     except Exception as e:
-        #         print(e)
-        # if user_input[:5] == "mkdir":
-        #     try:
-        #         this_dir.mkdir(User, user_input[6:])
-        #     except Exception as e:
-        #         print(e)
-        # if user_input[:5] == "touch":
-        #     try:
-        #         this_dir.touch(User, user_input[6:])
-        #     except Exception as e:
-        #         print(e)
-        # if user_input[:2] == "rm":
-        #     try:
-        #         this_dir.rm(User, user_input[3:])
-        #     except Exception as e:
-        #         print(e)
+        if user_input == "ls":
+            for i in this_dir.ls(User).keys():
+                print(i)
+        if user_input[:2] == "cd":
+            try:
+                this_dir = this_dir.getDir(User(), user_input[3:])
+            except Exception as e:
+                print(e)
+        if user_input[:5] == "mkdir":
+            try:
+                this_dir.mkdir(User, user_input[6:])
+            except Exception as e:
+                print(e)
+        if user_input[:5] == "touch":
+            try:
+                this_dir.touch(User, user_input[6:])
+            except Exception as e:
+                print(e)
+        if user_input[:2] == "rm":
+            try:
+                this_dir.rm(User, user_input[3:])
+            except Exception as e:
+                print(e)
 
 def start_help(user_input):
     print(term.home + term.clear + term.move_y(term.height // 2))
     user_input += " 1 2 3 "  # place holder inputs which stops the user from entering errors
     user_input = user_input.split()
-    if user_input[1] == "add":
-        print(term.green_on_black(print_box("Help", ["add [file path]",
-                                                     "- creates a new file with a specified name in specified directory"
-                                                     ])))
-    elif user_input[1] == "remove":
-        print(term.green_on_black(print_box("Help", ["remove [file path]",
-                                                     "- deletes a  file with a specified name in specified directory"])))
-    elif user_input[1] == "dir":
-        print(term.green_on_black(print_box("Help", ["dir",
-                                                     "- shows full  user directory"])))
-    elif user_input[1] == "help":
-        print(term.green_on_black(print_box("Help", ["help (command)",
-                                                     "- explains what the specified command does"])))
-    elif user_input[1] == "quickcrypt":
-        print(term.green_on_black(print_box("Help", ["quickcrypt [file path] [password]",
-                                                     "- file encryption tool"])))
-    elif user_input[1] == "read":
-        print(term.green_on_black(print_box("Help", ["read [file path]",
-                                                     "- read file content"])))
-    elif user_input[1] == "search":
-        print(term.green_on_black(print_box("Search", ["search [name]",
-                                                     "- searches for \"name\" in file name or path"])))
+    userinputdir = {"add": ["Help", ["add [file path]", "- creates a new file with a specified name in specified directory"]], "remove" : ["Help", ["remove [file path]", "- removes a new file with a specified name in specified directory"]], "dir": ["Help", ["dir", "- shows full user directory"]], "help" : ["Help", ["help (command)", "- explains what the specific command does"]], "quickcrypt": ["Help", ["quickcrypt (file path) (password)", "- file encryption tool"], "read" : ["Help", ["read (file path)", "- reads a files content"]]}
+    if user_input[1] in userinputdir:
+        for heade, lis in userinputdir[user_input[1]]:
+            print(term.green_on_black(printbox(heade, lis))
     else:
         print(term.green_on_black(print_box("Help", ["help (command)",
                                                      "add [name]",
                                                      "remove [name]",
                                                      "dir",
                                                      "read [file path]",
-                                                     "quickcrypt [file path] [password]",
-                                                     "search [name]"
+                                                     "quickcrypt [file path] [password]"
                                                      ])))
     user_input_cmd()
 
 
 def start_dir(user_input):
+    user_input += " 1 1 1 "
+    user_input = user_input.split()
     print(term.home + term.clear + term.move_y(term.height // 2))
-    list_files()
+    if user_input[1] == "1":
+        printtree("System", START_PATH)
+    else:
+        printtree("System", f"OS/game_files/{user_input[1]}")
+    user_input_cmd()
 
 
 def start_add(user_input):
-    print(term.home + term.clear + term.move_y(term.height // 2))
-    user_input = user_input.split()
-    path_l = user_input[1].split("/")
-    if not os.path.isdir(path_l[0]):
-        os.makedirs(path_l[0])
-        open(os.path.join(path_l[0], path_l[1])).close()
-    else:
-        if "." in path_l[0]:
-            open(path_l[0]).close()
-        else:
-            open(os.path.join(path_l[0], path_l[1])).close()
-    
-    start_dir("dir")
+    # print(term.home + term.clear + term.move_y(term.height // 2))
+    # user_input = input.split()
+    # path_l = input[1].split("/")
+    # if not os.path.isdir(path_l[0]):
+    #     os.makedirs(path_l[0])
+    #     open(os.path.join(path_l[0], path_l[1])).close()
+    # else:
+    #     if "." in path_l[0]:
+    #         open(path_l[0]).close()
+    #     else:
+    #         open(os.path.join(path_l[0], path_l[1])).close()
+    #
+    # start_dir("dir")
     user_input_cmd()
 
 
@@ -188,22 +180,6 @@ def start_quickcrypt(user_input):
     user_input += " 1 2 3 "  # place holder inputs which stops the user from entering errors
     user_input = user_input.split()
     binary_file_library.decrypt_file(user_input[1], user_input[2])
-
-
-def start_search(user_input):
-    # only searches for the first word after "search"
-    user_input = user_input.split()
-    search_word = user_input[1]
-    search_here = walk(START_PATH)
-    search_result = [];
-    for root, dirs, file_lists in search_here:
-        if search_word in root.lower():
-            search_result.append(root)
-        for files in file_lists:
-            if search_word in files.lower():
-                search_result.append(root + "\\" + files)
-    print(print_box(f"Search: {search_word}", search_result))
-    user_input_cmd()
 
 
 if __name__ == "__main__":
