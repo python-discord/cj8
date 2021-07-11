@@ -100,9 +100,11 @@ class Dir(AC):
 
     def walk(self, user):
         try:
+
             Result = {}
             for key, item in self.ls(user).items():
                 Result[key] = item if isinstance(item, File) else item.walk(user)
+
             return Result
         except PermisionDenied:
             return {}
