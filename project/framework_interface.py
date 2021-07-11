@@ -1,9 +1,13 @@
 from os import walk, path, sep
 from blessed import Terminal
+
 # local modules
 import binary_file_library
+
+# file system imports
 from fs.fs_dir import Dir
 fs = Dir.FromPath("OS", None, 7, 0, 0)
+this_dir = fs
 
 term = Terminal()
 
