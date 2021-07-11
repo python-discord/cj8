@@ -1,12 +1,12 @@
 " ENCRYPTION LIBRARY - DEVELOPED BY CHEERFUL CHEETAHS (Contributed by Coder400, SirArthurWelesley)"
-from fs.fs_config import ALL_CHARACTERS
-from fs.fs_exceptions import NotAnIntiger
-from fs.fs_generalfunctions import restrictRange
-from fs.fs_generalfunctions import shiftArray
-from fs.fs_generalfunctions import rshiftArray
-from fs.fs_bytewise import sxor
-from fs.fs_bytewise import rsxor
-from fs.fs_bytewise import Hash
+from .fs_config import ALL_CHARACTERS
+from .fs_exceptions import NotAnIntiger
+from .fs_generalfunctions import restrictRange
+from .fs_generalfunctions import shiftArray
+from .fs_generalfunctions import rshiftArray
+from .fs_bytewise import sxor
+from .fs_bytewise import rsxor
+from .fs_bytewise import Hash
 
 "encrytption functions"
 

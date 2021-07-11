@@ -13,7 +13,7 @@ class User:
 
 
 def main():
-    printstart()
+    printstart("idk")
 
 
 

@@ -1,4 +1,4 @@
-from fs.fs_exceptions import NoSuchIndex
+from .fs_exceptions import NoSuchIndex
 
 
 def restrictRange(min, max, keyword):

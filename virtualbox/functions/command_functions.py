@@ -1,4 +1,4 @@
-from blessed_functions import print_box, print_tree
+from .blessed_functions import print_box, print_tree
 
 # COMMAND MANAGER
 def user_input_cmd():

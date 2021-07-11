@@ -1,4 +1,4 @@
-from fs.fs_exceptions import PermisionDenied
+from .fs_exceptions import PermisionDenied
 
 
 class AC:
