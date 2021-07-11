@@ -96,30 +96,6 @@ def start():
         user_input_cmd()
 
 
-def start_help(user_input):
-    print(term.home + term.clear + term.move_y(term.height // 2))
-    user_input += " 1 2 3 "  # place holder inputs which stops the user from entering errors
-    user_input = "help add"
-    user_input = user_input.split()
-    user_input_dir = {
-        "add": ["Help", ["add [file path]", "- creates a new file with a specified name in specified directory"]],
-        "remove" : ["Help", ["remove [file path]", "- removes a new file with a specified name in specified directory"]],
-        "dir": ["Help", ["dir", "- shows full user directory"]],
-        "help" : ["Help", ["help (command)", "- explains what the specific command does"]],
-        "quickcrypt": ["Help", ["quickcrypt (file path) (password)", "- file encryption tool"]],
-        "read":["Help", ["read (file path)", "- reads a files content"]],
-        "search": ["Help", ["search (file path)", "- searches directory for a specific file"]]
-    }
-    if user_input[1] in user_input_dir:
-        for heade, lis in user_input_dir[user_input[1]]:
-            print(term.green_on_black(print_box(heade, lis)))
-    else:
-        print(term.green_on_black(print_box("Help", ["help (command)",
-                                                     "add [name]",
-                                                     "remove [name]",
-                                                     "dir",
-                                                     "read [file path]",
-                                                     "quickcrypt [file path] [password]",
-                                                     "search [name]"
-                                                     ])))
-    user_input_cmd()
+
+
+

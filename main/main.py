@@ -22,7 +22,9 @@ class User:
 cl = ["│", "─", "┌", "┬", "┐", "├", "┼", "┤", "└", "┴", "┘"]
 START_PATH = "OS/game_files/"
 BLANK_LINES = 50  # number of characters each line should be
-print(term.home + term.clear + term.move_y(term.height // 2))
+
+
+while True:
 
 
 
@@ -30,55 +32,6 @@ print(term.home + term.clear + term.move_y(term.height // 2))
 
 
 
-
-
-def user_input_cmd():
-    print(term.green_on_black(""))
-    showing_input_menu = True
-    while showing_input_menu:
-        user_input = input(">>>  ").lower()
-        # commands list V
-        if user_input[:4] == "help" or user_input[:1] == "h":
-            start_help(user_input)
-            showing_input_menu = False
-        if user_input[:3] == "add":
-            start_add(user_input)
-            showing_input_menu = False
-        if user_input[:3] == "dir":
-            start_dir(user_input)
-            showing_input_menu = False
-        if user_input[:10] == "quickcrypt":
-            start_quickcrypt(user_input)
-            showing_input_menu = False
-        if user_input[:4] == "read":
-            start_read(user_input)
-            showing_input_menu = False
-        if user_input == "ls":
-            for i in this_dir.ls(User).keys():
-                print(i)
-        if user_input[:2] == "cd":
-            try:
-                this_dir = this_dir.getDir(User(), user_input[3:])
-            except Exception as e:
-                print(e)
-        if user_input[:5] == "mkdir":
-            try:
-                this_dir.mkdir(User, user_input[6:])
-            except Exception as e:
-                print(e)
-        if user_input[:5] == "touch":
-            try:
-                this_dir.touch(User, user_input[6:])
-            except Exception as e:
-                print(e)
-        if user_input[:2] == "rm":
-            try:
-                this_dir.rm(User, user_input[3:])
-            except Exception as e:
-                print(e)
-        if user_input[:6] == "search":
-            start_search(user_input)
-            showing_input_menu = False
 
 
 
