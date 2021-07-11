@@ -45,20 +45,20 @@ def printtree(header, location):
 def print_box(header, textl):
     def print_box_str(ret_string, words):
         # if fits in one line
-        if len(words) <= BLANK_LINES - 2:
+        if len(words) <= BLANK_LINES - 3:
             ret_string += str(cl[0] + " " + words + " " * int(BLANK_LINES - 3 - len(words)) + cl[0] + "\n")
         # if longer than one line
         else:
-            rows = len(words) // (BLANK_LINES - 2) + (len(words) % (BLANK_LINES - 2) != 0)
-            startpos = [(BLANK_LINES - 4) * row for row in range(rows + 1)]
+            rows = len(words) // (BLANK_LINES - 3) + (len(words) % (BLANK_LINES - 3) != 0)
+            startpos = [(BLANK_LINES - 3) * row for row in range(rows + 1)]
             for row in range(rows):
                 # for last row of long line
                 if row == rows - 1:
-                    ret_string += str(cl[0] + " " + words[startpos[-2]:-1] +
-                    " " * int(BLANK_LINES - 3 - len(words[startpos[-2]:-1])) + cl[0] + "\n")
+                    ret_string += str(cl[0] + " " + words[startpos[-2]:] +
+                    " " * int(BLANK_LINES - 3 - len(words[startpos[-2]:])) + cl[0] + "\n")
                 # for other rows of long line
                 else:
-                    ret_string += str(cl[0] + " " + words[startpos[row]:startpos[row + 1]] + " " + cl[0] + "\n")
+                    ret_string += str(cl[0] + " " + words[startpos[row]:startpos[row + 1]] + cl[0] + "\n")
         return ret_string
 
     ret_string = str(cl[2] + cl[1] + f" /{header}/ " + cl[1] * int(BLANK_LINES - 7 - len(header)) + cl[4] + "\n")
@@ -200,13 +200,17 @@ def start_search(user_input):
     user_input = user_input.split()
     search_word = user_input[1]
     search_here = walk(START_PATH)
-    search_result = [];
+    search_result = []
     for root, dirs, file_lists in search_here:
         if search_word in root.lower():
             search_result.append(root)
         for files in file_lists:
             if search_word in files.lower():
                 search_result.append(root + "\\" + files)
+    search_result = [each_search_result[14:] for each_search_result in search_result]
+    if len(search_word) > BLANK_LINES - 16:
+        search_word = search_word[0:(BLANK_LINES - 19)] + "..."
+
     print(print_box(f"Search: {search_word}", search_result))
     user_input_cmd()
 
