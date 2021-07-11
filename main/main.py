@@ -1,7 +1,8 @@
 from os import walk, path, sep
 from blessed import Terminal
-import time
 
+import functions.blessed_functions
+import functions.file_functions
 # local modules
 import binary_file_library
 

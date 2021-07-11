@@ -1,5 +1,6 @@
 from blessed import Terminal
 from os import walk, path, sep
+import time
 
 term = Terminal()
 START_PATH = "OS/game_files/"
