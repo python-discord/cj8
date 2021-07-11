@@ -2,8 +2,8 @@ from os import walk, path, sep
 from blessed import Terminal
 # local modules
 import binary_file_library
-# from fs.fs_dir import Dir
-# fs = Dir.FromPath("OS", None, 7, 0, 0)
+from fs.fs_dir import Dir
+fs = Dir.FromPath("OS", None, 7, 0, 0)
 
 term = Terminal()
 
