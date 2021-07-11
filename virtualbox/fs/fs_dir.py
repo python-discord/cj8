@@ -103,7 +103,7 @@ class Dir(AC):
             Result = []
             for key, item in self.ls(user).items():
                 if key != "..":
-                    Result.append(item if isinstance(item, File) else item.walk(user))
+                    Result.append(key if isinstance(item, File) else item.walk(user))
 
             return Result
         except PermisionDenied:
