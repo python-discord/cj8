@@ -111,21 +111,21 @@ def reset_turn() -> dict:
         "subGridSelectBool": True,
         "spaceSelectBool": True,
         "userConfirmBool": True,
-        "playerActive": 1,
+        "endOfTurn": False,
         "userSelectSubGrid": 0,
         "userSelectSpace": 0,
     }
     return state
 
 
-def playerShift(state: dict) -> dict:
+def playerShift(playerActive: int) -> int:
     """Change player active"""
-    if state["playerActive"] == 1:
-        state["playerActive"] = 2
-    else:
-        state["playerActive"] = 1
+    if playerActive == 1:
+        playerActive = 2
+    elif playerActive == 2:
+        playerActive = 1
 
-    return state
+    return playerActive
 
 
 def redraw_subgrid(subgrid: np.array, number: str) -> None:
@@ -170,15 +170,18 @@ def numpy_build_start() -> np.ndarray:
 term = Terminal()
 
 if __name__ == "__main__":
+    build_board()
+    testSubGrid, boardState = numpy_build_start()
+
+    # State
+    state = reset_turn()
+
+    val = ""
+    termInfo = [""] * 3
+    playerActive = 1
+    termInfo[0] = f"Player {playerActive} Active"
+
     with term.cbreak(), term.hidden_cursor():
-        val = ""
-        termInfo = [""] * 3
-        build_board()
-
-        # State
-        state = reset_turn()
-
-        testSubGrid, boardState = numpy_build_start()
 
         userSection = starting_user_section()
         print("".join(userSection))
@@ -186,23 +189,24 @@ if __name__ == "__main__":
         while (val := term.inkey()) != "q":
             with term.location():
                 print(term.move_up(7))
-                termInfo[0] = f"Player {state['playerActive']} Active"
 
                 if state["subGridSelectBool"]:
                     termInfo[1] = "Select SubGrid by entering 1-9"
-                else:
-                    termInfo[1] = "Select Space by entering 1-9"
-
-                if val in ("1", "2", "3", "4", "5", "6", "7", "8", "9"):
-                    if state["subGridSelectBool"]:
+                    if val in ("1", "2", "3", "4", "5", "6", "7", "8", "9"):
                         state["userSelectSubGrid"] = val
-                    else:
-                        state["userSelectSpace"] = val
-                    termInfo[
-                        2
-                    ] = f"Current: SubGrid {state['userSelectSubGrid']} | Space {state['userSelectSpace']}"
+                        termInfo[
+                            2
+                        ] = f"Current: SubGrid {state['userSelectSubGrid']} | Space {state['userSelectSpace']}"
 
-                elif val.is_sequence and val.name == "KEY_ENTER":
+                elif state["spaceSelectBool"]:
+                    termInfo[1] = "Select Space by entering 1-9"
+                    if val in ("1", "2", "3", "4", "5", "6", "7", "8", "9"):
+                        state["userSelectSpace"] = val
+                        termInfo[
+                            2
+                        ] = f"Current: SubGrid {state['userSelectSubGrid']} | Space {state['userSelectSpace']}"
+
+                if val.is_sequence and val.name == "KEY_ENTER":
                     if state["subGridSelectBool"] and state["userSelectSubGrid"] != 0:
                         state["subGridSelectBool"] = False
                         termInfo[1] = "Select Space by entering 1-9"
@@ -211,28 +215,36 @@ if __name__ == "__main__":
                         termInfo[1] = "Confirm Selection?"
                     elif state["userConfirmBool"]:
                         state["userConfirmBool"] = False
-                        # execute change here
-                        # be sure to reset bools
+                        # execute game logic here
+
+                        # update the game board here
+
+                        # show confirmation
                         termInfo[0] = " "
-                        termInfo[1] = f"Player{state['playerActive']} selected:"
+                        termInfo[1] = f"Player{playerActive} selected:"
                         termInfo[
                             2
                         ] = f"SubGrid {state['userSelectSubGrid']} | Space {state['userSelectSpace']}"
 
-                        state = reset_turn()
-                        state = playerShift(state)
-                        time.sleep(2)
+                        # confirm end of turn
+                        state["endOfTurn"] = True
 
+                # update terminal
                 userSection = update_user_section(termInfo)
                 print("".join(userSection))
 
-        """
-        while (val := term.inkey()) != "q":
-            if val in ("1", "2", "3", "4", "5", "6", "7", "8", "9"):
-                subGrid = val
-                redraw_subgrid(boardState[int(subGrid)], str(int(subGrid) - 1))
-            elif val == "t":
-                redraw_subgrid(testSubGrid, str(int(subGrid) - 1))
-        """
+                if state["endOfTurn"]:
+                    # delay for user to read confimation
+                    time.sleep(1)
+
+                    # reset state
+                    state = reset_turn()
+                    playerActive = playerShift(playerActive)
+
+                    # reset player terminal
+                    termInfo = [""] * 3
+                    termInfo[0] = f"Player {playerActive} Active"
+                    userSection = update_user_section(termInfo)
+                    print("".join(userSection))
 
     print(term.clear)
