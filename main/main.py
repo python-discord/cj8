@@ -1,5 +1,5 @@
-from functions.command_functions import *
-from functions.blessed_functions import *
+from functions.blessed_functions import print_box, print_tree, printstart
+from functions import command_functions
 from fs.fs_dir import Dir
 
 # file system imports

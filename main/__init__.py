@@ -1,13 +1,2 @@
-__version__ = '0.0.0a'
-
-
-def main() -> None:
-    from main.main import main
-    from functions.command_functions import *
-    from functions.blessed_functions import *
-    main()
-    pass
-
-
-if __name__ == "__main__":
-    main()
+from functions.command_functions import start_help, user_input_cmd, start_dir, start_add, start_read, start_quickcrypt, start_search
+from functions.blessed_functions import print_box, print_tree, printstart
