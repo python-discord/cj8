@@ -31,26 +31,6 @@ def printtree(header, location):
             print(term.green_on_black(f'{sub_indent}{f}{extra_blank_needed}│'))
     print(term.green_on_black(f'└─ /{header}/' + ('─' * (BLANK_LINES - 6 - len(header))) + '┘'))
 
-def list_files():
-    print(term.green_on_black('┌─ /System/' + ('─' * (BLANK_LINES - 12)) + '┐'))
-    for root, dirs, files in walk(START_PATH):
-        level = root.replace(START_PATH, '').count(sep)
-        indent = '─' * 4 * level
-        # finds the length of the directory that is going to be printed
-        # takes away the length from the constant variable to find
-        # the amount of extra blank spaces needed
-        current_line_length = len('├'+'{}{}/'.format(indent, path.basename(root)))
-        extra_blank_needed = (BLANK_LINES - current_line_length - 1) * " "  # -1 used to make space for edge of box
-        print(term.green_on_black(f'├{indent}{path.basename(root)}/{extra_blank_needed}│'))
-        sub_indent = '├' + '─' * 4 * (level + 1)
-        for f in files:
-            # does the same as above but with the files
-            current_line_length = len('{}{}'.format(sub_indent, f))
-            extra_blank_needed = (BLANK_LINES - current_line_length - 1) * " "  # -1 used to make space for edge of box
-            print(term.green_on_black(f'{sub_indent}{f}{extra_blank_needed}│'))
-    print(term.green_on_black('└─ /System/' + ('─' * (BLANK_LINES - 12)) + '┘'))
-    user_input_cmd()
-
 
 def print_box(header, textl):
     def print_box_str(ret_string, words):
@@ -85,7 +65,7 @@ def print_box(header, textl):
 
 
 def start():
-    list_files()
+    printtree("System", START_PATH)
     print(term.green_on_black("┌─ /CMD/ ────────"))
 
 
