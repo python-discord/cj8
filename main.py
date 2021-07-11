@@ -7,7 +7,7 @@ board = Board()
 
 # python 3.10 feature, but it works in python 3.9
 with (term.fullscreen(), term.cbreak()):
-    print(term.on_grey(board.display(term)), end="")
+
     print(f"It is Player {'1' if board.player1_turn else '2'}'s turn!")
 
     while (val := term.inkey()) != "q":
@@ -22,7 +22,7 @@ with (term.fullscreen(), term.cbreak()):
             # fmt: on
             board.handle_input(value)  # type: ignore
 
-        print(term.clear() + term.on_grey(board.display(term)), end="")
+        print(term.clear() + term.on_black(board.display(term)), end="")
         if not board.game_over:
             print(f"It is Player {'1' if board.player1_turn else '2'}'s turn!")
         else:
