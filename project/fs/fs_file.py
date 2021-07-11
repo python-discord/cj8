@@ -1,4 +1,4 @@
-from project.fs.fs_ac import AC
+from fs.fs_ac import AC
 import os
 
 

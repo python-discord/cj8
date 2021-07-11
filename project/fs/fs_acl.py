@@ -1,5 +1,5 @@
-from project.fs.fs_parser import readxml
-from project.fs.fs_parser import savexml
+from fs.fs_parser import readxml
+from fs.fs_parser import savexml
 
 
 class ACL:

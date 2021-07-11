@@ -1,10 +1,10 @@
-from project.fs.fs_acl import ACL
-from project.fs.fs_ac import AC
-from project.fs.fs_file import File
-from project.fs.fs_config import sep
-from project.fs.fs_exceptions import NoSuchFileOrDirectory
-from project.fs.fs_exceptions import FileOrDirectoryAlreadyExist
-from project.fs.fs_exceptions import NotAnDirectory
+from fs.fs_acl import ACL
+from fs.fs_ac import AC
+from fs.fs_file import File
+from fs.fs_config import sep
+from fs.fs_exceptions import NoSuchFileOrDirectory
+from fs.fs_exceptions import FileOrDirectoryAlreadyExist
+from fs.fs_exceptions import NotAnDirectory
 import os
 import shutil
 
