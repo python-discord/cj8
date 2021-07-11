@@ -6,7 +6,7 @@ def prinstart(arg):
     print(term.green_on_black("Press C to continue"))
     with term.cbreak():
         val = ''
-        if val.lower() == 'q':
+        if val.lower() == 'c' or val.lower() == 'C':
             return
         else:
             continue
