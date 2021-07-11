@@ -66,10 +66,9 @@ def print_box(header, textl):
         elif type(words) == str:
             ret_string = print_box_str(ret_string, words)
         else:
-            print("error in printhelp: input should be str or list of str")
-    ret_string += str(cl[8] + cl[1] * (BLANK_LINES - 2) + cl[10])
-    return ret_string
-
+            print("error in printhelp: second input should be a list containing strings and/or lists of strings")
+    retstring += str(cl[8] + cl[1] * (BLANK_LINES - 2) + cl[10])
+    return retstring
 
 def start():
     list_files()
