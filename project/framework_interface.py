@@ -3,7 +3,7 @@ from blessed import Terminal
 # local modules
 import binary_file_library
 from fs.fs_dir import Dir
-fs = Dir.FromPath("..\OS", None, 7, 0, 0)
+fs = Dir.FromPath("OS", None, 7, 0, 0)
 
 term = Terminal()
 
@@ -67,8 +67,8 @@ def print_box(header, textl):
             ret_string = print_box_str(ret_string, words)
         else:
             print("error in printhelp: second input should be a list containing strings and/or lists of strings")
-    retstring += str(cl[8] + cl[1] * (BLANK_LINES - 2) + cl[10])
-    return retstring
+    ret_string += str(cl[8] + cl[1] * (BLANK_LINES - 2) + cl[10])
+    return ret_string
 
 def start():
     list_files()
