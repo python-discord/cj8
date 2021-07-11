@@ -1,11 +1,11 @@
 
-characther_box = """
+character_box = """
  ╭─╮
 _│@|_
  /│\\
  / \\
 """
-characther = """
+character = """
   @
  /│\\
  / \\

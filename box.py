@@ -9,7 +9,7 @@ from asciimatics.screen import Screen
 # from asciimatics.sprites import Arrow, Plot, Sam
 from asciimatics.paths import Path
 from asciimatics.exceptions import ResizeScreenError
-from sprites.sprites import characther_box
+from sprites.sprites import character_box, character
 from asciimatics.paths import DynamicPath
 import sys
 
@@ -41,11 +41,11 @@ class KeyboardController(DynamicPath):
 
 def demo(screen: Screen) -> None:
     """Main Loop"""
-    path = Path()
-    path.jump_to(int(screen.width / 5), int(screen.height / 1.5))
+    path = KeyboardController(screen, int(screen.width / 5), int(screen.height / 1.5))
+    #path.jump_to(int(screen.width / 5), int(screen.height / 1.5))
 
     char = Sprite(screen, path=path, renderer_dict={
-        "default": StaticRenderer(images=[characther_box])
+        "default": StaticRenderer(images=[character_box])
     })
 
     scenes = []
