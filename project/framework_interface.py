@@ -3,7 +3,7 @@ from blessed import Terminal
 # local modules
 import binary_file_library
 from fs.fs_dir import Dir
-fs = Dir.FromPath("../OS", None, 7, 0, 0)
+fs = Dir.FromPath("D:\Github\CodeJam 2021\project\OS", None, 7, 0, 0)
 
 term = Terminal()
 
