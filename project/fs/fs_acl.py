@@ -1,5 +1,5 @@
-from parser import readxml
-from parser import savexml
+from project.fs.fs_parser import readxml
+from project.fs.fs_parser import savexml
 
 
 class ACL:
@@ -14,7 +14,7 @@ class ACL:
 
     "file handeling"
     def save(self, path):
-        savexml(self.dicit, path)
+        savexml(self.dicit, path, ("op", "up", "uid"), "acl")
 
     @classmethod
     def InitRead(cls, path):

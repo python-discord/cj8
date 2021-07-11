@@ -1,3 +1,6 @@
+from project.fs.fs_exceptions import PermisionDenied
+
+
 class AC:
     def __init__(self, up, op, uid):
         self.up = up
@@ -17,31 +20,31 @@ class AC:
     @staticmethod
     def owncheck(function):
         def check(self, user, *args):
-            if user.id == self.uid:
+            if user.id == self.uid or user.uid == 0:
                 return function(self, user, *args)
-            return False
+            raise PermisionDenied()
         return check
 
     @staticmethod
     def execcheck(function):
         def check(self, user, *args):
-            if self.p_check(1, user):
+            if self.p_check(1, user) or user.uid == 0:
                 return function(self, user, *args)
-            return False
+            raise PermisionDenied()
         return check
 
     @staticmethod
     def writecheck(function):
         def check(self, user, *args):
-            if self.p_check(2, user):
+            if self.p_check(2, user) or user.uid == 0:
                 return function(self, user, *args)
-            return False
+            raise PermisionDenied()
         return check
 
     @staticmethod
     def readcheck(function):
         def check(self, user, *args):
-            if self.p_check(4, user):
+            if self.p_check(4, user) or user.uid == 0:
                 return function(self, user, *args)
-            return False
+            return PermisionDenied()
         return check

@@ -1,6 +1,11 @@
 __version__ = '0.0.0a'
-from framework_interface import start
+
 
 def main() -> None:
-    start()
+    import framework_interface
+    framework_interface.start()
     pass
+
+
+if __name__ == "__main__":
+    main()

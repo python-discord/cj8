@@ -17,10 +17,10 @@ def savexml(dicit, path, naming, name):
 
 
 def readxml(path, mapf):
-    Result = {}
+    result = {}
     root = xml.ElementTree(file=path).getroot()
 
     for element in root:
-        Result[element.tag] = [mapf(i.text) for i in element]
+        result[element.tag] = [mapf(i.text) for i in element]
 
-    return Result
+    return result
