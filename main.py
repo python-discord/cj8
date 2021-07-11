@@ -3,12 +3,13 @@
 from __future__ import division
 
 import sys
+from typing import Optional
 
 from asciimatics.effects import Print, Sprite
 from asciimatics.event import Event, KeyboardEvent
 from asciimatics.exceptions import ResizeScreenError
 # from asciimatics.sprites import Arrow, Plot, Sam
-from asciimatics.paths import DynamicPath, Path
+from asciimatics.paths import Path
 from asciimatics.renderers import Box, FigletText, StaticRenderer
 from asciimatics.scene import Scene
 from asciimatics.screen import Screen
@@ -16,33 +17,24 @@ from asciimatics.screen import Screen
 from sprites.sprites import character_box
 
 
-class KeyboardController(DynamicPath):
-    """Class for controlling input"""
+class GameStart(Exception):
+    """Raised when user starts the game"""
 
-    def process_event(self, event: Event) -> Event:
-        """When the player press something, the processing is done here"""
-        if isinstance(event, KeyboardEvent):
-            key = event.key_code
-            if key == Screen.KEY_UP:
-                self._y -= 1
-                self._y = max(self._y, 2)
-            elif key == Screen.KEY_DOWN:
-                self._y += 1
-                self._y = min(self._y, self._screen.height-2)
-            elif key == Screen.KEY_LEFT:
-                self._x -= 1
-                self._x = max(self._x, 3)
-            elif key == Screen.KEY_RIGHT:
-                self._x += 1
-                self._x = min(self._x, self._screen.width-3)
-            else:
-                return event
-        else:
-            return event
+    pass
 
 
-def demo(screen: Screen) -> None:
-    """Main Loop"""
+def handle_input(event: Event) -> Optional[Event]:
+    """Handle title-screen inputs"""
+    if isinstance(event, KeyboardEvent):
+        key = event.key_code
+        if key in [ord("q"), ord("Q")]:
+            sys.exit(0)
+        if key in [ord("s"), ord("S")]:
+            raise GameStart
+
+
+def title(screen: Screen) -> None:
+    """Title screen"""
     path = Path()
     path.jump_to(int(screen.width / 5), int(screen.height / 1.5))
 
@@ -86,13 +78,17 @@ def demo(screen: Screen) -> None:
     scenes.append(Scene(effects))
 
     # Put everything onto the screen
-    screen.play(scenes, stop_on_resize=True)
+    try:
+        screen.play(scenes, stop_on_resize=True, unhandled_input=handle_input)
+    except GameStart:
+        screen.close()
+        # START GAME
 
 
 if __name__ == "__main__":
     while True:
         try:
-            Screen.wrapper(demo)
+            Screen.wrapper(title)
             sys.exit(0)
         except ResizeScreenError:
             pass
