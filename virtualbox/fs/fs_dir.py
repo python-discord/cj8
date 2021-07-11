@@ -101,7 +101,7 @@ class Dir(AC):
     @AC.readcheck
     def stringList(self, user):
         return list(self.sub.keys())
-    
+
     @AC.readcheck
     def walk(self, user):
         try:

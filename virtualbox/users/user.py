@@ -23,7 +23,7 @@ class User:
     "inits"
     @classmethod
     def AutoUIDInit(cls, name, homePath, password, uidspace):
-        return cls(name, uidspace.genUid(), homePath, password)
+        return cls(name, uidspace.getUid(), homePath, password)
 
     @classmethod
     def CustomUIDInit(cls, name, homePath, password, uidspace, uid):
