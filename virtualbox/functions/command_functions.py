@@ -11,8 +11,20 @@ BLANK_LINES = 50
 
 # COMMAND LIST
 def start_walk(user_input, fs, user):
-    print(term.green_on_black(print_box("Walk", fs.stringList(user))))
-    print(fs.walk(user))
+    print(term.green_on_black(print_box("Walk", fs.walk(user))))
+    return fs
+
+
+def start_cd(user_input, fs, user):
+    user_input = user_input.split()
+    try:
+        fs.getDir(user, user_input[1])
+        fs = fs.getDir(user, user_input[1])
+        print(term.green_on_black(print_box("getdir", fs.stringList(user))))
+        return fs
+    except Exception as e:
+        print(e)
+        return fs
 
 
 
@@ -24,7 +36,7 @@ def start_dir(user_input, fs, user):
         print_tree("System", START_PATH)
     else:
         print_tree("System", f"OS/game_files/{user_input[1]}")
-
+    return fs
 
 
 def start_help(user_input, fs, user):
@@ -39,7 +51,8 @@ def start_help(user_input, fs, user):
         "quickcrypt": ["Help", ["quickcrypt (file path) (password)", "- file encryption tool"]],
         "read":["Help", ["read (file path)", "- reads a files content"]],
         "search": ["Help", ["search (file path)", "- searches directory for a specific file"]],
-        "portscan":["Help", ["portscan", "- searches for open ports in the operating system network"]]
+        "portscan":["Help", ["portscan", "- searches for open ports in the operating system network"]],
+        "cd": ["Help", ["cd", "- go to a target directory"]]
     }
     if user_input[1] in user_input_dir.keys():
         print(term.green_on_black(print_box(user_input[1], user_input_dir[user_input[1]])))
@@ -52,9 +65,11 @@ def start_help(user_input, fs, user):
                                                      "quickcrypt [file path] [password]",
                                                      "search [name]",
                                                      "portscan",
-                                                     "walk"
+                                                     "walk",
+                                                     "cd"
                                                      ])))
 
+    return fs
 
 
 def start_quickcrypt(user_input, fs, user):
@@ -62,11 +77,11 @@ def start_quickcrypt(user_input, fs, user):
     user_input += " 1 2 3 "  # place holder inputs which stops the user from entering errors
     user_input = user_input.split()
     binary_file_library.decrypt_file(user_input[1], user_input[2])
-
+    return fs
 
 def start_read(user_input):
     user_input = user_input.split()
-
+    return fs
 
 def start_search(user_input, fs, user):
     user_input = user_input.split()
@@ -84,6 +99,7 @@ def start_search(user_input, fs, user):
         search_word = search_word[0:(BLANK_LINES - 19)] + "..."
 
     print(print_box(f"Search: {search_word}", search_result))
+    return fs
 
 
 def start_portscanner(user_input, fs, user):
@@ -105,7 +121,7 @@ def start_portscanner(user_input, fs, user):
 
     else:
         print('nothing')
-
+    return fs
 
 # print(term.home + term.clear + term.move_y(term.height // 2))
 # for i in range(7):
