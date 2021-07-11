@@ -105,7 +105,7 @@ def clear_term():
 
 
 # COMMAND MANAGER
-def user_input_cmd():
+def user_input_cmd(directory):
 
     clear_term()
     showing_input_menu = True
@@ -113,7 +113,7 @@ def user_input_cmd():
         user_input = input(">>>  ").lower()
         if user_input in user_commands.keys():
              try:
-                fs = user_commands[user_input](user_input, fs, User)
+                directory = user_commands[user_input](user_input, directory, User)
                 showing_input_menu = False
              except Exception as e:
                  print(e)
@@ -138,8 +138,9 @@ def start():
 
 
 def main():
+    global fs
     start()
-    user_input_cmd()
+    user_input_cmd(fs)
 
 
 
