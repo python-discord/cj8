@@ -1,5 +1,5 @@
-from functions.blessed_functions import print_box, print_tree, printstart
-from functions import command_functions
+from functions.blessed_functions import print_box, print_tree, printstart, start
+from functions.command_functions import start_help, user_input_cmd
 
 from fs.fs_dir import Dir
 
@@ -14,7 +14,8 @@ class User:
 
 
 def main():
-    printstart("idk")
+    start()
+    user_input_cmd()
 
 
 
