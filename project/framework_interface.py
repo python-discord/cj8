@@ -1,6 +1,8 @@
 from os import walk, path, sep
 import os
 import binary_file_library
+import
+sys.path.append('/.../application/app/folder')
 
 from blessed import Terminal
 term = Terminal()
@@ -84,18 +86,21 @@ def user_input_cmd():
         if user_input[:3] == "dir":
             start_dir(user_input)
             showing_input_menu = False
+        if user_input[:10] == "quickcrypt":
+            start_quickcrypt(user_input)
+            showing_input_menu = False
 
 
 def start_help(user_input):
     print(term.home + term.clear + term.move_y(term.height // 2))
-    user_input += " 1 2 3 " # place holder inputs which stops the user from entering errors
+    user_input += " 1 2 3 "  # place holder inputs which stops the user from entering errors
     user_input = user_input.split()
     if user_input[1] == "add":
-        print(term.green_on_black(print_box("Help", ["add [name] [dd/mm/yyyy] [time (13:12)]  (desc)",
+        print(term.green_on_black(print_box("Help", ["add [file path]",
                                                      "- creates a new file with a specified name in specified directory"
                                                      ])))
     elif user_input[1] == "remove":
-        print(term.green_on_black(print_box("Help", ["remove [name]",
+        print(term.green_on_black(print_box("Help", ["remove [file path]",
                                                      "- deletes a  file with a specified name in specified directory"])))
     elif user_input[1] == "dir":
         print(term.green_on_black(print_box("Help", ["dir",
@@ -103,11 +108,16 @@ def start_help(user_input):
     elif user_input[1] == "help":
         print(term.green_on_black(print_box("Help", ["help (command)",
                                                      "- explains what the specified command does"])))
+    elif user_input[1] == "quickcrypt":
+        print(term.green_on_black(print_box("Help", ["quickcrypt [file path] [password]",
+                                                     "- file encryption tool"])))
     else:
         print(term.green_on_black(print_box("Help", ["help (command)",
-                                                     "add [name] [dd/mm/yyyy] [time (13:12)]  (desc)",
+                                                     "add [name]",
                                                      "remove [name]",
-                                                     "dir"])))
+                                                     "dir",
+                                                     "quickcrypt [file path] [password]"
+                                                     ])))
     user_input_cmd()
 
 
@@ -119,25 +129,28 @@ def start_dir(user_input):
 def start_add(user_input):
     print(term.home + term.clear + term.move_y(term.height // 2))
     user_input = input.split()
-    pathl = input[1].split("/")
-    if not os.path.isdir(pathl[0]):
-        os.makedirs(pathl[0])
-        open(os.path.join(pathl[0], pathl[1])).close()
+    path_l = input[1].split("/")
+    if not os.path.isdir(path_l[0]):
+        os.makedirs(path_l[0])
+        open(os.path.join(path_l[0], path_l[1])).close()
     else:
-        if "." in pathl[0]:
-            open(pathl[0]).close()
+        if "." in path_l[0]:
+            open(path_l[0]).close()
         else:
-            open(os.path.join(pathl[0], pathl[1])).close()
+            open(os.path.join(path_l[0], path_l[1])).close()
     
     start_dir("dir")
     user_input_cmd()
 
 
+def start_quickcrypt(user_input):
+    # "quickcrypt [file path] [password]"
+    user_input += " 1 2 3 "  # place holder inputs which stops the user from entering errors
+    user_input = user_input.split()
+    decrypt_file(user_input[1], user_input[2])
+
+
 # Just like in the binary_file_library, encrypt and decrypt does the same thing.
-def encrypt_file(user_input_path, password):
-    binary_file_library.modifyFile(user_input_path, password)
-
-
 def decrypt_file(user_input_path, password):
     binary_file_library.modifyFile(user_input_path, password)
 
