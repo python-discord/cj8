@@ -1,6 +1,6 @@
-from fs_ac import AC
-from fs_cryptology import encrypt
-from fs_cryptology import decrypt
+from fs.fs_ac import AC
+from fs.fs_cryptology import encrypt
+from fs.fs_cryptology import decrypt
 import os
 
 

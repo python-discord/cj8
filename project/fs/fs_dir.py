@@ -1,11 +1,11 @@
-from fs_acl import ACL
-from fs_ac import AC
-from fs_file import File
-from fs_config import sep
-from fs_exceptions import NoSuchFileOrDirectory
-from fs_exceptions import FileOrDirectoryAlreadyExist
-from fs_exceptions import NotAnDirectory
-from fs_exceptions import NotAnFile
+from fs.fs_acl import ACL
+from fs.fs_ac import AC
+from fs.fs_file import File
+from fs.fs_config import sep
+from fs.fs_exceptions import NoSuchFileOrDirectory
+from fs.fs_exceptions import FileOrDirectoryAlreadyExist
+from fs.fs_exceptions import NotAnDirectory
+from fs.fs_exceptions import NotAnFile
 import os
 import shutil
 
