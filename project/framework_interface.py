@@ -131,7 +131,7 @@ def start_help(user_input):
     userinputdir = {"add": ["Help", ["add [file path]", "- creates a new file with a specified name in specified directory"]], "remove" : ["Help", ["remove [file path]", "- removes a new file with a specified name in specified directory"]], "dir": ["Help", ["dir", "- shows full user directory"]], "help" : ["Help", ["help (command)", "- explains what the specific command does"]], "quickcrypt": ["Help", ["quickcrypt (file path) (password)", "- file encryption tool"], "read" : ["Help", ["read (file path)", "- reads a files content"]]}
     if user_input[1] in userinputdir:
         for heade, lis in userinputdir[user_input[1]]:
-            print(term.green_on_black(printbox(heade, 
+            print(term.green_on_black(printbox(heade, lis)
     else:
         print(term.green_on_black(print_box("Help", ["help (command)",
                                                      "add [name]",
