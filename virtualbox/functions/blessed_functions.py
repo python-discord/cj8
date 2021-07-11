@@ -1,7 +1,7 @@
-from blessed import Terminal
+
 from os import walk, path, sep
 import time
-
+from blessed import Terminal
 
 START_PATH = "OS/game_files/"
 BLANK_LINES = 50  # number of characters each line should be
