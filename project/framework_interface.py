@@ -180,12 +180,7 @@ def start_quickcrypt(user_input):
     # "quickcrypt [file path] [password]"
     user_input += " 1 2 3 "  # place holder inputs which stops the user from entering errors
     user_input = user_input.split()
-    decrypt_file(user_input[1], user_input[2])
-
-
-# Just like in the binary_file_library, encrypt and decrypt does the same thing.
-def decrypt_file(user_input_path, password):
-    binary_file_library.modifyFile(user_input_path, password)
+    binary_file_library.decrypt_file(user_input[1], user_input[2])
 
 
 if __name__ == "__main__":
