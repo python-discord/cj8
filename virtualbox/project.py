@@ -1,5 +1,5 @@
 from functions.command_functions import start_help, start_dir, start_quickcrypt,\
-    start_read, start_search
+    start_read, start_search, start_add, start_portscanner
 from os import walk, sep, path
 import time
 from blessed import Terminal
@@ -17,16 +17,16 @@ term = Terminal()
 print(term.home + term.clear + term.move_y(term.height // 2))
 
 cl = ["│", "─", "┌", "┬", "┐", "├", "┼", "┤", "└", "┴", "┘"]
-# COMMAND DICTIONARY
-user_commands = {
+
+user_commands = {"add": start_add,
                  "dir": start_dir,
                  "h": start_help,
                  "help": start_help,
                  "quickcrypt": start_quickcrypt,
                  "read": start_read,
-                 "search": start_search
+                 "search": start_search,
+                 "portscan": start_portscanner
                  }
-
 
 class User:
     """temporary user class"""

@@ -1,6 +1,9 @@
 from .blessed_functions import print_box, print_tree
 from blessed import Terminal
 from os import walk
+import random
+import time
+import os
 term = Terminal()
 START_PATH = "OS/game_files/"
 BLANK_LINES = 50
@@ -45,7 +48,8 @@ def start_help(user_input):
         "help" : ["Help", ["help (command)", "- explains what the specific command does"]],
         "quickcrypt": ["Help", ["quickcrypt (file path) (password)", "- file encryption tool"]],
         "read":["Help", ["read (file path)", "- reads a files content"]],
-        "search": ["Help", ["search (file path)", "- searches directory for a specific file"]]
+        "search": ["Help", ["search (file path)", "- searches directory for a specific file"]],
+        "portscan":["Help", ["portscan", "- searches for open ports in the operating system network"]]
     }
     if user_input[1] in user_input_dir.keys():
         print(term.green_on_black(print_box(user_input[1], user_input_dir[user_input[1]])))
@@ -56,7 +60,8 @@ def start_help(user_input):
                                                      "dir",
                                                      "read [file path]",
                                                      "quickcrypt [file path] [password]",
-                                                     "search [name]"
+                                                     "search [name]",
+                                                     "portscan"
                                                      ])))
     user_input_cmd()
 
@@ -90,6 +95,35 @@ def start_search(user_input):
     print(print_box(f"Search: {search_word}", search_result))
     user_input_cmd()
 
+def start_portscanner(user_input):
+    ports = [22, 80, 9929, 8898, 22542, 187, 32312]
+    outputs = ['not a hint', 'not a hint', 'not a hint', 'not a hint',\
+               'not a hint', 'a hint', 'a hint', 'a hint', 'a hint']
+    for i in range(7):
+        port = ports[i]
+        print(
+            str(f"Found Port in Network: \n    {port}/TCP [State: open] \n    Scanning Port... \n"))  # term.green_on_black
+        time.sleep(0.4)
+    inp = input('Select a port to scan: ')
+    inp = int(inp)
+    if inp in ports:
+        output = random.choice(outputs)
+        time.sleep(3)
+        os.system('cls')
+        print(f'Port {inp} attackable. \n    Attack launchend. \n    Output: {output} \n')
+
+    else:
+        print('nothing')
+
+
+# print(term.home + term.clear + term.move_y(term.height // 2))
+# for i in range(7):
+#     time.sleep(0.4)
+#     port = ports[i]
+#     randomi = random.randint(0, 1)
+#     output = random.choice(outputs)
+#     if randomi == 1:
+#         print(f'Port {port} attackable. \n    Attack launchend. \n    Output: {output} \n')
 
 # COMMAND DICTIONARY
 user_commands = {"add": start_add,
@@ -98,7 +132,8 @@ user_commands = {"add": start_add,
                  "help": start_help,
                  "quickcrypt": start_quickcrypt,
                  "read": start_read,
-                 "search": start_search
+                 "search": start_search,
+                 "portscan": start_portscanner
                  }
 
 
@@ -113,26 +148,4 @@ def user_input_cmd():
             user_commands[user_input.split()[0]](user_input)
             showing_input_menu = False
 
-        # if user_input == "ls":
-        #     for i in this_dir.ls(User).keys():
-        #         print(i)
-        # if user_input[:2] == "cd":
-        #     try:
-        #         this_dir = this_dir.getDir(User(), user_input[3:])
-        #     except Exception as e:
-        #         print(e)
-        # if user_input[:5] == "mkdir":
-        #     try:
-        #         this_dir.mkdir(User, user_input[6:])
-        #     except Exception as e:
-        #         print(e)
-        # if user_input[:5] == "touch":
-        #     try:
-        #         this_dir.touch(User, user_input[6:])
-        #     except Exception as e:
-        #         print(e)
-        # if user_input[:2] == "rm":
-        #     try:
-        #         this_dir.rm(User, user_input[3:])
-        #     except Exception as e:
-        #         print(e)
+
