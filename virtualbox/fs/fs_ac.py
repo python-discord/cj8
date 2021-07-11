@@ -1,4 +1,4 @@
-from .fs_exceptions import PermisionDenied
+from virtualbox.exceptions import PermisionDenied
 
 
 class AC:
@@ -7,6 +7,11 @@ class AC:
         self.op = op
 
         self.uid = uid
+
+    """properties"""
+    @property
+    def perm(self):
+        return (self.up, self.op, self.uid)
 
     """permisons check"""
     def p_check(self, perm, user):

@@ -1,6 +1,6 @@
 from .fs_ac import AC
-from .fs_cryptology import encrypt
-from .fs_cryptology import decrypt
+from virtualbox.cryptology import encrypt
+from virtualbox.cryptology import decrypt
 import os
 
 

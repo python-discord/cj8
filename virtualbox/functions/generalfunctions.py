@@ -1,4 +1,4 @@
-from .fs_exceptions import NoSuchIndex
+from virtualbox.exceptions import NoSuchIndex
 
 
 def restrictRange(min, max, keyword):

@@ -1,12 +1,12 @@
 " ENCRYPTION LIBRARY - DEVELOPED BY CHEERFUL CHEETAHS (Contributed by Coder400, SirArthurWelesley)"
-from .fs_config import ALL_CHARACTERS
-from .fs_exceptions import NotAnIntiger
-from .fs_generalfunctions import restrictRange
-from .fs_generalfunctions import shiftArray
-from .fs_generalfunctions import rshiftArray
-from .fs_bytewise import sxor
-from .fs_bytewise import rsxor
-from .fs_bytewise import Hash
+from virtualbox.config import ALL_CHARACTERS
+from virtualbox.exceptions import NotAnIntiger
+from virtualbox.functions.generalfunctions import restrictRange
+from virtualbox.functions.generalfunctions import shiftArray
+from virtualbox.functions.generalfunctions import rshiftArray
+from virtualbox.bytewise import sxor
+from virtualbox.bytewise import rsxor
+from virtualbox.bytewise import Hash
 
 "encrytption functions"
 

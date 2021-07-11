@@ -31,3 +31,8 @@ class PermisionDenied(Exception):
 class NoSuchIndex(Exception):
     def __init__(self):
         super().__init__("no such index")
+
+
+class UIDAlreadyExist(Exception):
+    def __init__(self):
+        super().__init__("uid already exist")

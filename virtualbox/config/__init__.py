@@ -6,3 +6,6 @@ ALL_CHARACTERS = string.ascii_letters+string.digits+string.punctuation+string.wh
 
 "Separator in host OS"
 sep = "\\" if platform == "win32" else "/"
+
+"Home prefab path"
+etcskel = "/etc/skel"
