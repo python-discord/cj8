@@ -234,7 +234,11 @@ if __name__ == "__main__":
                     elif state["spaceSelectBool"] and state["userSelectSpace"] != 0:
                         state["spaceSelectBool"] = False
                         termInfo[1] = "Confirm Selection?"
-                    elif state["userConfirmBool"]:
+                    elif (
+                        state["userConfirmBool"]
+                        and state["userSelectSubGrid"] != 0
+                        and state["userSelectSpace"] != 0
+                    ):
                         state["userConfirmBool"] = False
                         # execute game logic here
 
