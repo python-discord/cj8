@@ -9,7 +9,7 @@ from asciimatics.event import Event, KeyboardEvent
 from asciimatics.exceptions import ResizeScreenError
 # from asciimatics.sprites import Arrow, Plot, Sam
 from asciimatics.paths import DynamicPath, Path
-from asciimatics.renderers import FigletText, StaticRenderer
+from asciimatics.renderers import Box, FigletText, StaticRenderer
 from asciimatics.scene import Scene
 from asciimatics.screen import Screen
 
@@ -46,33 +46,46 @@ def demo(screen: Screen) -> None:
     path = Path()
     path.jump_to(int(screen.width / 5), int(screen.height / 1.5))
 
-    char = Sprite(screen, path=path, renderer_dict={
-        "default": StaticRenderer(images=[character_box])
-    })
+    # Opening character with box on his head
+    char = Sprite(
+        screen, path=path, renderer_dict={
+            "default": StaticRenderer(images=[character_box])
+        }
+    )
 
+    # Load all components (boxes, titles, etc)
     scenes = []
     effects = [
         char,
         Print(
             screen,
-            FigletText("BOX", width=120),
+            Box(screen.width, screen.height),
+            0,
+            start_frame=0,
+        ),
+        Print(
+            screen,
+            FigletText("BOXED", width=120, font="big"),
             screen.height // 2 - 6,
-            start_frame=0),
+            start_frame=0,
+        ),
         Print(
             screen,
             StaticRenderer(images=["(S)tart"]),
-            screen.height // 2 + 1,
-            start_frame=0),
+            screen.height // 2 + 3,
+            start_frame=0,
+        ),
         Print(
             screen,
             StaticRenderer(images=["(Q)uit"]),
-            screen.height // 2 + 3,
-            start_frame=0)
+            screen.height // 2 + 5,
+            start_frame=0,
+        ),
     ]
 
     scenes.append(Scene(effects))
 
-    # Start Screen
+    # Put everything onto the screen
     screen.play(scenes, stop_on_resize=True)
 
 
