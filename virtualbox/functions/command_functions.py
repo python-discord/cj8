@@ -11,11 +11,8 @@ BLANK_LINES = 50
 
 # COMMAND LIST
 def start_walk(user_input, fs, user):
-    
-    print(fs.stringList(user))
-    print_box("Walk", fs.walk(user))
-
-
+    print(term.green_on_black(print_box("Walk", fs.stringList(user))))
+    print(fs.walk(user))
 
 
 
