@@ -1,10 +1,10 @@
 from os import walk, path, sep
-import os
-import binary_file_library
-import
-sys.path.append('/.../application/app/folder')
-
 from blessed import Terminal
+# local modules
+import binary_file_library
+from fs.fs_dir import *
+from fs.fs_file import *
+
 term = Terminal()
 
 cl = ["│", "─", "┌", "┬", "┐", "├", "┼", "┤", "└", "┴", "┘"]
