@@ -98,12 +98,16 @@ class Dir(AC):
     def ls(self, user):
         return self.sub
 
+    @AC.readcheck
+    def stringList(self, user):
+        return self.sub.keys()
+    
     def walk(self, user):
         try:
             Result = []
             for key, item in self.ls(user).items():
                 if key != "..":
-                    Result.append(key if isinstance(item, File) else item.walk(user))
+                    Result.append(key if isinstance(item, File) else (key, item.walk(user)))
 
             return Result
         except PermisionDenied:
