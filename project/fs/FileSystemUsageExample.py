@@ -3,7 +3,7 @@ fs = Dir.FromPath("../OS", None, 7, 0, 0)
 
 
 class User:
-    "temporary user class"
+    """temporary user class"""
     uid = 0
 
 
