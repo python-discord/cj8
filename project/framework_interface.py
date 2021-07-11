@@ -7,6 +7,12 @@ fs = Dir.FromPath("OS", None, 7, 0, 0)
 
 term = Terminal()
 
+
+class User:
+    """temporary user class"""
+    uid = 0
+
+
 cl = ["│", "─", "┌", "┬", "┐", "├", "┼", "┤", "└", "┴", "┘"]
 START_PATH = "OS/game_files/"
 BLANK_LINES = 50  # number of characters each line should be
@@ -66,7 +72,7 @@ def print_box(header, textl):
 
 def start():
     printtree("System", START_PATH)
-    print(term.green_on_black("┌─ /CMD/ ────────"))
+    user_input_cmd()
 
 
 def user_input_cmd():
@@ -87,32 +93,32 @@ def user_input_cmd():
         if user_input[:10] == "quickcrypt":
             start_quickcrypt(user_input)
             showing_input_menu = False
-        # if user_input[:4] == "read":
-        #     start_read(user_input)
-        #     showing_input_menu = False
-        # if user_input == "ls":
-        #     for i in this_dir.ls(User).keys():
-        #         print(i)
-        # if user_input[:2] == "cd":
-        #     try:
-        #         this_dir = this_dir.getDir(User(), user_input[3:])
-        #     except Exception as e:
-        #         print(e)
-        # if user_input[:5] == "mkdir":
-        #     try:
-        #         this_dir.mkdir(User, user_input[6:])
-        #     except Exception as e:
-        #         print(e)
-        # if user_input[:5] == "touch":
-        #     try:
-        #         this_dir.touch(User, user_input[6:])
-        #     except Exception as e:
-        #         print(e)
-        # if user_input[:2] == "rm":
-        #     try:
-        #         this_dir.rm(User, user_input[3:])
-        #     except Exception as e:
-        #         print(e)
+        if user_input[:4] == "read":
+            start_read(user_input)
+            showing_input_menu = False
+        if user_input == "ls":
+            for i in this_dir.ls(User).keys():
+                print(i)
+        if user_input[:2] == "cd":
+            try:
+                this_dir = this_dir.getDir(User(), user_input[3:])
+            except Exception as e:
+                print(e)
+        if user_input[:5] == "mkdir":
+            try:
+                this_dir.mkdir(User, user_input[6:])
+            except Exception as e:
+                print(e)
+        if user_input[:5] == "touch":
+            try:
+                this_dir.touch(User, user_input[6:])
+            except Exception as e:
+                print(e)
+        if user_input[:2] == "rm":
+            try:
+                this_dir.rm(User, user_input[3:])
+            except Exception as e:
+                print(e)
 
 def start_help(user_input):
     print(term.home + term.clear + term.move_y(term.height // 2))
@@ -149,24 +155,30 @@ def start_help(user_input):
 
 
 def start_dir(user_input):
+    user_input += " 1 1 1 "
+    user_input = user_input.split()
     print(term.home + term.clear + term.move_y(term.height // 2))
-    printtree("System", START_PATH)
+    if user_input[1] == "1":
+        printtree("System", START_PATH)
+    else:
+        printtree("System", f"OS/game_files/{user_input[1]}")
+    user_input_cmd()
 
 
 def start_add(user_input):
-    print(term.home + term.clear + term.move_y(term.height // 2))
-    user_input = input.split()
-    path_l = input[1].split("/")
-    if not os.path.isdir(path_l[0]):
-        os.makedirs(path_l[0])
-        open(os.path.join(path_l[0], path_l[1])).close()
-    else:
-        if "." in path_l[0]:
-            open(path_l[0]).close()
-        else:
-            open(os.path.join(path_l[0], path_l[1])).close()
-    
-    start_dir("dir")
+    # print(term.home + term.clear + term.move_y(term.height // 2))
+    # user_input = input.split()
+    # path_l = input[1].split("/")
+    # if not os.path.isdir(path_l[0]):
+    #     os.makedirs(path_l[0])
+    #     open(os.path.join(path_l[0], path_l[1])).close()
+    # else:
+    #     if "." in path_l[0]:
+    #         open(path_l[0]).close()
+    #     else:
+    #         open(os.path.join(path_l[0], path_l[1])).close()
+    #
+    # start_dir("dir")
     user_input_cmd()
 
 
