@@ -1,10 +1,11 @@
-#FILE ENCRYPTION LIBRARY - DEVELOPED BY CHEERFUL CHEETAHS (Contributed by Coder400, [PUT YOUR NAME HERE])
+# FILE ENCRYPTION LIBRARY - DEVELOPED BY CHEERFUL CHEETAHS (Contributed by Coder400, [PUT YOUR NAME HERE])
 import string
 
 #Create our table of all characters.
 ALL_CHARACTERS = string.ascii_letters+string.digits+string.punctuation+string.whitespace
 
-#Define our XOR operator.
+
+# Define our XOR operator.
 def XOR(a, b):
     return (a and not b) or (not a and b)
 
@@ -22,14 +23,22 @@ def caesar_cipher(characters, msg, shift, reverse=False):
     #Return the encrypted message
     return encrypted_msg
 
-#Calculate the value of our hash.
-def getHashValue(password):
-    #Initialise our value to 0.
+
+# Function to edit current hash. (HIGHLY RECOMMENDED)
+def editHash(newHash):
+    global HASH
+    HASH = newHash
+
+
+# Calculate the value of our hash.
+def getHashValue():
+    # Initialise our value to 0.
     value = 0
     for character in password:
         #Add up the value of the character.
         value += ord(character)
     return value
+
 
 #Get bytearray from file.
 def generate_Bytearray(filename):
@@ -49,6 +58,18 @@ def modify(byte_array, password):
 def modifyFile(filename, password):
     #Get our bytes to work with and then modify them.
     data_bytes = modify(generate_Bytearray(filename), password)
+
+def modify(byte_array):
+    for pos, byte in enumerate(byte_array):
+        # Go into each pos and run XOR on current byte and our HASH
+        byte_array[pos] = XOR(byte, HASH)
+    return byte_array
+
+
+# Function to encrypt/decrypt files for the OS. (We only need 1 function because of XOR cipher)
+def modifyFile(filename):
+    # Get our bytes to work with and then modify them.
+    data_bytes = modify(generate_Bytearray(filename))
     file = open(filename, 'wb')
     file.truncate()
     file.write(data_bytes)
@@ -80,3 +101,4 @@ def writeFile(filename, msg, shift, password):
     file.close()
     #Encrypt our file.
     modifyFile(filename, password)
+
