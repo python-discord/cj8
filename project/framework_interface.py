@@ -138,7 +138,8 @@ def start_help(user_input):
         "dir": ["Help", ["dir", "- shows full user directory"]],
         "help" : ["Help", ["help (command)", "- explains what the specific command does"]],
         "quickcrypt": ["Help", ["quickcrypt (file path) (password)", "- file encryption tool"]],
-        "read":["Help", ["read (file path)", "- reads a files content"]]
+        "read":["Help", ["read (file path)", "- reads a files content"]],
+        "search": ["Help", ["search (file path)", "- searches directory for a specific file"]]
     }
     if user_input[1] in user_input_dir:
         for heade, lis in user_input_dir[user_input[1]]:
