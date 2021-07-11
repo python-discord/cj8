@@ -6,28 +6,29 @@ from blessed import Terminal
 term = Terminal()
 
 cl = ["│", "─", "┌", "┬", "┐", "├", "┼", "┤", "└", "┴", "┘"]
+START_PATH = "OS/game_files"
 BLANK_LINES = 50  # number of characters each line should be
 print(term.home + term.clear + term.move_y(term.height // 2))
 
 
-def list_files(startpath):
-    print(term.green_on_black('┌─ /System/ ─────────────────────────────────────┐'))
-    for root, dirs, files in walk(startpath):
-        level = root.replace(startpath, '').count(sep)
+def list_files():
+    print(term.green_on_black('┌─ /System/' + ('─' * (BLANK_LINES - 12)) + '┐'))
+    for root, dirs, files in walk(START_PATH):
+        level = root.replace(START_PATH, '').count(sep)
         indent = '─' * 4 * level
         # finds the length of the directory that is going to be printed
         # takes away the length from the constant variable to find
         # the amount of extra blank spaces needed
         current_line_length = len('├'+'{}{}/'.format(indent, path.basename(root)))
         extra_blank_needed = (BLANK_LINES - current_line_length - 1) * " "  # -1 used to make space for edge of box
-        print(term.green_on_black('├'+'{}{}/{}│'.format(indent, path.basename(root), extra_blank_needed)))
-        sub_indent = ' ├ ' + ' ─ ' * 4 * (level + 1)
+        print(term.green_on_black(f'├{indent}{path.basename(root)}/{extra_blank_needed}│'))
+        sub_indent = '├' + '─' * 4 * (level + 1)
         for f in files:
             # does the same as above but with the files
             current_line_length = len('{}{}'.format(sub_indent, f))
             extra_blank_needed = (BLANK_LINES - current_line_length - 1) * " "  # -1 used to make space for edge of box
-            print(term.green_on_black('{}{}{}│'.format(sub_indent, f, extra_blank_needed)))
-    print(term.green_on_black('└─ /System/ ─────────────────────────────────────┘'))    
+            print(term.green_on_black(f'{sub_indent}{f}{extra_blank_needed}│'))
+    print(term.green_on_black('└─ /System/' + ('─' * (BLANK_LINES - 12)) + '┘'))
     user_input_cmd()
 
 
@@ -44,7 +45,7 @@ def print_box(header, textl):
                 # for last row of long line
                 if row == rows - 1:
                     ret_string += str(cl[0] + " " + words[startpos[-2]:-1] +
-                                     " " * int(BLANK_LINES - 3 - len(words[startpos[-2]:-1])) + cl[0] + "\n")
+                    " " * int(BLANK_LINES - 3 - len(words[startpos[-2]:-1])) + cl[0] + "\n")
                 # for other rows of long line
                 else:
                     ret_string += str(cl[0] + " " + words[startpos[row]:startpos[row + 1]] + " " + cl[0] + "\n")
@@ -64,7 +65,7 @@ def print_box(header, textl):
 
 
 def start():
-    list_files("OS")
+    list_files()
     print(term.green_on_black("┌─ /CMD/ ────────"))
 
 
@@ -78,10 +79,10 @@ def user_input_cmd():
             start_help(user_input)
             showing_input_menu = False
         if user_input[:3] == "add":
-            startAdd(user_input)
+            start_add(user_input)
             showing_input_menu = False
         if user_input[:3] == "dir":
-            startDir(user_input)
+            start_dir(user_input)
             showing_input_menu = False
 
 
@@ -110,13 +111,13 @@ def start_help(user_input):
     user_input_cmd()
 
 
-def startDir(user_input):
+def start_dir(user_input):
     print(term.home + term.clear + term.move_y(term.height // 2))
     list_files("OS")
 
 
-def startAdd(user_input):
-    print(term.home +  term.clear + term.move_y(term.height // 2))
+def start_add(user_input):
+    print(term.home + term.clear + term.move_y(term.height // 2))
     user_input = input.split()
     pathl = input[1].split("/")
     if not os.path.isdir(pathl[0]):
@@ -128,7 +129,7 @@ def startAdd(user_input):
         else:
             open(os.path.join(pathl[0], pathl[1])).close()
     
-    startDir("dir")
+    start_dir("dir")
     user_input_cmd()
 
 
