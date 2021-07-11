@@ -111,6 +111,7 @@ def reset_turn() -> dict:
         "subGridSelectBool": True,
         "spaceSelectBool": True,
         "userConfirmBool": True,
+        "startOfTurn": True,
         "endOfTurn": False,
         "userSelectSubGrid": 0,
         "userSelectSpace": 0,
@@ -175,11 +176,11 @@ if __name__ == "__main__":
 
     # State
     state = reset_turn()
+    playerActive = 1
+    firstTurn = True
 
     val = ""
     termInfo = [""] * 3
-    playerActive = 1
-    termInfo[0] = f"Player {playerActive} Active"
 
     with term.cbreak(), term.hidden_cursor():
 
@@ -188,7 +189,12 @@ if __name__ == "__main__":
 
         while (val := term.inkey()) != "q":
             with term.location():
-                print(term.move_up(7))
+
+                if state["startOfTurn"]:
+                    # reset player terminal
+                    termInfo = [""] * 3
+                    termInfo[0] = f"Player {playerActive} Active"
+                    state["startOfTurn"] = False
 
                 if state["subGridSelectBool"]:
                     termInfo[1] = "Select SubGrid by entering 1-9"
@@ -198,6 +204,10 @@ if __name__ == "__main__":
                             2
                         ] = f"Current: SubGrid {state['userSelectSubGrid']} | Space {state['userSelectSpace']}"
 
+                    print(term.move_up(7))
+                    userSection = update_user_section(termInfo)
+                    print("".join(userSection))
+
                 elif state["spaceSelectBool"]:
                     termInfo[1] = "Select Space by entering 1-9"
                     if val in ("1", "2", "3", "4", "5", "6", "7", "8", "9"):
@@ -205,6 +215,10 @@ if __name__ == "__main__":
                         termInfo[
                             2
                         ] = f"Current: SubGrid {state['userSelectSubGrid']} | Space {state['userSelectSpace']}"
+
+                    print(term.move_up(7))
+                    userSection = update_user_section(termInfo)
+                    print("".join(userSection))
 
                 if val.is_sequence and val.name == "KEY_ENTER":
                     if state["subGridSelectBool"] and state["userSelectSubGrid"] != 0:
@@ -229,9 +243,9 @@ if __name__ == "__main__":
                         # confirm end of turn
                         state["endOfTurn"] = True
 
-                # update terminal
-                userSection = update_user_section(termInfo)
-                print("".join(userSection))
+                    print(term.move_up(7))
+                    userSection = update_user_section(termInfo)
+                    print("".join(userSection))
 
                 if state["endOfTurn"]:
                     # delay for user to read confimation
@@ -241,9 +255,10 @@ if __name__ == "__main__":
                     state = reset_turn()
                     playerActive = playerShift(playerActive)
 
-                    # reset player terminal
                     termInfo = [""] * 3
                     termInfo[0] = f"Player {playerActive} Active"
+
+                    print(term.move_up(7))
                     userSection = update_user_section(termInfo)
                     print("".join(userSection))
 
