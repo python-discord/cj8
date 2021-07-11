@@ -89,6 +89,9 @@ def user_input_cmd():
         if user_input[:10] == "quickcrypt":
             start_quickcrypt(user_input)
             showing_input_menu = False
+        if user_input[:6] == "search":
+            start_search(user_input)
+            showing_input_menu = False
         # if user_input[:4] == "read":
         #     start_read(user_input)
         #     showing_input_menu = False
@@ -139,13 +142,17 @@ def start_help(user_input):
     elif user_input[1] == "read":
         print(term.green_on_black(print_box("Help", ["read [file path]",
                                                      "- read file content"])))
+    elif user_input[1] == "search":
+        print(term.green_on_black(print_box("Search", ["search [name]",
+                                                     "- searches for \"name\" in file name or path"])))
     else:
         print(term.green_on_black(print_box("Help", ["help (command)",
                                                      "add [name]",
                                                      "remove [name]",
                                                      "dir",
                                                      "read [file path]",
-                                                     "quickcrypt [file path] [password]"
+                                                     "quickcrypt [file path] [password]",
+                                                     "search [name]"
                                                      ])))
     user_input_cmd()
 
@@ -157,8 +164,8 @@ def start_dir(user_input):
 
 def start_add(user_input):
     print(term.home + term.clear + term.move_y(term.height // 2))
-    user_input = input.split()
-    path_l = input[1].split("/")
+    user_input = user_input.split()
+    path_l = user_input[1].split("/")
     if not os.path.isdir(path_l[0]):
         os.makedirs(path_l[0])
         open(os.path.join(path_l[0], path_l[1])).close()
@@ -181,6 +188,22 @@ def start_quickcrypt(user_input):
     user_input += " 1 2 3 "  # place holder inputs which stops the user from entering errors
     user_input = user_input.split()
     binary_file_library.decrypt_file(user_input[1], user_input[2])
+
+
+def start_search(user_input):
+    # only searches for the first word after "search"
+    user_input = user_input.split()
+    search_word = user_input[1]
+    search_here = walk(START_PATH)
+    search_result = [];
+    for root, dirs, file_lists in search_here:
+        if search_word in root.lower():
+            search_result.append(root)
+        for files in file_lists:
+            if search_word in files.lower():
+                search_result.append(root + "\\" + files)
+    print(print_box(f"Search: {search_word}", search_result))
+    user_input_cmd()
 
 
 if __name__ == "__main__":
