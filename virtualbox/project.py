@@ -13,7 +13,19 @@ this_dir = fs
 START_PATH = "OS/game_files/"
 BLANK_LINES = 50  # number of characters each line should be
 
+term = Terminal()
+print(term.home + term.clear + term.move_y(term.height // 2))
+
 cl = ["│", "─", "┌", "┬", "┐", "├", "┼", "┤", "└", "┴", "┘"]
+# COMMAND DICTIONARY
+user_commands = {
+                 "dir": start_dir,
+                 "h": start_help,
+                 "help": start_help,
+                 "quickcrypt": start_quickcrypt,
+                 "read": start_read,
+                 "search": start_search
+                 }
 
 
 class User:
@@ -71,20 +83,6 @@ def print_box(header, textl):
             print("error in printhelp: second input should be a list containing strings and/or lists of strings")
     ret_string += str(cl[8] + cl[1] * (BLANK_LINES - 2) + cl[10])
     return ret_string
-
-
-term = Terminal()
-print(term.home + term.clear + term.move_y(term.height // 2))
-
-# COMMAND DICTIONARY
-user_commands = {
-                 "dir": start_dir,
-                 "h": start_help,
-                 "help": start_help,
-                 "quickcrypt": start_quickcrypt,
-                 "read": start_read,
-                 "search": start_search()
-                 }
 
 
 def printstart(arg):

@@ -1,12 +1,10 @@
-from virtualbox.project import clear_term, print_tree, print_box, user_input_cmd
-from os import walk, sep, path
-
-
-START_PATH = "OS/game_files/"
-BLANK_LINES = 50  # number of characters each line should be
-cl = ["│", "─", "┌", "┬", "┐", "├", "┼", "┤", "└", "┴", "┘"]
+#START_PATH = "OS/game_files/"
+# BLANK_LINES = 50  # number of characters each line should be
+# cl = ["│", "─", "┌", "┬", "┐", "├", "┼", "┤", "└", "┴", "┘"]
 
 def start_dir(user_input):
+    from virtualbox.project import clear_term,print_tree, user_input_cmd
+    START_PATH = "OS/game_files/"
     user_input += " 1 1 1 "
     user_input = user_input.split()
     clear_term()
@@ -18,6 +16,7 @@ def start_dir(user_input):
 
 
 def start_help(user_input):
+    from virtualbox.project import clear_term, print_tree, print_box, user_input_cmd
     clear_term()
     user_input += " 1 2 3 "  # place holder inputs which stops the user from entering errors
     user_input = "help add"
@@ -47,6 +46,7 @@ def start_help(user_input):
 
 
 def start_quickcrypt(user_input):
+    from virtualbox.project import clear_term, print_tree, print_box, user_input_cmd
     # "quickcrypt [file path] [password]"
     user_input += " 1 2 3 "  # place holder inputs which stops the user from entering errors
     user_input = user_input.split()
@@ -56,10 +56,15 @@ def start_quickcrypt(user_input):
 
 
 def start_read(user_input):
+    from virtualbox.project import clear_term, print_tree, print_box, user_input_cmd
     user_input = user_input.split()
     user_input_cmd()
 
 def start_search(user_input):
+    from virtualbox.project import clear_term, print_tree, print_box, user_input_cmd
+    from os import walk
+    START_PATH = "OS/game_files/"
+    BLANK_LINES = 50  # number of characters each line should be
     # only searches for the first word after "search"
     user_input = user_input.split()
     search_word = user_input[1]
