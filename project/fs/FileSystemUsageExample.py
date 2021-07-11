@@ -1,4 +1,4 @@
-from Dir import Dir
+from fs_dir import Dir
 fs = Dir.FromPath("../OS", None, 7, 0, 0)
 
 

@@ -2,8 +2,8 @@ from os import walk, path, sep
 from blessed import Terminal
 # local modules
 import binary_file_library
-from fs.fs_dir import *
-from fs.fs_file import *
+from fs.fs_dir import Dir
+fs = Dir.FromPath("../OS", None, 7, 0, 0)
 
 term = Terminal()
 
@@ -11,6 +11,11 @@ cl = ["│", "─", "┌", "┬", "┐", "├", "┼", "┤", "└", "┴", "┘
 START_PATH = "OS/game_files"
 BLANK_LINES = 50  # number of characters each line should be
 print(term.home + term.clear + term.move_y(term.height // 2))
+
+
+class User:
+    "temporary user class"
+    uid = 0
 
 
 def list_files():
@@ -92,7 +97,29 @@ def user_input_cmd():
         if user_input[:4] == "read":
             start_read(user_input)
             showing_input_menu = False
-
+        if user_input == "ls":
+            for i in this_dir.ls(User).keys():
+                print(i)
+        if user_input[:2] == "cd":
+            try:
+                this_dir = this_dir.getDir(User(), user_input[3:])
+            except Exception as e:
+                print(e)
+        if user_input[:5] == "mkdir":
+            try:
+                this_dir.mkdir(User, user_input[6:])
+            except Exception as e:
+                print(e)
+        if user_input[:5] == "touch":
+            try:
+                this_dir.touch(User, user_input[6:])
+            except Exception as e:
+                print(e)
+        if user_input[:2] == "rm":
+            try:
+                this_dir.rm(User, user_input[3:])
+            except Exception as e:
+                print(e)
 
 def start_help(user_input):
     print(term.home + term.clear + term.move_y(term.height // 2))
