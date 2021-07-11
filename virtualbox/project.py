@@ -1,5 +1,5 @@
 from functions.command_functions import start_help, start_dir, start_quickcrypt,\
-    start_read, start_search, start_add, start_portscanner
+    start_read, start_search, start_walk, start_portscanner
 from os import walk, sep, path
 import time
 from blessed import Terminal
@@ -8,7 +8,6 @@ from fs.fs_dir import Dir
 
 # file system imports
 fs = Dir.FromPath("OS", None, 7, 0, 0)
-this_dir = fs
 
 START_PATH = "OS/game_files/"
 BLANK_LINES = 50  # number of characters each line should be
@@ -18,15 +17,17 @@ print(term.home + term.clear + term.move_y(term.height // 2))
 
 cl = ["│", "─", "┌", "┬", "┐", "├", "┼", "┤", "└", "┴", "┘"]
 
-user_commands = {"add": start_add,
+user_commands = {"walk": start_walk,
                  "dir": start_dir,
                  "h": start_help,
                  "help": start_help,
                  "quickcrypt": start_quickcrypt,
                  "read": start_read,
                  "search": start_search,
-                 "portscan": start_portscanner
+                 "portscan": start_portscanner,
+                 "walk": start_walk
                  }
+
 
 class User:
     """temporary user class"""
@@ -104,16 +105,17 @@ def clear_term():
 
 # COMMAND MANAGER
 def user_input_cmd():
+
     clear_term()
     showing_input_menu = True
     while showing_input_menu:
         user_input = input(">>>  ").lower()
         if user_input in user_commands.keys():
-            try:
-                user_commands[user_input](user_input)
+            # try:
+                user_commands[user_input](user_input, fs, User)
                 showing_input_menu = False
-            except Exception as e:
-                print(e)
+            # except Exception as e:
+            #     print(e)
 
 
 def start():
@@ -136,7 +138,8 @@ def start():
 
 def main():
     start()
-    user_input_cmd()
+    while True:
+        user_input_cmd()
 
 
 
