@@ -52,23 +52,11 @@ class Board:
         # clear the screen
         print(term.clear)
         # print the game board
-        print(verticals)
-        print(verticals)
-        print(verticals)
-        print(verticals)
-        print(verticals)
-        print(crosses)
-        print(verticals)
-        print(verticals)
-        print(verticals)
-        print(verticals)
-        print(verticals)
-        print(crosses)
-        print(verticals)
-        print(verticals)
-        print(verticals)
-        print(verticals)
-        print(verticals)
+        for i in range(18):
+            if i == 5 or i == 11:
+                print(crosses)
+            else:
+                print(verticals)
         print()
         for i in range(9):
             subgrid = self.collect_subgrid(str(i))

@@ -5,7 +5,6 @@ from library import Board
 term = Terminal()
 board = Board()
 
-# python 3.10 feature, but it works in python 3.9
 with term.fullscreen(), term.cbreak(), term.hidden_cursor():
     board.draw_board(term)
 
