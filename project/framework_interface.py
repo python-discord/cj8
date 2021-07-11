@@ -12,10 +12,9 @@ START_PATH = "OS/game_files/"
 BLANK_LINES = 50  # number of characters each line should be
 print(term.home + term.clear + term.move_y(term.height // 2))
 
-def printtree(header, path):
-    START_PATH = path
-    print(term.green_on_black(f'┌─ /{header}/' + ('─' * (BLANK_LINES - 12)) + '┐'))
-    for root, dirs, files in walk(START_PATH):
+def printtree(header, location):
+    print(term.green_on_black(f'┌─ /{header}/' + ('─' * (BLANK_LINES - 6 - len(header))) + '┐'))
+    for root, dirs, files in walk(location):
         level = root.replace(START_PATH, '').count(sep)
         indent = '─' * 4 * level
         # finds the length of the directory that is going to be printed
@@ -30,7 +29,7 @@ def printtree(header, path):
             current_line_length = len('{}{}'.format(sub_indent, f))
             extra_blank_needed = (BLANK_LINES - current_line_length - 1) * " "  # -1 used to make space for edge of box
             print(term.green_on_black(f'{sub_indent}{f}{extra_blank_needed}│'))
-    print(term.green_on_black(f'└─ /{header}/' + ('─' * (BLANK_LINES - 12)) + '┘'))
+    print(term.green_on_black(f'└─ /{header}/' + ('─' * (BLANK_LINES - 6 - len(header))) + '┘'))
 
 def list_files():
     print(term.green_on_black('┌─ /System/' + ('─' * (BLANK_LINES - 12)) + '┐'))
@@ -171,7 +170,7 @@ def start_help(user_input):
 
 def start_dir(user_input):
     print(term.home + term.clear + term.move_y(term.height // 2))
-    list_files()
+    printtree("System", START_PATH)
 
 
 def start_add(user_input):
