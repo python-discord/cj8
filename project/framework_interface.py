@@ -8,14 +8,9 @@ fs = Dir.FromPath("OS", None, 7, 0, 0)
 term = Terminal()
 
 cl = ["│", "─", "┌", "┬", "┐", "├", "┼", "┤", "└", "┴", "┘"]
-START_PATH = "OS/game_files"
+START_PATH = "OS/game_files/"
 BLANK_LINES = 50  # number of characters each line should be
 print(term.home + term.clear + term.move_y(term.height // 2))
-
-
-class User:
-    "temporary user class"
-    uid = 0
 
 
 def list_files():
@@ -69,6 +64,7 @@ def print_box(header, textl):
             print("error in printhelp: second input should be a list containing strings and/or lists of strings")
     ret_string += str(cl[8] + cl[1] * (BLANK_LINES - 2) + cl[10])
     return ret_string
+
 
 def start():
     list_files()

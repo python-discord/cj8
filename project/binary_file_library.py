@@ -17,7 +17,10 @@ def getHashValue(password):
 
 #Get bytearray from file.
 def generate_Bytearray(filename):
-    file = bytes(filename)
+    try:
+        file = open(filename, 'rb')
+    except FileNotFoundError:
+        return None
     #Convert our bytes into a byte array.
     data = bytearray(file.read())
     file.close()
@@ -27,6 +30,9 @@ def generate_Bytearray(filename):
 def modifyFile(filename, password):
     #Get our bytes to work with.
     data_bytes = generate_Bytearray(filename)
+    if data_bytes == None:
+        print("File not found!\n")
+        return None
     for pos,byte in enumerate(data_bytes):
         #Go into each pos and run XOR on current byte and our HASH
         data_bytes[pos] = XOR(byte, getHashValue(password))
