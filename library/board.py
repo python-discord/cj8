@@ -60,7 +60,7 @@ class Board:
         print()
         for i in range(9):
             subgrid = self.collect_subgrid(str(i))
-            self.redraw_subgrid(term, subgrid, str(i))
+            self.redraw_subgrid(term, subgrid, str(i), term.green)
 
     def redraw_gamestate(
         self,
@@ -84,11 +84,14 @@ class Board:
         self,
         term: blessed.Terminal,
         start_coords: typing.Tuple[int, int],
+        color: str,
     ) -> None:
         """Takes a subgrid numpy array and draws the current state of the game on that board"""
         x, y = start_coords
-        verticals = f"   {term.dim}{term.green}│{term.normal}   {term.dim}{term.green}│{term.normal}"
-        crosses = f"{term.dim}{term.green}───┼───┼───{term.normal}"
+        verticals = (
+            f"   {term.dim}{color}│{term.normal}   {term.dim}{color}│{term.normal}"
+        )
+        crosses = f"{term.dim}{color}───┼───┼───{term.normal}"
         print(term.move_xy(x, y) + verticals)
         for i in range(1, 5):
             if i % 2 == 0:
@@ -98,7 +101,11 @@ class Board:
                 print(term.move_x(x) + crosses)
 
     def redraw_subgrid(
-        self, term: blessed.Terminal, subgrid: npt.NDArray[np.str_], number: str
+        self,
+        term: blessed.Terminal,
+        subgrid: npt.NDArray[np.str_],
+        number: str,
+        color: str,
     ) -> None:
         """Takes the subgrid number range(0,9) and redraws that grid based on the subgrid"""
         # Set Start Coordinates based on subgrid number
@@ -113,7 +120,5 @@ class Board:
             "7": (12, 1),
             "8": (24, 1),
         }
-        self.redraw_gridlines(term, start_coords[number])
+        self.redraw_gridlines(term, start_coords[number], color)
         self.redraw_gamestate(term, subgrid, start_coords[number])
-
-        # Can also write functions to redraw grid
