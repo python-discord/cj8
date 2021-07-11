@@ -19,11 +19,29 @@ class Board:
         self.game_over = False
         self.turn_one = True
 
-    # def select_subgrid(
-    #     self, number: typing.Literal[0, 1, 2, 3, 4, 5, 6, 7, 8]
-    # ) -> np.array:
-    #     """Choose subgrid game to play."""
-    #     pass
+    def collect_subgrid(self, number: str) -> npt.NDArray[np.str_]:
+        """Takes a subgrid choice and returns that np.ndarray and the choice str"""
+        subgrid = np.full((3, 3), "·")
+        if number == "0":
+            subgrid = self.contents[6:12, :3]
+        elif number == "1":
+            subgrid = self.contents[6:12, 3:6]
+        elif number == "2":
+            subgrid = self.contents[6:12, 6:12]
+        elif number == "3":
+            subgrid = self.contents[:3, :3]
+        elif number == "4":
+            subgrid = self.contents[:3, 3:6]
+        elif number == "5":
+            subgrid = self.contents[:3, 6:12]
+        elif number == "6":
+            subgrid = self.contents[3:6, :3]
+        elif number == "7":
+            subgrid = self.contents[3:6, 3:6]
+        elif number == "8":
+            subgrid = self.contents[3:6, 6:12]
+
+        return subgrid
 
     def draw_board(self, term: blessed.Terminal) -> None:
         """Rudimentary attempt to draw a game board."""
@@ -52,6 +70,9 @@ class Board:
         print(verticals)
         print(verticals)
         print()
+        for i in range(9):
+            subgrid = self.collect_subgrid(str(i))
+            self.redraw_subgrid(term, subgrid, str(i))
 
     def redraw_gamestate(
         self,
@@ -78,15 +99,15 @@ class Board:
     ) -> None:
         """Takes a subgrid numpy array and draws the current state of the game on that board"""
         x, y = start_coords
-        term.move_xy(x, y)
-        verticals = f"   {term.dim}{term.green}│{term.normal}   │{term.normal}"
+        verticals = f"   {term.dim}{term.green}│{term.normal}   {term.dim}{term.green}│{term.normal}"
         crosses = f"{term.dim}{term.green}───┼───┼───{term.normal}"
-        for i in range(5):
+        print(term.move_xy(x, y) + verticals)
+        for i in range(1, 5):
             if i % 2 == 0:
-                print(term.move_down + verticals)
+                print(term.move_x(x) + verticals)
 
             else:
-                print(term.move_xy(x, y) + crosses)
+                print(term.move_x(x) + crosses)
 
     def redraw_subgrid(
         self, term: blessed.Terminal, subgrid: npt.NDArray[np.str_], number: str
@@ -104,5 +125,7 @@ class Board:
             "7": (12, 1),
             "8": (24, 1),
         }
+        self.redraw_gridlines(term, start_coords[number])
         self.redraw_gamestate(term, subgrid, start_coords[number])
+
         # Can also write functions to redraw grid
