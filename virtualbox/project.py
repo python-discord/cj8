@@ -17,13 +17,6 @@ term = Terminal()
 print(term.home + term.clear + term.move_y(term.height // 2))
 
 cl = ["│", "─", "┌", "┬", "┐", "├", "┼", "┤", "└", "┴", "┘"]
-
-
-class User:
-    """temporary user class"""
-    uid = 0
-
-
 # COMMAND DICTIONARY
 user_commands = {
                  "dir": start_dir,
@@ -35,15 +28,9 @@ user_commands = {
                  }
 
 
-# COMMAND MANAGER
-def user_input_cmd():
-    clear_term()
-    showing_input_menu = True
-    while showing_input_menu:
-        user_input = input(">>>  ").lower()
-        if user_input.split()[0] in user_commands.keys():
-            user_commands[user_input.split()[0]](user_input)
-            showing_input_menu = False
+class User:
+    """temporary user class"""
+    uid = 0
 
 
 def print_tree(header, location):
@@ -115,6 +102,20 @@ def clear_term():
     print(term.clear)
 
 
+# COMMAND MANAGER
+def user_input_cmd():
+    clear_term()
+    showing_input_menu = True
+    while showing_input_menu:
+        user_input = input(">>>  ").lower()
+        if user_input in user_commands.keys():
+            try:
+                user_commands[user_input](user_input)
+                showing_input_menu = False
+            except Exception as e:
+                print(e)
+
+
 def start():
     printstart(
         """Hey There! \n  You are an Artificial Intelligant, built by the USA, developed to get into PCs and analyze them. \n You was hacked into a System by the Atomic Program of the Iran. Here, ur job was to analyze the Data and to see if there are any files which could gives hint to the Atomatic Missiles of the Iran. \n \n""")
@@ -136,6 +137,8 @@ def start():
 def main():
     start()
     user_input_cmd()
+
+
 
 
 if __name__ == "__main__":
