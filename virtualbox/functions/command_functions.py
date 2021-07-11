@@ -11,7 +11,8 @@ BLANK_LINES = 50
 
 # COMMAND LIST
 def start_walk(user_input, fs, user):
-    print_box("Walk", fs.walk(user))
+    print_box("Walk", f"{fs.walk(user)}")
+
 
 
 
@@ -51,6 +52,7 @@ def start_help(user_input, fs, user):
                                                      "read [file path]",
                                                      "quickcrypt [file path] [password]",
                                                      "search [name]",
+                                                     "portscan",
                                                      "portscan"
                                                      ])))
 
