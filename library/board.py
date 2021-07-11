@@ -20,26 +20,33 @@ class Board:
         self.turn_one = True
 
     def collect_subgrid(self, number: str) -> npt.NDArray[np.str_]:
-        """Takes a subgrid choice and returns that np.ndarray and the choice str"""
+        """
+        Takes a subgrid choice and returns that np.ndarray and the choice str
+
+        The subgrids are laid out as so:
+            6 7 8
+            3 4 5
+            0 1 2
+        """
         subgrid = np.full((3, 3), "·")
         if number == "0":
-            subgrid = self.contents[6:12, :3]
+            subgrid = self.contents[6:, :3]
         elif number == "1":
-            subgrid = self.contents[6:12, 3:6]
+            subgrid = self.contents[6:, 3:6]
         elif number == "2":
-            subgrid = self.contents[6:12, 6:12]
+            subgrid = self.contents[6:, 6:]
         elif number == "3":
             subgrid = self.contents[:3, :3]
         elif number == "4":
             subgrid = self.contents[:3, 3:6]
         elif number == "5":
-            subgrid = self.contents[:3, 6:12]
+            subgrid = self.contents[:3, 6:]
         elif number == "6":
             subgrid = self.contents[3:6, :3]
         elif number == "7":
             subgrid = self.contents[3:6, 3:6]
         elif number == "8":
-            subgrid = self.contents[3:6, 6:12]
+            subgrid = self.contents[3:6, 6:]
 
         return subgrid
 
