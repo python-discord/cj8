@@ -8,7 +8,7 @@ board = Board()
 
 # python 3.10 feature, but it works in python 3.9
 with term.fullscreen(), term.cbreak(), term.hidden_cursor():
-    val = ""
+    val = " "
     board.draw_board(term)
     test_subgrid = np.array([["X", "O", "X"], ["O", "O", "."], ["X", ".", "."]])
 
