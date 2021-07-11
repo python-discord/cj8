@@ -1,11 +1,12 @@
 from .fs_acl import ACL
 from .fs_ac import AC
 from .fs_file import File
-from .fs_config import sep
-from .fs_exceptions import NoSuchFileOrDirectory
-from .fs_exceptions import FileOrDirectoryAlreadyExist
-from .fs_exceptions import NotAnDirectory
-from .fs_exceptions import NotAnFile
+from virtualbox.config import sep
+from virtualbox.exceptions import NoSuchFileOrDirectory
+from virtualbox.exceptions import FileOrDirectoryAlreadyExist
+from virtualbox.exceptions import NotAnDirectory
+from virtualbox.exceptions import NotAnFile
+from virtualbox.exceptions import PermisionDenied
 import os
 import shutil
 
@@ -30,12 +31,12 @@ class Dir(AC):
 
         return self
 
-    @classmethod
     def MkDirInit(cls, up, op, user, path, father):
         self = cls(up, op, user.uid, {"..": father}, path, ACL({}))
         self.create()
 
         return self
+
     "wrapper checks"
     def alreadyexist(function):
         def check(self, user, name, *args):
@@ -86,9 +87,25 @@ class Dir(AC):
         if name in self.acl:
             self.acl.remove(name)
 
+    @AC.writecheck
+    @alreadyexist
+    @update
+    def append(self, user, object, name):
+        self.sub[name] = object
+        self.acl.add(name, object.perms)
+
     @AC.readcheck
     def ls(self, user):
         return self.sub
+
+    def walk(self, user):
+        try:
+            Result = {}
+            for key, item in self.ls(user):
+                Result[key] = item if isinstance(item, File) else item.walk(user)
+            return Result
+        except PermisionDenied:
+            return {}
 
     "change directory"
     @doesnotexist
