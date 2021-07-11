@@ -1,17 +1,19 @@
 #!/usr/bin/env python3
 
 from __future__ import division
-from asciimatics.event import KeyboardEvent, Event
+
+import sys
+
 from asciimatics.effects import Print, Sprite
+from asciimatics.event import Event, KeyboardEvent
+from asciimatics.exceptions import ResizeScreenError
+# from asciimatics.sprites import Arrow, Plot, Sam
+from asciimatics.paths import DynamicPath, Path
 from asciimatics.renderers import FigletText, StaticRenderer
 from asciimatics.scene import Scene
 from asciimatics.screen import Screen
-# from asciimatics.sprites import Arrow, Plot, Sam
-from asciimatics.paths import Path
-from asciimatics.exceptions import ResizeScreenError
-from sprites.sprites import character_box, character
-from asciimatics.paths import DynamicPath
-import sys
+
+from sprites.sprites import character_box
 
 
 class KeyboardController(DynamicPath):
