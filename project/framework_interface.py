@@ -2,20 +2,15 @@ from os import walk, path, sep
 from blessed import Terminal
 # local modules
 import binary_file_library
-from fs.fs_dir import Dir
-fs = Dir.FromPath("OS", None, 7, 0, 0)
+# from fs.fs_dir import Dir
+# fs = Dir.FromPath("OS", None, 7, 0, 0)
 
 term = Terminal()
 
 cl = ["│", "─", "┌", "┬", "┐", "├", "┼", "┤", "└", "┴", "┘"]
-START_PATH = "OS/game_files"
+START_PATH = "OS/game_files/"
 BLANK_LINES = 50  # number of characters each line should be
 print(term.home + term.clear + term.move_y(term.height // 2))
-
-
-class User:
-    "temporary user class"
-    uid = 0
 
 
 def list_files():
