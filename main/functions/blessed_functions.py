@@ -92,7 +92,7 @@ def start():
                     Access gained.
                     AI will launch...) \n \n""")
         print_tree("System", START_PATH)
-        user_input_cmd()
+        return
 
 
 
