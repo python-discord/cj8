@@ -1,6 +1,5 @@
 from blessed import Terminal
 from os import walk, path, sep
-from main.main import user_input_cmd
 import time
 
 

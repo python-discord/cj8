@@ -1,13 +1,10 @@
-import functions.blessed_functions
-import functions.file_functions
-
+from functions.command_functions import user_input_cmd
+from functions.blessed_functions import print_box, print_tree, printstart
+from fs.fs_dir import Dir
 
 # file system imports
-from fs.fs_dir import Dir
 fs = Dir.FromPath("OS", None, 7, 0, 0)
 this_dir = fs
-
-
 
 
 class User:
@@ -15,17 +12,9 @@ class User:
     uid = 0
 
 
-
-while True:
-
-
-
-
-
-
-
-
+def main():
+    printstart()
 
 
 if __name__ == "__main__":
-    start()
+    main()
