@@ -89,6 +89,9 @@ def user_input_cmd():
         if user_input[:10] == "quickcrypt":
             start_quickcrypt(user_input)
             showing_input_menu = False
+        if user_input[:4] == "read":
+            start_read(user_input)
+            showing_input_menu = False
 
 
 def start_help(user_input):
@@ -111,11 +114,15 @@ def start_help(user_input):
     elif user_input[1] == "quickcrypt":
         print(term.green_on_black(print_box("Help", ["quickcrypt [file path] [password]",
                                                      "- file encryption tool"])))
+    elif user_input[1] == "read":
+        print(term.green_on_black(print_box("Help", ["read [file path]",
+                                                     "- read file content"])))
     else:
         print(term.green_on_black(print_box("Help", ["help (command)",
                                                      "add [name]",
                                                      "remove [name]",
                                                      "dir",
+                                                     "read [file path]",
                                                      "quickcrypt [file path] [password]"
                                                      ])))
     user_input_cmd()
@@ -141,6 +148,10 @@ def start_add(user_input):
     
     start_dir("dir")
     user_input_cmd()
+
+
+def start_read(user_input):
+    user_input = user_input.split()
 
 
 def start_quickcrypt(user_input):
