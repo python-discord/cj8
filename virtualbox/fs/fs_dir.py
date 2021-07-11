@@ -107,7 +107,7 @@ class Dir(AC):
 
             return Result
         except PermisionDenied:
-            return {}
+            return []
 
     "change directory"
     @doesnotexist
