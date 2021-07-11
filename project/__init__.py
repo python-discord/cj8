@@ -2,8 +2,8 @@ __version__ = '0.0.0a'
 
 
 def main() -> None:
-    import framework_interface
-    framework_interface.start()
+    import main
+    main.start()
     pass
 
 
