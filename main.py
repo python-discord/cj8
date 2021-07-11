@@ -14,7 +14,7 @@ from asciimatics.renderers import Box, FigletText, StaticRenderer
 from asciimatics.scene import Scene
 from asciimatics.screen import Screen
 
-from sprites.sprites import character_box
+from sprites.sprites import character_box, character_box_pushing
 
 
 class GameStart(Exception):
@@ -35,20 +35,21 @@ def handle_input(event: Event) -> Optional[Event]:
 
 def title(screen: Screen) -> None:
     """Title screen"""
-    path = Path()
-    path.jump_to(int(screen.width / 5), int(screen.height / 1.5))
+    char_path, bubble_path = Path(), Path()
+    char_path.jump_to(screen.width // 5 + 3, screen.height // 2 + 5)
+    bubble_path.jump_to(screen.width // 5 - 4, screen.height // 2 + 1)
 
     # Opening character with box on his head
-    char = Sprite(
-        screen, path=path, renderer_dict={
-            "default": StaticRenderer(images=[character_box])
+    char_sprite = Sprite(
+        screen, path=char_path, renderer_dict={
+            "default": StaticRenderer(images=[character_box]*8 + [character_box_pushing]*10)
         }
     )
 
     # Load all components (boxes, titles, etc)
     scenes = []
     effects = [
-        char,
+        char_sprite,
         Print(
             screen,
             Box(screen.width, screen.height),
