@@ -43,19 +43,6 @@ def printtree(header, location):
     print(term.green_on_black(f'└─ /{header}/' + ('─' * (BLANK_LINES - 6 - len(header))) + '┘'))
 
 
-def printstart(arg):
-    print(term.clear)
-    print(term.green_on_black(arg))
-    time.sleep(3)
-    print(term.green_on_black("Press C to continue"))
-    with term.cbreak():
-        val = ''
-        if val.lower() == 'c':
-            return
-        else:
-            pass
-
-
 def print_box(header, textl):
     def print_box_str(ret_string, words):
         # if fits in one line
@@ -86,6 +73,19 @@ def print_box(header, textl):
             print("error in printhelp: second input should be a list containing strings and/or lists of strings")
     ret_string += str(cl[8] + cl[1] * (BLANK_LINES - 2) + cl[10])
     return ret_string
+
+
+def printstart(arg):
+    print(term.clear)
+    print(term.green_on_black(arg))
+    time.sleep(3)
+    print(term.green_on_black("Press C to continue"))
+    with term.cbreak():
+        val = ''
+        if val.lower() == 'c':
+            return
+        else:
+            pass
 
 
 def start():
