@@ -1,13 +1,17 @@
 from blessed import Terminal
 from os import walk, path, sep
+from main.main import user_input_cmd
 import time
 
-term = Terminal()
+
 START_PATH = "OS/game_files/"
 BLANK_LINES = 50  # number of characters each line should be
 
+term = Terminal()
+print(term.home + term.clear + term.move_y(term.height // 2))
 
-def printtree(header, location):
+
+def print_tree(header, location):
     print(term.green_on_black(f'┌─ /{header}/' + ('─' * (BLANK_LINES - 6 - len(header))) + '┐'))
     for root, dirs, files in walk(location):
         level = root.replace(START_PATH, '').count(sep)
@@ -88,7 +92,7 @@ def start():
                     gaining system access,
                     Access gained.
                     AI will launch...) \n \n""")
-        printtree("System", START_PATH)
+        print_tree("System", START_PATH)
         user_input_cmd()
 
 

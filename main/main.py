@@ -1,5 +1,5 @@
 from os import walk, path, sep
-from blessed import Terminal
+
 
 import functions.blessed_functions
 import functions.file_functions
@@ -11,7 +11,7 @@ from fs.fs_dir import Dir
 fs = Dir.FromPath("OS", None, 7, 0, 0)
 this_dir = fs
 
-term = Terminal()
+
 
 
 class User:
