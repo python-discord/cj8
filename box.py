@@ -41,8 +41,8 @@ class KeyboardController(DynamicPath):
 
 def demo(screen: Screen) -> None:
     """Main Loop"""
-    path = KeyboardController(screen, int(screen.width / 5), int(screen.height / 1.5))
-    #path.jump_to(int(screen.width / 5), int(screen.height / 1.5))
+    path = Path()
+    path.jump_to(int(screen.width / 5), int(screen.height / 1.5))
 
     char = Sprite(screen, path=path, renderer_dict={
         "default": StaticRenderer(images=[character_box])
