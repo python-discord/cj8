@@ -128,25 +128,10 @@ def start_help(user_input):
     print(term.home + term.clear + term.move_y(term.height // 2))
     user_input += " 1 2 3 "  # place holder inputs which stops the user from entering errors
     user_input = user_input.split()
-    if user_input[1] == "add":
-        print(term.green_on_black(print_box("Help", ["add [file path]",
-                                                     "- creates a new file with a specified name in specified directory"
-                                                     ])))
-    elif user_input[1] == "remove":
-        print(term.green_on_black(print_box("Help", ["remove [file path]",
-                                                     "- deletes a  file with a specified name in specified directory"])))
-    elif user_input[1] == "dir":
-        print(term.green_on_black(print_box("Help", ["dir",
-                                                     "- shows full  user directory"])))
-    elif user_input[1] == "help":
-        print(term.green_on_black(print_box("Help", ["help (command)",
-                                                     "- explains what the specified command does"])))
-    elif user_input[1] == "quickcrypt":
-        print(term.green_on_black(print_box("Help", ["quickcrypt [file path] [password]",
-                                                     "- file encryption tool"])))
-    elif user_input[1] == "read":
-        print(term.green_on_black(print_box("Help", ["read [file path]",
-                                                     "- read file content"])))
+    userinputdir = {"add": ["Help", ["add [file path]", "- creates a new file with a specified name in specified directory"]], "remove" : ["Help", ["remove [file path]", "- removes a new file with a specified name in specified directory"]], "dir": ["Help", ["dir", "- shows full user directory"]], "help" : ["Help", ["help (command)", "- explains what the specific command does"]], "quickcrypt": ["Help", ["quickcrypt (file path) (password)", "- file encryption tool"], "read" : ["Help", ["read (file path)", "- reads a files content"]]}
+    if user_input[1] in userinputdir:
+        for heade, lis in userinputdir[user_input[1]]:
+            print(term.green_on_black(printbox(heade, 
     else:
         print(term.green_on_black(print_box("Help", ["help (command)",
                                                      "add [name]",
