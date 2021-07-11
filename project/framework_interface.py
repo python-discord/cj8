@@ -89,32 +89,32 @@ def user_input_cmd():
         if user_input[:10] == "quickcrypt":
             start_quickcrypt(user_input)
             showing_input_menu = False
-        if user_input[:4] == "read":
-            start_read(user_input)
-            showing_input_menu = False
-        if user_input == "ls":
-            for i in this_dir.ls(User).keys():
-                print(i)
-        if user_input[:2] == "cd":
-            try:
-                this_dir = this_dir.getDir(User(), user_input[3:])
-            except Exception as e:
-                print(e)
-        if user_input[:5] == "mkdir":
-            try:
-                this_dir.mkdir(User, user_input[6:])
-            except Exception as e:
-                print(e)
-        if user_input[:5] == "touch":
-            try:
-                this_dir.touch(User, user_input[6:])
-            except Exception as e:
-                print(e)
-        if user_input[:2] == "rm":
-            try:
-                this_dir.rm(User, user_input[3:])
-            except Exception as e:
-                print(e)
+        # if user_input[:4] == "read":
+        #     start_read(user_input)
+        #     showing_input_menu = False
+        # if user_input == "ls":
+        #     for i in this_dir.ls(User).keys():
+        #         print(i)
+        # if user_input[:2] == "cd":
+        #     try:
+        #         this_dir = this_dir.getDir(User(), user_input[3:])
+        #     except Exception as e:
+        #         print(e)
+        # if user_input[:5] == "mkdir":
+        #     try:
+        #         this_dir.mkdir(User, user_input[6:])
+        #     except Exception as e:
+        #         print(e)
+        # if user_input[:5] == "touch":
+        #     try:
+        #         this_dir.touch(User, user_input[6:])
+        #     except Exception as e:
+        #         print(e)
+        # if user_input[:2] == "rm":
+        #     try:
+        #         this_dir.rm(User, user_input[3:])
+        #     except Exception as e:
+        #         print(e)
 
 def start_help(user_input):
     print(term.home + term.clear + term.move_y(term.height // 2))
@@ -152,7 +152,7 @@ def start_help(user_input):
 
 def start_dir(user_input):
     print(term.home + term.clear + term.move_y(term.height // 2))
-    list_files("OS")
+    list_files()
 
 
 def start_add(user_input):
