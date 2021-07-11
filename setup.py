@@ -1,6 +1,6 @@
 import setuptools
 
-import project  # for version number
+import Project  # for version number
 
 # To run: py setup.py sdist bdist_wheel
 # To upload: py -m twine upload --sign --skip-existing dist/*
@@ -12,8 +12,8 @@ with open('README.md', encoding='utf-8') as readme_file:
 
 setuptools.setup(
     # TODO: change name
-    name='project',
-    version=project.__version__,
+    name='virutal box',
+    version=Project.__version__,
     author='Team Cheerful Cheetahs',
     author_email='',
     license='MIT',
