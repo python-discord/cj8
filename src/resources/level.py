@@ -41,7 +41,7 @@ class Level:
                 y = randint(0, self.height - 1)
                 x = 0
 
-            if self.board[y][x] != self.door_symbol:
+            if self.board[y][x] != self.door_symbol and self.board[y][x] not in ('╔', '╗', '╚', '╝'):
                 self.board[y][x] = self.door_symbol
                 doors -= 1
 
