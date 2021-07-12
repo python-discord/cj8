@@ -38,24 +38,6 @@ class Player:
         leg3 = terminal.move_xy(self.x + 2, self.y + 2) + terminal.blue(terminal.on_midnightblue('▍'))
         self.parts.append(leg3)
 
-    def move(self, val, terminal):  # Move player, pass val variable from main loop
-        if val.name == "KEY_UP":
-            self.delete(terminal)
-            self.y -= 1
-            self.create_body(terminal)
-        if val.name == "KEY_DOWN":
-            self.delete(terminal)
-            self.y += 1
-            self.create_body(terminal)
-        if val.name == "KEY_RIGHT":
-            self.delete(terminal)
-            self.x += 1
-            self.create_body(terminal)
-        if val.name == "KEY_LEFT":
-            self.delete(terminal)
-            self.x -= 1
-            self.create_body(terminal)
-
     def delete(self, terminal):  # delete the player at the current location
         for y in range(self.y, self.y+3):
             deleted = terminal.move_xy(self.x, y) + terminal.midnightblue(terminal.on_midnightblue('    '))

@@ -42,7 +42,7 @@ class MySpace:
     def add_object(self, topleft: Tuple[float, float], type: str = 'platform', w: int = 1, h: int = 1) -> pymunk.Poly:
         types = {"platform": {"body_type": pymunk.Body.STATIC, 'w': w, 'h': h, "mass": 0, "mom": 0},
                  "box": {"body_type": pymunk.Body.DYNAMIC, 'w': 4, 'h': 2, "mass": 1, "mom": 10},
-                 "target": {"body_type": pymunk.Body.STATIC, 'w': 2, 'h': 0.1, "mass": 1, "mom": 10},
+                 "target": {"body_type": pymunk.Body.STATIC, 'w': 2, 'h': 0.01, "mass": 1, "mom": 10},
                  "player": {"body_type": pymunk.Body.DYNAMIC, 'w': 4, 'h': 3, "mass": 1, "mom": 10}}
 
         if type in types.keys():
@@ -50,7 +50,7 @@ class MySpace:
             # pymunk works with center-position and we work with topleft
             body.position = center(topleft, types[type]['w'], types[type]['h'])
 
-            shape = pymunk.Poly.create_box(body, (types[type]['w'], types[type]['h']), radius=0)
+            shape = pymunk.Poly.create_box(body, (types[type]['w'], types[type]['h']), radius=0.2)
             shape.collision_type = COLLISION[type]
             shape.elasticity = 0
             shape.friction = 5
@@ -73,12 +73,16 @@ class MySpace:
         if key.name == "KEY_RIGHT":
             self.player.body.position += pymunk.Vec2d(1, 0)
 
-    def get_position(self, item: pymunk.Poly) -> Tuple[int, int]:
-        vertices = item.get_vertices()
-        topleft = vertices.pop(len(vertices) - 1)
-        x, y = topleft + item.body.position
+    def step(self, fps: int) -> None:
+        self.space.step(1/fps)
 
-        return round(x), round(y)
+
+def get_position(item: pymunk.Poly) -> Tuple[int, int]:
+    vertices = item.get_vertices()
+    topleft = vertices.pop(len(vertices) - 1)
+    x, y = topleft + item.body.position
+
+    return round(x), round(y)
 
 
 if __name__ == "__main__":
