@@ -1,11 +1,10 @@
-from blessed import Terminal
-from sprites import Player, ThinkingBox
-from sprites import Platform
-from sprites import Box
-from sprites import Target
-import physics
-import pymunk
 from typing import List
+
+import pymunk
+from blessed import Terminal
+
+import physics
+from sprites import Box, Platform, Player, Target, ThinkingBox
 
 
 class Map:
