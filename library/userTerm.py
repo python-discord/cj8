@@ -33,30 +33,22 @@ def starting_user_section() -> str:
     return output
 
 
-def update_user_section(infoToBeAdded: list[str]) -> list[str]:
+def update_user_section(infoToBeAdded: list[str]) -> str:
     """To add your information to the terminal you have 3 lines with 31 spaces"""
-    output: list[str] = []
-
     for i in infoToBeAdded:
         if len(i) > 31:
             raise NameError("Terminal contents too big")
 
-    # theres a better way to do this im just too dumb to think of it atm
-    if len(infoToBeAdded) == 1:
-        infoToBeAdded += " "
-        infoToBeAdded += " "
-        infoToBeAdded += " "
-    elif len(infoToBeAdded) == 2:
-        infoToBeAdded += " "
-        infoToBeAdded += " "
-    elif len(infoToBeAdded) == 3:
-        infoToBeAdded += " "
+    # Ensure we always have enough rows written out to overwrite the last frame
+    spacing_rows = 4 - len(infoToBeAdded)
+    infoToBeAdded.extend([""] * spacing_rows)
 
-    output += "┌─term────────────────────────────┐"
-    output += "\n│ " + "".join(infoToBeAdded[0]).ljust(31) + " │"
-    output += "\n│ " + "".join(infoToBeAdded[1]).ljust(31) + " │"
-    output += "\n│ " + "".join(infoToBeAdded[2]).ljust(31) + " │"
-    output += "\n│ " + "".join(infoToBeAdded[3]).ljust(31) + " │"
-    output += "\n└(Enter to confirm)───('q' to esc)┘"
+    output = "\n".join(
+        [
+            "┌─term────────────────────────────┐",
+            *("│ " + "".join(i).ljust(31) + " │" for i in infoToBeAdded),
+            "└(Enter to confirm)───('q' to esc)┘",
+        ]
+    )
 
     return output
