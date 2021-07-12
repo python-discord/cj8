@@ -32,7 +32,7 @@ class BaseTile(ABC):
 
     def __init__(self, pos: Tuple[int, int]):
         self.pos: Pos = Pos(x=pos[0], y=pos[1])
-        self.color: Tuple[int, int, int, int]
+        self.color: Tuple[int, int, int]
         self.control_scheme: Dict
 
         self.tile_char: str = "   "
