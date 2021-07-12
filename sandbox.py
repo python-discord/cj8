@@ -1,6 +1,5 @@
 from src.fstree.FileStructureTree import FileStructureTree
 
-
 tree = FileStructureTree('.')
 
 # demo
