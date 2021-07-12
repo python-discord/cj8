@@ -77,6 +77,11 @@ class CoreFrontend:
                 mutators.add(f"[i]{mutator}")
         if not mutators.children:
             mutators.add("[i]None")
+        controls = tree.add("Controls:")
+        for keys, color in self.backend._controls.items():
+            if color:
+                k1, k2 = [key.upper() for key in keys]
+                controls.add(f"{k1} <[{Color.from_rgb(*color).name}]↑[/]> {k2}")
         return Panel(tree)
 
     def create_layout(self) -> Layout:
