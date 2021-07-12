@@ -9,6 +9,29 @@ from asciimatics.exceptions import StopApplication
 from asciimatics.scene import Scene
 from asciimatics.screen import Screen
 
+MOVEMENT_MAPPINGS = [
+    {
+        "trigger_keys": (ord("a"), Screen.KEY_LEFT),
+        "raycast_direction": (-1, 0),
+        "map_movement": ("x", -1),
+    },
+    {
+        "trigger_keys": (ord("d"), Screen.KEY_RIGHT),
+        "raycast_direction": (+1, 0),
+        "map_movement": ("x", +1),
+    },
+    {
+        "trigger_keys": (ord("w"), Screen.KEY_UP),
+        "raycast_direction": (0, -1),
+        "map_movement": ("y", -1),
+    },
+    {
+        "trigger_keys": (ord("s"), Screen.KEY_DOWN),
+        "raycast_direction": (0, +1),
+        "map_movement": ("y", +1),
+    },
+]
+
 
 class Map(Effect):
     """
@@ -117,29 +140,6 @@ class GameController(Scene):
         if super(GameController, self).process_event(event) is None:
             return
 
-        movement_mappings = [
-            {
-                "trigger_keys": (ord("a"), Screen.KEY_LEFT),
-                "raycast_direction": (-1, 0),
-                "map_movement": ("x", -1),
-            },
-            {
-                "trigger_keys": (ord("d"), Screen.KEY_RIGHT),
-                "raycast_direction": (+1, 0),
-                "map_movement": ("x", +1),
-            },
-            {
-                "trigger_keys": (ord("w"), Screen.KEY_UP),
-                "raycast_direction": (0, -1),
-                "map_movement": ("y", -1),
-            },
-            {
-                "trigger_keys": (ord("s"), Screen.KEY_DOWN),
-                "raycast_direction": (0, +1),
-                "map_movement": ("y", +1),
-            },
-        ]
-
         # If that didn't handle it, check for a key that this demo understands.
         if isinstance(event, KeyboardEvent):
             key_code = event.key_code
@@ -148,7 +148,7 @@ class GameController(Scene):
             if key_code in (ord("q"), ord("Q")):
                 raise StopApplication("User exit")
 
-            for movement_mapping in movement_mappings:
+            for movement_mapping in MOVEMENT_MAPPINGS:
                 if key_code in movement_mapping["trigger_keys"]:
                     if (
                             self.cast_ray(movement_mapping["raycast_direction"])
