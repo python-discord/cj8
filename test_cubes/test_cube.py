@@ -4,7 +4,7 @@
 import copy
 import math
 # import numpy as np
-from asciimatics.screen import ManagedScreen
+from asciimatics.screen import ManagedScreen, Screen
 from time import sleep
 
 COLOUR_BLACK = 0
@@ -21,7 +21,8 @@ CUBE_SIZE = 3
 # define point class
 class Point:
     """A class to hold the points"""
-    def __init__(self, x, y, z):
+
+    def __init__(self, x: int, y: int, z: int):
         self.x = x
         self.y = y
         self.z = z
@@ -30,7 +31,7 @@ class Point:
         """A useless thing that exists"""
         return self.x, self.y, self.z
     
-    def position(self, x_mul, y_mul) -> tuple:
+    def position(self, x_mul: float, y_mul: float) -> tuple:
         """Return the position multiplied by the position multiplier"""
         return self.x * x_mul, self.y * y_mul
     
@@ -40,6 +41,7 @@ class Point:
 
 
 class Cube:
+
     """A class to create the cube"""
     def __init__(self, screen):
         """Define all the variables for the cube"""
@@ -89,8 +91,14 @@ class Cube:
         ]
     
     @staticmethod
-    def create_face(n, size_list_1, size_list_2, stable_type, stable_value, color):
-
+    def create_face(
+            n: int,
+            size_list_1: list,
+            size_list_2: list,
+            stable_type: str,
+            stable_value: int,
+            color: int) -> list:
+        """Creates the list of points for a face of a nxn cube"""
         if stable_type == 'x':
             face = []
             for i in range(n**2):
@@ -128,12 +136,14 @@ class Cube:
             face.append(color)
             return face
     
-    def draw_block_faces(self, faces):
+    def draw_block_faces(self, faces: list) -> None:
+        """draw the faces for each bock"""
         for face in faces:
             for block in face[:-1]:
                 self.actually_draw_faces(block, face[-1])
     
-    def define_rotation_parts(self, faces, n):
+    def define_rotation_parts(self, faces: list, n: int) -> None:
+        """define the rotation matrix(still in construction)"""
         print(n)
         x_rotation = []
         for block in faces[0][:-1]:
@@ -144,7 +154,8 @@ class Cube:
                     x_rotation.extend(block)
         self.rotate_z(1, x_rotation)
     
-    def main_loop(self):
+    def main_loop(self) -> None:
+        """The main loop of the class"""
         time_now = 0
         while True:
             self.time_delta = time_now - self.time_last
@@ -159,7 +170,8 @@ class Cube:
             sleep(0.1)
             time_now += 100
 
-    def check_event(self):
+    def check_event(self) -> None:
+        """Check mouse and keyboard events"""
         event = str(self.screen.get_event())
         event_sep = event.split(' ')
 
@@ -194,12 +206,14 @@ class Cube:
             elif event_sep[1] == "0":
                 pass
 
-    def decide_face_order(self):
+    def decide_face_order(self) -> None:
+        """Decide the faces order and draw the faces"""
         temp = copy.deepcopy(self.block_faces)
         temp.sort(key=self.find_z_value)
         self.draw_block_faces(temp)
 
-    def actually_draw_faces(self, points, color):
+    def actually_draw_faces(self, points: list, color: int) -> None:
+        """Draw each faces"""
         xmul = 1.5
         ymul = 0.75
         print(str(points[0]))
@@ -216,7 +230,8 @@ class Cube:
         ]], color)
         self.actually_draw_outline(points)
 
-    def actually_draw_outline(self, block):
+    def actually_draw_outline(self, block) -> None:
+        """Drae the outline for each block"""
         for i in range(3):
             self.screen.move(block[i].x*1.5, block[i].y * 0.75)
             self.screen.draw(block[i+1].x*1.5, block[i+1].y * 0.75)
@@ -224,7 +239,8 @@ class Cube:
         self.screen.draw(block[0].x*1.5, block[0].y * 0.75)
 
     @staticmethod
-    def find_z_value(face):
+    def find_z_value(face: list) -> int:
+        """Find the max z value for a face"""
         maximum = -1e5
         for block in face[:-1]:
             temp = max(block[0].z, block[1].z, block[2].z, block[3].z)
@@ -232,14 +248,16 @@ class Cube:
                 maximum = temp
         return maximum
 
-    def rotate_whole(self, x, y, z, faces):
+    def rotate_whole(self, x: float, y: float, z: float, faces: list) -> None:
+        """rotate the whole cube"""
         for face in faces:
             for block in face[:-1]:
                 self.rotate_x(x, block)
                 self.rotate_y(y, block)
                 self.rotate_y(z, block)
 
-    def rotate_z(self, amount, vertices):
+    def rotate_z(self, amount: float, vertices: list) -> None:
+        """rotate around z axis"""
         angle = self.time_delta * 0.001 * amount * math.pi * 2
         for v in vertices:
             dx = v.x - self.cx
@@ -249,7 +267,8 @@ class Cube:
             v.x = x + self.cx
             v.y = y + self.cy
 
-    def rotate_x(self, amount, vertices):
+    def rotate_x(self, amount: float, vertices: list) -> None:
+        """rotate around x axis"""
         angle = self.time_delta * 0.001 * amount * math.pi * 2
         for v in vertices:
             dy = v.y - self.cy
@@ -259,7 +278,8 @@ class Cube:
             v.y = y + self.cy
             v.z = z + self.cz
 
-    def rotate_y(self, amount, vertices):
+    def rotate_y(self, amount: float, vertices: list) -> None:
+        """rotate around y axis"""
         angle = self.time_delta * 0.001 * amount * math.pi * 2
         for v in vertices:
             dx = v.x - self.cx
@@ -271,7 +291,8 @@ class Cube:
 
 
 @ManagedScreen
-def demo(screen=None):
+def demo(screen: Screen = None) -> None:
+    """Demo of the cube"""
     cube = Cube(screen)
     cube.main_loop()
 
