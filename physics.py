@@ -43,7 +43,7 @@ class MySpace:
         types = {"platform": {"body_type": pymunk.Body.STATIC, 'w': w, 'h': h, "mass": 0, "mom": 0},
                  "box": {"body_type": pymunk.Body.DYNAMIC, 'w': 4, 'h': 2, "mass": 1, "mom": 10},
                  "target": {"body_type": pymunk.Body.STATIC, 'w': 2, 'h': 0.01, "mass": 1, "mom": 10},
-                 "player": {"body_type": pymunk.Body.DYNAMIC, 'w': 4, 'h': 3, "mass": 1, "mom": 10}}
+                 "player": {"body_type": pymunk.Body.DYNAMIC, 'w': 4, 'h': 3, "mass": 10, "mom": 10}}
 
         if type in types.keys():
             body = pymunk.Body(types[type]["mass"], types[type]["mom"], types[type]["body_type"])
@@ -53,7 +53,7 @@ class MySpace:
             shape = pymunk.Poly.create_box(body, (types[type]['w'], types[type]['h']), radius=0.2)
             shape.collision_type = COLLISION[type]
             shape.elasticity = 0
-            shape.friction = 5
+            shape.friction = 2
 
             self.space.add(body, shape)
             if type == "player":
@@ -63,10 +63,10 @@ class MySpace:
     def move_player(self, key: Keystroke) -> None:
         # TODO: block doublejump and double pull-down
         if key.name == "KEY_UP":
-            impulse = 0, -20.494   # based on my calculations this should send the jellyfish around 7 pixels high
+            impulse = 0, -20.494*10   # based on my calculations this should send the jellyfish around 7 pixels high
             self.player.body.apply_impulse_at_local_point(impulse)
         if key.name == "KEY_DOWN":
-            impulse = 0, 20.494
+            impulse = 0, 20.494*10
             self.player.body.apply_impulse_at_local_point(impulse)
         if key.name == "KEY_LEFT":
             self.player.body.position += pymunk.Vec2d(-1, 0)
