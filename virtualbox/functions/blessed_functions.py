@@ -12,6 +12,8 @@ def treat_subdir(rest, intend):
     return result
 
 
+
+
 def print_tree(header, directory, user):
     print_box(header, treat_subdir(directory.walk(user), ''))
     # "│", "─", " ┌", "┬", "┐", "├", "┼", "┤", "└", "┴", "┘"]

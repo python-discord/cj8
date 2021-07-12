@@ -1,9 +1,9 @@
-from functions.command_functions import user_commands
+from functions.command_functions import user_commands, random_test
 from functions.blessed_functions import print_tree
 from exceptions import CannotFullFillFunction
 from config import START_PATH
-
-import time
+from random import randint
+from time import sleep
 from blessed import Terminal
 
 from fs.fs_dir import Dir
@@ -14,6 +14,8 @@ fs = Dir.FromPath(START_PATH, None, 7, 0, 0)
 term = Terminal()
 print(term.home + term.clear + term.move_y(term.height // 2))
 
+failed_tasks = 0
+
 
 class User:
     """temporary user class"""
@@ -23,7 +25,7 @@ class User:
 def printstart(arg):
     print(term.clear)
     print(term.green_on_black(arg))
-    time.sleep(1)
+    sleep(1)
     print(term.green_on_black("Press C to continue"))
     with term.cbreak():
         val = ''
@@ -31,6 +33,11 @@ def printstart(arg):
             return
         else:
             pass
+
+def add_failure():
+    global failed_tasks
+    failed_tasks += 1
+    print(f"DEBUG: failues: {failed_tasks}")
 
 
 def clear_term():
@@ -52,6 +59,8 @@ def user_input_cmd(fs, user):
         user_input = input(">>>  ").split()
         if user_input[0] in user_commands:
             try:
+                if randint(1, 20) == 1:
+                    random_test()
                 function = user_commands[user_input[0]]
                 function(*ProcessArgs(function, locals()))
             except Exception as e:
