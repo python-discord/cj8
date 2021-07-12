@@ -46,7 +46,7 @@ with term.fullscreen(), term.cbreak(), term.hidden_cursor():
             if state.subgrid_select_bool:
                 term_info[1] = "Select SubGrid by entering 1-9"
                 if val in ("1", "2", "3", "4", "5", "6", "7", "8", "9"):
-                    state.user_select_subgrid = val
+                    state.user_select_subgrid = int(val)
                     term_info[
                         2
                     ] = f"Current: SubGrid {state.user_select_subgrid} | Space {state.user_select_space}"
@@ -58,7 +58,7 @@ with term.fullscreen(), term.cbreak(), term.hidden_cursor():
             elif state.space_select_bool:
                 term_info[1] = "Select Space by entering 1-9"
                 if val in ("1", "2", "3", "4", "5", "6", "7", "8", "9"):
-                    state.user_select_space = val
+                    state.user_select_space = int(val)
                     term_info[
                         2
                     ] = f"Current: SubGrid {state.user_select_subgrid} | Space {state.user_select_space}"

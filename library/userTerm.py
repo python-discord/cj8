@@ -16,9 +16,9 @@ class UserTermState:
     user_select_space: int = 0
 
 
-def starting_user_section() -> list:
+def starting_user_section() -> list[str]:
     """Starting Terminal"""
-    output = []
+    output: list[str] = []
     output += "┌─term────────────────────────────┐"
     output += "\n│                                 │"
     output += "\n│      shall we play a game?      │"
@@ -29,9 +29,9 @@ def starting_user_section() -> list:
     return output
 
 
-def update_user_section(infoToBeAdded: list) -> list:
+def update_user_section(infoToBeAdded: list[str]) -> list[str]:
     """To add your information to the terminal you have 3 lines with 31 spaces"""
-    output = []
+    output: list[str] = []
 
     for i in infoToBeAdded:
         if len(i) > 31:
