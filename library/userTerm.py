@@ -5,10 +5,10 @@ import dataclasses
 class UserTermState:
     """Reset machine for next turn"""
 
-    subgrid_select_bool: bool = True
-    space_select_bool: bool = True
+    subgrid_select: bool = True
+    space_select: bool = True
 
-    user_confirm_bool: bool = True
+    user_confirm: bool = True
     start_of_turn: bool = True
     end_of_turn: bool = False
 

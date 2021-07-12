@@ -43,7 +43,7 @@ with term.fullscreen(), term.cbreak(), term.hidden_cursor():
                 term_info[0] = f"Player {player_active} Active"
                 state.start_of_turn = False
 
-            if state.subgrid_select_bool:
+            if state.subgrid_select:
                 term_info[1] = "Select SubGrid by entering 1-9"
                 if val in ("1", "2", "3", "4", "5", "6", "7", "8", "9"):
                     state.user_select_subgrid = int(val)
@@ -55,7 +55,7 @@ with term.fullscreen(), term.cbreak(), term.hidden_cursor():
                 user_section = update_user_section(term_info)
                 print("".join(user_section))
 
-            elif state.space_select_bool:
+            elif state.space_select:
                 term_info[1] = "Select Space by entering 1-9"
                 if val in ("1", "2", "3", "4", "5", "6", "7", "8", "9"):
                     state.user_select_space = int(val)
@@ -68,18 +68,18 @@ with term.fullscreen(), term.cbreak(), term.hidden_cursor():
                 print("".join(user_section))
 
             if val.is_sequence and val.name == "KEY_ENTER":
-                if state.subgrid_select_bool and state.user_select_subgrid != 0:
-                    state.subgrid_select_bool = False
+                if state.subgrid_select and state.user_select_subgrid != 0:
+                    state.subgrid_select = False
                     term_info[1] = "Select Space by entering 1-9"
-                elif state.space_select_bool and state.user_select_space != 0:
-                    state.space_select_bool = False
+                elif state.space_select and state.user_select_space != 0:
+                    state.space_select = False
                     term_info[1] = "Confirm Selection?"
                 elif (
-                    state.user_confirm_bool
+                    state.user_confirm
                     and state.user_select_subgrid != 0
                     and state.user_select_space != 0
                 ):
-                    state.user_confirm_bool = False
+                    state.user_confirm = False
                     # execute game logic here
                     # update_arrays()
                     #
