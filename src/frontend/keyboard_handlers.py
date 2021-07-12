@@ -68,5 +68,5 @@ class KeyboardFactory:
         if platform == KeyboardFactory.LINUX:
             return None
 
-        # return the default handler
+        # Return the default handler
         return DefaultKeyboardHandler(backend)

@@ -35,12 +35,14 @@ class BoardCollection:
         all_tiles: List[List[BaseTile]],
         ball: BallTile,
         size: Tuple[int, int],
+        level_name: str,
     ):
         """Build the representation from a image file"""
         board = cls()
         board.all_tiles = all_tiles
         board._ball = ball
         board.size = size
+        board.level_name = level_name
         board.link_adjacents()
         return board
 
@@ -133,7 +135,7 @@ class CoreLevelLoader:
         end = datetime.now()
         logger.info(f"Loading took: {(end - start).microseconds / 1000:03}ms")
 
-        return BoardCollection.from_file(all_tiles, ball, loader.size)
+        return BoardCollection.from_file(all_tiles, ball, loader.size, level_path.stem)
 
     @staticmethod
     def random_level() -> BoardCollection:

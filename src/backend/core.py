@@ -46,6 +46,7 @@ class CoreBackend(DebugMixin):
         self._board = None
         self._controls = {keys: None for keys in self.CONTROL_PAIRS}
         self._FOV = 5
+        self.win_count = 0
 
     def new_level(self) -> None:
         """Load a new random level."""
@@ -83,6 +84,7 @@ class CoreBackend(DebugMixin):
         #     ball.direction = CardinalDirection.down
         self._move_ball()
         if isinstance(self._board.under_ball, GoalTile):
+            self.win_count += 1
             self.new_level()
 
     def _move_ball(self) -> None:
@@ -126,6 +128,8 @@ class CoreBackend(DebugMixin):
             if isinstance(tile, RedirectorTile)
         ]
         for tile in redirectors:
+            if tile.color in self._controls.values():
+                continue
             for k, v in self._controls.items():
                 if not v:
                     self._controls[k] = tile.color
