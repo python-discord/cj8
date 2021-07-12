@@ -20,6 +20,7 @@ CUBE_SIZE = 3
 
 # define point class
 class Point:
+
     """A class to hold the points"""
 
     def __init__(self, x: int, y: int, z: int):
@@ -43,7 +44,9 @@ class Point:
 class Cube:
 
     """A class to create the cube"""
-    def __init__(self, screen):
+
+    def __init__(self, screen: Screen):
+
         """Define all the variables for the cube"""
         
         self.screen = screen
@@ -137,13 +140,13 @@ class Cube:
             return face
     
     def draw_block_faces(self, faces: list) -> None:
-        """draw the faces for each bock"""
+        """Draw the faces for each bock"""
         for face in faces:
             for block in face[:-1]:
                 self.actually_draw_faces(block, face[-1])
     
     def define_rotation_parts(self, faces: list, n: int) -> None:
-        """define the rotation matrix(still in construction)"""
+        """Define the rotation matrix(still in construction)"""
         print(n)
         x_rotation = []
         for block in faces[0][:-1]:
@@ -230,8 +233,8 @@ class Cube:
         ]], color)
         self.actually_draw_outline(points)
 
-    def actually_draw_outline(self, block) -> None:
-        """Drae the outline for each block"""
+    def actually_draw_outline(self, block: list) -> None:
+        """Draw the outline for each block"""
         for i in range(3):
             self.screen.move(block[i].x*1.5, block[i].y * 0.75)
             self.screen.draw(block[i+1].x*1.5, block[i+1].y * 0.75)
@@ -249,7 +252,7 @@ class Cube:
         return maximum
 
     def rotate_whole(self, x: float, y: float, z: float, faces: list) -> None:
-        """rotate the whole cube"""
+        """Rotate the whole cube"""
         for face in faces:
             for block in face[:-1]:
                 self.rotate_x(x, block)
@@ -257,7 +260,7 @@ class Cube:
                 self.rotate_y(z, block)
 
     def rotate_z(self, amount: float, vertices: list) -> None:
-        """rotate around z axis"""
+        """Rotate around z axis"""
         angle = self.time_delta * 0.001 * amount * math.pi * 2
         for v in vertices:
             dx = v.x - self.cx
@@ -268,7 +271,7 @@ class Cube:
             v.y = y + self.cy
 
     def rotate_x(self, amount: float, vertices: list) -> None:
-        """rotate around x axis"""
+        """Rotate around x axis"""
         angle = self.time_delta * 0.001 * amount * math.pi * 2
         for v in vertices:
             dy = v.y - self.cy
@@ -279,7 +282,7 @@ class Cube:
             v.z = z + self.cz
 
     def rotate_y(self, amount: float, vertices: list) -> None:
-        """rotate around y axis"""
+        """Rotate around y axis"""
         angle = self.time_delta * 0.001 * amount * math.pi * 2
         for v in vertices:
             dx = v.x - self.cx
