@@ -20,7 +20,6 @@ CUBE_SIZE = 3
 
 # define point class
 class Point:
-
     """A class to hold the points"""
 
     def __init__(self, x: int, y: int, z: int):
@@ -42,13 +41,10 @@ class Point:
 
 
 class Cube:
-
     """A class to create the cube"""
 
     def __init__(self, screen: Screen):
-
         """Define all the variables for the cube"""
-        
         self.screen = screen
         self.h = screen.height
         self.w = screen.width
