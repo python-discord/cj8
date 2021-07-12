@@ -1,6 +1,8 @@
 import dataclasses
 import math
+import random
 from abc import ABC
+from enum import Enum
 from typing import Dict, Tuple, Union
 
 
@@ -22,6 +24,15 @@ class Pos:
     y: int
 
 
+class CardinalDirection(Enum):
+    """Cardinal directions"""
+
+    up = 0
+    right = 1
+    down = 2
+    left = 3
+
+
 class BaseTile(ABC):
     """
     Base Tile object for the game
@@ -30,9 +41,9 @@ class BaseTile(ABC):
     properties of that tile.
     """
 
-    def __init__(self, pos: Tuple[int, int]):
+    def __init__(self, pos: Tuple[int, int], color: Tuple[int, int, int]):
         self.pos: Pos = Pos(x=pos[0], y=pos[1])
-        self.color: Tuple[int, int, int]
+        self.color = color
         self.control_scheme: Dict
 
         self.tile_char: str = "   "
@@ -65,6 +76,10 @@ class BaseTile(ABC):
 class BallTile(BaseTile):
     """The ball tile"""
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.direction = CardinalDirection.down
+
     def __str__(self):
         return " ○ "
 
@@ -81,6 +96,13 @@ class PathTile(BaseTile):
 
     def __str__(self):
         return "   "
+
+
+class BlindTile(BaseTile):
+    """Tiles that are outside of vision."""
+
+    def __str__(self):
+        return " X "
 
 
 class WallTile(BaseTile):
@@ -125,5 +147,21 @@ class WallTile(BaseTile):
 class RedirectorTile(BaseTile):
     """Tiles that redirect the balls movement"""
 
+    ORIENTATIONS = {
+        CardinalDirection.up: "↑",
+        CardinalDirection.right: "→",
+        CardinalDirection.down: "↓",
+        CardinalDirection.left: "←",
+    }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.direction = random.choice(list(CardinalDirection.down))
+
     def __str__(self):
-        return " ↓ "
+        return f" {self.ORIENTATIONS[self.direction]} "
+
+    def rotate(self, clockwise: bool = True) -> None:
+        """Rotate redirector tile in direction specified."""
+        turn = 1 if clockwise else -1
+        self.direction = CardinalDirection((self.direction.value + turn) % 4)

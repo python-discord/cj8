@@ -1,82 +1,18 @@
-from enum import Enum
 from typing import List, Tuple, Union
 
-from src.backend.tiles import BallTile, BaseTile
+from src.backend.level_loader import CoreLevelLoader
+from src.backend.tiles import (
+    BaseTile,
+    CardinalDirection,
+    GoalTile,
+    PathTile,
+    RedirectorTile,
+    WallTile,
+)
 
 
 class DebugMixin:
     """Debugging mixin methods for the backend module"""
-
-
-class CardinalDirection(Enum):
-    """Cardinal directions"""
-
-    up = "up"
-    down = "down"
-    left = "left"
-    right = "right"
-
-
-class BoardCollection:
-    """Representation of the game board"""
-
-    class Size:
-        x_max = 0
-        y_max = 0
-
-    def __init__(self):
-        self.all_tiles: List[List[BaseTile]] = []
-        self._ball = None
-        self.size = None
-
-    @classmethod
-    def from_file(
-        cls, all_tiles: List[List[BaseTile]], ball: BallTile, size: Tuple[int, int]
-    ):
-        """Build the representation from a image file"""
-        board = cls()
-        board.all_tiles = all_tiles
-        board._ball = ball
-        board.size = size
-        board.link_adjacents()
-        return board
-
-    def link_adjacents(self) -> None:
-        """
-        Link the tiles to their neighbors
-
-        Iterate over all the tiles that make up the make and link them in their cardinal
-        directions. This will be used for pathing and generating wall segments
-        """
-        x, y = self.size
-        for y_idx, row in enumerate(self.all_tiles):
-            for x_idx, tile in enumerate(row):
-                tile: BaseTile
-                # Link tile below if exists
-                if y_idx < y - 1:
-                    tile.adjacent_tiles.down = self.all_tiles[y_idx + 1][x_idx]
-                # Link tile above if exists
-                if y_idx > 0:
-                    tile.adjacent_tiles.up = self.all_tiles[y_idx - 1][x_idx]
-                # Link tile to the right if exists
-                if x_idx < x - 1:
-                    tile.adjacent_tiles.right = self.all_tiles[y_idx][x_idx + 1]
-                # Link tile to the left if exists
-                if x_idx > 0:
-                    tile.adjacent_tiles.left = self.all_tiles[y_idx][x_idx - 1]
-
-    @property
-    def ball(self) -> BallTile:
-        """Return the ball tile"""
-        return self._ball
-
-    def pprint(self) -> None:
-        """Display the map for testing"""
-        for row in self.all_tiles:
-            row_str = ""
-            for tile in row:
-                row_str += str(tile)
-            print(row_str)
 
 
 class CoreBackend(DebugMixin):
@@ -98,14 +34,81 @@ class CoreBackend(DebugMixin):
     Should keep track of elapsed time and current score.
     """
 
+    def __init__(self) -> None:
+        self._board = None
+
+    def new_level(self) -> None:
+        """Load a new random level."""
+        self._board = CoreLevelLoader.random_level()
+
     def get_ball(self, surrounding_radius: float) -> Tuple[BaseTile, List[BaseTile]]:
         """
         Gets the ball tile
 
         Retrieves the ball tile as well as any tiles within an area with a radius of
         surrounding_radius.
-
         """
+        ball = self._board.ball
+        visible_tiles = []
+        for row in self._board.all_tiles:
+            for tile in row:
+                if ball.calc_distance(tile) <= surrounding_radius:
+                    visible_tiles.append(tile)
+        return ball, visible_tiles
+
+    def rotate_redirector(
+        self, color: Tuple[int, int, int], clockwise: bool = True
+    ) -> None:
+        """Rotate redirector tiles of specified color clockwise by cw_angle."""
+        for row in self._board.all_tiles + [[self._board.under_ball]]:
+            for x, tile in enumerate(row):
+                if isinstance(tile, RedirectorTile) and tile.color == color:
+                    tile.rotate(clockwise)
+
+    def move_ball(self) -> None:
+        """Handle moving the ball in an appropriate direction."""
+        ball = self._board.ball
+        if isinstance(self._board.under_ball, RedirectorTile):
+            ball.direction = self._board.under_ball.direction
+        # This will cause gravity to affect the ball immediately after travelling up
+        # elif not isinstance(ball.adjacent_tiles.down, WallTile):
+        #     ball.direction = CardinalDirection.down
+        self._move_ball()
+        if isinstance(self._board.under_ball, GoalTile):
+            self.new_level()
+
+    def _move_ball(self) -> None:
+        ball = self._board.ball
+        x, y = 0, 0
+        if ball.direction == CardinalDirection.up:
+            y = -1
+        elif ball.direction == CardinalDirection.right:
+            x = 1
+        elif ball.direction == CardinalDirection.down:
+            y = 1
+        elif ball.direction == CardinalDirection.left:
+            x = -1
+
+        y_idx = ball.pos.y
+        x_idx = ball.pos.x
+
+        # Return if the next tile will be a wall
+        next_tile = self._board.all_tiles[y_idx + y][x_idx + x]
+        if isinstance(next_tile, WallTile):
+            ball.direction = CardinalDirection.down  # Apply gravity again
+            return
+
+        if not self._board.under_ball:
+            self._board.all_tiles[y_idx][x_idx] = PathTile(
+                pos=(y_idx, x_idx), color=(0, 0, 0)
+            )
+        else:
+            self._board.all_tiles[y_idx][x_idx] = self._board.under_ball
+        self._board.under_ball = next_tile
+        self._board.all_tiles[y_idx + y][x_idx + x] = ball
+        ball.pos.y += y
+        ball.pos.x += x
+        self._board.link_adjacents()
 
     def key_press(self, key: Union[str, None]) -> None:
         """
