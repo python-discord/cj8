@@ -241,7 +241,8 @@ if __name__ == "__main__":
                     ):
                         state["userConfirmBool"] = False
                         # execute game logic here
-                        # update_board()
+                        # update_Arrays()
+                        #
 
                         # update the game board here
 
