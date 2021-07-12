@@ -1,7 +1,7 @@
-from .blessed_functions import print_box, print_tree
+from .blessed_functions import print_box
+from .blessed_functions import print_tree
 from .generalfunctions import inAny
 from virtualbox.exceptions import NoSuchFileOrDirectory
-from virtualbox.config import START_PATH
 import random
 import time
 
@@ -16,16 +16,21 @@ def cd(user_input, fs, user):
     print_box("getdir", fs.stringList(user))
 
 
-# Im not sure what this function is suposed to to
-def start_dir(user_input, fs, user, term):
-    user_input += " 1 1 1 "
-    user_input = user_input.split()
-    print(term.home + term.clear + term.move_y(term.height // 2))
-    if user_input[1] == "1":
-        print_tree("System", START_PATH)
-    else:
-        print_tree("System", f"OS/game_files/{user_input[1]}")
-    return fs
+def dir(fs, user, term):
+    "dir"
+    # print(term.home + term.clear + term.move_y(term.height // 2))
+    print_tree("dir", fs, user)
+
+
+def mkdir(user_input, fs, user):
+    tmp = user_input[1][::1].index("/") - 1
+    fs.getDir(user, user_input[1][tmp:]).mkdir(user, user_input[1][tmp:])
+
+
+def add(user_input, fs, user):
+    "add [file path]",
+    tmp = user_input[1][::1].index("/") - 1
+    fs.getDir(user, user_input[1][:tmp]).touch(user, user_input[1][tmp:])
 
 
 def start_help(user_input, fs, user, term):
@@ -33,7 +38,7 @@ def start_help(user_input, fs, user, term):
     user_input_dir = {
         "add": ["Help", ["add [file path]", "- creates a new file with a specified name in specified directory"]],
         "remove" : ["Help", ["remove [file path]", "- removes a new file with a specified name in specified directory"]],
-        "dir": ["Help", ["dir", "- shows full user directory"]],
+        "dir": ["Help",  ["dir", "- shows full user directory"]],
         "help" : ["Help", ["help (command)", "- explains what the specific command does"]],
         "quickcrypt": ["Help", ["quickcrypt (file path) (password)", "- file encryption tool"]],
         "read":["Help", ["read (file path)", "- reads a files content"]],
@@ -80,6 +85,7 @@ def search_back(what, walk, piervous):
 
 
 def search(user_input, fs, user):
+    "search [name]"
     result = search_back(user_input[1:], fs.walk(user), "")
 
     if len(result) == 0:
@@ -88,7 +94,8 @@ def search(user_input, fs, user):
     print_box("search", result)
 
 
-def portscanner(user_input, fs, user):
+def portscanner():
+    "portscan - commits portscan"
     ports = [22, 80, 9929, 8898, 22542, 187, 32312]
     outputs = ['not a hint', 'not a hint', 'not a hint', 'not a hint',\
                'not a hint', 'a hint', 'a hint', 'a hint', 'a hint']
@@ -119,7 +126,7 @@ def portscanner(user_input, fs, user):
 
 
 user_commands = {"ls": ls,
-                 "dir": ls,
+                 "dir": dir,
                  "h": help,
                  "help": help,
                  "quickcrypt": quickcrypt,
