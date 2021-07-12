@@ -16,3 +16,4 @@ flake8-isort~=4.0
 black
 Pillow
 rich
+keyboard
