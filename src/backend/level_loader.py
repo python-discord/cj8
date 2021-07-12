@@ -104,7 +104,7 @@ class CoreLevelLoader:
         WALL: WallTile,
         BALL: BallTile,
         GOAL: GoalTile,
-        REDIRECTOR: RedirectorTile,
+        # REDIRECTOR: RedirectorTile,
     }
 
     def __init__(self) -> None:
@@ -121,7 +121,7 @@ class CoreLevelLoader:
         level_path = loader.LEVELS_DIR / level_name
 
         start = datetime.now()
-        logger.info(f'Loading level: {level_name} from file {level_path}')
+        logger.info(f"Loading level: {level_name} from file {level_path}")
 
         if not level_path.is_file():
             raise AssertionError(f"No file found for {level_path}")
@@ -133,7 +133,7 @@ class CoreLevelLoader:
         all_tiles, ball = loader._gen_map_repr()
 
         end = datetime.now()
-        logger.info(f'Loading took: {(end-start).microseconds/1000:03}ms')
+        logger.info(f"Loading took: {(end - start).microseconds / 1000:03}ms")
 
         return BoardCollection.from_file(all_tiles, ball, loader.size)
 
@@ -151,9 +151,14 @@ class CoreLevelLoader:
             row = []
             for x in range(width):
                 tile_color_str = str(self._pixel(x, y))
-                tile = self.color_dispatcher[tile_color_str](
-                    pos=(x, y), color=self._pixel(x, y)
-                )
+                # Default the tile to redirector if tile colour does match
+                if tile_color_str not in self.color_dispatcher:
+                    tile = RedirectorTile(pos=(x, y), color=self._pixel(x, y))
+                else:
+                    # Look up the type of tile that matches the color tuple
+                    tile = self.color_dispatcher[tile_color_str](
+                        pos=(x, y), color=self._pixel(x, y)
+                    )
                 row.append(tile)
 
                 if tile_color_str == self.BALL:
