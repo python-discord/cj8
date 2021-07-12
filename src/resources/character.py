@@ -1,24 +1,55 @@
-from rich.text import Text
+from threading import Thread
+
+from blessed import Terminal
+
+from .AbstractDungeonEntity import AbstractDungeonEntity
+from .level import Level
+
+# Used to get player input
+term = Terminal()
 
 
-class Character:
+class Character(AbstractDungeonEntity):
     """This describes a character"""
 
-    def __init__(self, x: int = 0, y: int = 0, symbol: str = "$"):
-        self.x = x
-        self.y = y
-        self.symbol = Text(symbol)
+    def __init__(self, current_level: Level, symbol: str = "$") -> None:
+        super().__init__(
+            ground_symbol=current_level.board[current_level.width // 2][current_level.height // 2],
+            x=current_level.width // 2,
+            y=current_level.height // 2,
+            symbol=symbol
+        )
+        self.current_level = current_level
+        self.playing = True
 
-    def update(self, direction: ()) -> None:
-        """Takes a direction and updates the player position"""
-        if direction:
-            # this positon check needs to be refactored.
-            if self.x + direction[0] <= 9 and self.x + direction[0] >= 0:
-                self.x += direction[0]
-            if self.y + direction[1] <= 9 and self.y + direction[1] >= 0:
-                self.y += direction[1]
+    def start(self) -> None:
+        """Starts the movement controls in a separate thread"""
+        Thread(target=self.keyboard_input, args=()).start()
 
-    def draw(self, level: list) -> None:
+    def keyboard_input(self) -> None:
+        """Reads keyboard input and moves the player"""
+        on = True
+        while on:
+            with term.cbreak():  # set keys to be read immediately
+                inp = term.inkey()  # wait and read one character
+                self.current_level.board[self.y][self.x] = self.ground_symbol
+                if inp == "a":
+                    if self.x > 1:
+                        self.x -= 1
+                if inp == "d":
+                    if self.x < self.current_level.width - 2:
+                        self.x += 1
+                if inp == "w":
+                    if self.y > 1:
+                        self.y -= 1
+                if inp == "s":
+                    if self.y < self.current_level.height - 2:
+                        self.y += 1
+                if inp == "p":
+                    on = False
+                    self.playing = False
+                self.ground_symbol = self.current_level.board[self.y][self.x]
+
+    def draw(self) -> None:
         """Places player on map"""
-        level[self.x][self.y] = self.symbol
-        return level
+        self.current_level.board[self.y][self.x] = self.symbol
