@@ -1,13 +1,18 @@
+from random import randint
+
+# portscanner function for command usage
 def portscanner(user_input, fs, user):
-    # this ios just so i learn github desktop app
     try:
+        # if user_input contains specific port specifies var
         if user_input[1]:
             use_true = 'temp'
     except:
         pass
     ports = [22, 80, 9929, 8898, 22542, 187, 32312]
     outputs = ['not a hint', 'not a hint', 'not a hint', 'not a hint', 'not a hint', 'a hint', 'a hint', 'a hint', 'a hint']
+    # if specified var (= if user_input contains specific port)
     if use_true:
+        # Different Prints to show user a portscanner experience and show hint/ no hint
         print(term.green_on_black(f'Scanning Network for Port: {user_input}'))
         time.sleep(1)
         clear_term()
@@ -18,7 +23,8 @@ def portscanner(user_input, fs, user):
         clear_term()
         print(term.green_on_black(f'Port {inp} attackable. \n    Attack launchend. \n    Output: {output} \n'))
     else:
-        for i in range(7):
+        # 5-7 to show user a portscanner experience and show hint/ no hint
+        for i in range(randint(5, 7)):
             port = ports[i]
             print(term.green_on_black(f"Found Port in Network: \n    {port}/TCP [State: open] \n    Scanning Port... \n"))  # term.green_on_black
             time.sleep(0.4)
