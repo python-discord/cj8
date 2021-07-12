@@ -13,7 +13,6 @@ class BaseKeyboardHandler(ABC):
 
     Subclasses should implement actual concrete keyboard handling for the different OS
     options if we decide to use Keyboard as it requires root to run.
-
     """
 
     def __init__(self, backend: CoreBackend):
@@ -21,8 +20,7 @@ class BaseKeyboardHandler(ABC):
 
     def key_pressed(self, key: str) -> None:
         """Pass on the key press to the backend module"""
-        # TODO This need to pass on the keypress to the backend
-        ...
+        self.backend.key_press(key)
 
 
 class DefaultKeyboardHandler(BaseKeyboardHandler):
@@ -31,9 +29,9 @@ class DefaultKeyboardHandler(BaseKeyboardHandler):
     def __init__(self, backend: CoreBackend):
         super().__init__(backend)
 
-        self.keyboard = keyboard.hook(self.key_press_hook)
+        self.keyboard = keyboard.on_press(self.key_press_hook)
 
-    def key_press_hook(self, keyboard_event: KeyboardEvent, **kwargs) -> None
+    def key_press_hook(self, keyboard_event: KeyboardEvent, **kwargs) -> None:
         """Keyboard callback hook"""
         # TODO Log key press
         self.key_pressed(keyboard_event.name)
@@ -62,7 +60,7 @@ class KeyboardFactory:
         platform = sys.platform
 
         if platform == KeyboardFactory.LINUX:
-            return None
+            return DefaultKeyboardHandler(backend)
 
         # return the default handler
         return DefaultKeyboardHandler(backend)

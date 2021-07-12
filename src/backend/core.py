@@ -1,4 +1,4 @@
-from typing import List, Tuple, Union
+from typing import List, Tuple
 
 from src.backend.level_loader import CoreLevelLoader
 from src.backend.tiles import (
@@ -109,14 +109,15 @@ class CoreBackend(DebugMixin):
         ball.pos.x += x
         self._board.link_adjacents()
 
-    def key_press(self, key: Union[str, None]) -> None:
+    def key_press(self, key: str) -> None:
         """
         Let the backend know when a key press has happened.
 
         This will trigger any actions that need to happen on the tiles.
 
         :param key: keyboard character that was pressed
-
-        If the action is none then just move to the next frame with no input. This would
-        be to advance the game by one step.
         """
+        if key == "q":
+            self.rotate_redirector((0, 162, 232), clockwise=False)
+        if key == "e":
+            self.rotate_redirector((0, 162, 232), clockwise=True)
