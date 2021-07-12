@@ -3,7 +3,7 @@ import math
 import random
 from abc import ABC
 from enum import Enum
-from typing import Dict, Tuple, Union
+from typing import Tuple, Union
 
 
 @dataclasses.dataclass()
@@ -44,7 +44,6 @@ class BaseTile(ABC):
     def __init__(self, pos: Tuple[int, int], color: Tuple[int, int, int]):
         self.pos: Pos = Pos(x=pos[0], y=pos[1])
         self.color = color
-        self.control_scheme: Dict
 
         self.tile_char: str = "   "
 
