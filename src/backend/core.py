@@ -3,6 +3,7 @@ from typing import List, Tuple, Union
 from src.backend.level_loader import CoreLevelLoader
 from src.backend.tiles import (
     BaseTile,
+    BlindTile,
     CardinalDirection,
     GoalTile,
     PathTile,
@@ -36,25 +37,23 @@ class CoreBackend(DebugMixin):
 
     def __init__(self) -> None:
         self._board = None
+        self._FOV = 5
 
     def new_level(self) -> None:
         """Load a new random level."""
         self._board = CoreLevelLoader.random_level()
 
-    def get_ball(self, surrounding_radius: float) -> Tuple[BaseTile, List[BaseTile]]:
-        """
-        Gets the ball tile
-
-        Retrieves the ball tile as well as any tiles within an area with a radius of
-        surrounding_radius.
-        """
+    def get_board(self) -> List[List[BaseTile]]:
+        """Return list of visible tiles within FOV."""
         ball = self._board.ball
-        visible_tiles = []
-        for row in self._board.all_tiles:
-            for tile in row:
-                if ball.calc_distance(tile) <= surrounding_radius:
-                    visible_tiles.append(tile)
-        return ball, visible_tiles
+        all_tiles = [row[:] for row in self._board.all_tiles]
+        for row in all_tiles:
+            for x, tile in enumerate(row):
+                if isinstance(tile, GoalTile):
+                    continue
+                if ball.calc_distance(tile) > self._FOV:
+                    row[x] = BlindTile(pos=(tile.pos.x, tile.pos.y))
+        return all_tiles
 
     def rotate_redirector(
         self, color: Tuple[int, int, int], clockwise: bool = True

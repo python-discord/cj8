@@ -101,6 +101,9 @@ class PathTile(BaseTile):
 class BlindTile(BaseTile):
     """Tiles that are outside of vision."""
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs, color=(32, 32, 32))
+
     def __str__(self):
         return " X "
 

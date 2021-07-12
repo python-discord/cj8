@@ -5,7 +5,6 @@ from rich.live import Live
 from rich.table import Table
 
 from src.backend.core import CoreBackend
-from src.backend.tiles import BlindTile, GoalTile
 from src.frontend.keyboard_handlers import BaseKeyboardHandler, KeyboardFactory
 
 
@@ -25,7 +24,6 @@ class CoreFrontend:
     """
 
     FPS = 12
-    FOV = 5
 
     def __init__(self):
         self.backend: CoreBackend = CoreBackend()
@@ -44,14 +42,7 @@ class CoreFrontend:
     def get_display(self) -> Table:
         """Return Table grid for display."""
         table = Table.grid()
-        ball = self.backend._board.ball
-        all_tiles = [row[:] for row in self.backend._board.all_tiles]
-        for row in all_tiles:
-            for x, tile in enumerate(row):
-                if isinstance(tile, GoalTile):
-                    continue
-                if ball.calc_distance(tile) > self.FOV:
-                    row[x] = BlindTile(pos=(tile.pos.x, tile.pos.y), color=(32, 32, 32))
+        all_tiles = self.backend.get_board()
         for row in all_tiles:
             table.add_row(
                 *[f"[{Color.from_rgb(*tile.color).name}]{tile}" for tile in row]
