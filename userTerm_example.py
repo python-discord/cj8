@@ -241,6 +241,7 @@ if __name__ == "__main__":
                     ):
                         state["userConfirmBool"] = False
                         # execute game logic here
+                        # update_board()
 
                         # update the game board here
 
@@ -268,7 +269,7 @@ if __name__ == "__main__":
 
                     termInfo = [""] * 3
                     termInfo[0] = f"Player {playerActive} Active"
-                    termInfo[1] = "Ready? y/n"
+                    termInfo[1] = "Ready? press y"
 
                     print(term.move_up(7))
                     userSection = update_user_section(termInfo)
