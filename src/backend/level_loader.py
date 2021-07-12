@@ -1,9 +1,11 @@
 import random
+from datetime import datetime
 from pathlib import Path
 from typing import List, Tuple
 
 from PIL import Image
 
+from file_logging import logger
 from src.backend.tiles import (
     BallTile,
     BaseTile,
@@ -110,11 +112,17 @@ class CoreLevelLoader:
         self.level = None
         self.size = None
 
+        self.logger = logger
+
     @classmethod
     def load(cls, level_name: str) -> BoardCollection:
         """Load the map into memory"""
         loader = cls()
         level_path = loader.LEVELS_DIR / level_name
+
+        start = datetime.now()
+        logger.info(f'Loading level: {level_name} from file {level_path}')
+
         if not level_path.is_file():
             raise AssertionError(f"No file found for {level_path}")
 
@@ -123,6 +131,9 @@ class CoreLevelLoader:
         loader._raw_pixel_list = list(raw_image.getdata())
 
         all_tiles, ball = loader._gen_map_repr()
+
+        end = datetime.now()
+        logger.info(f'Loading took: {(end-start).microseconds/1000:03}ms')
 
         return BoardCollection.from_file(all_tiles, ball, loader.size)
 
