@@ -3,7 +3,10 @@ from .blessed_functions import print_tree
 from .generalfunctions import inAny
 from virtualbox.exceptions import NoSuchFileOrDirectory
 from exceptions import CommandNotFound
-
+import time
+from blessed import Terminal
+import random
+term = Terminal()
 
 # COMMAND LIST
 def ls(fs, user):
@@ -207,46 +210,47 @@ def search(user_input, fs, user):
 
 
 def portscanner(user_input, fs, user):
+    """portscan [port:int]
+    [EXTEND]
+    portscan - scans for port in network
+    """
+    "portscan [int]"
     # try:
     #     # if user_input contains specific port specifies var
     #     if user_input[1]:
     #         use_true = 'temp'
     # except:
     #     pass
-    # ports = [22, 80, 9929, 8898, 22542, 187, 32312]
-    # outputs = ['not a hint',
-    # 'not a hint', 'not a hint', 'not a hint', 'not a hint', 'a hint', 'a hint', 'a hint', 'a hint']
-    # # if specified var (= if user_input contains specific port)
-    # if use_true:
-    #     # Different Prints to show user a portscanner experience and show hint/ no hint
-    #     print_box("PortScanner", f'Scanning Network for Port: {user_input}')
-    #     time.sleep(1)
-    #     clear_term()
-    #     print_box("PortScanner", f"Found Port in Network: \n    {port}/TCP [State: open] \n    Scanning Port... \n")
-    #     time.sleep(1)
-    #     clear_term()
-    #     output = random.choice(outputs)
-    #     clear_term()
-    #     print_box("PortScanner",f'Port {inp} attackable. \n    Attack launchend. \n    Output: {output} \n')
-    # else:
-    #     # 5-7 to show user a portscanner experience and show hint/ no hint
-    #     for i in range(randint(5, 7)):
-    #         port = ports[i]
-    #         print_box("PortScanner",f"Found Port in Netw
-    # ork: \n    {port}/TCP [State: open] \n    Scanning Port... \n")  # term.green_on_black
-    #         time.sleep(0.4)
-    #     inp = int(input('Select a port to scan: '))
-    #     with term.cbreak():
-    #         val = ''
-    #         if int(val.lower()) in ports:
-    #             output = random.choice(outputs)
-    #             time.sleep(3)
-    #             clear_term()
-    #             print_box("PortScanner",f'Port {inp} attackable. \n    Attack launchend. \n    Output: {output} \n')
-    #
-    #         else:
-    #             print_box("PortScanner",'The Port you entered wasnt found in the Network!')
-    pass
+    ports = [22, 80, 9929, 8898, 22542, 187, 32312]
+    outputs = ['not a hint',
+    'not a hint', 'not a hint', 'not a hint', 'not a hint', 'a hint', 'a hint', 'a hint', 'a hint']
+    # if specified var (= if user_input contains specific port)
+    if len(user_input)>1:
+        # Different Prints to show user a portscanner experience and show hint/ no hint
+        print_box("PortScanner", [f"Scanning Network for Port: {user_input[1]}"])
+        time.sleep(1)
+        term.clear
+        print_box("PortScanner", [f"Found Port in Network:", f"{user_input[1]}/TCP [State: open]", "Scanning Port..."])
+        time.sleep(1)
+        term.clear
+        output = random.choice(outputs)
+        term.clear
+        print_box("PortScanner", [f"Port {user_input[1]} attackable. ", "Attack launchend. ", f"Output: {output}"])
+    else:
+        # 5-7 to show user a portscanner experience and show hint/ no hint
+        for i in range(random.randint(5, 7)):
+            port = ports[i]
+            print_box("PortScanner", [f"Found Port in Network: ", f"{port}/TCP [State: open]", "Scanning Port..."])
+            time.sleep(0.4)
+        inp = int(input("Select a port to scan: "))
+        with term.cbreak():
+            if inp in ports:
+                output = random.choice(outputs)
+                time.sleep(1)
+                term.clear
+                print_box("PortScanner", [f"Port {inp} attackable. ", "Attack launchend. ", f"Output: {output}"])
+            else:
+                print_box("PortScanner", ["The Port you entered wasnt found in the Network!"])
 
 
 # COMMAND LIST
