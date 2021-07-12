@@ -44,15 +44,15 @@ class Player:
             self.y -= 1
             self.create_body(terminal)
         if val.name == "KEY_DOWN":
-            self.delete()
+            self.delete(terminal)
             self.y += 1
             self.create_body(terminal)
         if val.name == "KEY_RIGHT":
-            self.delete()
+            self.delete(terminal)
             self.x += 1
             self.create_body(terminal)
         if val.name == "KEY_LEFT":
-            self.delete()
+            self.delete(terminal)
             self.x -= 1
             self.create_body(terminal)
 
