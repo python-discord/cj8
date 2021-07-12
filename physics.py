@@ -47,6 +47,7 @@ class MySpace:
 
         if type in types.keys():
             body = pymunk.Body(types[type]["mass"], types[type]["mom"], types[type]["body_type"])
+            # pymunk works with center-position and we work with topleft
             body.position = center(topleft, types[type]['w'], types[type]['h'])
 
             shape = pymunk.Poly.create_box(body, (types[type]['w'], types[type]['h']), radius=0)
@@ -60,8 +61,9 @@ class MySpace:
             return shape
 
     def move_player(self, key: Keystroke) -> None:
+        # TODO: block doublejump and double pull-down
         if key.name == "KEY_UP":
-            impulse = 0, -20.494
+            impulse = 0, -20.494   # based on my calculations this should send the jellyfish around 7 pixels high
             self.player.body.apply_impulse_at_local_point(impulse)
         if key.name == "KEY_DOWN":
             impulse = 0, 20.494
