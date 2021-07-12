@@ -10,7 +10,7 @@ class AC(copy):
         self.uid = uid
 
     """properties"""
-    @property
+
     def perms(self):
         return (self.up, self.op, self.uid)
 

@@ -42,7 +42,6 @@ class CannotFullFillFunction(Exception):
     def __init__(self):
         super().__init__("function argument request cannot be fullfiled!")
 
-
 class CannotReadFileInTextMode(Exception):
     def __init__(self):
         super().__init__("file content cannot be red in text mode. try binary mode insted")
@@ -51,3 +50,4 @@ class CannotReadFileInTextMode(Exception):
 class CommandNotFound(Exception):
     def __init__(self):
         super().__init__("command not found!")
+

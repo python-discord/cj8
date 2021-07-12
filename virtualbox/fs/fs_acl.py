@@ -20,6 +20,7 @@ class ACL:
     def InitRead(cls, path):
         return cls(readxml(path, int))
 
+
     "diciti like"
     def __iter__(self):
         return iter(self.dicit.items())
@@ -39,3 +40,4 @@ class ACL:
     # debug
     def __repr__(self):
         return str(self.dicit)
+

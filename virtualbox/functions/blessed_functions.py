@@ -19,8 +19,6 @@ def print_tree(header, directory, user):
     # print(term.green_on_black(f'{sub_indent}{f}{extra_blank_needed}│'))
     # print(term.green_on_black(f '└─ /{header}/' + ('─' * upper_lenght) + '┘'))
 
-
-def print_box(header, text):
     if len(text) == 0:
         print(template.format('┌', header, "", '┐'))
         print(template.format('└', header, "", '┘'))

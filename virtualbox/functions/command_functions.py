@@ -3,6 +3,7 @@ from .blessed_functions import print_tree
 from .generalfunctions import inAny
 from virtualbox.exceptions import NoSuchFileOrDirectory
 from exceptions import CommandNotFound
+
 import random
 import time
 
@@ -13,6 +14,49 @@ def ls(fs, user):
     [EXTEND]
     ls - list files and directories in current directory
     """
+
+
+
+
+
+
+def random_test():
+    print_box("OS SECURITY",
+            ["SECURITY BREACH DETECTED",
+            """         ____,'`-, """,
+            """         _,--'   ,/::.; """,
+            """      ,-'       ,/::,' `---.___        ___,_ """,
+            """      |       ,:';:/        ;'"``--./ ,-^.;--. """,
+            """       |:     ,:';,'         '         `.   ;`   `-. """,
+            """        \:.,:::/;/ -:.                   `  | `     `-. """,
+            """         \:::,'//__.;  ,;  ,  ,  :.`-.   :. |  ;       :. """,
+            """          \,',';/O)^. :'  ;  :   '__` `  :::`.       .:' ) """,
+            """          |,'  |\__,: ;      ;  '/O)`.   :::`;       ' ,' """,
+            """               |`--''            \__,' , ::::(       ,' """,
+            """               `    ,            `--' ,: :::,'\   ,-' """,
+            """                | ,;         ,    ,::'  ,:::   |,' """,
+            """                |,:        .(          ,:::|   ` """,
+            """                ::'_   _   ::         ,::/:| """,
+            """               ,',' `-' \   `.      ,:::/,:| """,
+            """             | : _  _   |   '     ,::,' ::: """,
+            """              | \ O`'O  ,',   ,    :,'   ;:: """,
+            """               \ `-'`--',:' ,' , ,,'      :: """,
+            """                ``:.:.__   ',-','        ::' """,
+            """                       |:  ::::.       ::' """,
+            """                       |:  ::::::    ,::' """
+            ])
+    from virtualbox.project import add_failure
+    print("enter animal above...")
+    user_input = input(">>>  ")
+    if user_input.lower() == "dog":
+        print("correct")
+        add_failure()
+    else:
+        print("incorrect")
+
+
+def ls(fs, user):
+    "ls"
     print_box("ls", fs.stringList(user))
 
 
@@ -21,6 +65,7 @@ def cd(user_input, fs, user):
     [EXTEND]
     cd - change directory to specified path
     """
+    "cd [path]"
     fs.copy(fs.getDir(user, user_input[1].split("/")))
     print_box("getdir", fs.stringList(user))
 
@@ -30,29 +75,35 @@ def dir_cat(fs, user):
     [EXTEND]
     dir = print file structure
     """
+    "dir"
     # print(term.home + term.clear + term.move_y(term.height // 2))
     print_tree("dir", fs, user)
 
 
 def mkdir(user_input, fs, user):
+
     """mkdir [path:string]
     [EXTEND]
     mdkir - creates direcotry that will have specified path
     """
+    "mkdir [path]"
     tmp = user_input[1].split("/")
     fs.getDir(user, "" if len(tmp) == 0 else tmp[:-1]).mkdir(user, tmp[-1])
 
 
 def add(user_input, fs, user):
+
     """add [path:string]
     [EXTEND]
     add - creates file that will have specified path
     """
+    "add [path]"
     tmp = user_input[1].split("/")
     fs.getDir(user, "" if len(tmp) == 0 else tmp[:-1]).touch(user, tmp[-1])
 
 
 def rm(user_input, fs, user):
+
     """rm [path:string]
     [EXTEND]
     rm - removes file or folder that have specified path
@@ -139,6 +190,17 @@ def write(user_input, fs, user):
     fs.getFile(user, user_input[1].split("/")).write(user, " ".join(user_input[2:]))
 
 
+def quickcrypt(user_input, fs, user):
+    "quickcrypt [file path] [password] [mode:2]"
+    fs.getFile(user_input[1]).encrypt(user_input[1], user_input[2], user_input[3] if len(user_input) >= 3 else 2)
+
+
+def read(user_input, fs, user):
+    "read [file path]"
+    print(fs.getFile(user, user_input[1].split("/")).Read(user))
+
+
+
 def search_back(what, walk, piervous):
     result = []
     for i in walk:
@@ -156,6 +218,7 @@ def search(user_input, fs, user):
     [EXTEND]
     search - searches for file that contains name in it's name
     """
+    "search [name]"
     result = search_back(user_input[1:], fs.walk(user), "")
 
     if len(result) == 0:
@@ -164,40 +227,51 @@ def search(user_input, fs, user):
     print_box("search", result)
 
 
-def portscanner():
-    """portscan - commits portscan
-    [EXTEND]
-    protscan - put something here
-    """
-    ports = [22, 80, 9929, 8898, 22542, 187, 32312]
-    outputs = ['not a hint', 'not a hint', 'not a hint', 'not a hint',\
-               'not a hint', 'a hint', 'a hint', 'a hint', 'a hint']
-    for i in range(7):
-        port = ports[i]
-        print(
-            str(f"Found Port in Network: \n    {port}/TCP [State: open] \n    Scanning Port... \n"))  # term.green_on_black
-        time.sleep(0.4)
-    inp = input('Select a port to scan: ')
-    inp = int(inp)
-    if inp in ports:
-        output = random.choice(outputs)
-        time.sleep(3)
-        clearterm()
-        print(f'Port {inp} attackable. \n    Attack launchend. \n    Output: {output} \n')
-
-    else:
-        print('nothing')
-
-# print(term.home + term.clear + term.move_y(term.height // 2))
-# for i in range(7):
-#     time.sleep(0.4)
-#     port = ports[i]
-#     randomi = random.randint(0, 1)
-#     output = random.choice(outputs)
-#     if randomi == 1:
-#         print(f'Port {port} attackable. \n    Attack launchend. \n    Output: {output} \n')
 
 
+def portscanner(user_input, fs, user):
+    from virtualbox.project import clear_term
+    from random import randint
+    # try:
+    #     # if user_input contains specific port specifies var
+    #     if user_input[1]:
+    #         use_true = 'temp'
+    # except:
+    #     pass
+    # ports = [22, 80, 9929, 8898, 22542, 187, 32312]
+    # outputs = ['not a hint', 'not a hint', 'not a hint', 'not a hint', 'not a hint', 'a hint', 'a hint', 'a hint', 'a hint']
+    # # if specified var (= if user_input contains specific port)
+    # if use_true:
+    #     # Different Prints to show user a portscanner experience and show hint/ no hint
+    #     print_box("PortScanner", f'Scanning Network for Port: {user_input}')
+    #     time.sleep(1)
+    #     clear_term()
+    #     print_box("PortScanner", f"Found Port in Network: \n    {port}/TCP [State: open] \n    Scanning Port... \n")
+    #     time.sleep(1)
+    #     clear_term()
+    #     output = random.choice(outputs)
+    #     clear_term()
+    #     print_box("PortScanner",f'Port {inp} attackable. \n    Attack launchend. \n    Output: {output} \n')
+    # else:
+    #     # 5-7 to show user a portscanner experience and show hint/ no hint
+    #     for i in range(randint(5, 7)):
+    #         port = ports[i]
+    #         print_box("PortScanner",f"Found Port in Network: \n    {port}/TCP [State: open] \n    Scanning Port... \n")  # term.green_on_black
+    #         time.sleep(0.4)
+    #     inp = int(input('Select a port to scan: '))
+    #     with term.cbreak():
+    #         val = ''
+    #         if int(val.lower()) in ports:
+    #             output = random.choice(outputs)
+    #             time.sleep(3)
+    #             clear_term()
+    #             print_box("PortScanner",f'Port {inp} attackable. \n    Attack launchend. \n    Output: {output} \n')
+    #
+    #         else:
+    #             print_box("PortScanner",'The Port you entered wasnt found in the Network!')
+
+
+# COMMAND LIST
 user_commands = {"ls": ls,
                  "touch": add,
                  "add": add,
@@ -213,6 +287,11 @@ user_commands = {"ls": ls,
                  "decryptread": decryptread,
                  "read": read,
                  "write": write,
+                 "dir": dir_cat,
+                 "h": help,
+                 "help": help,
+                 "quickcrypt": quickcrypt,
+                 "read": read,
                  "search": search,
                  "portscan": portscanner,
                  "cd": cd

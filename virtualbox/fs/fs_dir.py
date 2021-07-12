@@ -110,6 +110,7 @@ class Dir(AC):
         dest = self.getDir(user, to[:-1])
         dest.append(user, self.get(user, path).cpSelf(user, self.path + sep + sep.join(to)), to[-1])
 
+
     @AC.readcheck
     def ls(self, user):
         return self.sub
@@ -148,6 +149,7 @@ class Dir(AC):
             result = result.shallowget(user, i)
         if type(result) != Type:
             raise exception()
+
         return result
 
     def getDir(self, user, path):
@@ -201,6 +203,7 @@ class Dir(AC):
         result.path = to
         return result
 
+
     "properties"
     @property
     def aclpath(self):
@@ -232,3 +235,4 @@ class Dir(AC):
         del self.acl[key]
 
         return tmp
+
