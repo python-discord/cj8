@@ -1,9 +1,11 @@
+#!/usr/bin/env python
+# coding: utf-8
+
 import copy
 import math
-import numpy as np
+# import numpy as np
 from asciimatics.screen import ManagedScreen
 from time import sleep
-
 
 COLOUR_BLACK = 0
 COLOUR_RED = 1
@@ -13,27 +15,35 @@ COLOUR_BLUE = 4
 COLOUR_MAGENTA = 5
 COLOUR_CYAN = 6
 COLOUR_WHITE = 7
-
 CUBE_SIZE = 3
 
+
+# define point class
 class Point:
+    """A class to hold the points"""
     def __init__(self, x, y, z):
         self.x = x
         self.y = y
         self.z = z
     
-    def __repr__(self):
-        return (self.x, self.y, self.z)
+    def __repr__(self) -> tuple:
+        """A useless thing that exists"""
+        return self.x, self.y, self.z
     
-    def position(self, x_mul, y_mul):
-        return (self.x * x_mul, self.y * y_mul)
+    def position(self, x_mul, y_mul) -> tuple:
+        """Return the position multiplied by the position multiplier"""
+        return self.x * x_mul, self.y * y_mul
     
-    def __str__(self):
+    def __str__(self) -> str:
+        """Return the X Y Z coords as a string"""
         return f"X:{self.x}, Y:{self.y}, Z:{self.z}"
 
-class Cube:
 
+class Cube:
+    """A class to create the cube"""
     def __init__(self, screen):
+        """Define all the variables for the cube"""
+        
         self.screen = screen
         self.h = screen.height
         self.w = screen.width
@@ -78,15 +88,17 @@ class Cube:
             self.create_face(3, self.size_list_x, self.size_list_y, 'z', self.cz-self.size, 6),
         ]
     
-    def create_face(self, n, size_list_1, size_list_2, stable_type, stable_value, color):
+    @staticmethod
+    def create_face(n, size_list_1, size_list_2, stable_type, stable_value, color):
+
         if stable_type == 'x':
             face = []
             for i in range(n**2):
                 block = [
-                    Point(stable_value, size_list_1[i//n], size_list_2[i%n]),
-                    Point(stable_value, size_list_1[i//n], size_list_2[i%n+1]),
-                    Point(stable_value, size_list_1[i//n+1], size_list_2[i%n+1]),
-                    Point(stable_value, size_list_1[i//n+1], size_list_2[i%n]),
+                    Point(stable_value, size_list_1[i//n], size_list_2[i % n]),
+                    Point(stable_value, size_list_1[i//n], size_list_2[i % n+1]),
+                    Point(stable_value, size_list_1[i//n+1], size_list_2[i % n+1]),
+                    Point(stable_value, size_list_1[i//n+1], size_list_2[i % n]),
                 ]
                 face.append(block)
             face.append(color)
@@ -95,10 +107,10 @@ class Cube:
             face = []
             for i in range(n**2):
                 block = [
-                    Point( size_list_1[i//n], stable_value, size_list_2[i%n]),
-                    Point( size_list_1[i//n], stable_value, size_list_2[i%n+1]),
-                    Point(size_list_1[i//n+1], stable_value, size_list_2[i%n+1]),
-                    Point( size_list_1[i//n+1], stable_value, size_list_2[i%n]),
+                    Point(size_list_1[i//n], stable_value, size_list_2[i % n]),
+                    Point(size_list_1[i//n], stable_value, size_list_2[i % n+1]),
+                    Point(size_list_1[i//n+1], stable_value, size_list_2[i % n+1]),
+                    Point(size_list_1[i//n+1], stable_value, size_list_2[i % n]),
                 ]
                 face.append(block)
             face.append(color)
@@ -107,10 +119,10 @@ class Cube:
             face = []
             for i in range(n**2):
                 block = [
-                    Point(size_list_1[i//n], size_list_2[(i)%n], stable_value),
-                    Point(size_list_1[i//n], size_list_2[i%n+1], stable_value),
-                    Point(size_list_1[i//n+1], size_list_2[i%n+1], stable_value),
-                    Point(size_list_1[i//n+1], size_list_2[i%n], stable_value),
+                    Point(size_list_1[i//n], size_list_2[i % n], stable_value),
+                    Point(size_list_1[i//n], size_list_2[i % n+1], stable_value),
+                    Point(size_list_1[i//n+1], size_list_2[i % n+1], stable_value),
+                    Point(size_list_1[i//n+1], size_list_2[i % n], stable_value),
                 ]
                 face.append(block)
             face.append(color)
@@ -122,7 +134,7 @@ class Cube:
                 self.actually_draw_faces(block, face[-1])
     
     def define_rotation_parts(self, faces, n):
-        faces = self.block_faces
+        print(n)
         x_rotation = []
         for block in faces[0][:-1]:
             x_rotation.extend(block)
@@ -162,11 +174,9 @@ class Cube:
                 self.rotate_start_y = pos_y
             
             if self.rotate_mode:
-                dx = self.rotate_start_x + pos_x
-                dy = self.rotate_start_y + pos_y
-                # self.rotate_x(dy/1000)
-                # self.rotate_y(dx/1000)
-            
+                # dx = self.rotate_start_x + pos_x
+                # dy = self.rotate_start_y + pos_y
+                pass
             if button_click == 2:
                 self.rotate_mode = False
 
@@ -175,7 +185,7 @@ class Cube:
             if event_sep[1] == "-203":
                 self.rotate_whole(0, -0.2, 0, self.block_faces)
             elif event_sep[1] == "-204":
-                self.rotate_whole(0.2,0, 0, self.block_faces)
+                self.rotate_whole(0.2, 0, 0, self.block_faces)
             elif event_sep[1] == "-205":
                 self.rotate_whole(0, 0.2, 0, self.block_faces)
             elif event_sep[1] == "-206":
@@ -183,11 +193,10 @@ class Cube:
                 self.define_rotation_parts(self.block_faces, 1)
             elif event_sep[1] == "0":
                 pass
-    
 
     def decide_face_order(self):
         temp = copy.deepcopy(self.block_faces)
-        temp.sort(key = self.find_z_value)
+        temp.sort(key=self.find_z_value)
         self.draw_block_faces(temp)
 
     def actually_draw_faces(self, points, color):
@@ -199,14 +208,13 @@ class Cube:
             points[1].position(xmul, ymul), 
             points[2].position(xmul, ymul), 
             points[3].position(xmul, ymul),  
-        ],[
-            (0,0), 
-            (0,0), 
-            (0,0), 
-            (0,0),  
+        ], [
+            (0, 0),
+            (0, 0),
+            (0, 0),
+            (0, 0),
         ]], color)
         self.actually_draw_outline(points)
-    
 
     def actually_draw_outline(self, block):
         for i in range(3):
@@ -215,8 +223,8 @@ class Cube:
         self.screen.move(block[3].x*1.5, block[3].y * 0.75)
         self.screen.draw(block[0].x*1.5, block[0].y * 0.75)
 
-
-    def find_z_value(self, face):
+    @staticmethod
+    def find_z_value(face):
         maximum = -1e5
         for block in face[:-1]:
             temp = max(block[0].z, block[1].z, block[2].z, block[3].z)
@@ -230,7 +238,6 @@ class Cube:
                 self.rotate_x(x, block)
                 self.rotate_y(y, block)
                 self.rotate_y(z, block)
-
 
     def rotate_z(self, amount, vertices):
         angle = self.time_delta * 0.001 * amount * math.pi * 2
@@ -249,7 +256,7 @@ class Cube:
             dz = v.z - self.cz
             y = dy * math.cos(angle) - dz * math.sin(angle)
             z = dy * math.sin(angle) + dz * math.cos(angle)
-            v.y= y + self.cy
+            v.y = y + self.cy
             v.z = z + self.cz
 
     def rotate_y(self, amount, vertices):
@@ -262,8 +269,11 @@ class Cube:
             v.x = x + self.cx
             v.z = z + self.cz
 
+
 @ManagedScreen
 def demo(screen=None):
     cube = Cube(screen)
     cube.main_loop()
+
+
 demo()
