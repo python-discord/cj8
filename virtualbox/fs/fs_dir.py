@@ -95,6 +95,19 @@ class Dir(AC):
         self.sub[name] = object
         self.acl.add(name, object.perms)
 
+    @AC.writecheck
+    @doesnotexist
+    @update
+    def rename(self, user, name, to):
+        if to in self.sub:
+            raise FileOrDirectoryAlreadyExist()
+
+        self.sub[to] = self.sub.pop(name)
+        self.acl[to] = self.sub.pop(name)
+        os.rename(self.path + sep + name, self.path + sep + to)
+
+    def mv(self, user, path, to):
+        pass
     @AC.readcheck
     def ls(self, user):
         return self.sub

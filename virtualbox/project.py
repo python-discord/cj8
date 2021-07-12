@@ -51,11 +51,11 @@ def user_input_cmd(fs, user):
     while True:
         user_input = input(">>>  ").split()
         if user_input[0] in user_commands:
-            # try:
-            function = user_commands[user_input[0]]
-            function(*ProcessArgs(function, locals()))
-            # except Exception as e:
-            #    print(e)
+            try:
+                function = user_commands[user_input[0]]
+                function(*ProcessArgs(function, locals()))
+            except Exception as e:
+                print(e)
 
 
 def start(fs, user):

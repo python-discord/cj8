@@ -8,10 +8,12 @@ import time
 
 # COMMAND LIST
 def ls(fs, user):
+    "ls"
     print_box("ls", fs.stringList(user))
 
 
 def cd(user_input, fs, user):
+    "cd [path]"
     fs.copy(fs.getDir(user, user_input[1].split("/")))
     print_box("getdir", fs.stringList(user))
 
@@ -23,16 +25,19 @@ def dir_cat(fs, user):
 
 
 def mkdir(user_input, fs, user):
+    "mkdir [path]"
     tmp = user_input[1].split("/")
     fs.getDir(user, "" if len(tmp) == 0 else tmp[:-1]).mkdir(user, tmp[-1])
 
 
 def add(user_input, fs, user):
+    "add [path]"
     tmp = user_input[1].split("/")
     fs.getDir(user, "" if len(tmp) == 0 else tmp[:-1]).touch(user, tmp[-1])
 
 
 def rm(user_input, fs, user):
+    "rm [path]"
     tmp = user_input[1].split("/")
     fs.get(user, "" if len(tmp) == 0 else tmp[:-1]).rm(user, tmp[-1])
 
@@ -48,7 +53,8 @@ def start_help(user_input, fs, user, term):
         "read":["Help", ["read (file path)", "- reads a files content"]],
         "search": ["Help", ["search (file path)", "- searches directory for a specific file"]],
         "portscan":["Help", ["portscan", "- searches for open ports in the operating system network"]],
-        "cd": ["Help", ["cd", "- go to a target directory"]]
+        "cd": ["Help", ["cd", "- go to a target directory"]],
+        "cat": ["Help", ["cat", "- go to a target directory"]]
     }
     if user_input[1] in user_input_dir.keys():
         print(term.green_on_black(print_box(user_input[1], user_input_dir[user_input[1]])))
