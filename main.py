@@ -14,7 +14,9 @@ from asciimatics.renderers import Box, FigletText, StaticRenderer
 from asciimatics.scene import Scene
 from asciimatics.screen import Screen
 
-from sprites.sprites import character_box, character_box_pushing
+from gamelogic.controller import GameController
+from sprites.characters import character_box, character_box_pushing
+from sprites.maps import LEVELS
 
 
 class GameStart(Exception):
@@ -58,14 +60,18 @@ def title(screen: Screen) -> None:
         ),
         Print(
             screen,
-            FigletText("BOXED", width=120, font="big"),
-            screen.height // 2 - 6,
-            start_frame=0,
-        ),
+            FigletText("ARE YOU IN A", width=120),
+            screen.height // 2 - 7,
+            start_frame=0),
+        Print(
+            screen,
+            FigletText("BOX ???", width=120),
+            screen.height // 2 - 2,
+            start_frame=0),
         Print(
             screen,
             StaticRenderer(images=["(S)tart"]),
-            screen.height // 2 + 3,
+            screen.height // 2 + 4,
             start_frame=0,
         ),
         Print(
@@ -77,13 +83,12 @@ def title(screen: Screen) -> None:
     ]
 
     scenes.append(Scene(effects))
-
     # Put everything onto the screen
     try:
         screen.play(scenes, stop_on_resize=True, unhandled_input=handle_input)
     except GameStart:
-        screen.close()
         # START GAME
+        screen.play([GameController(screen, LEVELS[0])])
 
 
 if __name__ == "__main__":
