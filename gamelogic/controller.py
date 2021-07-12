@@ -42,7 +42,6 @@ class Map(Effect):
 
     def __init__(self, screen: Screen, game_map: List[str]):
         super(Map, self).__init__(screen)
-        self._screen = screen
         self._map: List[str] = deepcopy(game_map)
 
         for i, line in enumerate(game_map):
@@ -63,8 +62,8 @@ class Map(Effect):
         This function is called every frame, here we draw the player centered at the screen
         and the maps surrounding it.
         """
-        w2 = self._screen.width // 2
-        h2 = self._screen.height // 2
+        w2 = self.screen.width // 2
+        h2 = self.screen.height // 2
         for screen_i, offset_i in enumerate(range(-w2, w2)):
             for screen_j, offset_j in enumerate(range(-h2, h2)):
                 # breakpoint()
@@ -75,14 +74,14 @@ class Map(Effect):
                 # breakpoint()
                 if -1 < rel_x < len(self._map[0]) and -1 < rel_y < len(self._map):
                     if offset_i == 0 and offset_j == 0:
-                        self._screen._print_at(
+                        self.screen._print_at(
                             "@", screen_i, screen_j, 1)
                     else:
-                        self._screen._print_at(
+                        self.screen._print_at(
                             self._map[rel_y][rel_x], screen_i, screen_j, 1)
                 else:
-                    self._screen._print_at(" ", screen_i, screen_j, 1)
-        self._screen._print_at("@", w2, h2, 1)
+                    self.screen._print_at(" ", screen_i, screen_j, 1)
+        self.screen._print_at("@", w2, h2, 1)
 
     @property
     def frame_update_count(self) -> int:
@@ -113,7 +112,6 @@ class GameController(Scene):
     WALL = 1
 
     def __init__(self, screen: Screen, level_map: List[str]):
-        self._screen = screen
         self._map = Map(screen, level_map)
         effects = [
             self._map,
