@@ -8,10 +8,12 @@ import time
 
 # COMMAND LIST
 def ls(fs, user):
+    "ls"
     print_box("ls", fs.stringList(user))
 
 
 def cd(user_input, fs, user):
+    "cd [path]"
     fs.copy(fs.getDir(user, user_input[1].split("/")))
     print_box("getdir", fs.stringList(user))
 
@@ -23,16 +25,19 @@ def dir_cat(fs, user):
 
 
 def mkdir(user_input, fs, user):
+    "mkdir [path]"
     tmp = user_input[1].split("/")
     fs.getDir(user, "" if len(tmp) == 0 else tmp[:-1]).mkdir(user, tmp[-1])
 
 
 def add(user_input, fs, user):
+    "add [path]"
     tmp = user_input[1].split("/")
     fs.getDir(user, "" if len(tmp) == 0 else tmp[:-1]).touch(user, tmp[-1])
 
 
 def rm(user_input, fs, user):
+    "rm [path]"
     tmp = user_input[1].split("/")
     fs.get(user, "" if len(tmp) == 0 else tmp[:-1]).rm(user, tmp[-1])
 
