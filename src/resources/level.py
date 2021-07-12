@@ -32,16 +32,16 @@ class Level:
             x: int = 0
             y: int = 0
             if direction == 'right':
-                y = randint(0, self.height - 1)
+                y = randint(1, self.height - 2)
                 x = self.width - 1
             if direction == 'bottom':
-                x = randint(0, self.width - 1)
+                x = randint(1, self.width - 2)
                 y = self.height - 1
             if direction == 'left':
-                y = randint(0, self.height - 1)
+                y = randint(1, self.height - 2)
                 x = 0
 
-            if self.board[y][x] != self.door_symbol and self.board[y][x] not in ('╔', '╗', '╚', '╝'):
+            if self.board[y][x] != self.door_symbol:
                 self.board[y][x] = self.door_symbol
                 doors -= 1
 
