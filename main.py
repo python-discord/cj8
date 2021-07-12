@@ -3,98 +3,50 @@
 from __future__ import division
 
 import sys
-from typing import Optional
 
-from asciimatics.effects import Print, Sprite
-from asciimatics.event import Event, KeyboardEvent
 from asciimatics.exceptions import ResizeScreenError
-# from asciimatics.sprites import Arrow, Plot, Sam
-from asciimatics.paths import Path
-from asciimatics.renderers import Box, FigletText, StaticRenderer
-from asciimatics.scene import Scene
 from asciimatics.screen import Screen
 
 from gamelogic.controller import GameController
-from sprites.characters import character_box, character_box_pushing
 from sprites.maps import LEVELS
+import main_pages as mp
+from exceptions import *
 
 
-class GameStart(Exception):
-    """Raised when user starts the game"""
+def main(screen: Screen) -> None:
+    """Main function"""
 
-    pass
+    # preload the main pages
+    title = mp.title(screen)
+    settings = mp.settings(screen)
+    credits = mp.credits(screen)
 
-
-def handle_input(event: Event) -> Optional[Event]:
-    """Handle title-screen inputs"""
-    if isinstance(event, KeyboardEvent):
-        key = event.key_code
-        if key in [ord("q"), ord("Q")]:
-            sys.exit(0)
-        if key in [ord("s"), ord("S")]:
-            raise GameStart
-
-
-def title(screen: Screen) -> None:
-    """Title screen"""
-    char_path, bubble_path = Path(), Path()
-    char_path.jump_to(screen.width // 5 + 3, screen.height // 2 + 5)
-    bubble_path.jump_to(screen.width // 5 - 4, screen.height // 2 + 1)
-
-    # Opening character with box on his head
-    char_sprite = Sprite(
-        screen, path=char_path, renderer_dict={
-            "default": StaticRenderer(images=[character_box]*8 + [character_box_pushing]*10)
-        }
-    )
-
-    # Load all components (boxes, titles, etc)
-    scenes = []
-    effects = [
-        char_sprite,
-        Print(
-            screen,
-            Box(screen.width, screen.height),
-            0,
-            start_frame=0,
-        ),
-        Print(
-            screen,
-            FigletText("ARE YOU IN A", width=120),
-            screen.height // 2 - 7,
-            start_frame=0),
-        Print(
-            screen,
-            FigletText("BOX ???", width=120),
-            screen.height // 2 - 2,
-            start_frame=0),
-        Print(
-            screen,
-            StaticRenderer(images=["(S)tart"]),
-            screen.height // 2 + 4,
-            start_frame=0,
-        ),
-        Print(
-            screen,
-            StaticRenderer(images=["(Q)uit"]),
-            screen.height // 2 + 5,
-            start_frame=0,
-        ),
-    ]
-
-    scenes.append(Scene(effects))
     # Put everything onto the screen
-    try:
-        screen.play(scenes, stop_on_resize=True, unhandled_input=handle_input)
-    except GameStart:
-        # START GAME
-        screen.play([GameController(screen, LEVELS[0])])
+    while True:
+        try:
+            screen.play(title, stop_on_resize=True, unhandled_input=mp.title_IH)
+        except GameTransition as e:
+            # I'm not sure if we should split each of the GameTransition exceptions up
+            # ie - except EnterLevel:... except LevelSelector:...
+            # or to have it like this, but do a bunch of isinstance()s
+            # ie - if isinstance(e, EnterLevel):... elif isinstance(e, LevelSelector):...
+
+            # screen.clear()  # dk if this is necessary or helpful
+            if isinstance(e, EnterLevel):
+                screen.play([GameController(screen, LEVELS[e.level])])
+        except ExitGame:
+            sys.exit()
 
 
 if __name__ == "__main__":
+    # I know, I hate this double while loop, too. We *could* move the try-except of main() into this while loop,
+    # but it might not be the best to do a bunch of Screen.wrappers(). Doing screen.play() is probably better.
+    # Additionally, read the comment in `except ResizeScreenError`
     while True:
         try:
-            Screen.wrapper(title)
-            sys.exit(0)
+            Screen.wrapper(main)
+            break
         except ResizeScreenError:
+            # ResizeScreenError in this outer while loop, since it still displays after resize, unlike if it were
+            # in the inner scope of main()
             pass
