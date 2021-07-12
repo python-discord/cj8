@@ -90,7 +90,7 @@ class CoreLevelLoader:
     (R,G,B)
     """
 
-    LEVELS_DIR = Path("src/backend/levels").absolute()
+    LEVELS_DIR = Path(__file__).absolute().parent / "levels"
     PATH = "(255, 255, 255)"
     WALL = "(0, 0, 0)"
     BALL = "(237, 28, 36)"

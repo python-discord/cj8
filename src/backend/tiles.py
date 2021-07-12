@@ -156,7 +156,7 @@ class RedirectorTile(BaseTile):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.direction = random.choice(list(CardinalDirection.down))
+        self.direction = random.choice(list(CardinalDirection))
 
     def __str__(self):
         return f" {self.ORIENTATIONS[self.direction]} "
