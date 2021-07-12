@@ -1,25 +1,24 @@
-
-character_box = """
+character_box = r"""
  ╭─╮
 _│@|_
- /│\\
- / \\
+ /│\
+ / \
 """
 
-character_box_pushing = """
+character_box_pushing = r"""
  ╭─╮
 _│@|_
- \\│/
- / \\
+ \│/
+ / \
 """
 
-character = """
+character = r"""
   @
- /│\\
- / \\
+ /│\
+ / \
 """
 
-box = """
+box = r"""
  ╭─╮
 _│ │_
 """
