@@ -140,7 +140,8 @@ def start():
 def main():
     global fs
     start()
-    user_input_cmd(fs)
+    while True:
+        fs = user_input_cmd(fs)
 
 
 
