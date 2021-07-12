@@ -33,7 +33,7 @@ class DefaultKeyboardHandler(BaseKeyboardHandler):
 
         self.keyboard = keyboard.hook(self.key_press_hook)
 
-    def key_press_hook(self, keyboard_event: KeyboardEvent, **kwargs) -> None:
+    def key_press_hook(self, keyboard_event: KeyboardEvent, **kwargs) -> None
         """Keyboard callback hook"""
         # TODO Log key press
         self.key_pressed(keyboard_event.name)
