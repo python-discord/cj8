@@ -1,5 +1,8 @@
 from virtualbox.exceptions import NoSuchIndex
+from collections.abc import Iterable
 
+
+# Wrappers
 
 def restrictRange(min, max, keyword):
     def decorator(function):
@@ -11,7 +14,7 @@ def restrictRange(min, max, keyword):
     return decorator
 
 
-"array shfting"
+# array related
 
 
 def shiftArray(array, num):
@@ -28,3 +31,11 @@ def loop(x, maxNum):
     if x < 0:
         return maxNum + x
     return x
+
+
+def flatmap(x):
+    return sum([flatmap(x) if isinstance(x, Iterable) else [x] for i in x], [])
+
+
+def inAny(what, inWhat):
+    return any(map(lambda x: x in inWhat, what))

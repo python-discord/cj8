@@ -36,3 +36,8 @@ class NoSuchIndex(Exception):
 class UIDAlreadyExist(Exception):
     def __init__(self):
         super().__init__("uid already exist")
+
+
+class CannotFullFillFunction(Exception):
+    def __init__(self):
+        super().__init__("function argument request cannot be fullfiled!")

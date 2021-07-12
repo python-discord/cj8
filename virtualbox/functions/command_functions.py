@@ -1,34 +1,23 @@
 from .blessed_functions import print_box, print_tree
-from blessed import Terminal
-from os import walk
+from .generalfunctions import inAny
+from virtualbox.exceptions import NoSuchFileOrDirectory
+from virtualbox.config import START_PATH
 import random
 import time
-import os
-term = Terminal()
-START_PATH = "OS/game_files/"
-BLANK_LINES = 50
 
 
 # COMMAND LIST
-def start_walk(user_input, fs, user):
-    print(term.green_on_black(print_box("Walk", fs.walk(user))))
-    return fs
+def ls(fs, user):
+    print_box("ls", fs.stringList(user))
 
 
-def start_cd(user_input, fs, user):
-    user_input = user_input.split()
-    try:
-        fs.getDir(user, user_input[1])
-        fs = fs.getDir(user, user_input[1])
-        print(term.green_on_black(print_box("getdir", fs.stringList(user))))
-        return fs
-    except Exception as e:
-        print(e)
-        return fs
+def cd(user_input, fs, user):
+    fs.copy(fs.getDir(user, user_input[1]))
+    print_box("getdir", fs.stringList(user))
 
 
-
-def start_dir(user_input, fs, user):
+# Im not sure what this function is suposed to to
+def start_dir(user_input, fs, user, term):
     user_input += " 1 1 1 "
     user_input = user_input.split()
     print(term.home + term.clear + term.move_y(term.height // 2))
@@ -39,10 +28,8 @@ def start_dir(user_input, fs, user):
     return fs
 
 
-def start_help(user_input, fs, user):
+def start_help(user_input, fs, user, term):
     print(term.home + term.clear + term.move_y(term.height // 2))
-    user_input += " 1 2 3 "  # place holder inputs which stops the user from entering errors
-    user_input = user_input.split()
     user_input_dir = {
         "add": ["Help", ["add [file path]", "- creates a new file with a specified name in specified directory"]],
         "remove" : ["Help", ["remove [file path]", "- removes a new file with a specified name in specified directory"]],
@@ -69,40 +56,39 @@ def start_help(user_input, fs, user):
                                                      "cd"
                                                      ])))
 
-    return fs
+
+def quickcrypt(user_input, fs, user):
+    "quickcrypt [file path] [password] [mode:2]"
+    fs.getFile(user_input[1]).encrypt(user_input[1], user_input[2], user_input[3] if len(user_input) >= 3 else 2)
 
 
-def start_quickcrypt(user_input, fs, user):
-    # "quickcrypt [file path] [password]"
-    user_input += " 1 2 3 "  # place holder inputs which stops the user from entering errors
-    user_input = user_input.split()
-    binary_file_library.decrypt_file(user_input[1], user_input[2])
-    return fs
-
-def start_read(user_input):
-    user_input = user_input.split()
-    return fs
-
-def start_search(user_input, fs, user):
-    user_input = user_input.split()
-    search_word = " ".join(user_input[1:])
-    search_here = walk(START_PATH)
-    search_result = []
-    for root, dirs, file_lists in search_here:
-        if search_word in root.lower():
-            search_result.append(root)
-        for files in file_lists:
-            if search_word in files.lower():
-                search_result.append(root + "\\" + files)
-    search_result = [each_search_result[14:] for each_search_result in search_result]
-    if len(search_word) > BLANK_LINES - 16:
-        search_word = search_word[0:(BLANK_LINES - 19)] + "..."
-
-    print(print_box(f"Search: {search_word}", search_result))
-    return fs
+def read(user_input, fs, user):
+    "read [file path]"
+    print(fs.getFile(user, "/".join(user_input[1:])).Read(user))
 
 
-def start_portscanner(user_input, fs, user):
+def search_back(what, walk, piervous):
+    result = []
+    for i in walk:
+        if isinstance(i, tuple):
+            if inAny(what, i[0]):
+                result.append(piervous + "/" + i[0])
+            result += search_back(what, i[1], piervous + "/" + i[0])
+        elif inAny(what, i):
+            result.append(piervous + "/" + i)
+    return result
+
+
+def search(user_input, fs, user):
+    result = search_back(user_input[1:], fs.walk(user), "")
+
+    if len(result) == 0:
+        raise NoSuchFileOrDirectory
+
+    print_box("search", result)
+
+
+def portscanner(user_input, fs, user):
     ports = [22, 80, 9929, 8898, 22542, 187, 32312]
     outputs = ['not a hint', 'not a hint', 'not a hint', 'not a hint',\
                'not a hint', 'a hint', 'a hint', 'a hint', 'a hint']
@@ -116,12 +102,11 @@ def start_portscanner(user_input, fs, user):
     if inp in ports:
         output = random.choice(outputs)
         time.sleep(3)
-        os.system('cls')
+        clearterm()
         print(f'Port {inp} attackable. \n    Attack launchend. \n    Output: {output} \n')
 
     else:
         print('nothing')
-    return fs
 
 # print(term.home + term.clear + term.move_y(term.height // 2))
 # for i in range(7):
@@ -133,7 +118,13 @@ def start_portscanner(user_input, fs, user):
 #         print(f'Port {port} attackable. \n    Attack launchend. \n    Output: {output} \n')
 
 
-
-
-
-
+user_commands = {"ls": ls,
+                 "dir": ls,
+                 "h": help,
+                 "help": help,
+                 "quickcrypt": quickcrypt,
+                 "read": read,
+                 "search": search,
+                 "portscan": portscanner,
+                 "cd": cd
+}
