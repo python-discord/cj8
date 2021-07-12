@@ -5,7 +5,6 @@ from typing import List, Tuple
 
 from PIL import Image
 
-from src.file_logging import logger
 from src.backend.tiles import (
     BallTile,
     BaseTile,
@@ -14,6 +13,7 @@ from src.backend.tiles import (
     RedirectorTile,
     WallTile,
 )
+from src.file_logging import logger
 
 
 class BoardCollection:
