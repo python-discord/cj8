@@ -31,6 +31,7 @@ class Dir(AC):
 
         return self
 
+    @classmethod
     def MkDirInit(cls, up, op, user, path, father):
         self = cls(up, op, user.uid, {"..": father}, path, ACL({}))
         self.create()
@@ -122,13 +123,13 @@ class Dir(AC):
 
     def get(self, user, path):
         result = self
-        for i in path.split("/"):
+        for i in path:
             result = result.shallowget(user, i)
         return result
 
     def getType(self, user, path, Type, exception):
         result = self
-        for i in path.split("/"):
+        for i in path:
             result = result.shallowget(user, i)
             if type(result) != Type:
                 raise exception()

@@ -12,25 +12,29 @@ def ls(fs, user):
 
 
 def cd(user_input, fs, user):
-    fs.copy(fs.getDir(user, user_input[1]))
+    fs.copy(fs.getDir(user, user_input[1].split("/")))
     print_box("getdir", fs.stringList(user))
 
 
-def dir(fs, user, term):
+def dir_cat(fs, user):
     "dir"
     # print(term.home + term.clear + term.move_y(term.height // 2))
     print_tree("dir", fs, user)
 
 
 def mkdir(user_input, fs, user):
-    tmp = user_input[1][::1].index("/") - 1
-    fs.getDir(user, user_input[1][tmp:]).mkdir(user, user_input[1][tmp:])
+    tmp = user_input[1].split("/")
+    fs.getDir(user, "" if len(tmp) == 0 else tmp[:-1]).mkdir(user, tmp[-1])
 
 
 def add(user_input, fs, user):
-    "add [file path]",
-    tmp = user_input[1][::1].index("/") - 1
-    fs.getDir(user, user_input[1][:tmp]).touch(user, user_input[1][tmp:])
+    tmp = user_input[1].split("/")
+    fs.getDir(user, "" if len(tmp) == 0 else tmp[:-1]).touch(user, tmp[-1])
+
+
+def rm(user_input, fs, user):
+    tmp = user_input[1].split("/")
+    fs.get(user, "" if len(tmp) == 0 else tmp[:-1]).rm(user, tmp[-1])
 
 
 def start_help(user_input, fs, user, term):
@@ -69,7 +73,7 @@ def quickcrypt(user_input, fs, user):
 
 def read(user_input, fs, user):
     "read [file path]"
-    print(fs.getFile(user, "/".join(user_input[1:])).Read(user))
+    print(fs.getFile(user, user_input[1].split("/")).Read(user))
 
 
 def search_back(what, walk, piervous):
@@ -126,7 +130,11 @@ def portscanner():
 
 
 user_commands = {"ls": ls,
-                 "dir": dir,
+                 "touch": add,
+                 "add": add,
+                 "mkdir": mkdir,
+                 "rm": rm,
+                 "dir": dir_cat,
                  "h": help,
                  "help": help,
                  "quickcrypt": quickcrypt,
