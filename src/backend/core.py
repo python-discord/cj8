@@ -68,7 +68,7 @@ class CoreBackend(DebugMixin):
         return all_tiles
 
     def rotate_redirector(
-            self, color: Tuple[int, int, int], clockwise: bool = True
+        self, color: Tuple[int, int, int], clockwise: bool = True
     ) -> None:
         """Rotate redirector tiles of specified color clockwise."""
         for row in self._board.all_tiles + [[self._board.under_ball]]:
@@ -145,7 +145,7 @@ class CoreBackend(DebugMixin):
 
         :param key: keyboard character that was pressed
         """
-        if key == '[':
+        if key == "[":
             self.new_level()
             return
 

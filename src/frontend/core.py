@@ -40,10 +40,10 @@ class CoreFrontend:
         """Start the render loop"""
         self._check_terminal_size()
         with Live(
-                self.create_layout(),
-                screen=True,
-                transient=True,
-                refresh_per_second=self.FPS,
+            self.create_layout(),
+            screen=True,
+            transient=True,
+            refresh_per_second=self.FPS,
         ) as live:
             while True:
                 time.sleep(1 / self.FPS)
