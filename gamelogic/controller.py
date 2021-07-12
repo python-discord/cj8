@@ -1,6 +1,7 @@
 from __future__ import division
 
 from copy import deepcopy
+from math import ceil
 from typing import Any, List, Optional, Tuple
 
 from asciimatics.effects import Effect
@@ -62,26 +63,20 @@ class Map(Effect):
         This function is called every frame, here we draw the player centered at the screen
         and the maps surrounding it.
         """
-        w2 = self.screen.width // 2
-        h2 = self.screen.height // 2
-        for screen_i, offset_i in enumerate(range(-w2, w2)):
-            for screen_j, offset_j in enumerate(range(-h2, h2)):
-                # breakpoint()
-                # print(f"offset: {offset_i},{offset_j}")
-                rel_x, rel_y = self.player_x+offset_i, self.player_y+offset_j
+        space_x = self.screen.width
+        offset_x = (space_x // 2 - self.player_x, ceil(space_x / 2) + self.player_x)
+        space_y = self.screen.height
+        offset_y = space_y // 2 - self.player_y
 
-                # print(f"map ({rel_x},{rel_y})")
-                # breakpoint()
-                if -1 < rel_x < len(self._map[0]) and -1 < rel_y < len(self._map):
-                    if offset_i == 0 and offset_j == 0:
-                        self.screen._print_at(
-                            "@", screen_i, screen_j, 1)
-                    else:
-                        self.screen._print_at(
-                            self._map[rel_y][rel_x], screen_i, screen_j, 1)
-                else:
-                    self.screen._print_at(" ", screen_i, screen_j, 1)
-        self.screen._print_at("@", w2, h2, 1)
+        for i in range(offset_y):
+            self.screen.print_at(" "*self.screen.width, 0, i)
+        for i, chars in enumerate(self._map):
+            chars = " "*offset_x[0] + chars + " "*offset_x[1]
+            self.screen.print_at(chars, 0, offset_y + i)
+        for i in range(offset_y+len(self._map), self.screen.height):
+            self.screen.print_at(" "*self.screen.width, 0, i)
+
+        self.screen.print_at("@", self.screen.width//2, self.screen.height//2)
 
     @property
     def frame_update_count(self) -> int:
