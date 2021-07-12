@@ -43,7 +43,7 @@ class Map(Effect):
     def __init__(self, screen: Screen, game_map: List[str]):
         super(Map, self).__init__(screen)
         self._screen = screen
-        self._map: List[str] = deepcopy(map)
+        self._map: List[str] = deepcopy(game_map)
 
         for i, line in enumerate(game_map):
             j = line.find('@')
