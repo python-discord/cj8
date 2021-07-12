@@ -52,7 +52,10 @@ class Board:
 
     def draw_board(self, term: blessed.Terminal) -> None:
         """Rudimentary attempt to draw a game board."""
-        verticals = f"           {term.bold}{term.green}┃{term.normal}           {term.bold}{term.green}┃{term.normal}"
+        nonant_size = 11
+        verticals = (
+            f"{term.bold}{term.green}{' '*nonant_size}┃{' '*nonant_size}┃{term.normal}"
+        )
         crosses = (
             f"{term.bold}{term.green}━━━━━━━━━━━╋━━━━━━━━━━━╋━━━━━━━━━━━{term.normal}"
         )
