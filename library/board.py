@@ -19,6 +19,46 @@ class Board:
         self.game_over = False
         self.turn_one = True
 
+    def check_board_victory(self) -> typing.Optional[str]:
+        """Determine if the entire board has been won, and by who."""
+        grid_states = np.array(
+            (self.check_subboard_victory(i) for i in "789456123"), dtype=np.str_
+        )
+        # This might have off ordering, TODO on testing it
+        grid_states.reshape((3, 3))
+        return self.check_grid_victory(grid_states)
+
+    def check_subboard_victory(self, number: str) -> typing.Optional[str]:
+        """Determine if a given subgrid by number has been won, and by who."""
+        subgrid = self.collect_subgrid(number)
+        return self.check_grid_victory(subgrid)
+
+    @staticmethod
+    def check_grid_victory(grid: npt.NDArray[np.str_]) -> typing.Optional[str]:
+        """Determine if a given 3x3 grid has been won, and by who."""
+        for player in ("X", "O"):
+            # this turns our grid of ["X", "O", "•"] into [True, False, False] by applying the condition to every spot
+            ticks = grid == player
+
+            # Summing over True treats True as 1, False as 0. 3 Trues = 3, so "won" rows are 3.
+            # Because this is a 3x3 board, this results in a list of 3 True/False
+            # indicating whether each row was won by this player
+            horizontals = ticks.sum(axis=0) == 3
+            if horizontals.any():
+                return player
+            verticals = ticks.sum(axis=1) == 3
+            if verticals.any():
+                return player
+
+            # .diagonal() gets us a single diagonal list,
+            # so these two rows are just True/False whether a diagonal is won
+            diagonal_r = ticks.diagonal().sum() == 3
+            diagonal_l = ticks.fliplr().diagonal().sum() == 3
+            if diagonal_l or diagonal_r:
+                return player
+
+        return None
+
     def collect_subgrid(self, number: str) -> npt.NDArray[np.str_]:
         """
         Takes a subgrid choice and returns that np.ndarray and the choice str
