@@ -1,4 +1,5 @@
 import dataclasses
+from textwrap import dedent
 
 
 @dataclasses.dataclass()
@@ -16,15 +17,18 @@ class UserTermState:
     user_select_space: int = 0
 
 
-def starting_user_section() -> list[str]:
+def starting_user_section() -> str:
     """Starting Terminal"""
-    output: list[str] = []
-    output += "┌─term────────────────────────────┐"
-    output += "\n│                                 │"
-    output += "\n│      shall we play a game?      │"
-    output += "\n│             (y/n?)              │"
-    output += "\n│                                 │"
-    output += "\n└(Enter to confirm)───('q' to esc)┘"
+    output = dedent(
+        """
+        ┌─term────────────────────────────┐
+        │                                 │
+        │      shall we play a game?      │
+        │             (y/n?)              │
+        │                                 │
+        └(Enter to confirm)───('q' to esc)┘
+    """
+    ).strip()
 
     return output
 
