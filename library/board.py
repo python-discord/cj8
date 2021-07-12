@@ -59,7 +59,7 @@ class Board:
         # clear the screen
         print(term.clear)
         # print the game board
-        for i in range(18):
+        for i in range(17):
             if i == 5 or i == 11:
                 print(crosses)
             else:
