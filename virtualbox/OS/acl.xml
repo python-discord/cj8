@@ -1,2 +1,1 @@
-<acl><OS><op>7</op><up>0</up><uid>0</uid></OS><test><op>7</op><up>0</up><uid>0</uid></test><idk><op>7</op><up>0</up><uid>0</uid></idk></acl>
-
+<acl><home><op>7</op><up>0</up><uid>0</uid></home></acl>

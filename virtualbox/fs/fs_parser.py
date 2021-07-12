@@ -20,6 +20,7 @@ def readxml(path, mapf):
     Result = {}
     try:
         root = xml.ElementTree(file=path).getroot()
+
     except:
         raise Exception("XML ERROR " + path)
 
