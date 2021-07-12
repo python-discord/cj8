@@ -24,31 +24,26 @@ class Board:
         Takes a subgrid choice and returns that np.ndarray and the choice str
 
         The subgrids are laid out as so:
-            6 7 8
-            3 4 5
-            0 1 2
+            7 8 9
+            4 5 6
+            1 2 3
         """
-        subgrid = np.full((3, 3), "·")
-        if number == "0":
-            subgrid = self.contents[6:, :3]
-        elif number == "1":
-            subgrid = self.contents[6:, 3:6]
-        elif number == "2":
-            subgrid = self.contents[6:, 6:]
-        elif number == "3":
-            subgrid = self.contents[:3, :3]
-        elif number == "4":
-            subgrid = self.contents[:3, 3:6]
-        elif number == "5":
-            subgrid = self.contents[:3, 6:]
-        elif number == "6":
-            subgrid = self.contents[3:6, :3]
-        elif number == "7":
-            subgrid = self.contents[3:6, 3:6]
-        elif number == "8":
-            subgrid = self.contents[3:6, 6:]
+        first = slice(3)
+        second = slice(3, 6)
+        third = slice(6, 9)
+        subgrid_map = {
+            "1": (third, first),
+            "2": (third, second),
+            "3": (third, third),
+            "4": (second, first),
+            "5": (second, second),
+            "6": (second, third),
+            "7": (first, first),
+            "8": (first, second),
+            "9": (first, third),
+        }
 
-        return subgrid
+        return self.contents[subgrid_map[number]]
 
     def draw_board(self, term: blessed.Terminal) -> None:
         """Rudimentary attempt to draw a game board."""
@@ -68,7 +63,7 @@ class Board:
             else:
                 print(verticals)
         print()
-        for i in range(9):
+        for i in range(1, 10):
             subgrid = self.collect_subgrid(str(i))
             self.redraw_subgrid(term, subgrid, str(i), term.green)
 
@@ -117,18 +112,18 @@ class Board:
         number: str,
         color: str,
     ) -> None:
-        """Takes the subgrid number range(0,9) and redraws that grid based on the subgrid"""
+        """Takes the subgrid number 1-9 and redraws that grid based on the subgrid"""
         # Set Start Coordinates based on subgrid number
         start_coords = {
-            "0": (0, 13),
-            "1": (12, 13),
-            "2": (24, 13),
-            "3": (0, 7),
-            "4": (12, 7),
-            "5": (24, 7),
-            "6": (0, 1),
-            "7": (12, 1),
-            "8": (24, 1),
+            "1": (0, 13),
+            "2": (12, 13),
+            "3": (24, 13),
+            "4": (0, 7),
+            "5": (12, 7),
+            "6": (24, 7),
+            "7": (0, 1),
+            "8": (12, 1),
+            "9": (24, 1),
         }
         self.redraw_gridlines(term, start_coords[number], color)
         self.redraw_gamestate(term, subgrid, start_coords[number])
