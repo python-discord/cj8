@@ -38,31 +38,31 @@ class Player:
         leg3 = terminal.move_xy(self.x + 2, self.y + 2) + terminal.blue(terminal.on_midnightblue('▍'))
         self.parts.append(leg3)
 
-    def move(self, val):  # Move player, pass val variable from main loop
+    def move(self, val, terminal):  # Move player, pass val variable from main loop
         if val.name == "KEY_UP":
-            self.delete()
+            self.delete(terminal)
             self.y -= 1
-            self.create_body()
+            self.create_body(terminal)
         if val.name == "KEY_DOWN":
             self.delete()
             self.y += 1
-            self.create_body()
+            self.create_body(terminal)
         if val.name == "KEY_RIGHT":
             self.delete()
             self.x += 1
-            self.create_body()
+            self.create_body(terminal)
         if val.name == "KEY_LEFT":
             self.delete()
             self.x -= 1
-            self.create_body()
+            self.create_body(terminal)
 
     def delete(self, terminal):  # delete the player at the current location
         for y in range(self.y, self.y+3):
             deleted = terminal.move_xy(self.x, y) + terminal.midnightblue(terminal.on_midnightblue('    '))
             print(deleted, end='', flush=True)
 
-    def draw(self):  # draws the player at it's x and y location
-        self.create_body()
+    def draw(self, terminal):  # draws the player at it's x and y location
+        self.create_body(terminal)
         for part in self.parts:
             print(part, end='', flush=True)
 
