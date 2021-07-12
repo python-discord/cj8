@@ -6,7 +6,7 @@ from blessed import Terminal
 
 # custom libraries
 from library.board import Board
-from library.userTerm import UserTermState, starting_user_section, update_user_section
+from library.user_term import UserTermState, starting_user_section, update_user_section
 
 term = Terminal()
 board = Board()
