@@ -1,4 +1,4 @@
-class Player():
+class Player:
     def __init__(self, x, y):
         self.x = x
         self.y = y
@@ -60,7 +60,7 @@ class Player():
             print(part, end='', flush=True)
 
 
-class Box():
+class Box:
     def __init__(self, x, y):
         self.x = x
         self.y = y
@@ -97,7 +97,7 @@ class Box():
             print(deleted, end='', flush=True)
 
 
-class Platform():
+class Platform:
     def __init__(self, x, y, lenght, flat):
         self.x = x
         self.y = y
@@ -126,14 +126,14 @@ class Platform():
             print(part, end='', flush=True)
 
 
-class ThinkingBox():
+class ThinkingBox:
     def __init__(self, x, y):
         self.x = x
         self.y = y
         self.create_body()
+        self.parts = []
 
     def create_body(self, terminal):
-        self.parts = []
         up1 = terminal.move_xy(self.x, self.y) + terminal.gray37(terminal.on_gray15('▛'))
         self.parts.append(up1)
         for i in range(1, 7):
