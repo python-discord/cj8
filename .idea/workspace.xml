@@ -2,11 +2,29 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7d1af81c-a44b-48c5-96bb-f853bacb74b5" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/virtualbox/OS/hi/acl.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/virutal_box.egg-info/SOURCES.txt" beforeDir="false" afterPath="$PROJECT_DIR$/virutal_box.egg-info/SOURCES.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/virutal_box.egg-info/dependency_links.txt" beforeDir="false" afterPath="$PROJECT_DIR$/virutal_box.egg-info/dependency_links.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/virutal_box.egg-info/entry_points.txt" beforeDir="false" afterPath="$PROJECT_DIR$/virutal_box.egg-info/entry_points.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/virutal_box.egg-info/top_level.txt" beforeDir="false" afterPath="$PROJECT_DIR$/virutal_box.egg-info/top_level.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/virtualbox/OS/OS/home/acl.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/virtualbox/OS/OS/home/users/AdminUser/Desktop/acl.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/virtualbox/OS/OS/home/users/AdminUser/Desktop/meeting_transcript.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/virtualbox/OS/OS/home/users/AdminUser/Documents/Destination/acl.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/virtualbox/OS/OS/home/users/AdminUser/Documents/Destination/nigeria.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/virtualbox/OS/OS/home/users/AdminUser/Documents/acl.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/virtualbox/OS/OS/home/users/AdminUser/Secure/1_Data Storage/acl.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/virtualbox/OS/OS/home/users/AdminUser/Secure/1_Data Storage/data.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/virtualbox/OS/OS/home/users/AdminUser/Secure/5_Network_Location/acl.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/virtualbox/OS/OS/home/users/AdminUser/Secure/5_Network_Location/network.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/virtualbox/OS/OS/home/users/AdminUser/Secure/5_Network_Location/victim.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/virtualbox/OS/OS/home/users/AdminUser/Secure/8 _Possible_Co-ordinates/acl.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/virtualbox/OS/OS/home/users/AdminUser/Secure/8 _Possible_Co-ordinates/geo_coords.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/virtualbox/OS/OS/home/users/AdminUser/Secure/acl.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/virtualbox/OS/OS/home/users/AdminUser/acl.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/virtualbox/OS/OS/home/users/DFarhad/Desktop/acl.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/virtualbox/OS/OS/home/users/DFarhad/Documents/acl.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/virtualbox/OS/OS/home/users/DFarhad/acl.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/virtualbox/OS/OS/home/users/acl.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/virtualbox/OS/acl.xml" beforeDir="false" afterPath="$PROJECT_DIR$/virtualbox/OS/acl.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/virtualbox/config/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/virtualbox/config/__init__.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
