@@ -71,6 +71,12 @@ class CoreFrontend:
         tree = Tree("[b]Panthera's Box")
         tree.add(f"Level: [i]{self.backend._board.level_name}")
         tree.add(f"Score: [i]{self.backend.win_count}")
+        mutators = tree.add("Mutators:")
+        for mutator, state in self.backend.mutators.items():
+            if state:
+                mutators.add(f"[i]{mutator}")
+        if not mutators.children:
+            mutators.add("[i]None")
         return Panel(tree)
 
     def create_layout(self) -> Layout:

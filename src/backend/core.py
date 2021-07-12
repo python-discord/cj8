@@ -47,6 +47,7 @@ class CoreBackend(DebugMixin):
         self._controls = {keys: None for keys in self.CONTROL_PAIRS}
         self._FOV = 5
         self.win_count = 0
+        self.mutators = {}
 
     def new_level(self) -> None:
         """Load a new random level."""
