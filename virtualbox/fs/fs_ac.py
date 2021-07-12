@@ -10,8 +10,8 @@ class AC(copy):
         self.uid = uid
 
     """properties"""
-    @property
-    def perm(self):
+
+    def perms(self):
         return (self.up, self.op, self.uid)
 
     """permisons check"""

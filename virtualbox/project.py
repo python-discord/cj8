@@ -1,3 +1,4 @@
+
 from functions.command_functions import user_commands, random_test
 from functions.blessed_functions import print_tree
 from exceptions import CannotFullFillFunction
@@ -15,7 +16,6 @@ term = Terminal()
 print(term.home + term.clear + term.move_y(term.height // 2))
 
 failed_tasks = 0
-
 
 class User:
     """temporary user class"""
@@ -39,7 +39,6 @@ def add_failure():
     failed_tasks += 1
     print(f"DEBUG: failues: {failed_tasks}")
 
-
 def clear_term():
     print(term.clear)
 
@@ -59,6 +58,7 @@ def user_input_cmd(fs, user):
         user_input = input(">>>  ").split()
         if user_input[0] in user_commands:
             try:
+
                 if randint(1, 20) == 1:
                     random_test()
                 function = user_commands[user_input[0]]
