@@ -1,5 +1,6 @@
 from __future__ import division
 
+from copy import deepcopy
 from typing import Any, List
 
 from asciimatics.effects import Effect
@@ -19,7 +20,7 @@ class Map(Effect):
     def __init__(self, screen: Screen, map: List[str]):
         super(Map, self).__init__(screen)
         self._screen = screen
-        self._map = map
+        self._map = deepcopy(map)
 
         for i, line in enumerate(map):
             j = line.find('@')

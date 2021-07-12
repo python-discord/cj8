@@ -1,18 +1,18 @@
-from typing import Optional
+from typing import Any, List, Optional
 
 from asciimatics.effects import Print, Sprite
+from asciimatics.event import Event, KeyboardEvent
 from asciimatics.paths import Path
 from asciimatics.renderers import Box, FigletText, StaticRenderer
 from asciimatics.scene import Scene
 from asciimatics.screen import Screen
-from asciimatics.event import Event, KeyboardEvent
 
+import exceptions
 from sprites.characters import character_box, character_box_pushing
-from exceptions import *
 
 
 # Wish title_screen and title_input_handler were more closely linked, maybe use a structure similar to controller.py
-def title(screen: Screen) -> list[Scene]:
+def title(screen: Screen) -> List[Scene]:
     """Title screen"""
     char_path, bubble_path = Path(), Path()
     char_path.jump_to(screen.width // 5 + 3, screen.height // 2 + 5)
@@ -61,28 +61,36 @@ def title(screen: Screen) -> list[Scene]:
     return [Scene(effects)]
 
 
-def title_IH(event: Event) -> None:  # Optional[Event]:
+def title_IH(event: Event) -> Optional[Event]:
     """Handle title-screen inputs (IH = input handler)"""
     if isinstance(event, KeyboardEvent):
         key = event.key_code
         if key in [ord("q"), ord("Q"), Screen.KEY_ESCAPE]:
-            raise ExitGame()
-        if key in [ord("s"), ord("S"), ord(" "), ord("\n")]:
-            raise EnterLevel(0)
+            raise exceptions.ExitGame()
+        elif key in [ord("s"), ord("S"), ord(" "), ord("\n")]:
+            raise exceptions.EnterLevel(0)
+        else:
+            return event
+    else:
+        return event
 
 
-def settings(screen: Screen) -> list[Scene]:
+def settings(screen: Screen) -> List[Scene]:
+    """Settings screen"""
     pass
 
 
-def settings_IH(event: Event):
+def settings_IH(event: Event) -> Any:
+    """Settings input handler"""
     pass
 
 
 # uh oh shadows built-in credits
-def credits(sceen: Screen):
+def credits(sceen: Screen) -> Any:
+    """Credits screen"""
     pass
 
 
-def credits_IH(event: Event):
+def credits_IH(event: Event) -> Any:
+    """Credits input handler"""
     pass

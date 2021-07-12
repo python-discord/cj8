@@ -7,10 +7,10 @@ import sys
 from asciimatics.exceptions import ResizeScreenError
 from asciimatics.screen import Screen
 
+import exceptions
+import main_pages as mp
 from gamelogic.controller import GameController
 from sprites.maps import LEVELS
-import main_pages as mp
-from exceptions import *
 
 
 def main(screen: Screen) -> None:
@@ -18,23 +18,23 @@ def main(screen: Screen) -> None:
 
     # preload the main pages
     title = mp.title(screen)
-    settings = mp.settings(screen)
-    credits = mp.credits(screen)
+    settings = mp.settings(screen)  # noqa: F841
+    credits = mp.credits(screen)  # noqa: F841
 
     # Put everything onto the screen
     while True:
         try:
             screen.play(title, stop_on_resize=True, unhandled_input=mp.title_IH)
-        except GameTransition as e:
+        except exceptions.GameTransition as e:
             # I'm not sure if we should split each of the GameTransition exceptions up
             # ie - except EnterLevel:... except LevelSelector:...
             # or to have it like this, but do a bunch of isinstance()s
             # ie - if isinstance(e, EnterLevel):... elif isinstance(e, LevelSelector):...
 
             # screen.clear()  # dk if this is necessary or helpful
-            if isinstance(e, EnterLevel):
+            if isinstance(e, exceptions.EnterLevel):
                 screen.play([GameController(screen, LEVELS[e.level])])
-        except ExitGame:
+        except exceptions.ExitGame:
             sys.exit()
 
 
