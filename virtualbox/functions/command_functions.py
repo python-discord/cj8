@@ -115,6 +115,10 @@ def help_function(user_input):
     [EXTEND]
     help - hymmm i wonder what it does?
     """
+    if len(user_input) == 1:
+        print_box("commands", user_commands.keys())
+        return
+
     try:
         to_print = user_commands[user_input[1]].__doc__.split("[EXTEND]")
     except KeyError:
