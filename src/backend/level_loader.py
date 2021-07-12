@@ -97,14 +97,12 @@ class CoreLevelLoader:
     WALL = "(0, 0, 0)"
     BALL = "(237, 28, 36)"
     GOAL = "(34, 177, 76)"
-    REDIRECTOR = "(0, 162, 232)"
 
     color_dispatcher = {
         PATH: PathTile,
         WALL: WallTile,
         BALL: BallTile,
         GOAL: GoalTile,
-        # REDIRECTOR: RedirectorTile,
     }
 
     def __init__(self) -> None:

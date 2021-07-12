@@ -35,13 +35,22 @@ class CoreBackend(DebugMixin):
     Should keep track of elapsed time and current score.
     """
 
+    CONTROL_PAIRS = [
+        ("1", "3"),
+        ("q", "e"),
+        ("a", "d"),
+        ("z", "c"),
+    ]
+
     def __init__(self) -> None:
         self._board = None
+        self._controls = {keys: None for keys in self.CONTROL_PAIRS}
         self._FOV = 5
 
     def new_level(self) -> None:
         """Load a new random level."""
         self._board = CoreLevelLoader.random_level()
+        self._gen_controls()
 
     def get_board(self) -> List[List[BaseTile]]:
         """Return list of visible tiles within FOV."""
@@ -58,7 +67,7 @@ class CoreBackend(DebugMixin):
     def rotate_redirector(
         self, color: Tuple[int, int, int], clockwise: bool = True
     ) -> None:
-        """Rotate redirector tiles of specified color clockwise by cw_angle."""
+        """Rotate redirector tiles of specified color clockwise."""
         for row in self._board.all_tiles + [[self._board.under_ball]]:
             for x, tile in enumerate(row):
                 if isinstance(tile, RedirectorTile) and tile.color == color:
@@ -109,6 +118,19 @@ class CoreBackend(DebugMixin):
         ball.pos.x += x
         self._board.link_adjacents()
 
+    def _gen_controls(self) -> None:
+        redirectors = [
+            tile
+            for row in self._board.all_tiles
+            for tile in row
+            if isinstance(tile, RedirectorTile)
+        ]
+        for tile in redirectors:
+            for k, v in self._controls.items():
+                if not v:
+                    self._controls[k] = tile.color
+                    break
+
     def key_press(self, key: str) -> None:
         """
         Let the backend know when a key press has happened.
@@ -117,7 +139,12 @@ class CoreBackend(DebugMixin):
 
         :param key: keyboard character that was pressed
         """
-        if key == "q":
-            self.rotate_redirector((0, 162, 232), clockwise=False)
-        if key == "e":
-            self.rotate_redirector((0, 162, 232), clockwise=True)
+        for key_pair, color in self._controls.items():
+            try:
+                direction = bool(key_pair.index(key))
+                break
+            except ValueError:
+                continue
+        else:
+            return
+        self.rotate_redirector(color, clockwise=direction)
