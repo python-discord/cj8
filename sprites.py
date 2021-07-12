@@ -68,11 +68,11 @@ class Player:
 
 
 class Box:
-    def __init__(self, x, y):
+    def __init__(self, x, y, terminal):
         self.x = x
         self.y = y
         self.parts = []
-        self.create_body()
+        self.create_body(terminal)
 
     def create_body(self, terminal):
         self.parts = []
@@ -103,14 +103,50 @@ class Box:
             print(deleted, end='', flush=True)
 
 
+class Target:
+    def __init__(self, x, y, terminal):
+        self.x = x
+        self.y = y
+        self.parts = []
+        self.create_body(terminal)
+
+    def create_body(self, terminal):
+        self.parts = []
+        up1 = terminal.move_xy(self.x, self.y) + terminal.gray38(terminal.on_midnightblue('▛'))
+        self.parts.append(up1)
+        up2 = terminal.move_xy(self.x + 1, self.y) + terminal.gray38(terminal.on_midnightblue('▔'))
+        self.parts.append(up2)
+        up3 = terminal.move_xy(self.x + 2, self.y) + terminal.gray38(terminal.on_midnightblue('▔'))
+        self.parts.append(up3)
+        up4 = terminal.move_xy(self.x + 3, self.y) + terminal.gray38(terminal.on_midnightblue('▜'))
+        self.parts.append(up4)
+        up1 = terminal.move_xy(self.x, self.y + 1) + terminal.gray38(terminal.on_midnightblue('▙'))
+        self.parts.append(up1)
+        up2 = terminal.move_xy(self.x + 1, self.y + 1) + terminal.gray38(terminal.on_midnightblue('▁'))
+        self.parts.append(up2)
+        up3 = terminal.move_xy(self.x + 2, self.y + 1) + terminal.gray38(terminal.on_midnightblue('▁'))
+        self.parts.append(up3)
+        up4 = terminal.move_xy(self.x + 3, self.y + 1) + terminal.gray38(terminal.on_midnightblue('▟'))
+        self.parts.append(up4)
+
+    def draw(self):
+        for part in self.parts:
+            print(part, end='', flush=True)
+
+    def delete(self, terminal):
+        for y in range(self.y, self.y+2, terminal):
+            deleted = terminal.move_xy(self.x, y) + terminal.midnightblue(terminal.on_midnightblue('    '))
+            print(deleted, end='', flush=True)
+
+
 class Platform:
-    def __init__(self, x, y, lenght, flat):
+    def __init__(self, x, y, lenght, flat, terminal):
         self.x = x
         self.y = y
         self.parts = []
         self.lenght = lenght
         self.flat = flat
-        self.create_body()
+        self.create_body(terminal)
 
     def create_body(self, terminal):
         self.parts = []
@@ -133,11 +169,11 @@ class Platform:
 
 
 class ThinkingBox:
-    def __init__(self, x, y):
+    def __init__(self, x, y, terminal):
         self.x = x
         self.y = y
-        self.create_body()
         self.parts = []
+        self.create_body(terminal)
 
     def create_body(self, terminal):
         up1 = terminal.move_xy(self.x, self.y) + terminal.gray37(terminal.on_gray15('▛'))
