@@ -1,5 +1,4 @@
 def portscanner(user_input, fs, user):
-    # this ios just so i learn github desktop app
     try:
         if user_input[1]:
             use_true = 'temp'
