@@ -1,10 +1,21 @@
+from typing import Tuple
+
+import pygame
 import pymunk
 import pymunk.pygame_util
-import pygame
-from typing import Tuple
+from blessed.keyboard import Keystroke
 
 WINDOW = {'w': 100,
           'h': 30}
+
+COLLISION = {'platform': 0,
+             'box': 1,
+             'target': 2,
+             'player': 3}
+
+
+def center(topleft: Tuple[float, float], width: int, height: int) -> Tuple[float, float]:
+    return topleft[0] + width/2, topleft[1] + height/2
 
 
 class MySpace:
@@ -12,9 +23,10 @@ class MySpace:
         self.space = pymunk.Space()
         self.space.gravity = 0, 30
         self.create_borders(self.space.static_body)
+        self.player: pymunk.Poly
 
     # without borders, the items could fall "out of the screen"
-    def create_borders(self, b0):
+    def create_borders(self, b0: pymunk.Body) -> None:
         topleft = 0, 0
         topright = WINDOW['w'], 0
         bottomleft = 0, WINDOW['h']
@@ -27,30 +39,39 @@ class MySpace:
             border.friction = 0
             self.space.add(border)
 
-    def add_platform(self, topleft: Tuple[int, int], width: int, height: int):
-        body = pymunk.Body(0, 0, body_type=pymunk.Body.STATIC)
-        body.position = topleft[0] + width/2, topleft[1] + height/2   # the pymunk library uses center coordinates
+    def add_object(self, topleft: Tuple[float, float], type: str = 'platform', w: int = 1, h: int = 1) -> pymunk.Poly:
+        types = {"platform": {"body_type": pymunk.Body.STATIC, 'w': w, 'h': h, "mass": 0, "mom": 0},
+                 "box": {"body_type": pymunk.Body.DYNAMIC, 'w': 4, 'h': 2, "mass": 1, "mom": 10},
+                 "target": {"body_type": pymunk.Body.STATIC, 'w': 2, 'h': 0.1, "mass": 1, "mom": 10},
+                 "player": {"body_type": pymunk.Body.DYNAMIC, 'w': 4, 'h': 3, "mass": 1, "mom": 10}}
 
-        shape = pymunk.Poly.create_box(body, (width, height), radius=0)
-        shape.elasticity = 0
-        shape.friction = 5   # for the box not to slide away if the player stops on a platform
+        if type in types.keys():
+            body = pymunk.Body(types[type]["mass"], types[type]["mom"], types[type]["body_type"])
+            body.position = center(topleft, types[type]['w'], types[type]['h'])
 
-        self.space.add(body, shape)
-        return shape
+            shape = pymunk.Poly.create_box(body, (types[type]['w'], types[type]['h']), radius=0)
+            shape.collision_type = COLLISION[type]
+            shape.elasticity = 0
+            shape.friction = 5
 
-    def add_box(self, topleft: Tuple[int, int]):
-        w, h = 4, 2
-        body = pymunk.Body(1, 10, body_type=pymunk.Body.DYNAMIC)
-        body.position = topleft[0] + w/2, topleft[1] + h/2
+            self.space.add(body, shape)
+            if type == "player":
+                self.player = shape
+            return shape
 
-        shape = pymunk.Poly.create_box(body, (w, h), radius=0)
-        shape.elasticity = 0
-        shape.friction = 5
+    def move_player(self, key: Keystroke) -> None:
+        if key.name == "KEY_UP":
+            impulse = 0, -20.494
+            self.player.body.apply_impulse_at_local_point(impulse)
+        if key.name == "KEY_DOWN":
+            impulse = 0, 20.494
+            self.player.body.apply_impulse_at_local_point(impulse)
+        if key.name == "KEY_LEFT":
+            self.player.body.position += pymunk.Vec2d(-1, 0)
+        if key.name == "KEY_RIGHT":
+            self.player.body.position += pymunk.Vec2d(1, 0)
 
-        self.space.add(body, shape)
-        return shape
-
-    def get_position(self, item: pymunk.Poly):
+    def get_position(self, item: pymunk.Poly) -> Tuple[int, int]:
         vertices = item.get_vertices()
         topleft = vertices.pop(len(vertices) - 1)
         x, y = topleft + item.body.position
@@ -65,8 +86,8 @@ if __name__ == "__main__":
     draw_options = pymunk.pygame_util.DrawOptions(screen)
 
     space = MySpace()
-    space.add_platform((5, 20), 20, 3)
-    box = space.add_box((10, 10))
+    space.add_object((5, 20), type="platform", w=20, h=3)
+    box = space.add_object((10, 10), type="box")
     # here you can add testing for the methods
 
     running = True
