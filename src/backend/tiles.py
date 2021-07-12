@@ -144,7 +144,7 @@ class WallTile(BaseTile):
         if truth_tuple == (True, False, True, True):
             return "─┴─"
 
-        return " o "
+        return "─┼─"
 
 
 class RedirectorTile(BaseTile):

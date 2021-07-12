@@ -29,3 +29,7 @@ build/
 .vscode/
 # MacOS
 .DS_Store
+
+
+# Log files
+key
