@@ -4,9 +4,6 @@ from .generalfunctions import inAny
 from virtualbox.exceptions import NoSuchFileOrDirectory
 from exceptions import CommandNotFound
 
-import random
-import time
-
 
 # COMMAND LIST
 def ls(fs, user):
@@ -14,10 +11,7 @@ def ls(fs, user):
     [EXTEND]
     ls - list files and directories in current directory
     """
-
-
-
-
+    print_box("ls", fs.stringList(user))
 
 
 def random_test():
@@ -45,7 +39,6 @@ def random_test():
             """                       |:  ::::.       ::' """,
             """                       |:  ::::::    ,::' """
             ])
-    from virtualbox.project import add_failure
     print("enter animal above...")
     user_input = input(">>>  ")
     if user_input.lower() == "dog":
@@ -55,17 +48,11 @@ def random_test():
         print("incorrect")
 
 
-def ls(fs, user):
-    "ls"
-    print_box("ls", fs.stringList(user))
-
-
 def cd(user_input, fs, user):
     """cd [path:string]
     [EXTEND]
     cd - change directory to specified path
     """
-    "cd [path]"
     fs.copy(fs.getDir(user, user_input[1].split("/")))
     print_box("getdir", fs.stringList(user))
 
@@ -76,34 +63,28 @@ def dir_cat(fs, user):
     dir = print file structure
     """
     "dir"
-    # print(term.home + term.clear + term.move_y(term.height // 2))
     print_tree("dir", fs, user)
 
 
 def mkdir(user_input, fs, user):
-
     """mkdir [path:string]
     [EXTEND]
     mdkir - creates direcotry that will have specified path
     """
-    "mkdir [path]"
     tmp = user_input[1].split("/")
     fs.getDir(user, "" if len(tmp) == 0 else tmp[:-1]).mkdir(user, tmp[-1])
 
 
 def add(user_input, fs, user):
-
     """add [path:string]
     [EXTEND]
     add - creates file that will have specified path
     """
-    "add [path]"
     tmp = user_input[1].split("/")
     fs.getDir(user, "" if len(tmp) == 0 else tmp[:-1]).touch(user, tmp[-1])
 
 
 def rm(user_input, fs, user):
-
     """rm [path:string]
     [EXTEND]
     rm - removes file or folder that have specified path
@@ -195,12 +176,6 @@ def quickcrypt(user_input, fs, user):
     fs.getFile(user_input[1]).encrypt(user_input[1], user_input[2], user_input[3] if len(user_input) >= 3 else 2)
 
 
-def read(user_input, fs, user):
-    "read [file path]"
-    print(fs.getFile(user, user_input[1].split("/")).Read(user))
-
-
-
 def search_back(what, walk, piervous):
     result = []
     for i in walk:
@@ -227,11 +202,7 @@ def search(user_input, fs, user):
     print_box("search", result)
 
 
-
-
 def portscanner(user_input, fs, user):
-    from virtualbox.project import clear_term
-    from random import randint
     # try:
     #     # if user_input contains specific port specifies var
     #     if user_input[1]:
@@ -239,7 +210,8 @@ def portscanner(user_input, fs, user):
     # except:
     #     pass
     # ports = [22, 80, 9929, 8898, 22542, 187, 32312]
-    # outputs = ['not a hint', 'not a hint', 'not a hint', 'not a hint', 'not a hint', 'a hint', 'a hint', 'a hint', 'a hint']
+    # outputs = ['not a hint',
+    # 'not a hint', 'not a hint', 'not a hint', 'not a hint', 'a hint', 'a hint', 'a hint', 'a hint']
     # # if specified var (= if user_input contains specific port)
     # if use_true:
     #     # Different Prints to show user a portscanner experience and show hint/ no hint
@@ -256,7 +228,8 @@ def portscanner(user_input, fs, user):
     #     # 5-7 to show user a portscanner experience and show hint/ no hint
     #     for i in range(randint(5, 7)):
     #         port = ports[i]
-    #         print_box("PortScanner",f"Found Port in Network: \n    {port}/TCP [State: open] \n    Scanning Port... \n")  # term.green_on_black
+    #         print_box("PortScanner",f"Found Port in Netw
+    # ork: \n    {port}/TCP [State: open] \n    Scanning Port... \n")  # term.green_on_black
     #         time.sleep(0.4)
     #     inp = int(input('Select a port to scan: '))
     #     with term.cbreak():
@@ -269,6 +242,7 @@ def portscanner(user_input, fs, user):
     #
     #         else:
     #             print_box("PortScanner",'The Port you entered wasnt found in the Network!')
+    pass
 
 
 # COMMAND LIST
@@ -288,11 +262,9 @@ user_commands = {"ls": ls,
                  "read": read,
                  "write": write,
                  "dir": dir_cat,
-                 "h": help,
-                 "help": help,
                  "quickcrypt": quickcrypt,
                  "read": read,
                  "search": search,
                  "portscan": portscanner,
                  "cd": cd
-}
+                 }
