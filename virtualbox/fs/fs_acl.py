@@ -20,12 +20,22 @@ class ACL:
     def InitRead(cls, path):
         return cls(readxml(path, int))
 
-    "iterator"
+    "diciti like"
     def __iter__(self):
         return iter(self.dicit.items())
 
     def __getitem__(self, key):
         return self.dicit[key]
 
+    def __setitem__(self, key, item):
+        self.dicit[key] = item
+
     def items(self):
         return self.dicit.items()
+
+    def __delitem__(self, key):
+        del self.dicit[key]
+
+    # debug
+    def __repr__(self):
+        return str(self.dicit)

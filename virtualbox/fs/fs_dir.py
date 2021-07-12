@@ -7,6 +7,7 @@ from virtualbox.exceptions import FileOrDirectoryAlreadyExist
 from virtualbox.exceptions import NotAnDirectory
 from virtualbox.exceptions import NotAnFile
 from virtualbox.exceptions import PermisionDenied
+import copy
 import os
 import shutil
 
@@ -95,20 +96,20 @@ class Dir(AC):
         self.sub[name] = object
         self.acl.add(name, object.perms)
 
-    @AC.writecheck
-    @doesnotexist
-    @update
-    def rename(self, user, name, to):
-        if to in self.sub:
+    def mv(self, user, name, to):
+        father = self.get(user, name[:-1])
+        dest = self.getDir(user, to[:-1])
+
+        if name[-1] in dest.acl:
             raise FileOrDirectoryAlreadyExist()
 
-        self.sub[to] = self.sub.pop(name)
-        self.acl[to] = self.sub.pop(name)
-        os.rename(self.path + sep + name, self.path + sep + to)
+        dest.set(user, to[-1], father.pop(user, name[-1]))
+        dest.sub[to[-1]].mvSelf(user, self.path + sep + sep.join(to))
 
+    def cp(self, user, path, to):
+        dest = self.getDir(user, to[:-1])
+        dest.append(user, self.get(user, path).cpSelf(user, self.path + sep + sep.join(to)), to[-1])
 
-    def mv(self, user, path, to):
-        pass
     @AC.readcheck
     def ls(self, user):
         return self.sub
@@ -145,8 +146,8 @@ class Dir(AC):
         result = self
         for i in path:
             result = result.shallowget(user, i)
-            if type(result) != Type:
-                raise exception()
+        if type(result) != Type:
+            raise exception()
         return result
 
     def getDir(self, user, path):
@@ -187,7 +188,18 @@ class Dir(AC):
     def create(self):
         os.mkdir(self.path)
         self.aclsave()
-        return self
+
+    @AC.execcheck
+    def mvSelf(self, user, to):
+        shutil.move(self.path, to)
+        self.path = to
+
+    @AC.execcheck
+    def cpSelf(self, user, to):
+        shutil.copy(self.path, to)
+        result = copy.copy(self)
+        result.path = to
+        return result
 
     "properties"
     @property
@@ -197,3 +209,26 @@ class Dir(AC):
     "save acl"
     def aclsave(self):
         self.acl.save(self.aclpath)
+
+    # dicit like
+    @AC.readcheck
+    def getDicit(self, user, key):
+        if key in self.acl.dicit:
+            return self.sub[key], self.acl[key]
+        raise NoSuchFileOrDirectory()
+
+    @AC.writecheck
+    @update
+    def set(self, user, key, value):
+        self.sub[key] = value[0]
+        self.acl[key] = value[1]
+
+    @AC.writecheck
+    @update
+    def pop(self, user, key):
+        tmp = self.getDicit(user, key)
+
+        del self.sub[key]
+        del self.acl[key]
+
+        return tmp

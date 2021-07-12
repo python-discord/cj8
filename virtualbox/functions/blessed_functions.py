@@ -12,8 +12,6 @@ def treat_subdir(rest, intend):
     return result
 
 
-
-
 def print_tree(header, directory, user):
     print_box(header, treat_subdir(directory.walk(user), ''))
     # "│", "─", " ┌", "┬", "┐", "├", "┼", "┤", "└", "┴", "┘"]
@@ -23,6 +21,11 @@ def print_tree(header, directory, user):
 
 
 def print_box(header, text):
+    if len(text) == 0:
+        print(template.format('┌', header, "", '┐'))
+        print(template.format('└', header, "", '┘'))
+        return
+
     max_len = max(map(len, text))
     if max_len < len(header) + 4:
         max_len = len(header) + 4
