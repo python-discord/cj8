@@ -1,4 +1,5 @@
 from os import system
+
 from blessed import Terminal
 
 terminal = Terminal()

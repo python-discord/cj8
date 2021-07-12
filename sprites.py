@@ -1,10 +1,17 @@
 class Player:
+    """
+        Every draw, create_body and delete function works the same.
+        Draw function prints everything in parts list.
+        Create body puts every character at the needed position and puts them in parts list.
+        Delete writes with whitespace and changes text color to background color and puts blue background back.
+
+    """
     def __init__(self, x, y):
         self.x = x
         self.y = y
         self.parts = []
 
-    def create_body(self, terminal):
+    def create_body(self, terminal):  # Creates the body of the player. Puts all the characters toghether in parts list
         self.parts = []
         eye1 = terminal.move_xy(self.x + 1, self.y + 1) + terminal.white(terminal.on_blue('▘'))
         self.parts.append(eye1)
@@ -31,7 +38,7 @@ class Player:
         leg3 = terminal.move_xy(self.x + 2, self.y + 2) + terminal.blue(terminal.on_midnightblue('▍'))
         self.parts.append(leg3)
 
-    def move(self, val):
+    def move(self, val):  # Move player, pass val variable from main loop
         if val.name == "KEY_UP":
             self.delete()
             self.y -= 1
@@ -49,12 +56,12 @@ class Player:
             self.x -= 1
             self.create_body()
 
-    def delete(self, terminal):
+    def delete(self, terminal):  # delete the player at the current location
         for y in range(self.y, self.y+3):
             deleted = terminal.move_xy(self.x, y) + terminal.midnightblue(terminal.on_midnightblue('    '))
             print(deleted, end='', flush=True)
 
-    def draw(self):
+    def draw(self):  # draws the player at it's x and y location
         self.create_body()
         for part in self.parts:
             print(part, end='', flush=True)
@@ -77,7 +84,6 @@ class Box:
         self.parts.append(up3)
         up4 = terminal.move_xy(self.x + 3, self.y) + terminal.navajowhite4(terminal.on_navajowhite3('▜'))
         self.parts.append(up4)
-
         up1 = terminal.move_xy(self.x, self.y + 1) + terminal.navajowhite4(terminal.on_navajowhite3('▙'))
         self.parts.append(up1)
         up2 = terminal.move_xy(self.x + 1, self.y + 1) + terminal.navajowhite4(terminal.on_navajowhite3('▁'))
@@ -108,7 +114,7 @@ class Platform:
 
     def create_body(self, terminal):
         self.parts = []
-        if self.flat:
+        if self.flat:  # checks if the platform is horizontal or not and builds it based on that
             up1 = terminal.move_xy(self.x, self.y) + terminal.orchid4(terminal.on_plum4('▛'))
             self.parts.append(up1)
             for i in range(1, self.lenght - 1):
