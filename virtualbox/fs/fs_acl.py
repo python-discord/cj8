@@ -26,6 +26,6 @@ class ACL:
 
     def __getitem__(self, key):
         return self.dicit[key]
-    
+
     def items(self):
         return self.dicit.items()
