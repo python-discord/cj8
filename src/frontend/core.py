@@ -1,4 +1,5 @@
 import time
+from shutil import get_terminal_size
 
 from rich.color import Color
 from rich.live import Live
@@ -24,6 +25,8 @@ class CoreFrontend:
     """
 
     FPS = 12
+    MIN_WIDTH = 75
+    MIN_HEIGHT = 40
 
     def __init__(self):
         self.backend: CoreBackend = CoreBackend()
@@ -31,6 +34,10 @@ class CoreFrontend:
 
     def start_loop(self) -> None:
         """Start the render loop"""
+        width, height = get_terminal_size()
+        while width < self.MIN_WIDTH or height < self.MIN_HEIGHT:
+            print(f"Your terminal must be {self.MIN_WIDTH}x{self.MIN_HEIGHT}", end="\r")
+            width, height = get_terminal_size()
         with Live(
             self.get_display(), screen=True, transient=True, refresh_per_second=self.FPS
         ) as live:
