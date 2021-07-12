@@ -38,21 +38,23 @@ class CoreFrontend:
 
     def start_loop(self) -> None:
         """Start the render loop"""
-        width, height = get_terminal_size()
-        while width < self.MIN_WIDTH or height < self.MIN_HEIGHT:
-            print(f"Your terminal must be {self.MIN_WIDTH}x{self.MIN_HEIGHT}", end="\r")
-            width, height = get_terminal_size()
-
+        self._check_terminal_size()
         with Live(
-            self.create_layout(),
-            screen=True,
-            transient=True,
-            refresh_per_second=self.FPS,
+                self.create_layout(),
+                screen=True,
+                transient=True,
+                refresh_per_second=self.FPS,
         ) as live:
             while True:
                 time.sleep(1 / self.FPS)
                 self.backend.move_ball()
                 live.update(self.create_layout())
+
+    def _check_terminal_size(self) -> None:
+        width, height = get_terminal_size()
+        while width < self.MIN_WIDTH or height < self.MIN_HEIGHT:
+            print(f"Your terminal must be {self.MIN_WIDTH}x{self.MIN_HEIGHT}", end="\r")
+            width, height = get_terminal_size()
 
     @property
     def display(self) -> Table:

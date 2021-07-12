@@ -44,13 +44,14 @@ class CoreBackend(DebugMixin):
 
     def __init__(self) -> None:
         self._board = None
-        self._controls = {keys: None for keys in self.CONTROL_PAIRS}
+        self._controls = {}
         self._FOV = 5
         self.win_count = 0
         self.mutators = {}
 
     def new_level(self) -> None:
         """Load a new random level."""
+        self._controls = {keys: None for keys in self.CONTROL_PAIRS}
         self._board = CoreLevelLoader.random_level()
         self._gen_controls()
 
@@ -67,7 +68,7 @@ class CoreBackend(DebugMixin):
         return all_tiles
 
     def rotate_redirector(
-        self, color: Tuple[int, int, int], clockwise: bool = True
+            self, color: Tuple[int, int, int], clockwise: bool = True
     ) -> None:
         """Rotate redirector tiles of specified color clockwise."""
         for row in self._board.all_tiles + [[self._board.under_ball]]:
@@ -144,6 +145,10 @@ class CoreBackend(DebugMixin):
 
         :param key: keyboard character that was pressed
         """
+        if key == '[':
+            self.new_level()
+            return
+
         for key_pair, color in self._controls.items():
             try:
                 direction = bool(key_pair.index(key))
