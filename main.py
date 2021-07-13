@@ -46,9 +46,11 @@ with term.fullscreen(), term.cbreak(), term.hidden_cursor():
 
                 # check if subgrid saved from previous turn
                 if state.save_subgrid:
-                    term_info[
-                        2
-                    ] = f"Current: SubGrid {state.user_select_subgrid} | Space {state.user_select_space}"
+                    term_info[2] = (
+                        f"Current: SubGrid {state.user_select_subgrid} "
+                        f"| Space {state.user_select_space}"
+                    )
+
                     print(term.move_up(7))
                     user_section = update_user_section(term_info)
                     print("".join(user_section))
@@ -59,9 +61,10 @@ with term.fullscreen(), term.cbreak(), term.hidden_cursor():
                 term_info[1] = "Select SubGrid by entering 1-9"
                 if val in ("1", "2", "3", "4", "5", "6", "7", "8", "9"):
                     state.user_select_subgrid = int(val)
-                    term_info[
-                        2
-                    ] = f"Current: SubGrid {state.user_select_subgrid} | Space {state.user_select_space}"
+                    term_info[2] = (
+                        f"Current: SubGrid {state.user_select_subgrid} "
+                        f"| Space {state.user_select_space}"
+                    )
 
                 print(term.move_up(7))
                 user_section = update_user_section(term_info)
@@ -71,9 +74,10 @@ with term.fullscreen(), term.cbreak(), term.hidden_cursor():
                 term_info[1] = "Select Space by entering 1-9"
                 if val in ("1", "2", "3", "4", "5", "6", "7", "8", "9"):
                     state.user_select_space = int(val)
-                    term_info[
-                        2
-                    ] = f"Current: SubGrid {state.user_select_subgrid} | Space {state.user_select_space}"
+                    term_info[2] = (
+                        f"Current: SubGrid {state.user_select_subgrid} "
+                        f"| Space {state.user_select_space}"
+                    )
 
                 print(term.move_up(7))
                 user_section = update_user_section(term_info)
