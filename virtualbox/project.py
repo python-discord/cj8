@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+
+>>>>>>> parent of 67bb69f (new argument system, unicode in spearate file and in config)
 from functions.command_functions import user_commands, random_test
 from functions.blessed_functions import print_tree
 from exceptions import CannotFullFillFunction
@@ -5,9 +9,12 @@ from config import START_PATH
 from random import randint
 from time import sleep
 from blessed import Terminal
-from copy import copy
+
+<<<<<<< HEAD
+=======
 from fs.fs_dir import Dir
 
+>>>>>>> parent of 67bb69f (new argument system, unicode in spearate file and in config)
 # file system imports
 fs = Dir.FromPath(START_PATH, None, 7, 0, 0)
 
@@ -87,7 +94,7 @@ def start(fs, user):
 def main():
     global fs
     start(fs, User)
-    user_input_cmd(copy(fs), User)
+    user_input_cmd(fs, User)
 
 
 if __name__ == "__main__":

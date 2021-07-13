@@ -3,10 +3,14 @@ from .blessed_functions import print_tree
 from .generalfunctions import inAny
 from virtualbox.exceptions import NoSuchFileOrDirectory
 from exceptions import CommandNotFound
+<<<<<<< HEAD
 import time
 from blessed import Terminal
 import random
 term = Terminal()
+=======
+
+>>>>>>> parent of 67bb69f (new argument system, unicode in spearate file and in config)
 
 # COMMAND LIST
 def ls(fs, user):
@@ -118,6 +122,7 @@ def help_function(user_input):
     [EXTEND]
     help - hymmm i wonder what it does?
     """
+<<<<<<< HEAD
     if len(user_input) == 1:
         print_box("commands", user_commands.keys())
         return
@@ -127,6 +132,13 @@ def help_function(user_input):
     except KeyError:
         raise CommandNotFound()
 
+=======
+    try:
+        to_print = user_commands[user_input[1]].__doc__.split("[EXTEND]")
+    except KeyError:
+        raise CommandNotFound()
+
+>>>>>>> parent of 67bb69f (new argument system, unicode in spearate file and in config)
     print(to_print[0].strip())
     if len(user_input) > 2 and user_input[2] == "yes":
         print(to_print[1].strip())
@@ -221,6 +233,7 @@ def portscanner(user_input, fs, user):
     #         use_true = 'temp'
     # except:
     #     pass
+<<<<<<< HEAD
     ports = [22, 80, 9929, 8898, 22542, 187, 32312]
     outputs = ['not a hint',
     'not a hint', 'not a hint', 'not a hint', 'not a hint', 'a hint', 'a hint', 'a hint', 'a hint']
@@ -251,6 +264,42 @@ def portscanner(user_input, fs, user):
                 print_box("PortScanner", [f"Port {inp} attackable. ", "Attack launchend. ", f"Output: {output}"])
             else:
                 print_box("PortScanner", ["The Port you entered wasnt found in the Network!"])
+=======
+    # ports = [22, 80, 9929, 8898, 22542, 187, 32312]
+    # outputs = ['not a hint',
+    # 'not a hint', 'not a hint', 'not a hint', 'not a hint', 'a hint', 'a hint', 'a hint', 'a hint']
+    # # if specified var (= if user_input contains specific port)
+    # if use_true:
+    #     # Different Prints to show user a portscanner experience and show hint/ no hint
+    #     print_box("PortScanner", f'Scanning Network for Port: {user_input}')
+    #     time.sleep(1)
+    #     clear_term()
+    #     print_box("PortScanner", f"Found Port in Network: \n    {port}/TCP [State: open] \n    Scanning Port... \n")
+    #     time.sleep(1)
+    #     clear_term()
+    #     output = random.choice(outputs)
+    #     clear_term()
+    #     print_box("PortScanner",f'Port {inp} attackable. \n    Attack launchend. \n    Output: {output} \n')
+    # else:
+    #     # 5-7 to show user a portscanner experience and show hint/ no hint
+    #     for i in range(randint(5, 7)):
+    #         port = ports[i]
+    #         print_box("PortScanner",f"Found Port in Netw
+    # ork: \n    {port}/TCP [State: open] \n    Scanning Port... \n")  # term.green_on_black
+    #         time.sleep(0.4)
+    #     inp = int(input('Select a port to scan: '))
+    #     with term.cbreak():
+    #         val = ''
+    #         if int(val.lower()) in ports:
+    #             output = random.choice(outputs)
+    #             time.sleep(3)
+    #             clear_term()
+    #             print_box("PortScanner",f'Port {inp} attackable. \n    Attack launchend. \n    Output: {output} \n')
+    #
+    #         else:
+    #             print_box("PortScanner",'The Port you entered wasnt found in the Network!')
+    pass
+>>>>>>> parent of 67bb69f (new argument system, unicode in spearate file and in config)
 
 
 # COMMAND LIST
