@@ -3,7 +3,7 @@
 from __future__ import division
 
 import sys
-from typing import Callable, Tuple, List, Union
+from typing import Callable, List, Tuple, Union
 
 from asciimatics.exceptions import ResizeScreenError
 from asciimatics.scene import Scene
@@ -12,7 +12,6 @@ from asciimatics.screen import Screen
 import exceptions
 import main_pages as mp
 from gamelogic.controller import GameController, game_IH
-from sprites.maps import LEVELS
 
 Scenes = Union[Callable, List[Scene]]
 
@@ -42,7 +41,7 @@ def play_scenes(screen: Screen, scenes: Scenes, ih: Callable) -> Tuple[Scenes, C
             # Set next scenes
             screen.clear()  # Looks nicer
             if isinstance(e, exceptions.EnterLevel):
-                scenes = [GameController(screen, LEVELS[e.level])]
+                scenes = [GameController(screen, e.level)]
                 ih = game_IH
             elif isinstance(e, exceptions.Title):
                 # Remember - unless next scene is a level, set "scenes" to a function (not a scene)
