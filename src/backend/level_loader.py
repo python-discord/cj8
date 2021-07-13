@@ -177,7 +177,7 @@ class CoreLevelLoader:
 
     def _pixel(self, x: int, y: int) -> Tuple[int, int, int]:
         width, _ = self.size
-        return self._raw_pixel_list[width * y + x]
+        return self._raw_pixel_list[width * y + x][:3]
 
 
 if __name__ == "__main__":
