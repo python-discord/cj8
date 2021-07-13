@@ -10,15 +10,16 @@ class AbstractDungeonEntity:
         self,
         level: Level,
         ground_symbol: str = "'",
-        x: int = 0,
         y: int = 0,
+        x: int = 0,
         symbol: str = "$",
         color: str = "white",
     ):
         self.x = x
         self.y = y
         self.symbol = Text(symbol)
-        self.ground_symbol = ground_symbol
+        self.ground_symbol = Text(ground_symbol)
+        self.ground_symbol.stylize("bold magenta")
         self.level = level
         if color:
             self.symbol.stylize(color)

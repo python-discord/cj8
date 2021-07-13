@@ -10,9 +10,7 @@ class Character(AbstractDungeonEntity):
 
     def __init__(self, current_level: Level, symbol: str = "$") -> None:
         super().__init__(
-            ground_symbol=current_level.board[current_level.width // 2][
-                current_level.height // 2
-            ],
+            ground_symbol="'",
             x=current_level.width // 2,
             y=current_level.height // 2,
             symbol=symbol,
