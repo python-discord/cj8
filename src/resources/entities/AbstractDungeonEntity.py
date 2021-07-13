@@ -25,4 +25,4 @@ class AbstractDungeonEntity:
 
     def draw(self) -> None:
         """Places entity on map"""
-        self.level.board[self.x][self.y] = self.symbol
+        self.level.board[self.y][self.x] = self.symbol

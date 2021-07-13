@@ -24,7 +24,7 @@ class Level:
         for j in range(y):
             row = []
             for i in range(x):
-                tile = Tile("'", style="bold magenta")
+                tile = Tile(symbol="'", style="bold magenta")
                 row.append(tile)
             self.board.append(row)
 
