@@ -42,9 +42,9 @@ class Map:
         self.platforms.append(border1)
 
         target1 = Target(70, 21, self.terminal)
-        self.space.add_object((70, 22.99), type="target")
+        self.space.add_object((70, 22.9), type="target")
         target2 = Target(90, 27, self.terminal)
-        self.space.add_object((70, 28.99), type="target")
+        self.space.add_object((70, 28.9), type="target")
         self.targets.append(target1)
         self.targets.append(target2)
 

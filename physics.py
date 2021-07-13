@@ -75,7 +75,7 @@ class MySpace:
     def add_object(self, topleft: Tuple[float, float], type: str = 'platform', w: int = 1, h: int = 1) -> pymunk.Poly:
         types = {"platform": {"body_type": pymunk.Body.STATIC, 'w': w, 'h': h, "mass": 0, "mom": 0},
                  "box": {"body_type": pymunk.Body.DYNAMIC, 'w': 4, 'h': 2, "mass": 1, "mom": 10},
-                 "target": {"body_type": pymunk.Body.STATIC, 'w': 2, 'h': 0.01, "mass": 0, "mom": 0},
+                 "target": {"body_type": pymunk.Body.STATIC, 'w': 2, 'h': 0.1, "mass": 0, "mom": 0},
                  "player": {"body_type": pymunk.Body.DYNAMIC, 'w': 4, 'h': 3, "mass": 1, "mom": 10}}
 
         if type in types.keys():
@@ -114,6 +114,7 @@ class MySpace:
 
     def box_and_target_coll(self, arbiter: pymunk.Arbiter, space, data):
         self.targets_to_engage.remove(arbiter.shapes[1])
+        logging.info("box and target collided")
 
 
 if __name__ == "__main__":
