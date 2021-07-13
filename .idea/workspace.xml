@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
+<<<<<<< Updated upstream
     <list default="true" id="7d1af81c-a44b-48c5-96bb-f853bacb74b5" name="Default Changelist" comment="">
       <change afterPath="$PROJECT_DIR$/virtualbox/OS/os/local/root/documents/target_location/acl.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/virtualbox/OS/os/local/root/documents/target_location/nigeria.txt" afterDir="false" />
@@ -22,6 +23,9 @@
       <change beforePath="$PROJECT_DIR$/virtualbox/functions/blessed_functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/virtualbox/functions/blessed_functions.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/virtualbox/project.py" beforeDir="false" afterPath="$PROJECT_DIR$/virtualbox/project.py" afterDir="false" />
     </list>
+=======
+    <list default="true" id="7d1af81c-a44b-48c5-96bb-f853bacb74b5" name="Default Changelist" comment="" />
+>>>>>>> Stashed changes
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -43,7 +47,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/virtualbox" />
-    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
