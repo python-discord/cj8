@@ -1,9 +1,11 @@
 import sys
+from typing import NoReturn
 
 from src.frontend.core import CoreFrontend
 
 
-def main():
+def main() -> NoReturn:
+    """Run the game."""
     frontend = CoreFrontend()
     try:
         frontend.start_loop()
