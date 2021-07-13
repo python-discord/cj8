@@ -299,6 +299,7 @@ def hint(user_input, fs, user):
     #selects random vulnerability
     chosen_vulnerability = random.choice(VULNERABILITIES)
     time.sleep(2)
+    clear_term()
     #display our selected vulnerability.
     print_box("vscan",["Looking for vulnerabilities...", f"Vulnerability found: {chosen_vulnerability}"])
     #removes vulnerability from the list.
