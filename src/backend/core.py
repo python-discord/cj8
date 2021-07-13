@@ -1,5 +1,6 @@
 from typing import List, Tuple
 
+from src.backend.events import EventsMixin, PauseEvent
 from src.backend.level_loader import CoreLevelLoader
 from src.backend.tiles import (
     BaseTile,
@@ -16,7 +17,7 @@ class DebugMixin:
     """Debugging mixin methods for the backend module"""
 
 
-class CoreBackend(DebugMixin):
+class CoreBackend(DebugMixin, EventsMixin):
     """
     Backend Module
 
@@ -43,6 +44,7 @@ class CoreBackend(DebugMixin):
     ]
 
     def __init__(self) -> None:
+        super().__init__()
         self._board = None
         self._controls = {}
         self._FOV = 5
@@ -148,6 +150,10 @@ class CoreBackend(DebugMixin):
         if key == "[":
             self.new_level()
             return
+
+        if key == "p":
+            event = PauseEvent()
+            self.emit_event(event)
 
         for key_pair, color in self._controls.items():
             try:

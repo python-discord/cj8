@@ -10,6 +10,7 @@ from rich.table import Table
 from rich.tree import Tree
 
 from src.backend.core import CoreBackend
+from src.backend.events import BaseEvent
 from src.keyboard_handlers.core import BaseKeyboardHandler, KeyboardFactory
 
 
@@ -35,6 +36,9 @@ class CoreFrontend:
     def __init__(self):
         self.backend: CoreBackend = CoreBackend()
         self.keyboard_handler: BaseKeyboardHandler = KeyboardFactory.get(self.backend)
+        self._paused = False
+
+        self.backend.register_hook(self.toggle_pause)
 
     def start_loop(self) -> None:
         """Start the render loop"""
@@ -46,9 +50,10 @@ class CoreFrontend:
             refresh_per_second=self.FPS,
         ) as live:
             while True:
-                time.sleep(1 / self.FPS)
-                self.backend.move_ball()
+                if not self._paused:
+                    self.backend.move_ball()
                 live.update(self.create_layout())
+                time.sleep(1 / self.FPS)
 
     def _check_terminal_size(self) -> None:
         width, height = get_terminal_size()
@@ -96,6 +101,11 @@ class CoreFrontend:
         layout["Display"].ratio = 3
         layout["Display"].update(Align(self.display, align="center", vertical="middle"))
         return layout
+
+    def toggle_pause(self, event: BaseEvent) -> None:
+        """Handle only pause events"""
+        if event.type == "pause":
+            self._paused = not self._paused
 
 
 if __name__ == "__main__":
