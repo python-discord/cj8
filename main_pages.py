@@ -94,3 +94,11 @@ def credits(sceen: Screen) -> Any:
 def credits_IH(event: Event) -> Any:
     """Credits input handler"""
     pass
+
+
+def level_selector(screen: Screen):
+    pass
+
+
+def level_selector_IH(event: Event):
+    pass
