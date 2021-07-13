@@ -2,6 +2,7 @@ import os
 import time
 from pathlib import Path
 from shutil import get_terminal_size
+from typing import NoReturn
 
 from rich.align import Align
 from rich.color import Color
@@ -46,7 +47,7 @@ class CoreFrontend:
 
         self.backend.register_hook(self.toggle_pause)
 
-    def start_loop(self) -> None:
+    def start_loop(self) -> NoReturn:
         """Start the render loop"""
         self._check_terminal_size()
         with Live(
