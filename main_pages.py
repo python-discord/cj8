@@ -98,9 +98,11 @@ def credits_IH(event: Event) -> Any:
     pass
 
 
-def level_selector(screen: Screen):
+def level_selector(screen: Screen) -> Any:
+    """Level selector screen"""
     pass
 
 
-def level_selector_IH(event: Event):
+def level_selector_IH(event: Event) -> Any:
+    """Level selector input handler"""
     pass
