@@ -7,6 +7,7 @@ print(term.home + term.clear + term.move_y(term.height // 2))
 
 BLANK_LINES = 50
 
+
 def treat_subdir(rest, intend):
     result = []
     for i in rest:

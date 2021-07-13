@@ -9,6 +9,8 @@ import random
 import os
 term = Terminal()
 
+failed_tasks = 0
+
 # COMMAND LIST
 def ls(fs, user):
     """ls
@@ -47,10 +49,16 @@ def random_test():
     user_input = input(">>>  ")
     if user_input.lower() == "dog":
         print("correct")
-        add_failure()
+        add_failure(5)
     else:
         print("incorrect")
     clear_term()
+
+
+def add_failure(value):
+    global failed_tasks
+    failed_tasks += value
+    print(f"DEBUG: failues: {failed_tasks}")
 
 
 def cd(user_input, fs, user):
@@ -295,7 +303,7 @@ def hint(user_input, fs, user):
     #removes vulnerability from the list.
     remove_vulnerabillity(chosen_vulnerability)
     #add 1 failure point.
-    add_failure()
+    add_failure(10)
 
 
 # COMMAND LIST
