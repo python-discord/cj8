@@ -1,6 +1,6 @@
 
 from functions.command_functions import user_commands, random_test
-from functions.blessed_functions import print_tree, clear_term, printstart
+from functions.blessed_functions import print_tree, clear_term, printstart, printhelp_first
 from exceptions import CannotFullFillFunction
 from config import START_PATH
 from random import randint
@@ -18,8 +18,6 @@ failed_tasks = 0
 class User:
     """temporary user class"""
     uid = 0
-
-
 
 
 def add_failure():
@@ -61,11 +59,12 @@ def start(fs, user):
     printstart(
        """You can gain access to these by (*insert challange here, example: get the password of the main file*). You will have to overcome multiple challenges \n \n""")
     printstart("""So, dont waste your time, think smarter not harder, and good luck!
-               (*Title* starting, 
+               (*Title* starting,
                gaining system access,
                Access gained.
                AI will launch...) \n \n""")
-    print_tree("System", fs, user)
+    printhelp_first()
+    # print_tree("System", fs, user)
     return
 
 

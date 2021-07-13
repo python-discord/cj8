@@ -34,20 +34,22 @@ def treat_subdir(rest, intend):
 
 
 def printstart(arg):
-    print(term.clear)
+    clear_term()
     print(term.green_on_black(arg))
     sleep(0)  # len for each sentence
-    print(term.green_on_black("Press C to continue"))
-    with term.cbreak():
-        val = ''
-        if val.lower() == 'c':
-            return
-        else:
-            pass
+    print(term.green_on_black("Press Enter to continue"))
+    c_input = input()
+    return
 
 
 def clear_term():
-    print(term.clear)
+    os.system('cls' if os.name=='nt' else 'clear')
+    # print(term.clear)
+
+
+def printhelp_first():
+    clear_term()
+    print(term.green_on_black("""First, type "help" in the console to see all of the commands you can use! """))
 
 
 def print_tree(header, directory, user):
