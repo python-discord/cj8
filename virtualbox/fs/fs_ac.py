@@ -1,8 +1,7 @@
 from virtualbox.exceptions import PermisionDenied
-from virtualbox.generalclasses import copy
 
 
-class AC(copy):
+class AC:
     def __init__(self, up, op, uid):
         self.up = up
         self.op = op
@@ -10,8 +9,13 @@ class AC(copy):
         self.uid = uid
 
     """properties"""
+<<<<<<< HEAD
 
     def perms(self):
+=======
+    @property
+    def perm(self):
+>>>>>>> parent of fb517fd (Merge branch 'SirArthur' of https://github.com/cj8-cheerful-cheetahs/project into SirArthur)
         return (self.up, self.op, self.uid)
 
     """permisons check"""

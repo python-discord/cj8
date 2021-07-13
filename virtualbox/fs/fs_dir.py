@@ -7,7 +7,6 @@ from virtualbox.exceptions import FileOrDirectoryAlreadyExist
 from virtualbox.exceptions import NotAnDirectory
 from virtualbox.exceptions import NotAnFile
 from virtualbox.exceptions import PermisionDenied
-import copy
 import os
 import shutil
 
@@ -96,6 +95,7 @@ class Dir(AC):
         self.sub[name] = object
         self.acl.add(name, object.perms)
 
+<<<<<<< HEAD
     def mv(self, user, name, to):
         father = self.get(user, name[:-1])
         dest = self.getDir(user, to[:-1])
@@ -111,25 +111,32 @@ class Dir(AC):
         dest.append(user, self.get(user, path).cpSelf(user, self.path + sep + sep.join(to)), to[-1])
 
 
+=======
+>>>>>>> parent of fb517fd (Merge branch 'SirArthur' of https://github.com/cj8-cheerful-cheetahs/project into SirArthur)
     @AC.readcheck
     def ls(self, user):
         return self.sub
 
+<<<<<<< HEAD
     @AC.readcheck
     def stringList(self, user):
         return list(self.sub.keys())
 
     @AC.readcheck
+=======
+>>>>>>> parent of fb517fd (Merge branch 'SirArthur' of https://github.com/cj8-cheerful-cheetahs/project into SirArthur)
     def walk(self, user):
         try:
-            Result = []
-            for key, item in self.sub.items():
-                if key != "..":
-                    Result.append(key if isinstance(item, File) else (key, item.walk(user)))
-
+            Result = {}
+            for key, item in self.ls(user):
+                Result[key] = item if isinstance(item, File) else item.walk(user)
             return Result
         except PermisionDenied:
+<<<<<<< HEAD
             return []
+=======
+            return {}
+>>>>>>> parent of fb517fd (Merge branch 'SirArthur' of https://github.com/cj8-cheerful-cheetahs/project into SirArthur)
 
     "change directory"
     @doesnotexist
@@ -139,17 +146,16 @@ class Dir(AC):
 
     def get(self, user, path):
         result = self
-        for i in path:
+        for i in path.split("/"):
             result = result.shallowget(user, i)
         return result
 
     def getType(self, user, path, Type, exception):
         result = self
-        for i in path:
+        for i in path.split("/"):
             result = result.shallowget(user, i)
-        if type(result) != Type:
-            raise exception()
-
+            if type(result) != Type:
+                raise exception()
         return result
 
     def getDir(self, user, path):
@@ -190,7 +196,9 @@ class Dir(AC):
     def create(self):
         os.mkdir(self.path)
         self.aclsave()
+        return self
 
+<<<<<<< HEAD
     @AC.execcheck
     def mvSelf(self, user, to):
         shutil.move(self.path, to)
@@ -204,6 +212,8 @@ class Dir(AC):
         return result
 
 
+=======
+>>>>>>> parent of fb517fd (Merge branch 'SirArthur' of https://github.com/cj8-cheerful-cheetahs/project into SirArthur)
     "properties"
     @property
     def aclpath(self):
@@ -212,6 +222,7 @@ class Dir(AC):
     "save acl"
     def aclsave(self):
         self.acl.save(self.aclpath)
+<<<<<<< HEAD
 
     # dicit like
     @AC.readcheck
@@ -236,3 +247,5 @@ class Dir(AC):
 
         return tmp
 
+=======
+>>>>>>> parent of fb517fd (Merge branch 'SirArthur' of https://github.com/cj8-cheerful-cheetahs/project into SirArthur)

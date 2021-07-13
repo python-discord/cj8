@@ -23,7 +23,11 @@ class User:
     "inits"
     @classmethod
     def AutoUIDInit(cls, name, homePath, password, uidspace):
+<<<<<<< HEAD
         return cls(name, uidspace.getUid(), homePath, password)
+=======
+        return cls(name, uidspace.genUid(), homePath, password)
+>>>>>>> parent of fb517fd (Merge branch 'SirArthur' of https://github.com/cj8-cheerful-cheetahs/project into SirArthur)
 
     @classmethod
     def CustomUIDInit(cls, name, homePath, password, uidspace, uid):

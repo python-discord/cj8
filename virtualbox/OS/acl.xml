@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 <acl><os><op>7</op><up>0</up><uid>0</uid></os></acl>
+=======
+<acl><game_files><op>7</op><up>0</up><uid>0</uid></game_files></acl>
+>>>>>>> parent of fb517fd (Merge branch 'SirArthur' of https://github.com/cj8-cheerful-cheetahs/project into SirArthur)

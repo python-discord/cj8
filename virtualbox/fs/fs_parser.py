@@ -18,11 +18,7 @@ def savexml(dicit, path, naming, name):
 
 def readxml(path, mapf):
     Result = {}
-    try:
-        root = xml.ElementTree(file=path).getroot()
-
-    except:
-        raise Exception("XML ERROR " + path)
+    root = xml.ElementTree(file=path).getroot()
 
     for element in root:
         Result[element.tag] = [mapf(i.text) for i in element]
