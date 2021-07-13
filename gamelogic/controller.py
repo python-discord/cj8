@@ -12,24 +12,36 @@ from asciimatics.scene import Scene
 from asciimatics.screen import Screen
 from asciimatics.renderers import SpeechBubble
 
-MOVEMENT_MAPPINGS = [
+# Mappings of directional trigger keys such as movement or tag
+# to their corresponding properties/direction/map changes.
+# This is to reduce the redundancy of elif-chains, using a more
+# general approach.
+DIRECTIONAL_MANEUVER_MAPPINGS = [
     {
-        "trigger_keys": (ord("a"), Screen.KEY_LEFT),
+        "movement_trigger_keys": (ord("a"), Screen.KEY_LEFT),
+        "tag_trigger_keys": (ord("A"),),
+        "wall": "l",
         "raycast_direction": (-1, 0),
         "map_movement": ("x", -1),
     },
     {
-        "trigger_keys": (ord("d"), Screen.KEY_RIGHT),
+        "movement_trigger_keys": (ord("d"), Screen.KEY_RIGHT),
+        "tag_trigger_keys": (ord("D"),),
+        "wall": "r",
         "raycast_direction": (+1, 0),
         "map_movement": ("x", +1),
     },
     {
-        "trigger_keys": (ord("w"), Screen.KEY_UP),
+        "movement_trigger_keys": (ord("w"), Screen.KEY_UP),
+        "tag_trigger_keys": (ord("W"),),
+        "wall": "u",
         "raycast_direction": (0, -1),
         "map_movement": ("y", -1),
     },
     {
-        "trigger_keys": (ord("s"), Screen.KEY_DOWN),
+        "movement_trigger_keys": (ord("s"), Screen.KEY_DOWN),
+        "tag_trigger_keys": (ord("S"),),
+        "wall": "d",
         "raycast_direction": (0, +1),
         "map_movement": ("y", +1),
     },
@@ -70,14 +82,14 @@ class Map(Effect):
         offset_y = space_y // 2 - self.player_y
 
         for i in range(offset_y):
-            self.screen.print_at(" "*self.screen.width, 0, i)
+            self.screen.print_at(" " * self.screen.width, 0, i)
         for i, chars in enumerate(self._map):
-            chars = " "*offset_x[0] + chars + " "*offset_x[1]
+            chars = " " * offset_x[0] + chars + " " * offset_x[1]
             self.screen.print_at(chars, 0, offset_y + i)
-        for i in range(offset_y+len(self._map), self.screen.height):
-            self.screen.print_at(" "*self.screen.width, 0, i)
+        for i in range(offset_y + len(self._map), self.screen.height):
+            self.screen.print_at(" " * self.screen.width, 0, i)
 
-        self.screen.print_at("@", self.screen.width//2, self.screen.height//2)
+        self.screen.print_at("@", self.screen.width // 2, self.screen.height // 2)
 
     @property
     def frame_update_count(self) -> int:
@@ -106,6 +118,7 @@ class GameController(Scene):
     EMPTY_SPACE = 0
     CORRECT_WALL = 1
     WRONG_WALL = 2
+    WALL = (CORRECT_WALL, WRONG_WALL)
 
     # Control game ending
     WRONG_TAGS = 100
@@ -124,10 +137,10 @@ class GameController(Scene):
     SPEECH = {
         # TODO: we can implement various different speeches
         # and pick one at random
-        ord('W'): "Is this the upper wall?",
-        ord('S'): "Is this the lower wall?",
         ord('A'): "Is this the left wall?",
         ord('D'): "Is this the right wall?",
+        ord('W'): "Is this the upper wall?",
+        ord('S'): "Is this the lower wall?",
     }
 
     def __init__(self, screen: Screen, level_map: List[str]):
@@ -147,7 +160,6 @@ class GameController(Scene):
         Cast a ray into 'direction' starting from 'pos';
         if 'pos' is not specified we default to player pos.
         """
-
         if pos is None:
             pos = [self._map.player_x, self._map.player_y]
 
@@ -155,16 +167,19 @@ class GameController(Scene):
         y = direction[1] + pos[1]
 
         # If we tag the border of the map, we've hit the right wall
-        if x in (0, len(self._map._map[0])-1) or \
-                y in (0, len(self._map._map)-1):
+        if (
+                x in (0, len(self._map._map[0])-1)
+                or y in (0, len(self._map._map)-1)
+        ):
             return GameController.CORRECT_WALL
 
-        # If not we send the information of that location
+        # If not, we send the information of that location
         return GameController.SPRITE_MAP[self._map._map[y][x]]
 
     def speak(self, text: str, duration=20):
         """Text to be spoken by the character"""
-        linebreaks = text.count('\n')
+        linebreaks = text.count("\n")
+
         self.add_effect(
             Print(
                 self._screen,
@@ -172,26 +187,28 @@ class GameController(Scene):
                 self._screen.height // 2 - 4 - linebreaks,
                 self._screen.width // 2 + 2,
                 transparent=False,
-                clear=True, delete_count=duration)
+                clear=True,
+                delete_count=duration,
+            ),
         )
 
     def check_level_completion(self) -> int:
         """
         Check if the player finished the level
         How it works:
-        1 - If the player has not tagged the 4 walls (up, down,left, right)
+        1 - If the player has not tagged the 4 walls (up, down, left, right)
             we return NOT_FINISHED so he can keep playing
         2 - If he tagged all 4 walls but at least 1 is wrong we return
             WRONG_TAGS, he will receive a message that he is wrong and have to guess again
         3 - If he tagged everything right, he gets CORRECT_TAGS and ends the level
         """
-
-        values = ('r', 'd', 'l', 'r')
+        directions = ("l", "r", "u", "d")
         res = GameController.CORRECT_TAGS
-        for direction in values:
+
+        for direction in directions:
             if direction not in self.tagged_walls:
                 return GameController.NOT_FINISHED
-            if self.tagged_walls[direction] == False:
+            if not self.tagged_walls[direction]:
                 res = GameController.WRONG_TAGS
 
         return res
@@ -206,65 +223,42 @@ class GameController(Scene):
         if isinstance(event, KeyboardEvent):
             key_code = event.key_code
             speech = None
-            not_recognised = True  # Flag for if the key code wasn't recognised
+            recognised = False  # Flag for if the key code is recognised
 
             if key_code in (ord("q"), ord("Q")):
                 raise StopApplication("User exit")
 
-            for movement_mapping in MOVEMENT_MAPPINGS:
-                if key_code in movement_mapping["trigger_keys"]:
+            # Iterate over the mappings, check to see if the key_code is
+            # a movement or tag trigger key, then perform actions accordingly.
+            for dm_mapping in DIRECTIONAL_MANEUVER_MAPPINGS:
+                if key_code in dm_mapping["movement_trigger_keys"]:
                     if (
-                            self.cast_ray(movement_mapping["raycast_direction"])
+                            self.cast_ray(dm_mapping["raycast_direction"])
                             == GameController.EMPTY_SPACE
                     ):
-                        axis, move = movement_mapping["map_movement"]
+                        axis, move = dm_mapping["map_movement"]
+                        # Using setattr and getattr for dynamic attribute assignment
                         attr = (self._map, f"player_{axis}")
                         setattr(*attr, getattr(*attr) + move)
 
-                    not_recognised = False
+                    recognised = True
                     break
 
-            # TODO: refactor this later
-            if key_code == ord("A"):
-                collision = self.cast_ray((-1, 0))
-                if collision == GameController.WRONG_WALL:
-                    self.tagged_walls['l'] = False
-                    speech = GameController.SPEECH[key_code]
-                if collision == GameController.CORRECT_WALL:
-                    self.tagged_walls['l'] = True
-                    speech = GameController.SPEECH[key_code]
+                if key_code in dm_mapping["tag_trigger_keys"]:
+                    collision = self.cast_ray(dm_mapping["raycast_direction"])
 
-            if key_code == ord("D"):
-                collision = self.cast_ray((1, 0))
-                if collision == GameController.WRONG_WALL:
-                    self.tagged_walls['r'] = False
-                    speech = GameController.SPEECH[key_code]
-                if collision == GameController.CORRECT_WALL:
-                    self.tagged_walls['r'] = True
-                    speech = GameController.SPEECH[key_code]
+                    if collision in GameController.WALL:
+                        speech = GameController.SPEECH[key_code]
+                    # If not colliding with a correct wall, assign False,
+                    # True otherwise.
+                    self.tagged_walls[dm_mapping["wall"]] = collision == GameController.CORRECT_WALL
 
-            if key_code == ord("W"):
-                collision = self.cast_ray((0, -1))
-                if collision == GameController.WRONG_WALL:
-                    self.tagged_walls['u'] = False
-                    speech = GameController.SPEECH[key_code]
-                if collision == GameController.CORRECT_WALL:
-                    self.tagged_walls['u'] = True
-                    speech = GameController.SPEECH[key_code]
-
-            if key_code == ord("S"):
-                collision = self.cast_ray((0, 1))
-                if collision == GameController.WRONG_WALL:
-                    self.tagged_walls['d'] = False
-                    speech = GameController.SPEECH[key_code]
-                if collision == GameController.CORRECT_WALL:
-                    self.tagged_walls['d'] = True
-                    speech = GameController.SPEECH[key_code]
+                    recognised = True
+                    break
 
             check = self.check_level_completion()
-
             if check == GameController.CORRECT_TAGS:
-                self.speak("I Knew it!\nI was in a box all along!")
+                self.speak("I knew it!\nI was in a box all along!")
                 # TODO: finish the level, perhaps put some animation
                 # and load the next
                 # self.load_next_level()
@@ -272,11 +266,11 @@ class GameController(Scene):
             elif check == GameController.WRONG_TAGS:
                 self.speak("Hmm... I don't think this is right.")
                 self.tagged_walls = {}
-            elif check == GameController.NOT_FINISHED:
+            else:
                 if speech is not None:
                     self.speak(speech)
 
-            if not_recognised:
+            if not recognised:
                 # Not a recognised key - pass on to other handlers.
                 return event
 
