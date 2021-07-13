@@ -14,13 +14,21 @@ def treat_subdir(rest, intend):
             if len(result) > 1:  # test for no directory above
                 result.append((len(intend) - 1) * ' ' + '├' +i[0])  # new directory branch
             else:  # directory found above
-                result.append((len(intend) - 1) * ' ' + '│' + i[0])  # directory chain
+                result.append((len(intend) - 1) * ' ' + '|' + i[0])  # directory chain
             result += treat_subdir(i[1], intend + ' ' * 3)  # increase indent level
         else:
             # files
             if len(result) < 1:  # test for no file above
                 result.append(((len(intend) - 4) * ' ') + '└──┐')  # new file branch
-            result.append(((len(intend) - 1) * ' ') + '│' + i)  # list next file
+            try:
+                exception = rest[rest.index(i)+1]
+                true_false = True
+            except:
+                true_false = False
+            if true_false == True:
+                result.append(((len(intend) - 1) * ' ') + '├' + i)  # list next file
+            else:
+                result.append(((len(intend) - 1) * ' ') + '└' + i)  # list next file
 
     return result
 
