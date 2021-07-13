@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-=======
-
->>>>>>> parent of 67bb69f (new argument system, unicode in spearate file and in config)
 from functions.command_functions import user_commands, random_test
 from functions.blessed_functions import print_tree, clear_term, printstart, printhelp_first, print_box
 from exceptions import CannotFullFillFunction
@@ -10,11 +6,9 @@ from random import randint
 from time import sleep
 
 
-<<<<<<< HEAD
-=======
 from fs.fs_dir import Dir
 
->>>>>>> parent of 67bb69f (new argument system, unicode in spearate file and in config)
+
 # file system imports
 fs = Dir.FromPath(START_PATH, None, 7, 0, 0)
 

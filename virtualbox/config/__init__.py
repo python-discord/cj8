@@ -1,9 +1,6 @@
-<<<<<<< HEAD
 from os import sep
 from os.path import abspath, dirname
-=======
 from sys import platform
->>>>>>> parent of 67bb69f (new argument system, unicode in spearate file and in config)
 import string
 
 # Create our table of all characters.
