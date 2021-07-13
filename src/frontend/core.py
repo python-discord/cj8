@@ -10,7 +10,7 @@ from rich.table import Table
 from rich.tree import Tree
 
 from src.backend.core import CoreBackend
-from src.frontend.keyboard_handlers import BaseKeyboardHandler, KeyboardFactory
+from src.keyboard_handlers.core import BaseKeyboardHandler, KeyboardFactory
 
 
 class CoreFrontend:

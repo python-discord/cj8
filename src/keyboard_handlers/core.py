@@ -2,9 +2,6 @@ import logging
 import sys
 from abc import ABC
 
-import keyboard
-from keyboard import KeyboardEvent
-
 from src.backend.core import CoreBackend
 from src.file_logging import logger
 
@@ -15,7 +12,6 @@ class BaseKeyboardHandler(ABC):
 
     Subclasses should implement actual concrete keyboard handling for the different OS
     options if we decide to use Keyboard as it requires root to run.
-
     """
 
     def __init__(self, backend: CoreBackend):
@@ -30,19 +26,6 @@ class BaseKeyboardHandler(ABC):
         self.backend.key_press(key)
 
 
-class DefaultKeyboardHandler(BaseKeyboardHandler):
-    """Implements the default handler"""
-
-    def __init__(self, backend: CoreBackend):
-        super().__init__(backend)
-
-        self.keyboard = keyboard.on_press(self.key_press_hook)
-
-    def key_press_hook(self, keyboard_event: KeyboardEvent, **kwargs) -> None:
-        """Keyboard callback hook"""
-        self.key_pressed(keyboard_event.name)
-
-
 class KeyboardFactory:
     """
     Called by the frontend module to get a keyboard handler
@@ -52,6 +35,7 @@ class KeyboardFactory:
 
     WIN = "win32"
     LINUX = "linux"
+    MACOS = "darwin"
 
     @staticmethod
     def get(backend: CoreBackend) -> BaseKeyboardHandler:
@@ -65,8 +49,12 @@ class KeyboardFactory:
         """
         platform = sys.platform
 
-        if platform == KeyboardFactory.LINUX:
-            return None
+        if platform in (KeyboardFactory.LINUX, KeyboardFactory.MACOS):
+            from src.keyboard.fallback import FallbackKeyboardHandler
+
+            return FallbackKeyboardHandler(backend)
 
         # Return the default handler
+        from src.keyboard.default import DefaultKeyboardHandler
+
         return DefaultKeyboardHandler(backend)
