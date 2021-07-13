@@ -36,9 +36,16 @@ class PauseEvent(BaseEvent):
 class StoryEvent(BaseEvent):
     """A story tile triggers the story to move forwards"""
 
+    def __init__(self, level_name: str) -> None:
+        super().__init__()
+        self.level_name = level_name
+
     @property
     def _type(self) -> str:
         return "story"
+
+    def __str__(self):
+        return f"Story Event for level {self.level_name}"
 
 
 class EventsMixin:
@@ -69,7 +76,7 @@ class EventsMixin:
         :param event: Event to emit
         """
         if logger.isEnabledFor(logging.DEBUG):
-            logger.debug(f"Emitting event: {event!s}")
+            logger.debug(f"[Event] Emitting event: {event!s}")
 
         for callback in self._registered_hooks:
             callback(event)

@@ -1,7 +1,7 @@
-from typing import List, Optional, Tuple
+from typing import List, Optional, Tuple, Union
 
 from src.backend.events import EventsMixin, PauseEvent, StoryEvent
-from src.backend.level_loader import CoreLevelLoader
+from src.backend.level_loader import BoardCollection, CoreLevelLoader
 from src.backend.tiles import (
     BaseTile,
     BlindTile,
@@ -46,7 +46,7 @@ class CoreBackend(DebugMixin, EventsMixin):
 
     def __init__(self) -> None:
         super().__init__()
-        self._board = None
+        self._board: Union[BoardCollection, None] = None
         self._controls = {}
         self._FOV = 5
         self.win_count = 0
@@ -110,7 +110,7 @@ class CoreBackend(DebugMixin, EventsMixin):
         story_tile = self._board.under_ball
         if isinstance(story_tile, StoryTile):
             if not story_tile.visited:
-                self.emit_event(StoryEvent())
+                self.emit_event(StoryEvent(self._board.level_name))
                 story_tile.visited = True
 
     def _move_ball(self) -> None:

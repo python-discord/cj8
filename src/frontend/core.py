@@ -130,7 +130,7 @@ class CoreFrontend:
         title_files = ["title_full.txt", "title_small.txt"]
         for title_file in title_files:
             path = Path(__file__).absolute().parent / f"static/{title_file}"
-            with open(path) as fd:
+            with open(path, encoding="utf-8") as fd:
                 title = fd.read()
                 if width >= max([len(line) for line in title.split("\n")]):
                     break
