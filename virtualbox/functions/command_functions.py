@@ -1,5 +1,4 @@
-from .blessed_functions import print_box
-from .blessed_functions import print_tree, clear_term
+from .blessed_functions import print_box, print_tree, clear_term, print_loading
 from .generalfunctions import inAny
 from virtualbox.exceptions import NoSuchFileOrDirectory
 from exceptions import CommandNotFound
@@ -8,6 +7,14 @@ from blessed import Terminal
 import random
 import os
 term = Terminal()
+
+failed_tasks = 0
+
+def add_failure():
+    global failed_tasks
+    failed_tasks += 1
+    print(f"DEBUG: failures: {failed_tasks}")
+
 
 # COMMAND LIST
 def ls(fs, user):
@@ -216,14 +223,7 @@ def portscanner(user_input, fs, user):
     [EXTEND]
     portscan - scans for port in network
     """
-    "portscan [int]"
-    # try:
-    #     # if user_input contains specific port specifies var
-    #     if user_input[1]:
-    #         use_true = 'temp'
-    # except:
-    #     pass
-    ports = [22, 80, 9929, 8898, 22542, 187, 32312]
+    ports = [str(port) for port in [22, 80, 9929, 8898, 22542, 187, 32312]]
     outputs = ['not a hint',
     'not a hint', 'not a hint', 'not a hint', 'not a hint', 'a hint', 'a hint', 'a hint', 'a hint']
     # if specified var (= if user_input contains specific port)
@@ -244,7 +244,7 @@ def portscanner(user_input, fs, user):
             port = ports[i]
             print_box("PortScanner", [f"Found Port in Network: ", f"{port}/TCP [State: open]", "Scanning Port..."])
             time.sleep(0.4)
-        inp = int(input("Select a port to scan: "))
+        inp = input("Select a port to scan: ")
         with term.cbreak():
             if inp in ports:
                 output = random.choice(outputs)
@@ -253,6 +253,7 @@ def portscanner(user_input, fs, user):
                 print_box("PortScanner", [f"Port {inp} attackable. ", "Attack launchend. ", f"Output: {output}"])
             else:
                 print_box("PortScanner", ["The Port you entered wasnt found in the Network!"])
+
 
 
 def dev_reset():
@@ -270,6 +271,7 @@ def add_vulnerabillity(vulnerability):
     global VULNERABILITIES
     VULNERABILITIES.append(vulnerability)
 
+
 def remove_vulnerabillity(vulnerability):
     global VULNERABILITIES
     try:
@@ -279,6 +281,10 @@ def remove_vulnerabillity(vulnerability):
 
 
 def hint(user_input, fs, user):
+    """vscan
+    [EXTEND]
+    vscan - scans for vulnerabilities in network
+    """
     global VULNERABILITIES
     print_box("vscan",["Looking for vulnerabilities..."])
     #selects random vulnerability

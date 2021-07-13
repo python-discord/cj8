@@ -12,19 +12,10 @@ from fs.fs_dir import Dir
 # file system imports
 fs = Dir.FromPath(START_PATH, None, 7, 0, 0)
 
-failed_tasks = 0
-
 
 class User:
     """temporary user class"""
     uid = 0
-
-
-def add_failure():
-    global failed_tasks
-    failed_tasks += 1
-    print(f"DEBUG: failues: {failed_tasks}")
-
 
 
 def ProcessArgs(function, argsDicit):
