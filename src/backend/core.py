@@ -1,6 +1,6 @@
 from typing import List, Tuple
 
-from src.backend.events import EventsMixin, PauseEvent
+from src.backend.events import EventsMixin, PauseEvent, StoryEvent
 from src.backend.level_loader import CoreLevelLoader
 from src.backend.tiles import (
     BaseTile,
@@ -9,6 +9,7 @@ from src.backend.tiles import (
     GoalTile,
     PathTile,
     RedirectorTile,
+    StoryTile,
     WallTile,
 )
 
@@ -90,6 +91,12 @@ class CoreBackend(DebugMixin, EventsMixin):
         if isinstance(self._board.under_ball, GoalTile):
             self.win_count += 1
             self.new_level()
+
+        story_tile = self._board.under_ball
+        if isinstance(story_tile, StoryTile):
+            if not story_tile.visited:
+                self.emit_event(StoryEvent())
+                story_tile.visited = True
 
     def _move_ball(self) -> None:
         ball = self._board.ball

@@ -97,6 +97,14 @@ class PathTile(BaseTile):
         return "   "
 
 
+class StoryTile(PathTile):
+    """Tiles that the ball can travel across and move the story forward"""
+
+    def __init__(self, pos: Tuple[int, int], color: Tuple[int, int, int]):
+        super().__init__(pos, color)
+        self.visited = False
+
+
 class BlindTile(BaseTile):
     """Tiles that are outside of vision."""
 

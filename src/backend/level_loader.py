@@ -11,6 +11,7 @@ from src.backend.tiles import (
     GoalTile,
     PathTile,
     RedirectorTile,
+    StoryTile,
     WallTile,
 )
 from src.file_logging import logger
@@ -99,12 +100,14 @@ class CoreLevelLoader:
     WALL = "(0, 0, 0)"
     BALL = "(237, 28, 36)"
     GOAL = "(34, 177, 76)"
+    STORY_TILE = "(163, 73, 164)"
 
     color_dispatcher = {
         PATH: PathTile,
         WALL: WallTile,
         BALL: BallTile,
         GOAL: GoalTile,
+        STORY_TILE: StoryTile,
     }
 
     def __init__(self) -> None:
@@ -172,5 +175,5 @@ class CoreLevelLoader:
 
 
 if __name__ == "__main__":
-    CoreLevelLoader.load("lvl1.png")
-    CoreLevelLoader.random_level()
+    board = CoreLevelLoader.load("lvl1.png")
+    # board = CoreLevelLoader.random_level()

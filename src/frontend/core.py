@@ -1,3 +1,4 @@
+import os
 import time
 from shutil import get_terminal_size
 
@@ -56,10 +57,16 @@ class CoreFrontend:
                 time.sleep(1 / self.FPS)
 
     def _check_terminal_size(self) -> None:
-        width, height = get_terminal_size()
-        while width < self.MIN_WIDTH or height < self.MIN_HEIGHT:
-            print(f"Your terminal must be {self.MIN_WIDTH}x{self.MIN_HEIGHT}", end="\r")
+        BYPASS = os.environ.get("BYPASS_SIZE_CHECK", "False") == "True"
+
+        if not BYPASS:
             width, height = get_terminal_size()
+            while width < self.MIN_WIDTH or height < self.MIN_HEIGHT:
+                print(
+                    f"Your terminal must be {self.MIN_WIDTH}x{self.MIN_HEIGHT}",
+                    end="\r",
+                )
+                width, height = get_terminal_size()
 
     @property
     def display(self) -> Table:

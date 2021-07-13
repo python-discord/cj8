@@ -33,6 +33,14 @@ class PauseEvent(BaseEvent):
         return "pause"
 
 
+class StoryEvent(BaseEvent):
+    """A story tile triggers the story to move forwards"""
+
+    @property
+    def _type(self) -> str:
+        return "story"
+
+
 class EventsMixin:
     """Class handling the events the backend generates"""
 
