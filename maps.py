@@ -52,6 +52,9 @@ class Map:
         self.player.x, self.player.y = physics.get_position(self.player_p)
         for i, box in enumerate(self.boxes):
             box.x, box.y = physics.get_position(self.boxes_p[i])
+    
+    def delete(self, terminal):
+        print(terminal.home + terminal.on_midnightblue + terminal.clear)
 
     def draw(self, terminal):
         self.thinking_box.draw()
