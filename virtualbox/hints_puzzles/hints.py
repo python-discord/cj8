@@ -1,4 +1,23 @@
-from random import randint
+from random import randint, choice
+
+FAILURE_POINTS = 0
+
+VULNERABILITIES = []
+
+def add_failure(points):
+    global FAILURE_POINTS
+    FAILURE_POINTS += points
+
+def add_vulnerabillity(vulnerability):
+    global VULNERABILITIES
+    VULNERABILITIES.append(vulnerability)
+
+def remove_vulnerabillity(vulnerability):
+    global VULNERABILITIES
+    try:
+        VULNERABILITIES.remove(vulnerability)
+    except ValueError:
+        pass
 
 # portscanner function for command usage
 def portscanner(user_input, fs, user):
@@ -40,3 +59,15 @@ def portscanner(user_input, fs, user):
 
             else:
                 print(term.green_on_black('The Port you entered wasnt found in the Network!'))
+
+def hint(user_input, fs, user):
+    global VULNERABILITIES
+    print_box(term.green_on_black('Looking for vulnerabilities...\n'))
+    #selects random vulnerability
+    chosen_vulnerability = choice(VULNERABILITIES)
+    #display our selected vulnerability.
+    print_box(term.green_on_black(f'Vulnerability found:{chosen_vulnerability}'))
+    #removes vulnerability from the list. 
+    remove_vulnerabillity(chosen_vulnerability)
+    #add 1 failure point.
+    add_failure(1)
