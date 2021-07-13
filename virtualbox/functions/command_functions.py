@@ -263,6 +263,34 @@ def dev_reset():
         firstgamefile.truncate()
         firstgamefile.write('0')
 
+VULNERABILITIES = ["clue1","clue2"]
+
+
+def add_vulnerabillity(vulnerability):
+    global VULNERABILITIES
+    VULNERABILITIES.append(vulnerability)
+
+def remove_vulnerabillity(vulnerability):
+    global VULNERABILITIES
+    try:
+        VULNERABILITIES.remove(vulnerability)
+    except ValueError:
+        pass
+
+
+def hint(user_input, fs, user):
+    global VULNERABILITIES
+    print_box("vscan",["Looking for vulnerabilities..."])
+    #selects random vulnerability
+    chosen_vulnerability = random.choice(VULNERABILITIES)
+    #display our selected vulnerability.
+    print_box("vscan",[f"Vulnerability found: {chosen_vulnerability}"])
+    #removes vulnerability from the list.
+    remove_vulnerabillity(chosen_vulnerability)
+    #add 1 failure point.
+    add_failure()
+
+
 # COMMAND LIST
 user_commands = {"ls": ls,
                  "touch": add,
@@ -285,5 +313,6 @@ user_commands = {"ls": ls,
                  "search": search,
                  "portscan": portscanner,
                  "cd": cd,
-                 "devresetintro": dev_reset
+                 "devresetintro": dev_reset,
+                 "vscan" : hint
                  }
