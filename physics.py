@@ -49,7 +49,7 @@ class MySpace:
         self.space.gravity = 0, 30
         self.create_borders(self.space.static_body)
         self.add_collision_handlers()
-        self.targets_to_engage = 0
+        self.targets_to_engage = []
         self.player: pymunk.Poly
 
     # without borders, the items could fall "out of the screen"
@@ -89,7 +89,7 @@ class MySpace:
             shape.friction = 1
             if type == "target":
                 shape.sensor = True
-                self.targets_to_engage += 1
+                self.targets_to_engage.append(shape)
 
             self.space.add(body, shape)
             if type == "player":
@@ -113,7 +113,7 @@ class MySpace:
         self.space.step(1/fps)
 
     def box_and_target_coll(self, arbiter: pymunk.Arbiter, space, data):
-        self.targets_to_engage -= 1
+        self.targets_to_engage.remove(arbiter.shapes[1])
 
 
 if __name__ == "__main__":
