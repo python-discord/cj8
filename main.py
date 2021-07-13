@@ -2,6 +2,7 @@ from os import system
 
 from blessed import Terminal
 from pygame.time import Clock, wait
+
 from maps import Map
 
 terminal = Terminal()

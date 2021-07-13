@@ -73,6 +73,7 @@ class Box:
         self.parts.append(up4)
 
     def draw(self):
+        self.create_body()
         for part in self.parts:
             print(part, end='', flush=True)
 

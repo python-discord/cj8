@@ -1,5 +1,6 @@
-from typing import Tuple
 import logging
+from typing import Tuple
+
 import pygame
 import pymunk
 import pymunk.pygame_util

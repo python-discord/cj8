@@ -1,4 +1,5 @@
 from typing import List
+
 import pymunk
 from blessed import Terminal
 
@@ -51,7 +52,7 @@ class Map:
         self.player.x, self.player.y = physics.get_position(self.player_p)
         for i, box in enumerate(self.boxes):
             box.x, box.y = physics.get_position(self.boxes_p[i])
-    
+
     def delete(self):
         print(self.terminal.home + self.terminal.on_midnightblue + self.terminal.clear)
 
