@@ -6,11 +6,12 @@ from typing import Any, List, Optional, Tuple
 
 from asciimatics.effects import Effect, Print
 from asciimatics.event import Event, KeyboardEvent
-from asciimatics.exceptions import StopApplication
+from asciimatics.renderers import SpeechBubble
 # from asciimatics.sprites import Arrow, Plot, Sam
 from asciimatics.scene import Scene
 from asciimatics.screen import Screen
-from asciimatics.renderers import SpeechBubble
+
+import exceptions
 
 # Mappings of directional trigger keys such as movement or tag
 # to their corresponding properties/direction/map changes.
@@ -56,20 +57,20 @@ class Map(Effect):
 
     def __init__(self, screen: Screen, game_map: List[str]):
         super(Map, self).__init__(screen)
-        self._map: List[str] = deepcopy(game_map)
+        self.map: List[str] = deepcopy(game_map)
 
         for i, line in enumerate(game_map):
             j = line.find('@')
             if j > -1:
                 self.player_x = j
                 self.player_y = i
-                self._map[i] = line.replace('@', ' ')
+                self.map[i] = line.replace('@', ' ')
 
         self._x = 0
         self._y = 0
 
         # print(f"player: ({self.player_x},{self.player_y})")
-        # print(f"map: ({self._map_x},{self._map_y})")
+        # print(f"map: ({self.map_x},{self.map_y})")
 
     def _update(self, _: Any = None) -> None:
         """
@@ -83,10 +84,13 @@ class Map(Effect):
 
         for i in range(offset_y):
             self.screen.print_at(" " * self.screen.width, 0, i)
-        for i, chars in enumerate(self._map):
-            chars = " " * offset_x[0] + chars + " " * offset_x[1]
+        for i, chars in enumerate(self.map):
+            if offset_x[0] >= 0:
+                chars = " " * offset_x[0] + chars + " " * offset_x[1]
+            else:
+                chars = chars[-offset_x[0]:] + " " * offset_x[1]
             self.screen.print_at(chars, 0, offset_y + i)
-        for i in range(offset_y + len(self._map), self.screen.height):
+        for i in range(offset_y + len(self.map), self.screen.height):
             self.screen.print_at(" " * self.screen.width, 0, i)
 
         self.screen.print_at("@", self.screen.width // 2, self.screen.height // 2)
@@ -145,10 +149,10 @@ class GameController(Scene):
     }
 
     def __init__(self, screen: Screen, level_map: List[str]):
-        self._screen = screen
-        self._map = Map(screen, level_map)
+        self.screen = screen
+        self.map = Map(screen, level_map)
         effects = [
-            self._map,
+            self.map,
         ]
         # Walls tagged by the player,
         # if he tags the 4 outer walls correctly
@@ -162,20 +166,20 @@ class GameController(Scene):
         if 'pos' is not specified we default to player pos.
         """
         if pos is None:
-            pos = [self._map.player_x, self._map.player_y]
+            pos = [self.map.player_x, self.map.player_y]
 
         x = direction[0] + pos[0]
         y = direction[1] + pos[1]
 
         # If we tag the border of the map, we've hit the right wall
         if (
-                x in (0, len(self._map._map[0])-1)
-                or y in (0, len(self._map._map)-1)
+                x in (0, len(self.map.map[0])-1)
+                or y in (0, len(self.map.map)-1)
         ):
             return GameController.CORRECT_WALL
 
         # If not, we send the information of that location
-        return GameController.SPRITE_MAP[self._map._map[y][x]]
+        return GameController.SPRITE_MAP[self.map.map[y][x]]
 
     def speak(self, text: str, duration: int = 20) -> None:
         """Text to be spoken by the character"""
@@ -183,10 +187,10 @@ class GameController(Scene):
 
         self.add_effect(
             Print(
-                self._screen,
+                self.screen,
                 SpeechBubble(text, "L"),
-                self._screen.height // 2 - 4 - linebreaks,
-                self._screen.width // 2 + 2,
+                self.screen.height // 2 - 4 - linebreaks,
+                self.screen.width // 2 + 2,
                 transparent=False,
                 clear=True,
                 delete_count=duration,
@@ -226,9 +230,6 @@ class GameController(Scene):
             speech = None
             recognised = False  # Flag for if the key code is recognised
 
-            if key_code in (ord("q"), ord("Q")):
-                raise StopApplication("User exit")
-
             # Iterate over the mappings, check to see if the key_code is
             # a movement or tag trigger key, then perform actions accordingly.
             for dm_mapping in DIRECTIONAL_MANEUVER_MAPPINGS:
@@ -239,7 +240,7 @@ class GameController(Scene):
                     ):
                         axis, move = dm_mapping["map_movement"]
                         # Using setattr and getattr for dynamic attribute assignment
-                        attr = (self._map, f"player_{axis}")
+                        attr = (self.map, f"player_{axis}")
                         setattr(*attr, getattr(*attr) + move)
 
                     recognised = True
@@ -278,3 +279,15 @@ class GameController(Scene):
         else:
             # Ignore other types of events.
             return event
+
+
+def game_IH(event: Event) -> Optional[Event]:
+    """Handle extra in-game inputs"""
+    if isinstance(event, KeyboardEvent):
+        key = event.key_code
+        if key in [ord("q"), ord("Q"), Screen.KEY_ESCAPE]:
+            raise exceptions.Title()
+        else:
+            return event
+    else:
+        return event
