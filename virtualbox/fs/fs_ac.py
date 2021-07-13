@@ -1,7 +1,8 @@
 from virtualbox.exceptions import PermisionDenied
+from virtualbox.generalclasses import copy
 
 
-class AC:
+class AC(copy):
     def __init__(self, up, op, uid):
         self.up = up
         self.op = op
@@ -9,6 +10,7 @@ class AC:
         self.uid = uid
 
     """properties"""
+
     @property
     def perm(self):
         return (self.up, self.op, self.uid)

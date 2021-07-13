@@ -7,9 +7,10 @@ class Uidspace:
         self.start = start
         self.queue = []
 
-    def genUid(self):
+    def getUid(self):
         if len(self.queue) == 0:
-            return self.start
+            self.start += 1
+            return self.start - 1
         else:
             return self.queue.pop(0)
 
@@ -19,16 +20,19 @@ class Uidspace:
             self.start = uid + 1
             return
 
-        tmp = bisect(self.queue, uid)
+
+        tmp = bisect.bisect(self.queue, uid) - 1
+        print(self.queue)
+        print(tmp)
         if tmp < len(self.queue) and self.queue[tmp] == uid:
             del self.queue[tmp]
             return
         raise UIDAlreadyExist()
 
     def restoreUid(self, uid):
-        bisect.insort(uid, self.queue)
-        for i in range(1, len(self.queue) + 1):
-            if self.queue[-i] != self.start - 1:
+        bisect.insort(self.queue, uid)
+        for i in range(len(self.queue)):
+            if self.queue[-1] != self.start - 1:
                 break
             self.start -= 1
-            del self.queue[-i]
+            del self.queue[-1]
