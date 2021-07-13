@@ -4,6 +4,7 @@ from collections.abc import Iterable
 
 # Wrappers
 
+
 def restrictRange(min, max, keyword):
     def decorator(function):
         def check(*args, **kwargs):
@@ -35,6 +36,10 @@ def loop(x, maxNum):
 
 def flatmap(x):
     return sum([flatmap(x) if isinstance(x, Iterable) else [x] for i in x], [])
+
+
+def fill(list, to):
+    return list + [None]*(to - len(list))
 
 
 def inAny(what, inWhat):

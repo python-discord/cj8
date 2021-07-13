@@ -23,7 +23,6 @@ class Dir(AC):
     def FromPath(cls, path, father, up, op, uid):
         acl = ACL.InitRead(path + sep + "acl.xml")
         self = Dir(up, op, uid, {} if father is None else {"..": father}, path, acl)
-
         for name, perm in acl:
             if os.path.isdir(path + sep + name):
                 self.sub[name] = Dir.FromPath(path + sep + name, self, *perm)
@@ -109,7 +108,6 @@ class Dir(AC):
     def cp(self, user, path, to):
         dest = self.getDir(user, to[:-1])
         dest.append(user, self.get(user, path).cpSelf(user, self.path + sep + sep.join(to)), to[-1])
-
 
     @AC.readcheck
     def ls(self, user):
@@ -203,13 +201,12 @@ class Dir(AC):
         result.path = to
         return result
 
-
-    "properties"
+    # properties"
     @property
     def aclpath(self):
         return self.path + sep + "acl.xml"
 
-    "save acl"
+    # save acl"
     def aclsave(self):
         self.acl.save(self.aclpath)
 
@@ -235,4 +232,3 @@ class Dir(AC):
         del self.acl[key]
 
         return tmp
-
