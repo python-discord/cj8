@@ -33,6 +33,7 @@ def main():
             else:
                 print(terminal.white_on_firebrick3('Well done! Level completed.'))
                 wait(3000)
+                break
 
 
 system("clear")
