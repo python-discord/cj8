@@ -22,7 +22,7 @@ def main():
         val = terminal.inkey(timeout=1/fps)
         while val != 'q':
             map.delete()
-            if map.space.targets_to_engage != 0:
+            if len(map.space.targets_to_engage) != 0:
                 val = terminal.inkey(timeout=0.01)
                 if val.name == "KEY_UP" or val.name == "KEY_DOWN" or val.name == "KEY_RIGHT" or val.name == "KEY_LEFT":
                     map.space.move_player(val)
