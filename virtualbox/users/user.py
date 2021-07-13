@@ -2,8 +2,6 @@ from virtualbox.exceptions import PermisionDenied
 from virtualbox.config import etcskel
 from virtualbox.config import passwd
 from virtualbox.cryptology import customChiperEncrypt
-from virtualbox.unicode import encode
-
 
 
 class User:
@@ -25,8 +23,7 @@ class User:
     "inits"
     @classmethod
     def AutoUIDInit(cls, name, homePath, password, uidspace):
-        return cls(name, uidspace.getUid(), homePath, password)
-
+        return cls(name, uidspace.genUid(), homePath, password)
 
     @classmethod
     def CustomUIDInit(cls, name, homePath, password, uidspace, uid):
@@ -38,8 +35,7 @@ class User:
         Users = {}
         for i in fs.getFile(passwd).split("\n"):
             tmp = i.split(":")
-            Users[tmp[0]] = cls(tmp[0], int(tmp[1]), tmp(2), encode(tmp(3)))
-
+            Users[tmp[0]] = cls(tmp[0], int(tmp[1]), tmp(2), bytes(tmp(3), "utf-8"))
         return Users
 
     "self handeling"

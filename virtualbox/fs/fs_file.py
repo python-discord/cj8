@@ -1,10 +1,7 @@
 from .fs_ac import AC
 from virtualbox.cryptology import encrypt
 from virtualbox.cryptology import decrypt
-from virtualbox.exceptions import CannotReadFileInTextMode
 import os
-import shutil
-import copy
 
 
 class File(AC):
@@ -35,24 +32,9 @@ class File(AC):
     @AC.readcheck
     def read(self, user, binary=False):
         Content = ""
-        try:
-            with open(self.path, "rb" if binary else "r") as f:
-                Content = f.read()
-        except UnicodeDecodeError:
-            raise CannotReadFileInTextMode()
+        with open(self.path, "rb" if binary else "r") as f:
+            Content = f.read()
         return Content
-
-    @AC.execcheck
-    def mvSelf(self, user, to):
-        shutil.move(self.path, to)
-        self.path = to
-
-    @AC.execcheck
-    def cpSelf(self, user, to):
-        shutil.copy(self.path, to)
-        result = copy.copy(self)
-        result.path = to
-        return result
 
     "cryptography"
     def encrypt(self, user, password, mode=2):

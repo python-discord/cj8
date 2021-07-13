@@ -4,8 +4,6 @@ from virtualbox.exceptions import NotAnIntiger
 from virtualbox.functions.generalfunctions import restrictRange
 from virtualbox.functions.generalfunctions import shiftArray
 from virtualbox.functions.generalfunctions import rshiftArray
-from virtualbox.unicode import decode
-from virtualbox.unicode import encode
 from virtualbox.bytewise import sxor
 from virtualbox.bytewise import rsxor
 from virtualbox.bytewise import Hash
@@ -51,7 +49,7 @@ def cesar_chiper(characters, msg, shift, reverse=False):
         character_index = characters.index(character)
         encrypted_msg += characters[(character_index+(shift*factor)) % len(characters)]
     "Return the encrypted message"
-    return encode(encrypted_msg)
+    return bytes(encrypted_msg, "utf-8")
 
 
 "encrypt/decrypt funcions"
@@ -62,7 +60,7 @@ def encrypt(content, password, mode=2):
     return [basicXor,
             xorEncrypt,
             customChiperEncrypt,
-            lambda x, y: cesar_chiper(ALL_CHARACTERS, decode(x), y)][mode](content, password)
+            lambda x, y: cesar_chiper(ALL_CHARACTERS, x.decode("utf-8"), y)][mode](content, password)
 
 
 @restrictRange(min=0, max=4, keyword="mode")
@@ -70,5 +68,5 @@ def decrypt(content, password, mode=2):
     return [basicXor,
             xorEncrypt,
             customChiperDecrypt,
-            lambda x, y: cesar_chiper(ALL_CHARACTERS, decode(y), y, reverse=True)
+            lambda x, y: cesar_chiper(ALL_CHARACTERS, y.decode("utf-8"), y, reverse=True)
             ][mode](content, password)
