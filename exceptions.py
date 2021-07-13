@@ -14,6 +14,10 @@ class LevelSelector(GameTransition):
     """Raised when user goes to the level selector"""
 
 
+class Title(GameTransition):
+    """Raised when user goes to the title screen"""
+
+
 class Settings(GameTransition):
     """Raised when user goes to settings"""
 
