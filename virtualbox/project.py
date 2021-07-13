@@ -38,15 +38,18 @@ def ProcessArgs(function, argsDicit):
 def user_input_cmd(fs, user):
     while True:
         user_input = input(">>>  ").split()
-        if user_input[0] in user_commands:
-            try:
-                clear_term()
-                if randint(1, 20) == 1:
-                    random_test()
-                function = user_commands[user_input[0]]
-                function(*ProcessArgs(function, locals()))
-            except Exception as e:
-                print(e)
+        try:
+            if user_input[0] in user_commands:
+                try:
+                    clear_term()
+                    if randint(1, 20) == 1:
+                        random_test()
+                    function = user_commands[user_input[0]]
+                    function(*ProcessArgs(function, locals()))
+                except Exception as e:
+                    print(e)
+        except:
+            print('must include command listed in "help"')
 
 
 def start(fs, user):
