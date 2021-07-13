@@ -1,13 +1,15 @@
+faces = '⍨⍩⍤⌤'
+
 character_box = r"""
  ╭─╮
-_│@|_
+_│@│_
  /│\
  / \
 """
 
 character_box_pushing = r"""
  ╭─╮
-_│@|_
+_│@│_
  \│/
  / \
 """
