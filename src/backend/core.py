@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import Callable, List, Optional, Tuple
 
-from src.backend.events import EventsMixin, PauseEvent, StoryEvent
+from src.backend.events import EventsMixin, PauseEvent, StoryEvent, VictoryEvent
 from src.backend.level_loader import BoardCollection, CoreLevelLoader
 from src.backend.tiles import (
     BaseTile,
@@ -89,8 +89,7 @@ class CoreBackend(DebugMixin, EventsMixin):
 
     def pause(self) -> None:
         """Emit a pause event."""
-        event = PauseEvent()
-        self.emit_event(event)
+        self.emit_event(PauseEvent())
 
     def main_menu(self) -> None:
         """Return to main menu."""
@@ -138,6 +137,7 @@ class CoreBackend(DebugMixin, EventsMixin):
         """Test if the ball is on the goal tile"""
         if isinstance(under_ball, GoalTile):
             self.win_count += 1
+            self.emit_event(VictoryEvent(self.win_count))
             self.new_level()
 
     def _is_ball_on_story_tile(self, under_ball: BaseTile) -> None:

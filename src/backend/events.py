@@ -65,13 +65,17 @@ class VictoryEvent(BaseEvent):
         super().__init__()
         self.score: int = score
 
-    ...
+    @property
+    def _type(self) -> str:
+        return EventTypes.victory.value
 
 
 class FailedEvent(BaseEvent):
     """Represents the player losing a level"""
 
-    ...
+    @property
+    def _type(self) -> str:
+        return EventTypes.failed.value
 
 
 class EventsMixin:
