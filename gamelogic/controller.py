@@ -114,6 +114,7 @@ class GameController(Scene):
     Class responsible for moving the player along the map
     and controlling the game in general.
     """
+
     # Control collisions
     EMPTY_SPACE = 0
     CORRECT_WALL = 1
@@ -176,7 +177,7 @@ class GameController(Scene):
         # If not, we send the information of that location
         return GameController.SPRITE_MAP[self._map._map[y][x]]
 
-    def speak(self, text: str, duration=20):
+    def speak(self, text: str, duration: int = 20) -> None:
         """Text to be spoken by the character"""
         linebreaks = text.count("\n")
 
