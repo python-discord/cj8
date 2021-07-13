@@ -19,31 +19,31 @@ class Map:
         self.platforms = []
         self.space = physics.MySpace()
 
-    def create_level1(self, terminal):
+    def create_level1(self):
         self.player = Player(10, 26)
         self.player_p = self.space.add_object((10, 26), type="player")
 
-        self.thinking_box = ThinkingBox(15, 26, terminal)
+        self.thinking_box = ThinkingBox(15, 26, self.terminal)
 
-        box1 = Box(54, 21, terminal)
+        box1 = Box(54, 21, self.terminal)
         box1_p = self.space.add_object((54, 21), type="box")
         self.boxes_p.append(box1_p)
-        box2 = Box(70, 27, terminal)
+        box2 = Box(70, 27, self.terminal)
         box2_p = self.space.add_object((70, 27), type="box")
         self.boxes_p.append(box2_p)
         self.boxes.append(box1)
         self.boxes.append(box2)
 
-        platform1 = Platform(50, 23, 30, True, terminal)
+        platform1 = Platform(50, 23, 30, True, self.terminal)
         self.space.add_object((50, 23), type="platform", w=30)
-        border1 = Platform(0, 29, 100, True, terminal)
+        border1 = Platform(0, 29, 100, True, self.terminal)
         self.space.add_object((0, 29), type="platform", w=100)
         self.platforms.append(platform1)
         self.platforms.append(border1)
 
-        target1 = Target(70, 21, terminal)
+        target1 = Target(70, 21, self.terminal)
         self.space.add_object((70, 22.99), type="target")
-        target2 = Target(90, 27, terminal)
+        target2 = Target(90, 27, self.terminal)
         self.space.add_object((70, 29.99), type="target")
         self.targets.append(target1)
         self.targets.append(target2)
@@ -53,14 +53,14 @@ class Map:
         for i, box in enumerate(self.boxes):
             box.x, box.y = physics.get_position(self.boxes_p[i])
     
-    def delete(self, terminal):
-        print(terminal.home + terminal.on_midnightblue + terminal.clear)
+    def delete(self):
+        print(self.terminal.home + self.terminal.on_midnightblue + self.terminal.clear)
 
-    def draw(self, terminal):
+    def draw(self):
         self.thinking_box.draw()
         for target in self.targets:
             target.draw()
-        self.player.draw(terminal)
+        self.player.draw(self.terminal)
         for platform in self.platforms:
             platform.draw()
         for box in self.boxes:

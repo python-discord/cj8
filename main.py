@@ -10,7 +10,7 @@ terminal = Terminal()
 def main():
     system("resize -s 30 100 | 2> /dev/null")
     map = Map(terminal)
-    map.create_level1(terminal)
+    map.create_level1()
     clock = Clock()
     with terminal.cbreak(), terminal.hidden_cursor():
         print(terminal.home + terminal.on_midnightblue + terminal.clear)
@@ -19,13 +19,14 @@ def main():
         while val != 'q':
             val = terminal.inkey(timeout=0.01)
             if val.name == "KEY_UP" or val.name == "KEY_DOWN" or val.name == "KEY_RIGHT" or val.name == "KEY_LEFT":
-                map.player.delete(terminal)
-            map.space.move_player(val)
+                #map.player.delete(terminal)
+                map.space.move_player(val)
             map.sync_coords()
-            map.delete(terminal)
-            map.draw(terminal)
+            map.delete()
+            map.draw()
             map.space.step(60)
             clock.tick(60)
+
 
 system("clear")
 main()
