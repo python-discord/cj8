@@ -2,7 +2,6 @@ from __future__ import division
 
 from copy import deepcopy
 from math import ceil
-from time import sleep
 from typing import Any, List, Optional, Tuple
 
 from asciimatics.effects import Effect, Print
