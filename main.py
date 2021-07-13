@@ -3,7 +3,7 @@
 from __future__ import division
 
 import sys
-from typing import Callable, List, Union
+from typing import Callable, Tuple, List, Union
 
 from asciimatics.exceptions import ResizeScreenError
 from asciimatics.scene import Scene
@@ -14,8 +14,10 @@ import main_pages as mp
 from gamelogic.controller import GameController, game_IH
 from sprites.maps import LEVELS
 
+Scenes = Union[Callable, List[Scene]]
 
-def play_scenes(screen: Screen, scenes: Union[Callable, List[Scene]], ih: Callable) -> None:
+
+def play_scenes(screen: Screen, scenes: Scenes, ih: Callable) -> Tuple[Scenes, Callable]:
     """Play scenes until screen resizes, then return current scene + ih."""
 
     # Loop to manage scene transitions and screen resizes
@@ -24,6 +26,7 @@ def play_scenes(screen: Screen, scenes: Union[Callable, List[Scene]], ih: Callab
         returned_scenes = scenes
         if callable(scenes):
             scenes: List[Scene] = scenes(screen)
+
         try:
             # Update old effects to have new screen variable
             for scene in scenes:
@@ -31,8 +34,10 @@ def play_scenes(screen: Screen, scenes: Union[Callable, List[Scene]], ih: Callab
                 for effect in scene.effects:
                     if hasattr(effect, "screen"):
                         effect._screen = screen
+
             # Play the prepared scenes
             screen.play(scenes, stop_on_resize=True, unhandled_input=ih)
+
         except exceptions.GameTransition as e:
             # Set next scenes
             screen.clear()  # Looks nicer
@@ -44,8 +49,10 @@ def play_scenes(screen: Screen, scenes: Union[Callable, List[Scene]], ih: Callab
                 scenes = mp.title
                 ih = mp.title_IH
             # etc
+
         except exceptions.ExitGame:
             sys.exit(0)
+
         except ResizeScreenError:
             # On resize, return current scenes and input handler
             screen.close()

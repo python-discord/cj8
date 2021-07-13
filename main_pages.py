@@ -38,12 +38,14 @@ def title(screen: Screen) -> List[Scene]:
             screen,
             FigletText("ARE YOU IN A", width=120),
             screen.height // 2 - 7,
-            start_frame=0),
+            start_frame=0
+        ),
         Print(
             screen,
             FigletText("BOX ???", width=120),
             screen.height // 2 - 2,
-            start_frame=0),
+            start_frame=0
+        ),
         Print(
             screen,
             StaticRenderer(images=["(S)tart"]),
