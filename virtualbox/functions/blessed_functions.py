@@ -12,7 +12,7 @@ def treat_subdir(rest, intend):
         if isinstance(i, tuple):
             # directories
             if len(result) > 1:  # test for no directory above
-                result.append((len(intend) - 4) * ' ' + '└──┐' +i[0])  # new directory branch
+                result.append((len(intend) - 1) * ' ' + '├' +i[0])  # new directory branch
             else:  # directory found above
                 result.append((len(intend) - 1) * ' ' + '│' + i[0])  # directory chain
             result += treat_subdir(i[1], intend + ' ' * 3)  # increase indent level
