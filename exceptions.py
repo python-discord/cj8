@@ -6,6 +6,7 @@ class GameTransition(Exception):
 
 class EnterLevel(GameTransition):
     """Raised when user starts the game"""
+
     def __init__(self, level: int):
         self.level = level
 
