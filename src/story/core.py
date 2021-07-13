@@ -23,14 +23,15 @@ class CoreStory:
         self.manifest_conf: Dict = self._load_manifest()
 
     def _load_manifest(self) -> Dict:
-        with open(self.MANIFEST_FILE, 'r') as manifest:
+        with open(self.MANIFEST_FILE, "r") as manifest:
             manifest_conf = yaml.safe_load(manifest)
 
         return manifest_conf
 
     @property
     def prolog(self) -> str:
-        return self.manifest_conf['main']['prolog']
+        """Get the prolog about the game"""
+        return self.manifest_conf["main"]["prolog"]
 
     def story_callback(self, event: BaseEvent) -> None:
         """Callback to handle StoryEvents"""
