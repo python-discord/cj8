@@ -36,14 +36,14 @@ class BoardCollection:
         all_tiles: List[List[BaseTile]],
         ball: BallTile,
         size: Tuple[int, int],
-        level_name: str,
+        level_path: Path,
     ):
         """Build the representation from a image file"""
         board = cls()
         board.all_tiles = all_tiles
         board._ball = ball
         board.size = size
-        board.level_name = level_name
+        board.level_path = level_path
         board.link_adjacents()
         return board
 
@@ -75,6 +75,11 @@ class BoardCollection:
     def ball(self) -> BallTile:
         """Return the ball tile"""
         return self._ball
+
+    @property
+    def level_name(self) -> str:
+        """Return the name of the current level."""
+        return self.level_path.stem
 
     def pprint(self) -> None:
         """Display the map for testing"""
@@ -138,7 +143,7 @@ class CoreLevelLoader:
         end = datetime.now()
         logger.info(f"Loading took: {(end - start).microseconds / 1000:03}ms")
 
-        return BoardCollection.from_file(all_tiles, ball, loader.size, level_path.stem)
+        return BoardCollection.from_file(all_tiles, ball, loader.size, level_path)
 
     @staticmethod
     def random_level() -> BoardCollection:
@@ -176,4 +181,4 @@ class CoreLevelLoader:
 
 if __name__ == "__main__":
     board = CoreLevelLoader.load("lvl1.png")
-    # board = CoreLevelLoader.random_level()
+    board = CoreLevelLoader.random_level()

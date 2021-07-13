@@ -112,7 +112,17 @@ class BlindTile(BaseTile):
         super().__init__(*args, **kwargs, color=(32, 32, 32))
 
     def __str__(self):
-        return " X "
+        return "   "
+
+
+class PauseTile(BaseTile):
+    """Tile to show game pause state."""
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs, color=(255, 255, 255))
+
+    def __str__(self):
+        return " ⏸︎ "
 
 
 class WallTile(BaseTile):

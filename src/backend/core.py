@@ -1,4 +1,4 @@
-from typing import List, Tuple
+from typing import List, Optional, Tuple
 
 from src.backend.events import EventsMixin, PauseEvent, StoryEvent
 from src.backend.level_loader import CoreLevelLoader
@@ -52,11 +52,24 @@ class CoreBackend(DebugMixin, EventsMixin):
         self.win_count = 0
         self.mutators = {}
 
-    def new_level(self) -> None:
-        """Load a new random level."""
+    def new_level(self, level_name: Optional[str] = None) -> None:
+        """
+        Load level with the specified name.
+
+        If level_name is None, load a random level.
+        """
         self._controls = {keys: None for keys in self.CONTROL_PAIRS}
-        self._board = CoreLevelLoader.random_level()
+        if not level_name:
+            self._board = CoreLevelLoader.random_level()
+        else:
+            self._board = CoreLevelLoader.load(level_name)
         self._gen_controls()
+
+    def restart_level(self) -> None:
+        """Reload the current level."""
+        if not self._board:
+            return
+        self.new_level(self._board.level_path.name)
 
     def get_board(self) -> List[List[BaseTile]]:
         """Return list of visible tiles within FOV."""
@@ -81,6 +94,8 @@ class CoreBackend(DebugMixin, EventsMixin):
 
     def move_ball(self) -> None:
         """Handle moving the ball in an appropriate direction."""
+        if not self._board:
+            return
         ball = self._board.ball
         if isinstance(self._board.under_ball, RedirectorTile):
             ball.direction = self._board.under_ball.direction
@@ -156,6 +171,9 @@ class CoreBackend(DebugMixin, EventsMixin):
         """
         if key == "[":
             self.new_level()
+            return
+        elif key == "]":
+            self.restart_level()
             return
 
         if key == "p":
