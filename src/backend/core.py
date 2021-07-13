@@ -111,6 +111,8 @@ class CoreBackend(DebugMixin, EventsMixin):
         self, color: Tuple[int, int, int], clockwise: bool = True
     ) -> None:
         """Rotate redirector tiles of specified color clockwise."""
+        if not self._board:
+            return
         for row in self._board.all_tiles + [[self._board.under_ball]]:
             for tile in row:
                 if isinstance(tile, RedirectorTile) and tile.color == color:
@@ -209,9 +211,13 @@ class CoreBackend(DebugMixin, EventsMixin):
             pass
 
         for key_pair, color in self._controls.items():
+            if not color:
+                # Key not registered
+                continue
             try:
                 direction = bool(key_pair.index(key))
                 self.rotate_redirector(color, clockwise=direction)
                 return
             except ValueError:
+                # Incorrect key
                 continue
