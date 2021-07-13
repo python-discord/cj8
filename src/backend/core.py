@@ -128,15 +128,23 @@ class CoreBackend(DebugMixin, EventsMixin):
         # elif not isinstance(ball.adjacent_tiles.down, WallTile):
         #     ball.direction = CardinalDirection.down
         self._move_ball()
-        if isinstance(self._board.under_ball, GoalTile):
+        under_ball_tile = self._board.under_ball
+
+        self._is_ball_on_goal(under_ball_tile)
+
+        self._is_ball_on_story_tile(under_ball_tile)
+
+    def _is_ball_on_goal(self, under_ball: BaseTile) -> None:
+        """Test if the ball is on the goal tile"""
+        if isinstance(under_ball, GoalTile):
             self.win_count += 1
             self.new_level()
 
-        story_tile = self._board.under_ball
-        if isinstance(story_tile, StoryTile):
-            if not story_tile.visited:
+    def _is_ball_on_story_tile(self, under_ball: BaseTile) -> None:
+        if isinstance(under_ball, StoryTile):
+            if not under_ball.visited:
                 self.emit_event(StoryEvent(self._board.level_name))
-                story_tile.visited = True
+                under_ball.visited = True
 
     def _move_ball(self) -> None:
         ball = self._board.ball

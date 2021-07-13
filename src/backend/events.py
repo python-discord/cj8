@@ -1,8 +1,16 @@
 import logging
 from abc import ABC, abstractmethod
+from enum import Enum
 from typing import Callable, Set
 
 from src.file_logging import logger
+
+
+class EventTypes(Enum):
+    """Enum type for event types"""
+
+    story = "story"
+    pause = "pause"
 
 
 class BaseEvent(ABC):
@@ -42,7 +50,7 @@ class StoryEvent(BaseEvent):
 
     @property
     def _type(self) -> str:
-        return "story"
+        return EventTypes.story.value
 
     def __str__(self):
         return f"Story Event for level {self.level_name}"

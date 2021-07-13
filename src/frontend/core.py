@@ -15,6 +15,7 @@ from src.backend.core import CoreBackend
 from src.backend.events import BaseEvent
 from src.backend.tiles import PauseTile
 from src.keyboard_handlers.core import BaseKeyboardHandler, KeyboardFactory
+from src.story.core import CoreStory
 
 
 class CoreFrontend:
@@ -38,6 +39,7 @@ class CoreFrontend:
 
     def __init__(self):
         self.backend: CoreBackend = CoreBackend()
+        self.story: CoreStory = CoreStory(self.backend)
         self.keyboard_handler: BaseKeyboardHandler = KeyboardFactory.get(self.backend)
         self._paused = False
 
