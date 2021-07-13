@@ -9,6 +9,7 @@ from rich.layout import Layout
 from rich.live import Live
 from rich.panel import Panel
 from rich.table import Table
+from rich.text import Text
 from rich.tree import Tree
 
 from src.backend.core import CoreBackend
@@ -121,6 +122,17 @@ class CoreFrontend:
 
         layout.split_column(
             Layout(name="Title"),
+            Layout(
+                Align(
+                    Panel(
+                        Text(self.story.prologue, justify="center"),
+                        expand=False,
+                        padding=(1, 6),
+                    ),
+                    align="center",
+                    vertical="middle",
+                )
+            ),
             Layout(Align("Press N to Start.", align="center", vertical="middle")),
         )
         layout["Title"].ratio = 3

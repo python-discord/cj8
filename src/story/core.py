@@ -29,9 +29,9 @@ class CoreStory:
         return manifest_conf
 
     @property
-    def prolog(self) -> str:
-        """Get the prolog about the game"""
-        return self.manifest_conf["main"]["prolog"]
+    def prologue(self) -> str:
+        """Get the prologue about the game"""
+        return self.manifest_conf["main"]["prologue"]
 
     def story_callback(self, event: BaseEvent) -> None:
         """Callback to handle StoryEvents"""

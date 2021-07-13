@@ -1,5 +1,15 @@
+import sys
+
 from src.frontend.core import CoreFrontend
 
-if __name__ == "__main__":
+
+def main():
     frontend = CoreFrontend()
-    frontend.start_loop()
+    try:
+        frontend.start_loop()
+    except KeyboardInterrupt:
+        sys.exit(0)
+
+
+if __name__ == "__main__":
+    main()
