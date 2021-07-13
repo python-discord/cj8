@@ -2,8 +2,9 @@ from threading import Thread
 
 from blessed import Terminal
 
+from src.resources.level import Level
+
 from .AbstractDungeonEntity import AbstractDungeonEntity
-from .level import Level
 
 # Used to get player input
 term = Terminal()
