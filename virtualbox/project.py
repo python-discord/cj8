@@ -50,16 +50,17 @@ def user_input_cmd(fs, user):
 
 
 def start(fs, user):
+    clear_term()
     print_box('Intro',
-       ['Hey There! You are an Artificial Intelligant',' built by the USA, developed to get into PCs and analyze them.',' You was hacked into a System by the Atomic Program of the Iran.',' Here, ur job was to analyze the Data and to see',' if there are any files which could gives hint to the Atomatic Missiles of the Iran.'])
+       [' Hey There! You are an Artificial Intelligant,',' built by the USA, developed to get into PCs and analyze them.',' You was hacked into a System by the Atomic Program of the Iran.',' Here, your job was to analyze the Data and to see,',' if there are any files which could gives hints to the Atomatic Missiles of the Iran.'])
     input()
     clear_term()
     print_box('Intro',
-       ['You found out that there will be a nuclear ','launch today, it should hit the US. But unfortunally, the system',' is offline, you cant contact the USA to warn them.'])
+       [' You found out that there will be a nuclear',' launch today, it should hit the US. But unfortunally, the system',' is offline, you cant contact the USA to warn them.'])
     input()
     clear_term()
     print_box('Intro',
-       ['Because of that, u decide that ull try to ','turn of the System, because you found indicates that that will stop',' the attack. But unfortunally, you need Root Privilages to',' shutdown the Operating System '])
+       [' Because of that, you have decided that youll try to',' turn of the System, because you found indicates that that will stop',' the attack. But unfortunally, you need Root Privilages to',' shutdown the Operating System '])
     input()
     clear_term()
     print_box('Intro',
@@ -73,8 +74,9 @@ def start(fs, user):
                'Access gained.',
                'AI will launch...)'])
     clear_term()
+    printhelp_first('This is the file tree, here, you can see every file in the operating system!')
     print_tree("System", fs, user)
-    printhelp_first()
+    printhelp_first('First, type "help" in the console to see all of the commands you can use!')
     return
 
 
