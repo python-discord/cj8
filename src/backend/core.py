@@ -64,7 +64,7 @@ class CoreBackend(DebugMixin, EventsMixin):
             "p": ControlHandler("p", self.pause, "Pause"),
             "m": ControlHandler("m", self.main_menu, "Main menu"),
         }
-        self._FOV = 5
+        self._FOV = 6
         self.win_count = 0
         self.mutators = {}
 
@@ -113,7 +113,7 @@ class CoreBackend(DebugMixin, EventsMixin):
     ) -> None:
         """Rotate redirector tiles of specified color clockwise."""
         for row in self._board.all_tiles + [[self._board.under_ball]]:
-            for x, tile in enumerate(row):
+            for tile in row:
                 if isinstance(tile, RedirectorTile) and tile.color == color:
                     tile.rotate(clockwise)
 
@@ -204,15 +204,14 @@ class CoreBackend(DebugMixin, EventsMixin):
         """
         try:
             self._controls_aux[key].function()
+            return
         except KeyError:
             pass
 
         for key_pair, color in self._controls.items():
             try:
                 direction = bool(key_pair.index(key))
-                break
+                self.rotate_redirector(color, clockwise=direction)
+                return
             except ValueError:
                 continue
-        else:
-            return
-        self.rotate_redirector(color, clockwise=direction)
