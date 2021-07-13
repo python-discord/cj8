@@ -100,12 +100,12 @@ class Map(Effect):
     @property
     def stop_frame(self) -> int:
         """Required function for Effects."""
-        # No specific end point for this Effect.  Carry on running forever.
+        # No specific end point for this Effect. Carry on running forever.
         return 0
 
     def reset(self) -> None:
         """Required function for Effects."""
-        # Nothing special to do.  Just need this to satisfy the ABC.
+        # Nothing special to do. Just need this to satisfy the ABC.
         pass
 
 
