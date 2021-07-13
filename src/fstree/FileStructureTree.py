@@ -8,7 +8,9 @@ class FileStructureTree:
 
     def __init__(self, path: str) -> None:
         """An FileSystemTree instance is created by passing the path which will be the root of the dungeon."""
-        self.root = Node(None, path)    # root node which holds references to all the other nodes in the tree
+        self.root = Node(
+            None, path
+        )  # root node which holds references to all the other nodes in the tree
         self.add_node(self.root)
 
     def add_node(self, node: Node) -> None:

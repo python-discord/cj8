@@ -2,11 +2,8 @@ from .AbstractDungeonEntity import AbstractDungeonEntity
 from .character import Character
 
 
-class AbstractColorChangingItem(AbstractDungeonEntity):
+class ColorChanger(AbstractDungeonEntity):
     """Dungeon Items that change players color if captured"""
-
-    used_items = []
-    unused_items = []
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
