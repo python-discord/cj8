@@ -229,26 +229,25 @@ def portscanner(user_input, fs, user):
     # if specified var (= if user_input contains specific port)
     if len(user_input)>1:
         # Different Prints to show user a portscanner experience and show hint/ no hint
-        print_box("PortScanner", [f"Scanning Network for Port: {user_input[1]}"])
-        time.sleep(1)
-        term.clear
-        print_box("PortScanner", [f"Found Port in Network:", f"{user_input[1]}/TCP [State: open]", "Scanning Port..."])
-        time.sleep(1)
-        term.clear
+        print_loading(f"Scanning Network for Port {user_input[1]}")
+        print_box("PortScanner", [f"Found Port in Network:", f"{user_input[1]}/TCP [State: open]"])
+        time.sleep(5)
+        print_loading(f"Scanning Port {user_input[1]}")
         output = random.choice(outputs)
-        term.clear
         print_box("PortScanner", [f"Port {user_input[1]} attackable. ", "Attack launchend. ", f"Output: {output}"])
     else:
         # 5-7 to show user a portscanner experience and show hint/ no hint
+        print_loading("Scanning Ports")
+        print_this = ["Found Ports in Network: "]
         for i in range(random.randint(5, 7)):
-            port = ports[i]
-            print_box("PortScanner", [f"Found Port in Network: ", f"{port}/TCP [State: open]", "Scanning Port..."])
-            time.sleep(0.4)
+            print_this.append(ports[i] + "/TCP [State: open]")
+        print_box("PortScanner", print_this)
+        time.sleep(1)
         inp = input("Select a port to scan: ")
         with term.cbreak():
             if inp in ports:
                 output = random.choice(outputs)
-                time.sleep(1)
+                print_loading(f"Scanning Port {inp}")
                 term.clear
                 print_box("PortScanner", [f"Port {inp} attackable. ", "Attack launchend. ", f"Output: {output}"])
             else:

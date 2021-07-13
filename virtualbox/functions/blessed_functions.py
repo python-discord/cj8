@@ -1,6 +1,7 @@
-from config import BLANK_LINES
+from config import BLANK_LINES, LOADING_BAR
 from blessed import Terminal
 from time import sleep
+from random import random
 import os
 term = Terminal()
 print(term.home + term.clear + term.move_y(term.height // 2))
@@ -89,12 +90,22 @@ def print_box(header, text):
                             print_this += str("├ " + words[startpos[row]:startpos[row + 1]] + " ┤" + "\n")
                         # for last row of long line
                         elif row == rows - 1:
-                            print_this += str("├ " + words[startpos[-2]:-1] + " " * int(BLANK_LINES - 4 - len(words[startpos[-2]:-1])) + " │" + "\n")
+                            print_this += str("├ " + words[startpos[-2]:] + " " * int(BLANK_LINES - 4 - len(words[startpos[-2]:])) + " │" + "\n")
 
     print_this += str('└─' + f' /{header}/ ' + '─' * int(BLANK_LINES - 7 - len(header)) + '┘' + '\n')
     print(term.green_on_black(print_this))
 
 
-def print_loading():
+def print_loading(prompt):
+    '''
+    prompt: str
+    clears screen and prints a loading bar following the prompt
+    symbol for loadng bar LOADING_BAR read from config
+    used by portscanner in command_functions
+    '''
+    print_this = prompt + " "
+    for i in range(BLANK_LINES - len(prompt)):
+        print(term.home + term.clear + term.move_y(term.height // 2) + term.green_on_black(print_this))
+        print_this += LOADING_BAR
+        sleep(random()/2)
 
-    print(term.green_on_black(print_this))

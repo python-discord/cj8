@@ -14,7 +14,7 @@ etcskel = "/etc/skel"
 START_PATH = dirname(abspath(__file__)) + sep + ".." + sep + "OS"
 
 # Blank Lines
-BLANK_LINES = 20
+BLANK_LINES = 50
 
-# # Loading bar
-# Loading_bar = "////////////"
+# Loading bar
+LOADING_BAR = "."
