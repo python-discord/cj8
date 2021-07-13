@@ -1,4 +1,5 @@
-from typing import List, Optional, Tuple, Union
+from dataclasses import dataclass
+from typing import Callable, List, Optional, Tuple
 
 from src.backend.events import EventsMixin, PauseEvent, StoryEvent
 from src.backend.level_loader import BoardCollection, CoreLevelLoader
@@ -16,6 +17,15 @@ from src.backend.tiles import (
 
 class DebugMixin:
     """Debugging mixin methods for the backend module"""
+
+
+@dataclass
+class ControlHandler:
+    """Store function and description to run on key."""
+
+    key: str
+    function: Callable[[], None]
+    description: str
 
 
 class CoreBackend(DebugMixin, EventsMixin):
@@ -46,8 +56,14 @@ class CoreBackend(DebugMixin, EventsMixin):
 
     def __init__(self) -> None:
         super().__init__()
-        self._board: Union[BoardCollection, None] = None
+        self._board: Optional[BoardCollection] = None
         self._controls = {}
+        self._controls_aux = {
+            "n": ControlHandler("n", self.new_level, "New level"),
+            "r": ControlHandler("r", self.restart_level, "Restart"),
+            "p": ControlHandler("p", self.pause, "Pause"),
+            "m": ControlHandler("m", self.main_menu, "Main menu"),
+        }
         self._FOV = 5
         self.win_count = 0
         self.mutators = {}
@@ -70,6 +86,15 @@ class CoreBackend(DebugMixin, EventsMixin):
         if not self._board:
             return
         self.new_level(self._board.level_path.name)
+
+    def pause(self) -> None:
+        """Emit a pause event."""
+        event = PauseEvent()
+        self.emit_event(event)
+
+    def main_menu(self) -> None:
+        """Return to main menu."""
+        self._board = None
 
     def get_board(self) -> List[List[BaseTile]]:
         """Return list of visible tiles within FOV."""
@@ -169,16 +194,10 @@ class CoreBackend(DebugMixin, EventsMixin):
 
         :param key: keyboard character that was pressed
         """
-        if key == "[":
-            self.new_level()
-            return
-        elif key == "]":
-            self.restart_level()
-            return
-
-        if key == "p":
-            event = PauseEvent()
-            self.emit_event(event)
+        try:
+            self._controls_aux[key].function()
+        except KeyError:
+            pass
 
         for key_pair, color in self._controls.items():
             try:

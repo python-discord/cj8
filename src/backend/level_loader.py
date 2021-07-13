@@ -1,7 +1,7 @@
 import random
 from datetime import datetime
 from pathlib import Path
-from typing import List, Tuple, Union
+from typing import List, Optional, Tuple
 
 from PIL import Image
 
@@ -29,7 +29,7 @@ class BoardCollection:
         self._ball = None
         self.under_ball = None
         self.size = None
-        self.level_path: Union[Path, None] = None
+        self.level_path: Optional[Path] = None
 
     @classmethod
     def from_file(

@@ -106,6 +106,8 @@ class CoreFrontend:
             if color:
                 k1, k2 = [key.upper() for key in keys]
                 controls.add(f"{k1} <[{Color.from_rgb(*color).name}]↑[/]> {k2}")
+        for key, handler in self.backend._controls_aux.items():
+            controls.add(f"{key.upper()}: [i]{handler.description}")
         return Panel(tree)
 
     @property
@@ -117,7 +119,7 @@ class CoreFrontend:
 
         layout.split_column(
             Layout(name="Title"),
-            Layout(Align("\n\nPress [ to Start.", align="center", vertical="middle")),
+            Layout(Align("Press N to Start.", align="center", vertical="middle")),
         )
         layout["Title"].ratio = 3
         layout["Title"].update(Align(title, align="center", vertical="middle"))

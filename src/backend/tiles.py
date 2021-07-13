@@ -3,17 +3,17 @@ import math
 import random
 from abc import ABC
 from enum import Enum
-from typing import Tuple, Union
+from typing import Optional, Tuple
 
 
 @dataclasses.dataclass()
 class AdjacentTiles:
     """All the tiles adjacent to a specific tile"""
 
-    up: Union[None, "BaseTile"] = None
-    down: Union[None, "BaseTile"] = None
-    left: Union[None, "BaseTile"] = None
-    right: Union[None, "BaseTile"] = None
+    up: Optional["BaseTile"] = None
+    down: Optional["BaseTile"] = None
+    left: Optional["BaseTile"] = None
+    right: Optional["BaseTile"] = None
 
 
 @dataclasses.dataclass()
