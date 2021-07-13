@@ -22,6 +22,7 @@ class AbstractDungeonEntity:
         self.level = level
         if color:
             self.symbol.stylize(color)
+        self.draw()
 
     def draw(self) -> None:
         """Places entity on map"""

@@ -13,6 +13,7 @@ def run_game(layout: Layout, game_resources: GameResources) -> Panel:
 
     Layout: Layout  Holds all the rich renderables for the game. Updated with a new panel each tick.
     """
+    game_resources.player.keyboard_input()
     game_resources.draw()
     panel = Panel(game_resources.level.to_string())
     layout.update(panel)

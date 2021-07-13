@@ -1,5 +1,6 @@
 from .entities.character import Character
 from .entities.ColorChanger import ColorChanger
+from .entities.Enemy import Enemy
 from .entities.EnemyManager import EnemyManager
 from .Level import Level
 
@@ -10,8 +11,8 @@ class GameResources:
     def __init__(self):
         self.level = Level(15, 10, [1, 2, 3, 4], [])
         self.player = Character(self.level, "$")
-        self.player.start()
-        self.test_color_changer = ColorChanger(level=self.level, x=2, y=2, symbol="@", color="yellow")
+        self.test_enemy = Enemy(self.level)
+        self.test_color_changer = ColorChanger(level=self.level, x=2, y=2, symbol="@", color="orange")
         self.enemy_manager = EnemyManager(self.level)
         self.enemy_manager.spawn_random_enemies(6)
 
