@@ -104,6 +104,9 @@ class StoryTile(PathTile):
         super().__init__(pos, color)
         self.visited = False
 
+    def __str__(self):
+        return " ░ "
+
 
 class BlindTile(BaseTile):
     """Tiles that are outside of vision."""

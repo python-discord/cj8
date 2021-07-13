@@ -1,3 +1,4 @@
+import datetime
 import os
 import time
 from pathlib import Path
@@ -11,6 +12,7 @@ from rich.panel import Panel
 from rich.table import Table
 from rich.tree import Tree
 
+from src.file_logging import logger
 from src.backend.core import CoreBackend
 from src.backend.events import BaseEvent
 from src.backend.tiles import PauseTile
