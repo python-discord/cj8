@@ -7,6 +7,7 @@ from virtualbox.exceptions import FileOrDirectoryAlreadyExist
 from virtualbox.exceptions import NotAnDirectory
 from virtualbox.exceptions import NotAnFile
 from virtualbox.exceptions import PermisionDenied
+import copy
 import os
 import shutil
 
@@ -31,6 +32,7 @@ class Dir(AC):
 
         return self
 
+    @classmethod
     def MkDirInit(cls, up, op, user, path, father):
         self = cls(up, op, user.uid, {"..": father}, path, ACL({}))
         self.create()
@@ -94,18 +96,40 @@ class Dir(AC):
         self.sub[name] = object
         self.acl.add(name, object.perms)
 
+    def mv(self, user, name, to):
+        father = self.get(user, name[:-1])
+        dest = self.getDir(user, to[:-1])
+
+        if name[-1] in dest.acl:
+            raise FileOrDirectoryAlreadyExist()
+
+        dest.set(user, to[-1], father.pop(user, name[-1]))
+        dest.sub[to[-1]].mvSelf(user, self.path + sep + sep.join(to))
+
+    def cp(self, user, path, to):
+        dest = self.getDir(user, to[:-1])
+        dest.append(user, self.get(user, path).cpSelf(user, self.path + sep + sep.join(to)), to[-1])
+
+
     @AC.readcheck
     def ls(self, user):
         return self.sub
 
+    @AC.readcheck
+    def stringList(self, user):
+        return list(self.sub.keys())
+
+    @AC.readcheck
     def walk(self, user):
         try:
-            Result = {}
-            for key, item in self.ls(user):
-                Result[key] = item if isinstance(item, File) else item.walk(user)
+            Result = []
+            for key, item in self.sub.items():
+                if key != "..":
+                    Result.append(key if isinstance(item, File) else (key, item.walk(user)))
+
             return Result
         except PermisionDenied:
-            return {}
+            return []
 
     "change directory"
     @doesnotexist
@@ -115,16 +139,17 @@ class Dir(AC):
 
     def get(self, user, path):
         result = self
-        for i in path.split("/"):
+        for i in path:
             result = result.shallowget(user, i)
         return result
 
     def getType(self, user, path, Type, exception):
         result = self
-        for i in path.split("/"):
+        for i in path:
             result = result.shallowget(user, i)
-            if type(result) != Type:
-                raise exception()
+        if type(result) != Type:
+            raise exception()
+
         return result
 
     def getDir(self, user, path):
@@ -165,7 +190,19 @@ class Dir(AC):
     def create(self):
         os.mkdir(self.path)
         self.aclsave()
-        return self
+
+    @AC.execcheck
+    def mvSelf(self, user, to):
+        shutil.move(self.path, to)
+        self.path = to
+
+    @AC.execcheck
+    def cpSelf(self, user, to):
+        shutil.copy(self.path, to)
+        result = copy.copy(self)
+        result.path = to
+        return result
+
 
     "properties"
     @property
@@ -175,3 +212,27 @@ class Dir(AC):
     "save acl"
     def aclsave(self):
         self.acl.save(self.aclpath)
+
+    # dicit like
+    @AC.readcheck
+    def getDicit(self, user, key):
+        if key in self.acl.dicit:
+            return self.sub[key], self.acl[key]
+        raise NoSuchFileOrDirectory()
+
+    @AC.writecheck
+    @update
+    def set(self, user, key, value):
+        self.sub[key] = value[0]
+        self.acl[key] = value[1]
+
+    @AC.writecheck
+    @update
+    def pop(self, user, key):
+        tmp = self.getDicit(user, key)
+
+        del self.sub[key]
+        del self.acl[key]
+
+        return tmp
+
