@@ -11,6 +11,8 @@ class EventTypes(Enum):
 
     story = "story"
     pause = "pause"
+    victory = "victory"
+    failed = "failed"
 
 
 class BaseEvent(ABC):
@@ -38,7 +40,7 @@ class PauseEvent(BaseEvent):
 
     @property
     def _type(self) -> str:
-        return "pause"
+        return EventTypes.pause.value
 
 
 class StoryEvent(BaseEvent):
@@ -54,6 +56,22 @@ class StoryEvent(BaseEvent):
 
     def __str__(self):
         return f"Story Event for level {self.level_name}"
+
+
+class VictoryEvent(BaseEvent):
+    """Represents the player winning a level"""
+
+    def __init__(self, score: int) -> None:
+        super().__init__()
+        self.score: int = score
+
+    ...
+
+
+class FailedEvent(BaseEvent):
+    """Represents the player losing a level"""
+
+    ...
 
 
 class EventsMixin:
