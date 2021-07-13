@@ -2,6 +2,7 @@ from __future__ import division
 
 from copy import deepcopy
 from math import ceil
+from time import sleep
 from typing import Any, List, Optional, Tuple
 
 from asciimatics.effects import Effect, Print
@@ -12,6 +13,7 @@ from asciimatics.scene import Scene
 from asciimatics.screen import Screen
 
 import exceptions
+from sprites.maps import LEVELS
 
 # Mappings of directional trigger keys such as movement or tag
 # to their corresponding properties/direction/map changes.
@@ -148,9 +150,9 @@ class GameController(Scene):
         ord('S'): "Is this the lower wall?",
     }
 
-    def __init__(self, screen: Screen, level_map: List[str]):
+    def __init__(self, screen: Screen, level: int):
         self.screen = screen
-        self.map = Map(screen, level_map)
+        self.map = Map(screen, LEVELS[level])
         effects = [
             self.map,
         ]
@@ -158,6 +160,7 @@ class GameController(Scene):
         # if he tags the 4 outer walls correctly
         # he realizes he is in a box and finish the level
         self.tagged_walls = {}
+        self.level = level
         super(GameController, self).__init__(effects, -1)
 
     def cast_ray(self, direction: Tuple[int], pos: Optional[List[int]] = None) -> int:
@@ -261,10 +264,8 @@ class GameController(Scene):
             check = self.check_level_completion()
             if check == GameController.CORRECT_TAGS:
                 self.speak("I knew it!\nI was in a box all along!")
-                # TODO: finish the level, perhaps put some animation
-                # and load the next
-                # self.load_next_level()
                 self.tagged_walls = {}
+                raise exceptions.EnterLevel(self.level + 1)
             elif check == GameController.WRONG_TAGS:
                 self.speak("Hmm... I don't think this is right.")
                 self.tagged_walls = {}
