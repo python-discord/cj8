@@ -50,11 +50,11 @@ class KeyboardFactory:
         platform = sys.platform
 
         if platform in (KeyboardFactory.LINUX, KeyboardFactory.MACOS):
-            from src.keyboard.fallback import FallbackKeyboardHandler
+            from src.keyboard_handlers.fallback import FallbackKeyboardHandler
 
             return FallbackKeyboardHandler(backend)
 
         # Return the default handler
-        from src.keyboard.default import DefaultKeyboardHandler
+        from src.keyboard_handlers.default import DefaultKeyboardHandler
 
         return DefaultKeyboardHandler(backend)
