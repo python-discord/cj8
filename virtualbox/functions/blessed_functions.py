@@ -48,8 +48,7 @@ def clear_term():
 
 
 def printhelp_first():
-    clear_term()
-    print(term.green_on_black("""First, type "help" in the console to see all of the commands you can use! """))
+    print(term.green_on_black('First, type "help" in the console to see all of the commands you can use! '))
 
 
 def print_tree(header, directory, user):
