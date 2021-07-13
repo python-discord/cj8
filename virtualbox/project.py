@@ -1,19 +1,16 @@
 
 from functions.command_functions import user_commands, random_test
-from functions.blessed_functions import print_tree
+from functions.blessed_functions import print_tree, clear_term
 from exceptions import CannotFullFillFunction
 from config import START_PATH
 from random import randint
 from time import sleep
-from blessed import Terminal
+
 
 from fs.fs_dir import Dir
 
 # file system imports
 fs = Dir.FromPath(START_PATH, None, 7, 0, 0)
-
-term = Terminal()
-print(term.home + term.clear + term.move_y(term.height // 2))
 
 failed_tasks = 0
 
@@ -39,8 +36,6 @@ def add_failure():
     failed_tasks += 1
     print(f"DEBUG: failues: {failed_tasks}")
 
-def clear_term():
-    print(term.clear)
 
 
 def ProcessArgs(function, argsDicit):
@@ -52,8 +47,7 @@ def ProcessArgs(function, argsDicit):
 
 # COMMAND MANAGER
 def user_input_cmd(fs, user):
-    global term
-    # clear_term()
+    clear_term()
     while True:
         user_input = input(">>>  ").split()
         if user_input[0] in user_commands:
