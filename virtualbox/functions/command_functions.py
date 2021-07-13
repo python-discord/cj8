@@ -1,5 +1,5 @@
 from .blessed_functions import print_box
-from .blessed_functions import print_tree
+from .blessed_functions import print_tree, clear_term
 from .generalfunctions import inAny
 from virtualbox.exceptions import NoSuchFileOrDirectory
 from exceptions import CommandNotFound
@@ -7,6 +7,7 @@ from exceptions import CommandNotFound
 import time
 from blessed import Terminal
 import random
+import os
 term = Terminal()
 =======
 
@@ -53,6 +54,7 @@ def random_test():
         add_failure()
     else:
         print("incorrect")
+    clear_term()
 
 
 def cd(user_input, fs, user):
@@ -302,6 +304,14 @@ def portscanner(user_input, fs, user):
 >>>>>>> parent of 67bb69f (new argument system, unicode in spearate file and in config)
 
 
+def dev_reset():
+    script_dir = os.path.dirname(__file__)
+    script_dir = script_dir.replace('functions/', '')
+    file_txt = str(script_dir + 'first_game.txt')
+    with open('first_game.txt', 'w') as firstgamefile:
+        firstgamefile.truncate()
+        firstgamefile.write('0')
+
 # COMMAND LIST
 user_commands = {"ls": ls,
                  "touch": add,
@@ -323,5 +333,6 @@ user_commands = {"ls": ls,
                  "read": read,
                  "search": search,
                  "portscan": portscanner,
-                 "cd": cd
+                 "cd": cd,
+                 "devresetintro": dev_reset
                  }
