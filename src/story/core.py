@@ -1,5 +1,5 @@
-from backend.core import CoreBackend
-from backend.events import BaseEvent
+from src.backend.core import CoreBackend
+from src.backend.events import BaseEvent, EventTypes, StoryEvent
 
 
 class CoreStory:
@@ -15,4 +15,10 @@ class CoreStory:
 
     def story_callback(self, event: BaseEvent) -> None:
         """Callback to handle StoryEvents"""
+        if event.type == EventTypes.story.value:
+            event: StoryEvent
+            self.move_story_forward(event.level_name)
+
+    def move_story_forward(self, level_name: str) -> None:
+        """Progress the story by providing the next block of text for the frontend"""
         ...
