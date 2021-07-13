@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 from functions.command_functions import user_commands, random_test
 from functions.blessed_functions import print_tree
 from exceptions import CannotFullFillFunction
@@ -7,22 +6,21 @@ from random import randint
 from time import sleep
 from blessed import Terminal
 from copy import copy
-=======
-from functions.blessed_functions import print_box, print_tree, printstart
-from functions import command_functions
->>>>>>> parent of fb517fd (Merge branch 'SirArthur' of https://github.com/cj8-cheerful-cheetahs/project into SirArthur)
 from fs.fs_dir import Dir
 
 # file system imports
-fs = Dir.FromPath("OS", None, 7, 0, 0)
-this_dir = fs
+fs = Dir.FromPath(START_PATH, None, 7, 0, 0)
+
+term = Terminal()
+print(term.home + term.clear + term.move_y(term.height // 2))
+
+failed_tasks = 0
 
 class User:
     """temporary user class"""
     uid = 0
 
 
-<<<<<<< HEAD
 def printstart(arg):
     print(term.clear)
     print(term.green_on_black(arg))
@@ -86,11 +84,10 @@ def start(fs, user):
     return
 
 
-=======
->>>>>>> parent of fb517fd (Merge branch 'SirArthur' of https://github.com/cj8-cheerful-cheetahs/project into SirArthur)
 def main():
-    printstart("idk")
-
+    global fs
+    start(fs, User)
+    user_input_cmd(copy(fs), User)
 
 
 if __name__ == "__main__":
