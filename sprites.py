@@ -39,11 +39,6 @@ class Player:
         leg3 = self.terminal.move_xy(self.x + 2, self.y + 2) + self.terminal.blue(self.terminal.on_midnightblue('▍'))
         self.parts.append(leg3)
 
-    def delete(self):  # delete the player at the current location
-        for y in range(self.y, self.y+3):
-            deleted = self.terminal.move_xy(self.x, y) + self.terminal.midnightblue(self.terminal.on_midnightblue('    '))
-            print(deleted, end='', flush=True)
-
     def draw(self):  # draws the player at it's x and y location
         self.create_body()
         for part in self.parts:
@@ -81,11 +76,6 @@ class Box:
         for part in self.parts:
             print(part, end='', flush=True)
 
-    def delete(self):
-        for y in range(self.y, self.y+2, self.terminal):
-            deleted = self.terminal.move_xy(self.x, y) + self.terminal.midnightblue(self.terminal.on_midnightblue('    '))
-            print(deleted, end='', flush=True)
-
 
 class Target:
     def __init__(self, x, y, terminal):
@@ -117,11 +107,6 @@ class Target:
     def draw(self):
         for part in self.parts:
             print(part, end='', flush=True)
-
-    def delete(self):
-        for y in range(self.y, self.y+2, self.terminal):
-            deleted = self.terminal.move_xy(self.x, y) + self.terminal.midnightblue(self.terminal.on_midnightblue('    '))
-            print(deleted, end='', flush=True)
 
 
 class Platform:

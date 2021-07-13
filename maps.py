@@ -1,5 +1,4 @@
 from typing import List
-
 import pymunk
 from blessed import Terminal
 
@@ -20,7 +19,7 @@ class Map:
         self.space = physics.MySpace()
 
     def create_level1(self):
-        self.player = Player(10, 26)
+        self.player = Player(10, 26, self.terminal)
         self.player_p = self.space.add_object((10, 26), type="player")
 
         self.thinking_box = ThinkingBox(15, 26, self.terminal)
@@ -60,7 +59,7 @@ class Map:
         self.thinking_box.draw()
         for target in self.targets:
             target.draw()
-        self.player.draw(self.terminal)
+        self.player.draw()
         for platform in self.platforms:
             platform.draw()
         for box in self.boxes:
