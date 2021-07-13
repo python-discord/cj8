@@ -58,19 +58,19 @@ def start(fs, user):
     clear_term()
     if content[0] == '0':
         print_box('Intro',
-           [' Hey There! You are an Artificial Intelligant,',' built by the USA, developed to get into PCs and analyze them.',' You was hacked into a System by the Atomic Program of the Iran.',' Here, your job was to analyze the Data and to see,',' if there are any files which could gives hints to the Atomatic Missiles of the Iran.'])
+           [' Hey There! You are an Artificial Intelligant, built by the USA, developed to get into PCs and analyze them. You was hacked into a System by the Atomic Program of the Iran. Here, your job was to analyze the Data and to see, if there are any files which could gives hints to the Atomatic Missiles of the Iran.'])
         input()
         clear_term()
         print_box('Intro',
-           [' You found out that there will be a nuclear',' launch today, it should hit the US. But unfortunally, the system',' is offline, you cant contact the USA to warn them.'])
+           [' You found out that there will be a nuclear launch today, it should hit the US. But unfortunally, the system is offline, you cant contact the USA to warn them.'])
         input()
         clear_term()
         print_box('Intro',
-           [' Because of that, you have decided that youll try to',' turn of the System, because you found indicates that that will stop',' the attack. But unfortunally, you need Root Privilages to',' shutdown the Operating System '])
+           [' Because of that, you have decided that youll try to turn of the System, because you found indicates that that will stop the attack. But unfortunally, you need Root Privilages to shutdown the Operating System '])
         input()
         clear_term()
         print_box('Intro',
-           ['You can gain access to these by (*insert challange here,',' example: get the password of the main file*). ','You will have to overcome multiple challenges'])
+           ['You can gain access to these by (*insert challange here, example: get the password of the main file*). You will have to overcome multiple challenges'])
         input()
         clear_term()
         print_box('Intro',
