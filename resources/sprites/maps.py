@@ -19,6 +19,4 @@ LEVELS = [
 # @#
 ####
 """.strip().split("\n")
-
-
 ]

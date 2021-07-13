@@ -3,16 +3,16 @@
 from __future__ import division
 
 import sys
-from typing import Callable, Tuple, List, Union
+from typing import Callable, List, Tuple, Union
 
 from asciimatics.exceptions import ResizeScreenError
 from asciimatics.scene import Scene
 from asciimatics.screen import Screen
 
-import exceptions
-import main_pages as mp
-from gamelogic.controller import GameController, game_IH
-from sprites.maps import LEVELS
+import resources.exceptions as exceptions
+import resources.scenes.main_pages as mp
+from resources.scenes.controller import GameController, game_IH
+from resources.sprites.maps import LEVELS
 
 Scenes = Union[Callable, List[Scene]]
 
