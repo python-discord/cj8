@@ -6,6 +6,7 @@ from exceptions import CommandNotFound
 import time
 from blessed import Terminal
 import random
+import os
 term = Terminal()
 
 # COMMAND LIST
@@ -254,6 +255,14 @@ def portscanner(user_input, fs, user):
                 print_box("PortScanner", ["The Port you entered wasnt found in the Network!"])
 
 
+def dev_reset():
+    script_dir = os.path.dirname(__file__)
+    script_dir = script_dir.replace('functions/', '')
+    file_txt = str(script_dir + 'first_game.txt')
+    with open('first_game.txt', 'w') as firstgamefile:
+        firstgamefile.truncate()
+        firstgamefile.write('0')
+
 # COMMAND LIST
 user_commands = {"ls": ls,
                  "touch": add,
@@ -275,5 +284,6 @@ user_commands = {"ls": ls,
                  "read": read,
                  "search": search,
                  "portscan": portscanner,
-                 "cd": cd
+                 "cd": cd,
+                 "devresetintro": dev_reset
                  }
