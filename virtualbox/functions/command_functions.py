@@ -295,11 +295,12 @@ def hint(user_input, fs, user):
       [EXTEND]
       """
     global VULNERABILITIES
-    print_box("vscan",["Looking for vulnerabilities..."])
+    print_box("vscan",["Looking for vulnerabilities...", " "])
     #selects random vulnerability
     chosen_vulnerability = random.choice(VULNERABILITIES)
+    time.sleep(2)
     #display our selected vulnerability.
-    print_box("vscan",[f"Vulnerability found: {chosen_vulnerability}"])
+    print_box("vscan",["Looking for vulnerabilities...", f"Vulnerability found: {chosen_vulnerability}"])
     #removes vulnerability from the list.
     remove_vulnerabillity(chosen_vulnerability)
     #add 1 failure point.

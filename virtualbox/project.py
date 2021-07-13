@@ -13,8 +13,6 @@ from fs.fs_dir import Dir
 fs = Dir.FromPath(START_PATH, None, 7, 0, 0)
 
 
-
-
 class User:
     """temporary user class"""
     uid = 0
