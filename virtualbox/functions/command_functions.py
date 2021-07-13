@@ -1,5 +1,5 @@
 from .blessed_functions import print_box
-from .blessed_functions import print_tree
+from .blessed_functions import print_tree, clear_term
 from .generalfunctions import inAny
 from virtualbox.exceptions import NoSuchFileOrDirectory
 from exceptions import CommandNotFound
@@ -49,6 +49,7 @@ def random_test():
         add_failure()
     else:
         print("incorrect")
+    clear_term()
 
 
 def cd(user_input, fs, user):
