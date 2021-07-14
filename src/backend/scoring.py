@@ -46,9 +46,14 @@ class CoreScoring:
             yaml.dump(self.high_scores, score_file)
 
     def _load_score_file(self) -> Dict:
+        # If the file does not exist
+        if not self._SCORE_FILE.is_file():
+            return {}
+
         with open(self._SCORE_FILE, "r") as score_file:
             high_scores = yaml.safe_load(score_file)
 
+        # If the file is empty and not a dict
         if not high_scores:
             return {}
 
