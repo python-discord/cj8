@@ -1,5 +1,4 @@
-from .blessed_functions import print_box
-from .blessed_functions import print_tree, clear_term
+from .blessed_functions import print_box, print_tree, clear_term, print_loading
 from .generalfunctions import inAny
 from virtualbox.exceptions import NoSuchFileOrDirectory
 from exceptions import CommandNotFound
@@ -10,6 +9,13 @@ import os
 term = Terminal()
 
 failed_tasks = 0
+
+
+def add_failure():
+    global failed_tasks
+    failed_tasks += 1
+    print(f"DEBUG: failures: {failed_tasks}")
+
 
 # COMMAND LIST
 def ls(fs, user):
@@ -228,42 +234,36 @@ def portscanner(user_input, fs, user):
     portscan - scans for port in network
     [EXTEND]
     """
-    # try:
-    #     # if user_input contains specific port specifies var
-    #     if user_input[1]:
-    #         use_true = 'temp'
-    # except:
-    #     pass
-    ports = [22, 80, 9929, 8898, 22542, 187, 32312]
+    ports = [str(port) for port in [22, 80, 9929, 8898, 22542, 187, 32312]]
     outputs = ['not a hint',
     'not a hint', 'not a hint', 'not a hint', 'not a hint', 'a hint', 'a hint', 'a hint', 'a hint']
     # if specified var (= if user_input contains specific port)
     if len(user_input)>1:
         # Different Prints to show user a portscanner experience and show hint/ no hint
-        print_box("PortScanner", [f"Scanning Network for Port: {user_input[1]}"])
-        time.sleep(1)
-        term.clear
-        print_box("PortScanner", [f"Found Port in Network:", f"{user_input[1]}/TCP [State: open]", "Scanning Port..."])
-        time.sleep(1)
-        term.clear
+        print_loading(f"Scanning Network for Port {user_input[1]}")
+        print_box("PortScanner", [f"Found Port in Network:", f"{user_input[1]}/TCP [State: open]"])
+        time.sleep(5)
+        print_loading(f"Scanning Port {user_input[1]}")
         output = random.choice(outputs)
-        term.clear
         print_box("PortScanner", [f"Port {user_input[1]} attackable. ", "Attack launchend. ", f"Output: {output}"])
     else:
         # 5-7 to show user a portscanner experience and show hint/ no hint
+        print_loading("Scanning Ports")
+        print_this = ["Found Ports in Network: "]
         for i in range(random.randint(5, 7)):
-            port = ports[i]
-            print_box("PortScanner", [f"Found Port in Network: ", f"{port}/TCP [State: open]", "Scanning Port..."])
-            time.sleep(0.4)
-        inp = int(input("Select a port to scan: "))
+            print_this.append(ports[i] + "/TCP [State: open]")
+        print_box("PortScanner", print_this)
+        time.sleep(1)
+        inp = input("Select a port to scan: ")
         with term.cbreak():
             if inp in ports:
                 output = random.choice(outputs)
-                time.sleep(1)
+                print_loading(f"Scanning Port {inp}")
                 term.clear
                 print_box("PortScanner", [f"Port {inp} attackable. ", "Attack launchend. ", f"Output: {output}"])
             else:
                 print_box("PortScanner", ["The Port you entered wasnt found in the Network!"])
+
 
 
 def dev_reset():
@@ -281,6 +281,7 @@ def add_vulnerabillity(vulnerability):
     global VULNERABILITIES
     VULNERABILITIES.append(vulnerability)
 
+
 def remove_vulnerabillity(vulnerability):
     global VULNERABILITIES
     try:
@@ -291,21 +292,20 @@ def remove_vulnerabillity(vulnerability):
 
 def hint(user_input, fs, user):
     """vscan
-      vscan - finds vulnerabilities, logs may draw attension to user
-      [EXTEND]
-      """
+    [EXTEND]
+    vscan - scans for vulnerabilities in network
+    """
     global VULNERABILITIES
-    print_box("vscan",["Looking for vulnerabilities...", " "])
+    print_box("vscan",["Looking for vulnerabilities..."])
     #selects random vulnerability
     chosen_vulnerability = random.choice(VULNERABILITIES)
-    time.sleep(2)
-    clear_term()
     #display our selected vulnerability.
-    print_box("vscan",["Looking for vulnerabilities...", f"Vulnerability found: {chosen_vulnerability}"])
+    print_box("vscan",[f"Vulnerability found: {chosen_vulnerability}"])
     #removes vulnerability from the list.
     remove_vulnerabillity(chosen_vulnerability)
     #add 1 failure point.
-    add_failure(10)
+    add_failure()
+
 
 
 # COMMAND LIST

@@ -33,6 +33,8 @@ player should only have read/write in user not root
 
 command which gets converts unicode to letters used to make a code with numbers
 
+riddles
+
 music
 
 login
@@ -44,3 +46,4 @@ tell the player to try to act fast and avoid drawing attension to themself
 downloading bar at start up.
 
 time limit/tracing player?
+

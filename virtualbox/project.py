@@ -18,10 +18,6 @@ class User:
     uid = 0
 
 
-
-
-
-
 def ProcessArgs(function, argsDicit):
     try:
         return [argsDicit[i] for i in function.__code__.co_varnames[:function.__code__.co_argcount]]
