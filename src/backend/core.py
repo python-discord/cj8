@@ -84,6 +84,7 @@ class CoreBackend(DebugMixin, EventsMixin):
         If level_name is None, load a random level.
         """
         self._controls = {keys: None for keys in self.CONTROL_PAIRS}
+        self.emit_event(StoryEvent())
         if not level_name:
             self._board = CoreLevelLoader.random_level()
         else:

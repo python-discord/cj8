@@ -132,6 +132,11 @@ class CoreFrontend:
                 controls.add(f"{k1} <[{Color.from_rgb(*color).name}]↑[/]> {k2}")
         for key, handler in self.backend._controls_aux.items():
             controls.add(f"{key.upper()}: [i]{handler.description}")
+        story = tree.add("Story:")
+        if story_content := self.story.current_story:
+            story.add(f"[i]{story_content}")
+        else:
+            story.add("🔒 [i]Find story tiles to unlock")
         return Panel(tree)
 
     @property

@@ -47,9 +47,13 @@ class PauseEvent(BaseEvent):
 
 
 class StoryEvent(BaseEvent):
-    """A story tile triggers the story to move forwards"""
+    """
+    A story tile triggers the story to move forwards
 
-    def __init__(self, level_name: str) -> None:
+    If level_name is None, reset current story.
+    """
+
+    def __init__(self, level_name: Optional[str] = None) -> None:
         super().__init__()
         self.level_name = level_name
 
