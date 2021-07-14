@@ -64,9 +64,8 @@ class CoreBackend(DebugMixin, EventsMixin):
             "p": ControlHandler("p", self.pause, "Pause"),
             "m": ControlHandler("m", self.main_menu, "Main menu"),
         }
-        self._FOV = 6
+        self.FOV = 6
         self.win_count = 0
-        self.mutators = {}
 
     def new_level(self, level_name: Optional[str] = None) -> None:
         """
@@ -95,6 +94,11 @@ class CoreBackend(DebugMixin, EventsMixin):
         """Return to main menu."""
         self._board = None
 
+    @property
+    def board(self) -> Optional[BoardCollection]:
+        """Return current board without parsing."""
+        return self._board
+
     def get_board(self) -> List[List[BaseTile]]:
         """Return list of visible tiles within FOV."""
         ball = self._board.ball
@@ -103,7 +107,7 @@ class CoreBackend(DebugMixin, EventsMixin):
             for x, tile in enumerate(row):
                 if isinstance(tile, GoalTile):
                     continue
-                if ball.calc_distance(tile) > self._FOV:
+                if ball.calc_distance(tile) > self.FOV:
                     row[x] = BlindTile(pos=(tile.pos.x, tile.pos.y))
         return all_tiles
 

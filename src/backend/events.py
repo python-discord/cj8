@@ -1,7 +1,7 @@
 import logging
 from abc import ABC, abstractmethod
 from enum import Enum
-from typing import Callable, Set
+from typing import Callable, Optional, Set
 
 from src.file_logging import logger
 
@@ -13,6 +13,7 @@ class EventTypes(Enum):
     pause = "pause"
     victory = "victory"
     failed = "failed"
+    mutator = "mutator"
 
 
 class BaseEvent(ABC):
@@ -63,7 +64,7 @@ class VictoryEvent(BaseEvent):
 
     def __init__(self, score: int) -> None:
         super().__init__()
-        self.score: int = score
+        self.score = score
 
     @property
     def _type(self) -> str:
@@ -76,6 +77,24 @@ class FailedEvent(BaseEvent):
     @property
     def _type(self) -> str:
         return EventTypes.failed.value
+
+
+class MutatorEvent(BaseEvent):
+    """
+    Set a mutator with name to state
+
+    If name is None, affect all mutators.
+    Default action is to enable.
+    """
+
+    def __init__(self, name: Optional[str] = None, state: bool = True) -> None:
+        super().__init__()
+        self.name = name
+        self.state = state
+
+    @property
+    def _type(self) -> str:
+        return EventTypes.mutator.value
 
 
 class EventsMixin:

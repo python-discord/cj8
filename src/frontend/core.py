@@ -15,6 +15,7 @@ from rich.tree import Tree
 
 from src.backend.core import CoreBackend
 from src.backend.events import BaseEvent
+from src.backend.mutators import CoreMutators
 from src.backend.tiles import PauseTile
 from src.keyboard_handlers.core import BaseKeyboardHandler, KeyboardFactory
 from src.sounds.core import CoreSounds
@@ -44,6 +45,7 @@ class CoreFrontend:
         self.backend: CoreBackend = CoreBackend()
         self.story: CoreStory = CoreStory(self.backend)
         self.sound: CoreSounds = CoreSounds(self.backend)
+        self.mutators = CoreMutators(self.backend)
         self.keyboard_handler: BaseKeyboardHandler = KeyboardFactory.get(self.backend)
         self._paused = False
 
@@ -99,12 +101,11 @@ class CoreFrontend:
     def panel(self) -> Panel:
         """Return informational panel about current game."""
         tree = Tree("[b]Panthera's Box")
-        tree.add(f"Level: [i]{self.backend._board.level_name}")
+        tree.add(f"Level: [i]{self.backend.board.level_name}")
         tree.add(f"Score: [i]{self.backend.win_count}")
         mutators = tree.add("Mutators:")
-        for mutator, state in self.backend.mutators.items():
-            if state:
-                mutators.add(f"[i]{mutator}")
+        for mutator in self.mutators.active_mutators:
+            mutators.add(f"[i]{mutator}")
         if not mutators.children:
             mutators.add("[i]None")
         controls = tree.add("Controls:")
@@ -157,7 +158,7 @@ class CoreFrontend:
 
     def create_layout(self) -> Layout:
         """Create layout object to display."""
-        if not self.backend._board:
+        if not self.backend.board:
             return Layout(self.menu)
         layout = Layout()
         layout.split_row(
