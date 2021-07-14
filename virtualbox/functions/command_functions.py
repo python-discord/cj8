@@ -245,7 +245,7 @@ def read(file: str, fs, user, bin: Flag(True) = False):
     [EXTEND]
     read - reads file using binary(bin) or text(text) modes
     """
-    print(fs.getFile(user, file.split("/")).read(user, bin))
+    print_box("read", [fs.getFile(user, file.split("/")).read(user, bin)])
 
 @add_function(("write", ), "user_input", "fs", "user")
 @expand_args(0, "file", "content", "bin")
@@ -307,6 +307,7 @@ def portscanner(port: Optional(int, None), fs, user):
             print_box("PortScanner", [f"Found port in network:", f"{port}/TCP [State: open]", print_this])
         else:
             print_box("PortScanner", [f"Port {port} not found in network"])
+
     else:
         print_loading("Scanning network for ports")
         print_this = ["Found Ports in network: "]
@@ -411,6 +412,7 @@ def ipcypher(listl):
                 retstring += f'.{cyphernum}'
         lostl.append(retstring)
     return lostl
+# print(ipcypher(['NetworkSecurityPanelAccessIsNeutronAtomNet']))
 
 
 def gethint():
