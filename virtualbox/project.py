@@ -29,6 +29,7 @@ def ProcessArgs(function, argsDicit):
 def user_input_cmd(fs, user):
     while True:
 <<<<<<< HEAD
+<<<<<<< HEAD
         try:
             user_input = input(">>>  ").split()
             entry = get_entry(user_input[0])
@@ -36,6 +37,8 @@ def user_input_cmd(fs, user):
         except Exception as e:
             print(e)
 =======
+=======
+>>>>>>> parent of 90b735c (Merge branch 'SirMerge' into main)
         user_input = input(">>>  ").split()
         try:
             if user_input[0] in user_commands:
@@ -49,6 +52,9 @@ def user_input_cmd(fs, user):
                     print(e)
         except:
             print('must include command listed in "help"')
+<<<<<<< HEAD
+>>>>>>> parent of 90b735c (Merge branch 'SirMerge' into main)
+=======
 >>>>>>> parent of 90b735c (Merge branch 'SirMerge' into main)
 
 

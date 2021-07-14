@@ -2,10 +2,14 @@ from .blessed_functions import print_box, print_tree, clear_term, print_loading
 from .generalfunctions import inAny
 from virtualbox.exceptions import NoSuchFileOrDirectory
 <<<<<<< HEAD
+<<<<<<< HEAD
 from virtualbox.exceptions import CommandNotFound
 from virtualbox.vulnerabilities import VULNERABILITIES, add_failure, add_vulnerabillity, remove_vulnerabillity
 from virtualbox.config import MAIN_PATH
 import random
+=======
+from exceptions import CommandNotFound
+>>>>>>> parent of 90b735c (Merge branch 'SirMerge' into main)
 =======
 from exceptions import CommandNotFound
 >>>>>>> parent of 90b735c (Merge branch 'SirMerge' into main)
