@@ -67,8 +67,7 @@ class Map(Effect):
                 self.player_y = i
                 self.map[i] = line.replace('@', ' ')
 
-        self._x = 0
-        self._y = 0
+        self.vision = 3  # will have a way to change this later
 
         # print(f"player: ({self.player_x},{self.player_y})")
         # print(f"map: ({self.map_x},{self.map_y})")
@@ -78,16 +77,22 @@ class Map(Effect):
         This function is called every frame, here we draw the player centered at the screen
         and the maps surrounding it.
         """
-        space_x = self.screen.width
-        offset_x = (space_x // 2 - self.player_x, ceil(space_x / 2) + self.player_x)
-        space_y = self.screen.height
-        offset_y = space_y // 2 - self.player_y
+        offset_x = (self.screen.width // 2 - self.player_x, ceil(self.screen.width / 2) + self.player_x)
+        offset_y = self.screen.height // 2 - self.player_y
 
         for i in range(offset_y):
             self.screen.print_at(" " * self.screen.width, 0, i)
         for i, chars in enumerate(self.map):
             if offset_x[0] >= 0:
-                chars = " " * offset_x[0] + chars + " " * offset_x[1]
+                if (y_dist := abs(self.player_y - i)) <= self.vision:
+                    # currently a diamond view, get rid of y_dist to make it square view
+                    left_vision = self.player_x - self.vision + y_dist
+                    right_vision = self.player_x + self.vision + 1 - y_dist
+                    chars = " " * offset_x[0] + " " * left_vision \
+                            + chars[max(left_vision, 0):min(right_vision, len(chars))] \
+                            + " " * right_vision + " " * offset_x[1]
+                else:
+                    chars = " " * self.screen.width
             else:
                 chars = chars[-offset_x[0]:] + " " * offset_x[1]
             self.screen.print_at(chars, 0, offset_y + i)
