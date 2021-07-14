@@ -12,7 +12,6 @@ from asciimatics.screen import Screen
 import resources.exceptions as exceptions
 import resources.scenes.main_pages as mp
 from resources.scenes.controller import GameController, game_IH
-from resources.sprites.maps import LEVELS
 
 Scenes = Union[Callable, List[Scene]]
 
@@ -42,7 +41,7 @@ def play_scenes(screen: Screen, scenes: Scenes, ih: Callable) -> Tuple[Scenes, C
             # Set next scenes
             screen.clear()  # Looks nicer
             if isinstance(e, exceptions.EnterLevel):
-                scenes = [GameController(screen, LEVELS[e.level])]
+                scenes = [GameController(screen, e.level)]
                 ih = game_IH
             elif isinstance(e, exceptions.Title):
                 # Remember - unless next scene is a level, set "scenes" to a function (not a scene)
