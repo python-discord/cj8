@@ -502,7 +502,7 @@ def logs():
 
 
 @add_function(("pscan", "hashcat"))
-def passwordscan(user_input, fs, user):
+def passwordscan():
     """
            pscan
            pscan - scans locally stored insecure passwords

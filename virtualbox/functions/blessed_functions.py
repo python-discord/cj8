@@ -152,5 +152,5 @@ def print_loading(prompt):
     print_this = prompt + " "
     for i in range(BLANK_LINES - len(prompt)):
         print(term.home + term.clear + term.move_y(term.height // 2) + term.green_on_black(print_this))
-        print_this += ""
+        print_this += "█"
         sleep(random()/2)
