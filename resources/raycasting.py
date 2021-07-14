@@ -108,55 +108,67 @@ cos_table = [
 ]
 
 
-def raycast(level: List[str], px: int, py: int, vision: int, opaque: str, step: int = 1, fov: int = 360) -> List[str]:
+# todo should i make px, py, dx, dy into player_x, player_y, delta_x, delta_y?
+def raycast(level_layout: List[str], px: int, py: int, visible_range: int, opaque: str, invisible_char: str = '?',
+            step: int = 1, fov: int = 360) -> List[str]:
     """
-    todo docstrings
-    """
-    # The FOV algo itself.
+    Takes in a level_layout and filters out all the things that aren't visible to the player.
 
+    :param level_layout: A list of strings, where each string is a line in the entire level layout.
+    :param px: x position of player
+    :param py: y position of player
+    :param visible_range: The range of visibility that the player can see.
+    :param opaque: A string containing all the characters that block vision/light.
+    :param invisible_char: The character used to mark an invisible spot.
+    :param step: Number of degrees between each casted ray. Increase the number for speed, lower for accuracy.
+        Must be in the range 1 - fov (recommended absolute max like 10-15).
+    :param fov: Angle of vision that player can see (going clockwise starting from the right). DON'T CHANGE
+
+    :return: A list of strings with the same dimensions as the inputted level_layout,
+        except only the visible stuff remains
+    """
+    # todo should I put this in docstrings? v
     # It works like this:
-    # It starts at player coordinates and cast 360 rays
-    # (if step is 1, less is step is more than 1) in every direction,
-    # until it hits a wall.
-    # When ray hits floor, it is set as visible.
+    # We start at the player's coordinates and cast [fov / step] rays, one for each heading.\
+    # Each ray travels in a certain heading by adding cos(heading) to x and sin(heading) to y repeatedly
+    # until it hits an opaque tile.
+    # Each tile a ray lands is set as visible.
 
-    # Ray is casted by adding to x (initialy it is player's x coord)
-    # value of sin(i degrees) and to y (player's y) value of cos(i degrees),
-    # RAD times, and checking for collision with wall every step.
-
-    width = len(level[0])
-    height = len(level)
-    return_level = [[c for c in l] for l in level]
+    width = len(level_layout[0])
+    height = len(level_layout)
+    return_level = [[char for char in line] for line in level_layout]
     visible_tiles = [(px, py)]
 
-    for i in range(0, fov + 1, step):
-        ax = cos_table[i]  # Get precalculated value sin(x / (180 / pi))
-        ay = sin_table[i]  # cos(x / (180 / pi))
+    for heading in range(0, fov + 1, step):
+        # starting point
+        ray_x = px
+        ray_y = py
 
-        x = px  # Player's x
-        y = py  # Player's y
+        # get amount of x and y delta using trig to make the absolute delta 1 in the specified heading (i)
+        dx = cos_table[heading]
+        dy = sin_table[heading]
 
-        for z in range(vision):  # Cast the ray
-            x += ax
-            y += ay
+        for _ in range(visible_range):  # Cast the ray
+            ray_x += dx
+            ray_y += dy
 
-            if x < 0 or y < 0 or x > width or y > height:  # If ray is out of range
+            if ray_x < 0 or ray_y < 0 or ray_x > width or ray_y > height:  # Break if ray is out of bounds
                 break
 
-            visible_tiles.append((round(x), round(y)))  # Make tile visible
+            visible_tiles.append((round(ray_x), round(ray_y)))  # Make tile visible
 
-            if level[round(y)][round(x)] in opaque:  # Stop ray if it hit
-                break  # a wall.
+            if level_layout[round(ray_y)][round(ray_x)] in opaque:  # Stop on opaque tile
+                break
 
     for xc in range(width):
         for yc in range(height):
             if (xc, yc) not in visible_tiles:
-                return_level[yc][xc] = '?'
-    return [''.join(l) for l in return_level]
+                return_level[yc][xc] = invisible_char
+    return [''.join(line) for line in return_level]
 
 
 if __name__ == '__main__':
-    from resources.sprites import maps
+    from sprites import maps
     display = raycast(maps.LEVELS[0], 12, 5, 4, '#')
     for line in display:
         print(line)
