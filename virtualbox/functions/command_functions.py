@@ -445,21 +445,26 @@ def logs(user_input, fs, user):
 def passwordscan(user_input, fs, user):
     pwlist = ['1password', '2password', '3password']
     all1 = list(string.ascii_letters + string.digits)
-    print(all1)
+    this_will_be_stupid = []
     print_box('PasswordScanner', ['Getting Operating System...', 'Filtring FileSystem...', 'Scanning for Passwords...'])
+    time.sleep(2)
     clear_term()
     for item in pwlist:
         for i in range(5):
             choiceg = ''
             for _ in range(len(item)):
                 choiceg += random.choice(all1)
+            for items in this_will_be_stupid:
+                print_box(items[0], items[1])
             print_box('PasswordScanner', ['Found Password', choiceg, str('█'*i + '_'*int(5-i))])
             time.sleep(0.3)
             clear_term()
         time.sleep(0.5)
-        clear_term()
-        print_box('PasswordScanner', ['Found Password', item])
-        time.sleep(1)
+        this_will_be_stupid.append(['PasswordScanner', ['Found Password', item]])
+        # print_box('PasswordScanner', ['Found Password', item])
+        for items in this_will_be_stupid:
+            print_box(items[0], items[1])
+        time.sleep(2)
         clear_term()
     lollist = ['Found Passwords:']
     for item in pwlist:
