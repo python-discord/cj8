@@ -86,7 +86,8 @@ class Map(Effect):
             if offset_x[0] >= 0:
                 if (y_dist := abs(self.player_y - i)) <= self.vision:
                     # currently a diamond view, get rid of y_dist to make it square view
-                    left_vision, right_vision = self.player_x - self.vision + y_dist, self.player_x + self.vision + 1 - y_dist
+                    left_vision, right_vision = self.player_x - self.vision + y_dist, \
+                                                self.player_x + self.vision + 1 - y_dist
                     chars = " " * offset_x[0] + " " * left_vision \
                             + chars[max(left_vision, 0):min(right_vision, len(chars))] \
                             + " " * right_vision + " " * offset_x[1]
