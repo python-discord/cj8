@@ -15,7 +15,7 @@ def thinking_box():
     t = "time is paused! get your brain workin kiddo"
     while(y_co<=h):
      if(y_co==h/2):#middle 3 rows- am just multiplying characters with numbers....
-        print(f"{term.turquoise2_on_gray1}│"*mul+ f"{term.turquoise2_on_gray1} "*int(fac/6-len(t))+t+f"{term.turquoise2_on_gray1} "*int(5*(fac)/6-10)+f"{term.turquoise2_on_gray1}│"*mul, end='\n') 
+        print(f"{term.turquoise2_on_gray1}│"*mul+ f"{term.turquoise2_on_gray1} "*int(fac/6-len(t))+t+f"{term.turquoise2_on_gray1} "*int(5*(fac)/6-27)+f"{term.turquoise2_on_gray1}│"*mul, end='\n') 
         print(f"{term.turquoise2_on_gray1}│"*mul+f"{term.turquoise2_on_gray1} "*int((fac+3-len(k))/2)+k+f"{term.turquoise2_on_gray1} "*int((fac+2-len(k))/2)+f"{term.turquoise2_on_gray1}│"*mul,end='\n')
         print(f"{term.turquoise2_on_gray1}│"*mul+f"{term.turquoise2_on_gray1} "*int((fac+3-len(s))/2)+s+f"{term.turquoise2_on_gray1} "*int((fac+2-len(s))/2)+f"{term.turquoise2_on_gray1}│"*mul,end='\n') 
         y_co = y_co+1       
@@ -31,7 +31,7 @@ def thinking_box():
         fac = fac - 2     
     h = term.height
     w = term.width
-    #locating the input pointer?
+    
     with term.location(x=int(w/2+5), y=int(h/2-2)):
         y = input()
     if y:
