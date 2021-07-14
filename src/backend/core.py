@@ -54,6 +54,8 @@ class CoreBackend(DebugMixin, EventsMixin):
         ("z", "c"),
     ]
 
+    TICKS_PER_MOVE = 5
+
     def __init__(self) -> None:
         super().__init__()
         self._board: Optional[BoardCollection] = None
@@ -66,6 +68,7 @@ class CoreBackend(DebugMixin, EventsMixin):
         }
         self.FOV = 6
         self.win_count = 0
+        self._current_tick = 0
 
     def new_level(self, level_name: Optional[str] = None) -> None:
         """
@@ -121,6 +124,14 @@ class CoreBackend(DebugMixin, EventsMixin):
             for tile in row:
                 if isinstance(tile, RedirectorTile) and tile.color == color:
                     tile.rotate(clockwise)
+
+    def tick(self) -> None:
+        """Register a game tick"""
+        if self._current_tick < self.TICKS_PER_MOVE:
+            self._current_tick += 1
+            return
+        self._current_tick = 0
+        self.move_ball()
 
     def move_ball(self) -> None:
         """Handle moving the ball in an appropriate direction."""

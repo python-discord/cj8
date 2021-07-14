@@ -1,8 +1,9 @@
+import datetime
 import os
 import time
 from pathlib import Path
 from shutil import get_terminal_size
-from typing import NoReturn
+from typing import NoReturn, Optional
 
 from rich.align import Align
 from rich.color import Color
@@ -37,7 +38,7 @@ class CoreFrontend:
     Should draw out the current active mutators as well and the current score.
     """
 
-    FPS = 12
+    FPS = 20
     MIN_WIDTH = 75
     MIN_HEIGHT = 40
 
@@ -54,17 +55,28 @@ class CoreFrontend:
     def start_loop(self) -> NoReturn:
         """Start the render loop"""
         self._check_terminal_size()
+        current_frame: Optional[datetime.datetime] = datetime.datetime.now()
+        frame_delta = datetime.timedelta(
+            milliseconds=(1 / self.FPS) * 1000
+        ).microseconds
         with Live(
             self.create_layout(),
             screen=True,
             transient=True,
             refresh_per_second=self.FPS,
         ) as live:
+
             while True:
+                now = datetime.datetime.now()
+                delta = (now - current_frame).microseconds
+                sleep_period = (frame_delta - delta) / 1_000_000
                 if not self._paused:
-                    self.backend.move_ball()
+                    self.backend.tick()
                 live.update(self.create_layout())
-                time.sleep(1 / self.FPS)
+                current_frame = now
+                # Add sleep only if frame was rendered faster than expected
+                if sleep_period > 0:
+                    time.sleep(sleep_period)
 
     def _check_terminal_size(self) -> None:
         BYPASS = os.environ.get("BYPASS_SIZE_CHECK", "False") == "True"
