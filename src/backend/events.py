@@ -9,11 +9,13 @@ from src.file_logging import logger
 class EventTypes(Enum):
     """Enum type for event types"""
 
+    level_loaded = "level_loaded"
     story = "story"
     pause = "pause"
     victory = "victory"
     failed = "failed"
     mutator = "mutator"
+    ball = "ball_movement"
 
 
 class BaseEvent(ABC):
@@ -95,6 +97,26 @@ class MutatorEvent(BaseEvent):
     @property
     def _type(self) -> str:
         return EventTypes.mutator.value
+
+
+class BallMovementEvent(BaseEvent):
+    """Indicate the ball have moved"""
+
+    @property
+    def _type(self) -> str:
+        return EventTypes.ball.value
+
+
+class LevelLoadedEvent(BaseEvent):
+    """Indicates a level has been loaded"""
+
+    def __init__(self, level_name: str) -> None:
+        super().__init__()
+        self.level_name = level_name
+
+    @property
+    def _type(self) -> str:
+        return EventTypes.level_loaded.value
 
 
 class EventsMixin:

@@ -33,3 +33,5 @@ build/
 
 # Log files
 game.log
+
+high_score.yaml

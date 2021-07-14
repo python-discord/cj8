@@ -1,7 +1,14 @@
 from dataclasses import dataclass
 from typing import Callable, List, Optional, Tuple
 
-from src.backend.events import EventsMixin, PauseEvent, StoryEvent, VictoryEvent
+from src.backend.events import (
+    BallMovementEvent,
+    EventsMixin,
+    LevelLoadedEvent,
+    PauseEvent,
+    StoryEvent,
+    VictoryEvent,
+)
 from src.backend.level_loader import BoardCollection, CoreLevelLoader
 from src.backend.tiles import (
     BaseTile,
@@ -82,6 +89,7 @@ class CoreBackend(DebugMixin, EventsMixin):
         else:
             self._board = CoreLevelLoader.load(level_name)
         self._gen_controls()
+        self.emit_event(LevelLoadedEvent(self._board.level_name))
 
     def restart_level(self) -> None:
         """Reload the current level."""
@@ -149,6 +157,8 @@ class CoreBackend(DebugMixin, EventsMixin):
         self._is_ball_on_goal(under_ball_tile)
 
         self._is_ball_on_story_tile(under_ball_tile)
+
+        self.emit_event(BallMovementEvent())
 
     def _is_ball_on_goal(self, under_ball: BaseTile) -> None:
         """Test if the ball is on the goal tile"""

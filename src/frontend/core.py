@@ -17,6 +17,7 @@ from rich.tree import Tree
 from src.backend.core import CoreBackend
 from src.backend.events import BaseEvent
 from src.backend.mutators import CoreMutators
+from src.backend.scoring import CoreScoring
 from src.backend.tiles import PauseTile
 from src.keyboard_handlers.core import BaseKeyboardHandler, KeyboardFactory
 from src.sounds.core import CoreSounds
@@ -46,6 +47,7 @@ class CoreFrontend:
         self.backend: CoreBackend = CoreBackend()
         self.story: CoreStory = CoreStory(self.backend)
         self.sound: CoreSounds = CoreSounds(self.backend)
+        self.scoring: CoreScoring = CoreScoring(self.backend)
         self.mutators = CoreMutators(self.backend)
         self.keyboard_handler: BaseKeyboardHandler = KeyboardFactory.get(self.backend)
         self._paused = False
@@ -114,7 +116,10 @@ class CoreFrontend:
         """Return informational panel about current game."""
         tree = Tree("[b]Panthera's Box")
         tree.add(f"Level: [i]{self.backend.board.level_name}")
-        tree.add(f"Score: [i]{self.backend.win_count}")
+        tree.add(f"Win Count: [i]{self.backend.win_count}")
+        tree.add(f"Elapsed: [i]{self.scoring.elapsed_seconds}s")
+        tree.add(f"Score: [i]{self.scoring.current_score}")
+        tree.add(f"Level High Score: [i]{self.scoring.level_high_score}")
         mutators = tree.add("Mutators:")
         for mutator in self.mutators.active_mutators:
             mutators.add(f"[i]{mutator}")
