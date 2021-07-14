@@ -125,7 +125,7 @@ class PauseTile(BaseTile):
         super().__init__(*args, **kwargs, color=(255, 255, 255))
 
     def __str__(self):
-        return " ⏸︎ "
+        return " ⏸︎\uFE0E "
 
 
 class WallTile(BaseTile):
