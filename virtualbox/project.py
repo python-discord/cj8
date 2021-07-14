@@ -31,14 +31,14 @@ def user_input_cmd(fs, user):
         user_input = input(">>>  ").split()
         try:
             if user_input[0] in user_commands:
-                try:
+                 try:
                     clear_term()
                     if randint(1, 20) == 1:
                         random_test()
                     function = user_commands[user_input[0]]
                     function(*ProcessArgs(function, locals()))
-                except Exception as e:
-                    print(e)
+                 except Exception as e:
+                     print(e)
         except:
             print('must include command listed in "help"')
 
