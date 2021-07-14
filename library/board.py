@@ -83,8 +83,9 @@ class Board:
             "9": (first, third),
         }
 
-        # Mypy cannot penetrate the slicing behavior here, so we assert that it is correct
-        return self.contents[subgrid_map[number]]  # type: ignore
+        # At the moment, numpy.array's __getitem__ is typed as returning a `typing.Any`:
+        # https://github.com/numpy/numpy/blob/89c80ba606f4346f8df2a31cfcc0e967045a68ed/numpy/__init__.pyi#L1202-L1203
+        return self.contents[subgrid_map[number]]  # type: ignore [no-any-return]
 
     def draw_board(self, term: blessed.Terminal) -> None:
         """Rudimentary attempt to draw a game board."""
