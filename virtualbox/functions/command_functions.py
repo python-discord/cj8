@@ -6,6 +6,7 @@ import time
 from blessed import Terminal
 import random
 import os
+import string
 term = Terminal()
 
 failed_tasks = 0
@@ -337,6 +338,80 @@ def hint(user_input, fs, user):
     add_failure()
 
 
+def ipcypher(listl):
+    lostl = []
+    for word in listl:
+        retstring = ''
+        if len(word) < 8:
+            minus = int(8 - len(word))
+            word += str('7'*minus)
+        for letter in word:
+            cyphernum = ord(letter)
+            cyphernum -= 40
+            ret1_string = retstring.replace('.', '')
+            len_string = len(ret1_string)
+            len_string / 2
+            forbitten_lols = [0, 2, 6, 10, 14]
+            if len_string in forbitten_lols:
+                retstring += str(cyphernum)
+            else:
+                retstring += f'.{cyphernum}'
+        lostl.append(retstring)
+    return lostl
+
+
+def gethint():
+    hints = ['hello hello hello'] # Words split by a space, words cant be longer than 8 letters, wouldnt recommend longer hint than 4-5 words. Best is 3 words
+    return random.choice(hints)
+
+
+def ipsearch(user_input, fs, user):
+    hint = gethint()
+    hintlist = hint.split()
+    hintlist = ipcypher(hintlist)
+    for item in hintlist:
+        random_int = random.randint(1,2)
+        for i in range(random_int):
+            randip = str(f"{random.randint(100,99999)}.{random.randint(1000,9999)}.{random.randint(100,9999)}.{random.randint(1,999)}")
+            print_box('Found IP', ['Scanning:', randip, 'Not Attackable'])
+            time.sleep(0.5)
+        print_box('Found IP', ['Scanning:', item, 'Attackable'])
+        time.sleep(0.5)
+        if random_int == 1:
+            randip = str(f"{random.randint(100,99999)}.{random.randint(1000,9999)}.{random.randint(100,9999)}.{random.randint(1,999)}")
+            print_box('Found IP', ['Scanning:', randip, 'Not Attackable'])
+            time.sleep(0.5)
+    time.sleep(0.5)
+    randip = str(f"{random.randint(100,99999)}.{random.randint(1000,9999)}.{random.randint(100,9999)}.{random.randint(1,999)}")
+    print_box('Found IP', ['Scanning:', randip, 'Not Attackable'])
+    time.sleep(1)
+    clear_term()
+    printlist = []
+    for item in hintlist:
+        printlist.append(item)
+    printlist.append('You can scan these IPs by using "ipscan [ip]!"')
+    print_box('Ips found:', printlist)
+
+
+def ipscan(user_input, fs, user):
+    retstring = ''
+    list_letters = list(string.ascii_letters)
+    ip = user_input[1] # Change to 0?
+    ip_no_dots = ip.replace('.', '')
+    range_num = len(ip_no_dots)
+    for i in range(0, range_num, 1):
+        try:
+            num1, num2 = ip_no_dots[i], ip_no_dots[i+1]
+        except:
+            pass
+        else:
+            chr_this = int(int(num1 + num2) + 40)
+            letter = chr(chr_this)
+            if letter in list_letters:
+                if i % 2 == 0:
+                    retstring += letter
+    print_box('Scanned IP:', [f'The Ip: "{ip}"', f'Can be decyphered to: "{retstring}"'])
+
 
 # COMMAND LIST
 user_commands = {"ls": ls,
@@ -362,5 +437,7 @@ user_commands = {"ls": ls,
                  "cd": cd,
                  "devresetintro": dev_reset,
                  "vscan" : hint,
-                 "morse": morsescan
+                 "morse": morsescan,
+                 "ipscan": ipscan,
+                 "ipsearch": ipsearch
                  }
