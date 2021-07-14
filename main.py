@@ -6,7 +6,7 @@ from blessed import Terminal
 
 # custom libraries
 from library.board import Board
-from library.userTerm import UserTermState, starting_user_section, update_user_section
+from library.user_term import UserTermState, starting_user_section, update_user_section
 
 term = Terminal()
 board = Board()
@@ -57,20 +57,17 @@ with term.fullscreen(), term.cbreak(), term.hidden_cursor():
 
                 state.start_of_turn = False
 
-            if state.subgrid_select_bool:
+            if state.subgrid_select:
                 term_info[1] = "Select SubGrid by entering 1-9"
                 if val in ("1", "2", "3", "4", "5", "6", "7", "8", "9"):
                     state.user_select_subgrid = int(val)
-                    term_info[2] = (
-                        f"Current: SubGrid {state.user_select_subgrid} "
-                        f"| Space {state.user_select_space}"
-                    )
+                    term_info[2] = f"Current: SubGrid {state.user_select_subgrid}"
 
                 print(term.move_up(7))
                 user_section = update_user_section(term_info)
                 print("".join(user_section))
 
-            elif state.space_select_bool:
+            elif state.space_select:
                 term_info[1] = "Select Space by entering 1-9"
                 if val in ("1", "2", "3", "4", "5", "6", "7", "8", "9"):
                     state.user_select_space = int(val)
@@ -84,18 +81,18 @@ with term.fullscreen(), term.cbreak(), term.hidden_cursor():
                 print("".join(user_section))
 
             if val.is_sequence and val.name == "KEY_ENTER":
-                if state.subgrid_select_bool and state.user_select_subgrid != 0:
-                    state.subgrid_select_bool = False
+                if state.subgrid_select and state.user_select_subgrid != 0:
+                    state.subgrid_select = False
                     term_info[1] = "Select Space by entering 1-9"
-                elif state.space_select_bool and state.user_select_space != 0:
-                    state.space_select_bool = False
+                elif state.space_select and state.user_select_space != 0:
+                    state.space_select = False
                     term_info[1] = "Confirm Selection?"
                 elif (
-                    state.user_confirm_bool
+                    state.user_confirm
                     and state.user_select_subgrid != 0
                     and state.user_select_space != 0
                 ):
-                    state.user_confirm_bool = False
+                    state.user_confirm = False
                     # TODO execute game logic here
                     # update_arrays()
                     #
@@ -128,7 +125,7 @@ with term.fullscreen(), term.cbreak(), term.hidden_cursor():
                 # check if subgrid needs to be updated
                 if state.save_subgrid:
                     state.user_select_subgrid = previous_subgrid
-                    state.subgrid_select_bool = False
+                    state.subgrid_select = False
 
                 # flip the player turn
                 if player_active == 1:
