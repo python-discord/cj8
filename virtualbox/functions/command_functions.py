@@ -469,8 +469,7 @@ def passwordscan(user_input, fs, user):
     for item in pwlist:
         lollist.append(item)
     print_box('PasswordScanner', lollist)
-    time.sleep(3)
-    clear_term()
+
 
 
 # COMMAND LIST
