@@ -5,7 +5,7 @@ from time import sleep
 from users.user import User, ROOT
 from users.uid import Uidspace
 from exceptions import CannotFullFillFunction
-from config import START_PATH, MAIN_PATH
+from config import START_PATH
 from copy import copy
 from fs.fs_dir import Dir
 
@@ -19,14 +19,9 @@ users_uid_space = Uidspace(1)
 Users = User.loadUsers(ROOT, fs, users_uid_space)
 
 
-class User:
-    """temporary user class"""
-    uid = 0
-
-
-def ProcessArgs(function, argsDicit):
+def ProcessArgs(functionArgs, argsDicit):
     try:
-        return [argsDicit[i] for i in function.__code__.co_varnames[:function.__code__.co_argcount]]
+        return [argsDicit[i] for i in functionArgs]
     except KeyError:
         raise CannotFullFillFunction()
 
@@ -34,18 +29,17 @@ def ProcessArgs(function, argsDicit):
 # COMMAND MANAGER
 def user_input_cmd(fs, user):
     while True:
-        user_input = input(">>>  ").split()
-        try:
-            try:
-                clear_term()
-                if randint(1, 30) == 1:
-                    random_test()
-                entry = get_entry(user_input[0])
-                entry[0](*ProcessArgs(entry[1], locals()))
-            except Exception as e:
-                print(e)
-        except:
-            print('must include command listed in "help"')
+        user_input = input(">>>  ").strip().split()
+        if len(user_input) == 0:
+            continue
+        # try:
+        # clear_term()
+        # if randint(1, 30) == 1:
+        #     random_test()
+        entry = get_entry(user_input[0])
+        entry[0](*ProcessArgs(entry[1], locals()))
+        # except Exception as e:
+        #    print(e)
 
 
 def start(fs, user):

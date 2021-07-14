@@ -15,6 +15,7 @@ import time
 # COMMAND LIST
 functions_list = []
 user_commands = {}
+
 failed_tasks = 0
 VULNERABILITIES = ["clue1","clue2"]
 OSlog = ['unknown user: connected,']
@@ -499,6 +500,7 @@ def logs():
         """
     print_box("LOGS", OSlog)
 
+
 @add_function(("pscan", "hashcat"))
 def passwordscan(user_input, fs, user):
     """
@@ -532,5 +534,3 @@ def passwordscan(user_input, fs, user):
     for item in pwlist:
         lollist.append(item)
     print_box('PasswordScanner', lollist)
-
-
