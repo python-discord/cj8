@@ -504,8 +504,8 @@ def logs():
 @add_function(("pwscan", "hashcat"))
 def passwordscan():
     """
-           pscan
-           pscan - scans locally stored insecure passwords
+           pwscan
+           pwscan/hashcat - scans locally stored insecure passwords
            [EXTEND]
     """
     pwlist = ['1password', '2password', '3password']
