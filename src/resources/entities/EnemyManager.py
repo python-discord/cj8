@@ -1,6 +1,7 @@
 from random import randint
 
-from ..Level import Level
+from src.resources.entities.level import Level
+
 from .Enemy import Enemy
 
 
@@ -17,11 +18,12 @@ class EnemyManager:
             y = randint(2, self.level.height-2)
             x = randint(2, self.level.width-2)
             disallowed_spaces = {'x': (x_player - 1, x_player + 1), 'y': (y_player - 1, y_player + 1)}
-
+            print(str(self.level.board[y][x]))
             if str(self.level.board[y][x]) == "'" and \
                     x not in disallowed_spaces['x'] and y not in disallowed_spaces['y']:
                 num -= 1
-                enemy = Enemy(level=self.level, x=x, y=y, symbol='^')
+                enemy = Enemy(x=x, y=y, symbol='^')
+                enemy.level = self.level
                 self.enemy_list.append(enemy)
 
     def update(self, x: int, y: int) -> None:
@@ -32,8 +34,3 @@ class EnemyManager:
     def collisions_with_player(self, x: int, y: int) -> bool:
         """Checks if player collided with enemy"""
         return any([(enemy.x, enemy.y) == (x, y) for enemy in self.enemy_list])
-
-    def draw(self) -> None:
-        """Draw each enemy in enemy list"""
-        for enemy in self.enemy_list:
-            enemy.draw()

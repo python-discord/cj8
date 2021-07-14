@@ -8,6 +8,8 @@ class Enemy(AbstractDungeonEntity):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.level = None
+        self.target = None
 
     def update(self, x: int, y: int) -> None:
         """Update enemy. Chooses mill or follow based on passed position."""
@@ -38,6 +40,7 @@ class Enemy(AbstractDungeonEntity):
         move_x = 0
         move_y = 0
 
+        # find direction
         if self.x > x:
             move_x = -1
         if self.x < x:
@@ -48,6 +51,7 @@ class Enemy(AbstractDungeonEntity):
         if self.y < y:
             move_y = 1
 
+        # move in that direction
         self.x += move_x
         self.y += move_y
 
@@ -55,6 +59,8 @@ class Enemy(AbstractDungeonEntity):
         """Check if player is in 'aggro' radius"""
         if (y - radius <= self.y <= y + radius) and (x - radius <= self.x <= x + radius):
             self.symbol.stylize("bold red")
+
+            # Set target here
             return True
         else:
             self.symbol.stylize("bold white")

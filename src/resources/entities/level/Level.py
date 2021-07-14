@@ -2,9 +2,9 @@ from random import randint
 
 from rich.text import Text
 
-from .entities.Door import Door
-from .entities.Tile import Tile
-from .entities.Wall import Wall
+from .Door import Door
+from .Tile import Tile
+from .Wall import Wall
 
 
 class Level:
@@ -14,7 +14,7 @@ class Level:
         self.board = []
         self.width = width
         self.height = height
-        self.door = Door("#", style="bold green")
+        self.door = Door(text="#", style="bold green")
         self.generate_level(width, height)
         self.set_border()
         self.add_doors(len(children))
@@ -24,7 +24,7 @@ class Level:
         for j in range(y):
             row = []
             for i in range(x):
-                tile = Tile(symbol="'", style="bold magenta")
+                tile = Tile(text="'", style="bold magenta")
                 row.append(tile)
             self.board.append(row)
 
@@ -51,15 +51,15 @@ class Level:
     def set_border(self) -> None:
         """Creates a walls around the level"""
         for i in range(self.width):
-            self.board[0][i] = Wall("═", style="bold white")
-            self.board[self.height - 1][i] = Wall("═", style="bold white")
+            self.board[0][i] = Wall(text="═", style="bold white")
+            self.board[self.height - 1][i] = Wall(text="═", style="bold white")
         for i in range(self.height):
-            self.board[i][0] = Wall("║", style="bold white")
-            self.board[i][self.width - 1] = Wall("║", style="bold white")
-        self.board[0][0] = Wall("╔", style="bold white")
-        self.board[self.height - 1][0] = Wall("╚", style="bold white")
-        self.board[0][self.width - 1] = Wall("╗", style="bold white")
-        self.board[self.height - 1][self.width - 1] = Wall("╝", style="bold white")
+            self.board[i][0] = Wall(text="║", style="bold white")
+            self.board[i][self.width - 1] = Wall(text="║", style="bold white")
+        self.board[0][0] = Wall(text="╔", style="bold white")
+        self.board[self.height - 1][0] = Wall(text="╚", style="bold white")
+        self.board[0][self.width - 1] = Wall(text="╗", style="bold white")
+        self.board[self.height - 1][self.width - 1] = Wall(text="╝", style="bold white")
 
     def to_string(self) -> Text:
         """Convert map to string"""

@@ -1,4 +1,4 @@
-from ..LevelResources import LevelResources
+from .LevelResources import LevelResources
 
 
 class Tile(LevelResources):
@@ -6,4 +6,4 @@ class Tile(LevelResources):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.text = "'"
+        self.entity_type = "tile"
