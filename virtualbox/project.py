@@ -49,27 +49,67 @@ def start(fs, user):
     clear_term()
     if content[0] == '0':
         print_box('Intro',
-           [' Hey There! You are an Artificial Intelligant, built by the USA, developed to get into PCs and analyze them. You was hacked into a System by the Atomic Program of the Iran. Here, your job was to analyze the Data and to see, if there are any files which could gives hints to the Atomatic Missiles of the Iran.'])
+           [' You are Netsec architect working for the USA, you just managed to get into a System controlling the Atomic Program of the Iran. Originally your job was to analyze the Data and to find out if there are any files which could gives hints to imminent nuclear attacks.'])
         input()
         clear_term()
         print_box('Intro',
-           [' You found out that there will be a nuclear launch today, it should hit the US. But unfortunally, the system is offline, you cant contact the USA to warn them.'])
+           [' You realise that there wil be an stealth launch attack very soon, it is targeted at Europe. You will not have enough time to contact the European agency. Your only chance to stop this is to deactivate it yourself.'])
         input()
         clear_term()
         print_box('Intro',
-           [' Because of that, you have decided that youll try to turn of the System, because you found indicates that that will stop the attack. But unfortunally, you need Root Privilages to shutdown the Operating System '])
+           [' The system has a built in artificial intelligence built to stop intruders. It will work against you and try to stop you. You will need to hack this system and gain root access and shut down the nuclear launch so that you have enough time to warn the EA.'])
         input()
         clear_term()
         print_box('Intro',
-           ['You can gain access to these by (*insert challange here, example: get the password of the main file*). You will have to overcome multiple challenges'])
-        input()
+                ['Booting OS drive...',
+                 '',
+                 '',
+                 '',
+                 ''])
+        sleep(0.5)
         clear_term()
         print_box('Intro',
-            ['So, dont waste your time, think smarter not harder, and good luck!',
-                   '*Title* starting',
-                   'gaining system access',
-                   'Access gained.',
-                   'AI will launch...)'])
+                  ['Booting OS drive... COMPLETE',
+                   'Securing connection...',
+                   '',
+                   '',
+                   ''])
+        sleep(0.5)
+        clear_term()
+        print_box('Intro',
+                  ['Booting OS drive... COMPLETE',
+                   'Securing Connection...COMPLETE',
+                   'Clearing Entry Logs...',
+                   '',
+                   ''])
+        sleep(0.5)
+        clear_term()
+        print_box('Intro',
+                  ['Booting OS drive... COMPLETE',
+                   'Securing Connection...COMPLETE',
+                   'Clearing Entry Logs...COMPLETE',
+                   'INITIALIZING ANTI-THREAT AI...',
+                   ''])
+        sleep(0.5)
+        clear_term()
+        print_box('Intro',
+                  ['Booting OS drive... COMPLETE',
+                   'Securing Connection...COMPLETE',
+                   'Clearing Entry Logs...COMPLETE',
+                   'INITIALIZING ANTI-THREAT AI...COMPLETE',
+                   ''])
+        sleep(0.5)
+        clear_term()
+        print_box('Intro',
+                  ['Booting OS drive... COMPLETE',
+                   'Securing Connection...COMPLETE',
+                   'Clearing Entry Logs...COMPLETE',
+                   'INITIALIZING ANTI-THREAT AI...COMPLETE',
+                   'Welcome operator. Press Enter to coninue'])
+        input()
+
+
+
         clear_term()
         printhelp_first('This is the file tree, here, you can see every file in the operating system!')
         print_tree("System", fs, user)
