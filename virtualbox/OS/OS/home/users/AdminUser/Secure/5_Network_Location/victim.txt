@@ -1,3 +1,0 @@
-we need access to a utility for network discovery and security auditing. systems and networks also need access to high-speed storage and computation resources. as a company with mission-critical servers, we are concerned with the quality of that access. which is where cloud-enabled storage comes in.
-
-cloud-enabled storage can be used to provide fast, centralized access to all storage resources. in addition, there are many other advantages to having these centralized storage systems, including integrated billing and reporting, as well as consolidated backup, disaster recovery, and failover

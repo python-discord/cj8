@@ -6,6 +6,8 @@ from virtualbox.argssystem.classes import Keyword, Optional, Flag
 from virtualbox.exceptions import NoSuchFileOrDirectory
 from virtualbox.exceptions import CommandNotFound
 from virtualbox.unicode import encode
+from virtualbox.vulnerabilities import VULNERABILITIES
+from config import MAIN_PATH
 
 # COMMAND LIST
 functions_list = []
@@ -255,45 +257,68 @@ def search(what: str, fs, user):
     print_box("search", result)
 
 
-@add_function(("portscann", "nmap"), "user_input", "fs", "user")
-def portscanner(user_input, fs, user):
-    # try:
-    #     # if user_input contains specific port specifies var
-    #     if user_input[1]:
-    #         use_true = 'temp'
-    # except:
-    #     pass
-    # ports = [22, 80, 9929, 8898, 22542, 187, 32312]
-    # outputs = ['not a hint',
-    # 'not a hint', 'not a hint', 'not a hint', 'not a hint', 'a hint', 'a hint', 'a hint', 'a hint']
-    # # if specified var (= if user_input contains specific port)
-    # if use_true:
-    #     # Different Prints to show user a portscanner experience and show hint/ no hint
-    #     print_box("PortScanner", f'Scanning Network for Port: {user_input}')
-    #     time.sleep(1)
-    #     clear_term()
-    #     print_box("PortScanner", f"Found Port in Network: \n    {port}/TCP [State: open] \n    Scanning Port... \n")
-    #     time.sleep(1)
-    #     clear_term()
-    #     output = random.choice(outputs)
-    #     clear_term()
-    #     print_box("PortScanner",f'Port {inp} attackable. \n    Attack launchend. \n    Output: {output} \n')
-    # else:
-    #     # 5-7 to show user a portscanner experience and show hint/ no hint
-    #     for i in range(randint(5, 7)):
-    #         port = ports[i]
-    #         print_box("PortScanner",f"Found Port in Netw
-    # ork: \n    {port}/TCP [State: open] \n    Scanning Port... \n")  # term.green_on_black
-    #         time.sleep(0.4)
-    #     inp = int(input('Select a port to scan: '))
-    #     with term.cbreak():
-    #         val = ''
-    #         if int(val.lower()) in ports:
-    #             output = random.choice(outputs)
-    #             time.sleep(3)
-    #             clear_term()
-    #             print_box("PortScanner",f'Port {inp} attackable. \n    Attack launchend. \n    Output: {output} \n')
-    #
-    #         else:
-    #             print_box("PortScanner",'The Port you entered wasnt found in the Network!')
-    pass
+@add_function(("portscann", "nmap"), "user_input", "fs", "user", "term")
+@expand_args(0, "port")
+def portscanner(port: Optiona[int, None], fs, user, term):
+"""portscan [port:int]
+    [EXTEND]
+    portscan - scans for port in network
+    """
+    ports = [22, 80, 9929, 8898, 22542, 187, 32312]
+    outputs = ['not a hint', 'a hint']
+    if port is not None:
+        # Different Prints to show user a portscanner experience and show hint/ no hint
+        print_box("PortScanner", [f"Scanning Network for Port: {port}"])
+        time.sleep(1)
+        term.clear
+        print_box("PortScanner", [f"Found Port in Network:", f"{port}/TCP [State: open]", "Scanning Port..."])
+        time.sleep(1)
+        term.clear
+        term.clear
+        print_box("PortScanner", [f"Port {port} attackable. ", "Attack launchend. ", f"Output: {output}"])
+    else:
+        # 5-7 to show user a portscanner experience and show hint/ no hint
+        for i in range(random.randint(5, 7)):
+            port = ports[i]
+            print_box("PortScanner", [f"Found Port in Network: ", f"{port}/TCP [State: open]", "Scanning Port..."])
+            time.sleep(0.4)
+        inp = int(input("Select a port to scan: "))
+        with term.cbreak():
+            if inp in ports:
+                output = random.choice(outputs)
+                time.sleep(1)
+                term.clear
+                print_box("PortScanner", [f"Port {inp} attackable. ", "Attack launchend. ", f"Output: {output}"])
+            else:
+                print_box("PortScanner", ["The Port you entered wasnt found in the Network!"])
+
+@add_function(("devresetintro"))
+def dev_reset():
+    # script_dir = os.path.dirname(__file__)
+    # script_dir = script_dir.replace('functions/', '') it will crash without argumnts
+    file_txt = str(MAIN_PATH + 'first_game.txt')
+    with open('first_game.txt', 'w') as firstgamefile:
+        firstgamefile.truncate()
+        firstgamefile.write('0')
+
+
+def add_vulnerabillity(vulnerability):
+    VULNERABILITIES.append(vulnerability)
+
+
+def remove_vulnerabillity(vulnerability):
+        VULNERABILITIES.remove(vulnerability)
+
+
+@add_function(("vscan"))
+def hint():
+    print_box("vscan",["Looking for vulnerabilities..."])
+    #selects random vulnerability
+    chosen_vulnerability = random.choice(VULNERABILITIES)
+    #display our selected vulnerability.
+    print_box("vscan",[f"Vulnerability found: {chosen_vulnerability}"])
+    #removes vulnerability from the list.
+    remove_vulnerabillity(chosen_vulnerability)
+    #add 1 failure point.
+    add_failure()
+

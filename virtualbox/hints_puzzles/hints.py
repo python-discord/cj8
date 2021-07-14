@@ -1,5 +1,28 @@
 from random import randint
+from virtualbox.vulnerabilities import VULNERABILITIES
 
+# Move into it's own directory
+FAILURE_POINTS = 0
+
+VULNERABILITIES = []
+
+def add_failure(points):
+    global FAILURE_POINTS
+    FAILURE_POINTS += points
+
+def add_vulnerabillity(vulnerability):
+    global VULNERABILITIES
+    VULNERABILITIES.append(vulnerability)
+
+def remove_vulnerabillity(vulnerability):
+    global VULNERABILITIES
+    try:
+        VULNERABILITIES.remove(vulnerability)
+    except ValueError:
+        pass
+
+
+# Is't it the same as function in commands file?
 # portscanner function for command usage
 def portscanner(user_input, fs, user):
     try:
