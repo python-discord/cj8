@@ -459,7 +459,6 @@ def passwordscan(user_input, fs, user):
             print_box('PasswordScanner', ['Found Password', choiceg, str('█'*i + '_'*int(5-i))])
             time.sleep(0.3)
             clear_term()
-        time.sleep(0.5)
         this_will_be_stupid.append(['PasswordScanner', ['Found Password', item]])
         # print_box('PasswordScanner', ['Found Password', item])
         for items in this_will_be_stupid:
@@ -469,9 +468,8 @@ def passwordscan(user_input, fs, user):
     lollist = ['Found Passwords:']
     for item in pwlist:
         lollist.append(item)
-    lollist.append('Press ENTER to continue')
     print_box('PasswordScanner', lollist)
-    input()
+    time.sleep(3)
     clear_term()
 
 
