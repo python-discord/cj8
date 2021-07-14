@@ -442,6 +442,34 @@ def logs(user_input, fs, user):
     print_box("LOGS", OSlog)
 
 
+def passwordscan(user_input, fs, user):
+    pwlist = ['1password', '2password', '3password']
+    all1 = list(string.ascii_letters + string.digits)
+    print(all1)
+    print_box('PasswordScanner', ['Getting Operating System...', 'Filtring FileSystem...', 'Scanning for Passwords...'])
+    clear_term()
+    for item in pwlist:
+        for i in range(5):
+            choiceg = ''
+            for _ in range(len(item)):
+                choiceg += random.choice(all1)
+            print_box('PasswordScanner', ['Found Password', choiceg, str('█'*i + '_'*int(5-i))])
+            time.sleep(0.3)
+            clear_term()
+        time.sleep(0.5)
+        clear_term()
+        print_box('PasswordScanner', ['Found Password', item])
+        time.sleep(1)
+        clear_term()
+    lollist = ['Found Passwords:']
+    for item in pwlist:
+        lollist.append(item)
+    lollist.append('Press ENTER to continue')
+    print_box('PasswordScanner', lollist)
+    input()
+    clear_term()
+
+
 # COMMAND LIST
 user_commands = {"ls": ls,
                  "touch": add,
@@ -464,11 +492,11 @@ user_commands = {"ls": ls,
                  "search": search,
                  "portscan": portscanner,
                  "cd": cd,
-                 "devresetintro": dev_reset,
+                 "devresetintro": dev_reset, # Remove when done
                  "vscan" : hint,
                  "morse": morsescan,
                  "ipscan": ipscan,
                  "ipsearch": ipsearch,
-                 "logs": logs
-
+                 "logs": logs,
+                 "pscan": passwordscan
                  }
