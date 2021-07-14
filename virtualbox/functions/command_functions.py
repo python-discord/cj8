@@ -1,4 +1,4 @@
-from .blessed_functions import print_tree, clear_term, print_box
+from .blessed_functions import print_tree, clear_term, print_box, print_loading
 from .generalfunctions import inAny
 from virtualbox.argssystem.functions import expand_args
 from virtualbox.argssystem.classes import Keyword, Optional, Flag
@@ -192,7 +192,7 @@ def help_function(name: Optional(str, None), extend: Flag(True) = False):
         return
 
     to_print = get_command_doc(name).split("[EXTEND]")
-    print_box('helper', to_print[0].strip())
+    print_box('helper', to_print[0].split("\n") )
 
     if extend:
         print_box('helper', to_print[1].strip())
@@ -284,43 +284,41 @@ def search(what: str, fs, user):
     print_box("search", result)
 
 
-@add_function(("portscan", "nmap"), "user_input", "fs", "user", "term")
+@add_function(("portscan", "nmap"), "user_input", "fs", "user")
 @expand_args(0, "port")
-def portscanner(port: Optional(int, None), fs, user, term):
+def portscanner(port: Optional(int, None), fs, user):
     """portscan [port:int]
-    [EXTEND]
     portscan - scans for port in network
+    [EXTEND]
     """
-    ports = [22, 80, 9929, 8898, 22542, 187, 32312]
-    outputs = ['not a hint', 'a hint']
+    ports = [str(port) for port in [22, 80, 9929, 8898, 22542, 187, 32312]]
+    outputs = ['not a hint',
+    'not a hint', 'not a hint', 'not a hint', 'not a hint', 'a hint', 'a hint', 'a hint', 'a hint']
+    # if specified var (= if user_input contains specific port)
     if port is not None:
         # Different Prints to show user a portscanner experience and show hint/ no hint
-        print_box("PortScanner", [f"Scanning Network for Port: {port}"])
-        time.sleep(1)
-        term.clear
-        print_box("PortScanner", ["Found Port in Network:", f"{port}/TCP [State: open]", "Scanning Port..."])
-        time.sleep(1)
-        term.clear
-        term.clear
+        print_loading(f"Scanning Network for Port {port}")
+        print_box("PortScanner", [f"Found Port in Network:", f"{port}/TCP [State: open]"])
+        time.sleep(5)
+        print_loading(f"Scanning Port {port}")
         output = random.choice(outputs)
         print_box("PortScanner", [f"Port {port} attackable. ", "Attack launchend. ", f"Output: {output}"])
     else:
         # 5-7 to show user a portscanner experience and show hint/ no hint
+        print_loading("Scanning Ports")
+        print_this = ["Found Ports in Network: "]
         for i in range(random.randint(5, 7)):
-            port = ports[i]
-            print_box("PortScanner", ["Found Port in Network: ", f"{port}/TCP [State: open]", "Scanning Port..."])
-            time.sleep(0.4)
-        inp = int(input("Select a port to scan: "))
-        with term.cbreak():
-            if inp in ports:
-                output = random.choice(outputs)
-                time.sleep(1)
-                term.clear
-                print_box("PortScanner", [f"Port {inp} attackable. ", "Attack launchend. ", f"Output: {output}"])
-            else:
-                print_box("PortScanner", ["The Port you entered wasnt found in the Network!"])
-
-
+            print_this.append(ports[i] + "/TCP [State: open]")
+        print_box("PortScanner", print_this)
+        time.sleep(1)
+        inp = input("Select a port to scan: ")
+        if inp in ports:
+            output = random.choice(outputs)
+            print_loading(f"Scanning Port {inp}")
+            clear_term()
+            print_box("PortScanner", [f"Port {inp} attackable. ", "Attack launchend. ", f"Output: {output}"])
+        else:
+            print_box("PortScanner", ["The Port you entered wasnt found in the Network!"])
 @add_function(("devresetintro", ))
 def dev_reset():
     """replace docstring if you want help for this function"""
