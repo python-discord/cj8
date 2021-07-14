@@ -84,7 +84,8 @@ class Map(Effect):
             self.screen.print_at(" " * self.screen.width, 0, i)
         for i, chars in enumerate(self.map):
             if offset_x[0] >= 0:
-                if (y_dist := abs(self.player_y - i)) <= self.vision:
+                y_dist = abs(self.player_y - i)
+                if y_dist <= self.vision:
                     # currently a diamond view, get rid of y_dist to make it square view
                     left_vision = self.player_x - self.vision + y_dist
                     right_vision = self.player_x + self.vision + 1 - y_dist
