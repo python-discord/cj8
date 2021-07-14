@@ -2,7 +2,6 @@
 
 from typing import List
 
-
 # Tables of precalculated values of sin(x) and cos(x) [degree]
 sin_table = [
     0.00000, 0.01745, 0.03490, 0.05234, 0.06976, 0.08716, 0.10453,
