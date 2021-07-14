@@ -7,6 +7,7 @@ from virtualbox.exceptions import CommandNotFound
 from virtualbox.unicode import encode
 from virtualbox.cryptology import encrypt
 from virtualbox.config import MAIN_PATH
+
 import string
 import random
 import time
@@ -534,3 +535,9 @@ def passwordscan(user_input, fs, user):
     for item in pwlist:
         lollist.append(item)
     print_box('PasswordScanner', lollist)
+
+
+@add_function(("login", ), "user_input", "fs", "user")
+@expand_args(0, "password")
+def login(password: str, user):
+    user.get()
