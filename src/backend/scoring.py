@@ -67,7 +67,17 @@ class CoreScoring:
 
     def _handle_level_finished(self, event: BaseEvent) -> None:
         self._level_finished_time = datetime.now()
-        self.high_scores[self._current_level_name] = self.current_score
+
+        level_name = self._current_level_name
+        current_score = self.current_score
+
+        # Check if current score should be added to high scores
+        if level_name not in self.high_scores:
+            self.high_scores[level_name] = self.current_score
+        else:
+            if current_score > self.high_scores[level_name]:
+                self.high_scores[level_name] = current_score
+
         self._write_to_file()
 
     def _handle_level_loaded(self, event: BaseEvent) -> None:
