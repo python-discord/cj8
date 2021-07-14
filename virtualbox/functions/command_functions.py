@@ -366,6 +366,11 @@ def gethint():
 
 
 def ipsearch(user_input, fs, user):
+    """
+    ipsearch
+    ipsearch - Search the system for attackable ips
+    [EXTEND]
+    """
     hint = gethint()
     hintlist = hint.split()
     hintlist = ipcypher(hintlist)
@@ -394,6 +399,11 @@ def ipsearch(user_input, fs, user):
 
 
 def ipscan(user_input, fs, user):
+    """
+    ipscan [ip]
+    ipscan - decyphers a ip to words
+    [EXTEND]
+    """"
     retstring = ''
     list_letters = list(string.ascii_letters)
     ip = user_input[1] # Change to 0?
