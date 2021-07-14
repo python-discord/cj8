@@ -46,6 +46,18 @@ class FOVReduce(BaseMutator):
         self.backend.FOV += self.value
 
 
+class SpeedIncrease(BaseMutator):
+    """Increase the tick speed"""
+
+    value = 2
+
+    def _activate(self) -> None:
+        self.backend.TICKS_PER_MOVE -= self.value
+
+    def _deactivate(self) -> None:
+        self.backend.TICKS_PER_MOVE += self.value
+
+
 class CoreMutators(BaseMutator):
     """
     Handles applying mutators that match an event
@@ -58,6 +70,7 @@ class CoreMutators(BaseMutator):
         self.backend.register_hook(self.event_callback)
         self._mutators = {
             "FOV Reduce": FOVReduce(self.backend),
+            "Speed Increase": SpeedIncrease(self.backend),
         }
 
     def event_callback(self, event: BaseEvent) -> None:
