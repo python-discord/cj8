@@ -2,6 +2,7 @@ from virtualbox.exceptions import PermisionDenied
 from virtualbox.config import etcskel
 from virtualbox.config import passwd
 from virtualbox.cryptology import customChiperEncrypt
+from virtualbox.unicode import encode
 
 
 class User:
@@ -9,9 +10,9 @@ class User:
         self.name = name
         self.uid = uid
         self.homePath = homePath
-        self.password = customChiperEncrypt(password, password)
+        self.password = password
 
-    "wrappers"
+    # wrappers
     @staticmethod
     def isroot(function):
         def check(user, *args):
@@ -20,33 +21,47 @@ class User:
             raise PermisionDenied()
         return check
 
-    "inits"
+    def passwordcheck(func):
+        def check(self, password, *args, **kwargs):
+            if self.checkPassword(password):
+                raise PermisionDenied
+            return func(self, password, *args, **kwargs)
+        return check
+
+    # inits
     @classmethod
-    def AutoUIDInit(cls, name, homePath, password, uidspace):
-        return cls(name, uidspace.getUid(), homePath, password)
+    def AutoUIDInit(cls, name, homePath, passwordhash, uidspace):
+        return cls(name, uidspace.getUid(), homePath, passwordhash)
 
     @classmethod
-    def CustomUIDInit(cls, name, homePath, password, uidspace, uid):
+    def CustomUIDInit(cls, name, homePath, passwordhash, uidspace, uid):
         uidspace.delUid(uid)
-        return cls(name, uid, homePath, password)
+        return cls(name, uid, homePath, passwordhash)
 
     @classmethod
-    def loadUsers(cls, fs, uidspace):
+    def loadUsers(cls, ROOT, fs, uidspace):
         Users = {}
-        for i in fs.getFile(passwd).split("\n"):
+        for i in fs.getFile(ROOT, passwd).read(ROOT).strip().split("\n"):
             tmp = i.split(":")
-            Users[tmp[0]] = cls(tmp[0], int(tmp[1]), tmp(2), bytes(tmp(3), "utf-8"))
+            Users[tmp[0]] = cls(tmp[0], int(tmp[1]), tmp[2], encode("".join(tmp[3:])))
         return Users
 
-    "self handeling"
+    # self handeling
     def delete(self, fs, uidspace):
         uidspace.restoreUID(self.uid)
         fs.detDir(self, self.homePath + "/..").rm(self.name)
 
-    "password"
-    def checkPassword(self, password):
-        return self.password == customChiperEncrypt(password, password)
+    @passwordcheck
+    def get(self, password):
+        return self
 
-    "file managment"
+    # password
+    def checkPassword(self, password):
+        return self.password == customChiperEncrypt(encode(password), encode(password))
+
+    # file managment
     def createHome(self, fs, user):
         fs.getDir(user, self.homePath).append(user, fs.getDir(etcskel), self.name)
+
+
+ROOT = User("root", 0, "/root", encode(""))

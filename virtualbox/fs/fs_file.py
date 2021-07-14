@@ -7,7 +7,6 @@ import shutil
 import copy
 
 
-
 class File(AC):
     def __init__(self, path, up, op, uid):
         super().__init__(up, op, uid)

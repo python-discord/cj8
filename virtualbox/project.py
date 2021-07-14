@@ -1,16 +1,22 @@
-
-from functions.command_functions import user_commands, random_test
-from functions.blessed_functions import print_tree, clear_term, printstart, printhelp_first, print_box
-from exceptions import CannotFullFillFunction
-from config import START_PATH
+from functions.command_functions import random_test, get_entry
+from functions.blessed_functions import print_tree, clear_term, printhelp_first, print_box
 from random import randint
 from time import sleep
-
-
+from users.user import User, ROOT
+from users.uid import Uidspace
+from exceptions import CannotFullFillFunction
+from config import START_PATH, MAIN_PATH
+from copy import copy
 from fs.fs_dir import Dir
 
 # file system imports
 fs = Dir.FromPath(START_PATH, None, 7, 0, 0)
+
+# Users uid space
+users_uid_space = Uidspace(1)
+
+# User
+Users = User.loadUsers(ROOT, fs, users_uid_space)
 
 
 class User:
@@ -30,15 +36,14 @@ def user_input_cmd(fs, user):
     while True:
         user_input = input(">>>  ").split()
         try:
-            if user_input[0] in user_commands:
-                 try:
-                    clear_term()
-                    if randint(1, 20) == 1:
-                        random_test()
-                    function = user_commands[user_input[0]]
-                    function(*ProcessArgs(function, locals()))
-                 except Exception as e:
-                     print(e)
+            try:
+                clear_term()
+                if randint(1, 30) == 1:
+                    random_test()
+                entry = get_entry(user_input[0])
+                entry[0](*ProcessArgs(entry[1], locals()))
+            except Exception as e:
+                print(e)
         except:
             print('must include command listed in "help"')
 
@@ -107,9 +112,6 @@ def start(fs, user):
                    'INITIALIZING ANTI-THREAT AI...COMPLETE',
                    'Welcome operator. Press Enter to coninue'])
         input()
-
-
-
         clear_term()
         printhelp_first('This is the file tree, here, you can see every file in the operating system!')
         print_tree("System", fs, user)
@@ -119,13 +121,13 @@ def start(fs, user):
             firstgamefile.write('1')
     else:
         print_box('Welcome Back', ['', 'Your Game-State was loaded again! ', ''])
-    return
+
 
 
 def main():
     global fs
-    start(fs, User)
-    user_input_cmd(fs, User)
+    start(fs, ROOT)
+    user_input_cmd(copy(fs), ROOT)
 
 
 if __name__ == "__main__":
