@@ -245,7 +245,7 @@ def read(file: str, fs, user, bin: Flag(True) = False):
     [EXTEND]
     read - reads file using binary(bin) or text(text) modes
     """
-    print(fs.getFile(user, file.split("/")).read(user, bin))
+    print_box("read", [fs.getFile(user, file.split("/")).read(user, bin)])
 
 @add_function(("write", ), "user_input", "fs", "user")
 @expand_args(0, "file", "content", "bin")
@@ -296,13 +296,13 @@ def portscanner(port: Optional(int, None), fs, user):
                'missing data', 'missing data', 'missing data']
     # if specified var (= if user_input contains specific port)
     if port is not None:
-        # Different Prints to show user a portscanner experience and show hint/ no hint
-        print_loading(f"Scanning Network for Port {port}")
-        print_box("PortScanner", [f"Found Port in Network:", f"{port}/TCP [State: open]"])
-        time.sleep(5)
         print_loading(f"Scanning Port {port}")
-        output = random.choice(outputs)
-        print_box("PortScanner", [f"Port {port} attackable. ", "Attack launchend. ", f"Output: {output}"])
+        num_in_list = 0
+        for i in range(len(ports)):
+            if port == ports[i]:
+                print(port[i])
+                num_in_list = i
+        print_box("PortScanner", [f"Port {port} attackable. ", "Attack launchend. ", f"Output: {outputs[num_in_list]}"])
     else:
         # 5-7 to show user a portscanner experience and show hint/ no hint
         print_loading("Scanning Ports")
@@ -310,15 +310,7 @@ def portscanner(port: Optional(int, None), fs, user):
         for i in range(random.randint(5, 7)):
             print_this.append(ports[i] + "/TCP [State: open]")
         print_box("PortScanner", print_this)
-        time.sleep(1)
-        inp = input("Select a port to scan: ")
-        if inp in ports:
-            output = random.choice(outputs)
-            print_loading(f"Scanning Port {inp}")
-            clear_term()
-            print_box("PortScanner", [f"Port {inp} attackable. ", "Attack launchend. ", f"Output: {output}"])
-        else:
-            print_box("PortScanner", ["The Port you entered wasnt found in the Network!"])
+
 
 
 @add_function(("devresetintro", ))
@@ -417,6 +409,7 @@ def ipcypher(listl):
                 retstring += f'.{cyphernum}'
         lostl.append(retstring)
     return lostl
+# print(ipcypher(['NetworkSecurityPanelAccessIsNeutronAtomNet']))
 
 
 def gethint():
