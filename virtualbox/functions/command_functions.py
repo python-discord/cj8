@@ -361,7 +361,7 @@ def ipcypher(listl):
 
 
 def gethint():
-    hints = ['hello hello hello'] # Words split by a space, words cant be longer than 8 letters, wouldnt recommend longer hint than 4-5 words. Best is 3 words
+    hints = ['hello test fake'] # Words split by a space, words cant be longer than 8 letters, wouldnt recommend longer hint than 4-5 words. Best is 3 words
     return random.choice(hints)
 
 
@@ -378,22 +378,26 @@ def ipsearch(user_input, fs, user):
         random_int = random.randint(1,2)
         for i in range(random_int):
             randip = str(f"{random.randint(100,99999)}.{random.randint(1000,9999)}.{random.randint(100,9999)}.{random.randint(1,999)}")
+            clear_term()
             print_box('Found IP', ['Scanning:', randip, 'Not Attackable'])
             time.sleep(0.5)
+        clear_term()
         print_box('Found IP', ['Scanning:', item, 'Attackable'])
         time.sleep(0.5)
         if random_int == 1:
             randip = str(f"{random.randint(100,99999)}.{random.randint(1000,9999)}.{random.randint(100,9999)}.{random.randint(1,999)}")
+            clear_term()
             print_box('Found IP', ['Scanning:', randip, 'Not Attackable'])
             time.sleep(0.5)
     time.sleep(0.5)
     randip = str(f"{random.randint(100,99999)}.{random.randint(1000,9999)}.{random.randint(100,9999)}.{random.randint(1,999)}")
+    clear_term()
     print_box('Found IP', ['Scanning:', randip, 'Not Attackable'])
     time.sleep(1)
-    clear_term()
     printlist = []
     for item in hintlist:
         printlist.append(item)
+    clear_term()
     printlist.append('You can scan these IPs by using "ipscan [ip]!"')
     print_box('Ips found:', printlist)
 
@@ -403,7 +407,7 @@ def ipscan(user_input, fs, user):
     ipscan [ip]
     ipscan - decyphers a ip to words
     [EXTEND]
-    """"
+    """
     retstring = ''
     list_letters = list(string.ascii_letters)
     ip = user_input[1] # Change to 0?
