@@ -52,19 +52,23 @@ class Map:
         self.player.x, self.player.y = physics.get_position(self.player_p)
         for i, box in enumerate(self.boxes):
             box.x, box.y = physics.get_position(self.boxes_p[i])
+    
 
     def delete(self):
-        print(self.terminal.home + self.terminal.on_midnightblue + self.terminal.clear)
+        print(self.terminal.home + self.terminal.on_midnightblue + self.terminal.clear(),flush=True)
+
 
     def draw(self):
-        self.thinking_box.draw()
+        string = ""
+        string+=self.thinking_box.draw()
         for target in self.targets:
-            target.draw()
-        self.player.draw()
+            string+=target.draw()
+        string+=self.player.draw()
         for platform in self.platforms:
-            platform.draw()
+            string+=platform.draw()
         for box in self.boxes:
-            box.draw()
+            string+=box.draw()
+        print(string,flush=True)
 
     def clear_level(self):
         self.targets = []

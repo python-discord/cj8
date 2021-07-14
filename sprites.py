@@ -1,4 +1,17 @@
-class Player:
+class Drawable:
+
+    def __init__(self):
+        self.parts = []
+
+    def draw(self):
+        wholePart = ""
+        for part in self.parts:
+            wholePart+=part
+        return wholePart
+
+    
+class Player(Drawable):
+
     """
         Every draw, create_body and delete function works the same.
         Draw function prints everything in parts list.
@@ -7,10 +20,10 @@ class Player:
 
     """
     def __init__(self, x, y, terminal):
+        super().__init__()
         self.x = x
         self.y = y
         self.terminal = terminal
-        self.parts = []
 
     def create_body(self):  # Creates the body of the player. Puts all the characters toghether in parts list
         self.parts = []
@@ -39,18 +52,18 @@ class Player:
         leg3 = self.terminal.move_xy(self.x + 2, self.y + 2) + self.terminal.blue(self.terminal.on_midnightblue('▍'))
         self.parts.append(leg3)
 
-    def draw(self):  # draws the player at it's x and y location
+    def draw(self):
         self.create_body()
-        for part in self.parts:
-            print(part, end='', flush=True)
+        return super().draw()
 
 
-class Box:
+
+class Box(Drawable):
     def __init__(self, x, y, terminal):
+        super().__init__()
         self.x = x
         self.y = y
         self.terminal = terminal
-        self.parts = []
         self.create_body()
 
     def create_body(self):
@@ -74,16 +87,14 @@ class Box:
 
     def draw(self):
         self.create_body()
-        for part in self.parts:
-            print(part, end='', flush=True)
+        return super().draw()
 
-
-class Target:
+class Target(Drawable):
     def __init__(self, x, y, terminal):
+        super().__init__()
         self.x = x
         self.y = y
         self.terminal = terminal
-        self.parts = []
         self.create_body()
 
     def create_body(self):
@@ -105,23 +116,18 @@ class Target:
         up4 = self.terminal.move_xy(self.x + 3, self.y + 1) + self.terminal.gray38(self.terminal.on_midnightblue('▟'))
         self.parts.append(up4)
 
-    def draw(self):
-        for part in self.parts:
-            print(part, end='', flush=True)
 
-
-class Platform:
+class Platform(Drawable):
     def __init__(self, x, y, lenght, flat, terminal):
+        super().__init__()
         self.x = x
         self.y = y
         self.terminal = terminal
-        self.parts = []
         self.lenght = lenght
         self.flat = flat
         self.create_body()
 
     def create_body(self):
-        self.parts = []
         if self.flat:  # checks if the platform is horizontal or not and builds it based on that
             up1 = self.terminal.move_xy(self.x, self.y) + self.terminal.orchid4(self.terminal.on_plum4('▛'))
             self.parts.append(up1)
@@ -135,17 +141,13 @@ class Platform:
                 up = self.terminal.move_xy(self.x, self.y + i) + self.terminal.orchid4(self.terminal.on_plum4('▚'))
                 self.parts.append(up)
 
-    def draw(self):
-        for part in self.parts:
-            print(part, end='', flush=True)
 
-
-class ThinkingBox:
+class ThinkingBox(Drawable):
     def __init__(self, x, y, terminal):
+        super().__init__()
         self.x = x
         self.y = y
         self.terminal = terminal
-        self.parts = []
         self.create_body()
 
     def create_body(self):
@@ -170,7 +172,3 @@ class ThinkingBox:
             self.parts.append(down2)
         down3 = self.terminal.move_xy(self.x + 7, self.y + 2) + self.terminal.gray37(self.terminal.on_gray15('▕'))
         self.parts.append(down3)
-
-    def draw(self):
-        for part in self.parts:
-            print(part, end='', flush=True)
