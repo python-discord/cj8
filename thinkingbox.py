@@ -12,10 +12,10 @@ def thinking_box():
     if bool(term.height%2):  h = h-1 #to make it compatible for even numbered height...bcs we have three rows in the middle
     s = "press enter to exit"
     k= "HMMMMMM..."
-    t = "time is paused! get your brain workin kiddo"
+    t = "time is paused! get yo brains to work kiddo"
     while(y_co<=h):
      if(y_co==h/2):#middle 3 rows- am just multiplying characters with numbers....
-        print(f"{term.turquoise2_on_gray1}│"*mul+ f"{term.turquoise2_on_gray1} "*int(fac/6-len(t))+t+f"{term.turquoise2_on_gray1} "*int(5*(fac)/6-27)+f"{term.turquoise2_on_gray1}│"*mul, end='\n') 
+        print(f"{term.turquoise2_on_gray1}│"*mul+ f"{term.turquoise2_on_gray1} "*int(fac/6)+t+f"{term.turquoise2_on_gray1} "*int(5*(fac)/6-len(t)+3)+f"{term.turquoise2_on_gray1}│"*mul, end='\n') 
         print(f"{term.turquoise2_on_gray1}│"*mul+f"{term.turquoise2_on_gray1} "*int((fac+3-len(k))/2)+k+f"{term.turquoise2_on_gray1} "*int((fac+2-len(k))/2)+f"{term.turquoise2_on_gray1}│"*mul,end='\n')
         print(f"{term.turquoise2_on_gray1}│"*mul+f"{term.turquoise2_on_gray1} "*int((fac+3-len(s))/2)+s+f"{term.turquoise2_on_gray1} "*int((fac+2-len(s))/2)+f"{term.turquoise2_on_gray1}│"*mul,end='\n') 
         y_co = y_co+1       
@@ -31,8 +31,8 @@ def thinking_box():
         fac = fac - 2     
     h = term.height
     w = term.width
-    
-    with term.location(x=int(w/2+5), y=int(h/2-2)):
+    #to place the input pointer?
+    with term.location(x=int(w/2+5), y=int(h/2-3)):
         y = input()
     if y:
        exit()#anddd bubyeee
