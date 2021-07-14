@@ -15,7 +15,6 @@ repos:
     hooks:
       - id: python-check-blanket-noqa
   - repo: local
-    exclude: "^samples"
     hooks:
       - id: isort
         name: ISort
