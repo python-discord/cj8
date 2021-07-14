@@ -20,7 +20,7 @@ with term.fullscreen(), term.cbreak(), term.hidden_cursor():
     # State
     state = UserTermState()
     player_active = 1
-    wait_for_ready = True
+    state.wait_for_ready = True
 
     val = ""
     term_info = [""] * 3
@@ -28,12 +28,14 @@ with term.fullscreen(), term.cbreak(), term.hidden_cursor():
     user_section = starting_user_section()
     print("".join(user_section))
 
+    state.save_subgrid = True
+
     while (val := term.inkey()) != "q":
         with term.location():
 
-            if wait_for_ready:
+            if state.wait_for_ready:
                 if val == "y":
-                    wait_for_ready = False
+                    state.wait_for_ready = False
                 else:
                     continue
 
@@ -41,6 +43,18 @@ with term.fullscreen(), term.cbreak(), term.hidden_cursor():
                 # reset player terminal
                 term_info = [""] * 3
                 term_info[0] = f"Player {player_active} Active"
+
+                # check if subgrid saved from previous turn
+                if state.save_subgrid:
+                    term_info[2] = (
+                        f"Current: SubGrid {state.user_select_subgrid} "
+                        f"| Space {state.user_select_space}"
+                    )
+
+                    print(term.move_up(7))
+                    user_section = update_user_section(term_info)
+                    print("".join(user_section))
+
                 state.start_of_turn = False
 
             if state.subgrid_select:
@@ -79,11 +93,11 @@ with term.fullscreen(), term.cbreak(), term.hidden_cursor():
                     and state.user_select_space != 0
                 ):
                     state.user_confirm = False
-                    # execute game logic here
+                    # TODO execute game logic here
                     # update_arrays()
                     #
 
-                    # update the game board here
+                    # TODO update the game board here
 
                     # show confirmation
                     term_info[0] = " "
@@ -104,7 +118,16 @@ with term.fullscreen(), term.cbreak(), term.hidden_cursor():
                 time.sleep(1)
 
                 # reset state
+                # TODO check if subgrid needs to be reset
+                previous_subgrid = state.user_select_subgrid
                 state = UserTermState()
+
+                # check if subgrid needs to be updated
+                if state.save_subgrid:
+                    state.user_select_subgrid = previous_subgrid
+                    state.subgrid_select = False
+
+                # flip the player turn
                 if player_active == 1:
                     player_active = 2
                 elif player_active == 2:
@@ -117,7 +140,5 @@ with term.fullscreen(), term.cbreak(), term.hidden_cursor():
                 print(term.move_up(7))
                 user_section = update_user_section(term_info)
                 print("".join(user_section))
-
-                wait_for_ready = True
 
     print(term.clear)

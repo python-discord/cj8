@@ -83,7 +83,8 @@ class Board:
             "9": (first, third),
         }
 
-        return self.contents[subgrid_map[number]]
+        # Mypy cannot penetrate the slicing behavior here, so we assert that it is correct
+        return self.contents[subgrid_map[number]]  # type: ignore
 
     def draw_board(self, term: blessed.Terminal) -> None:
         """Rudimentary attempt to draw a game board."""
