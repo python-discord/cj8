@@ -12,7 +12,7 @@ ALL_CHARACTERS = string.ascii_letters+string.digits+string.punctuation+string.wh
 etcskel = "/etc/skel"
 
 # Template for down and up when printing boxes
-template = '{0}─/{1}/{2}{3}'
+template = '{0}{1}/{2}/{3}{4}'
 
 # main path
 MAIN_PATH = dirname(abspath(__file__)) + sep + ".." + sep

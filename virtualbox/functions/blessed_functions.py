@@ -1,5 +1,4 @@
 from config import template
-from time import sleep
 
 
 def treat_subdir(rest, add):
@@ -20,9 +19,38 @@ def treat_subdir(rest, add):
 def print_tree(header, directory, user):
     print_box(header, treat_subdir(directory.walk(user), ''))
     # "│", "─", " ┌", "┬", "┐", "├", "┼", "┤", "└", "┴", "┘"]
-    # print(term.green_on_black(f'├{indent}{path.basename(root)}/{extra_blank_needed}│'))
-    # print(term.green_on_black(f'{sub_indent}{f}{extra_blank_needed}│'))
-    # print(term.green_on_black(f '└─ /{header}/' + ('─' * upper_lenght) + '┘'))
+
+
+def lc(char):
+    if len(char) == 0:
+        return "│"
+    if char[0] in ("─", "┬", "┐", "┼", "┤"  "┴", "┘"):
+        return "├"
+    return "│"
+
+
+def rc(char):
+    if len(char) == 0:
+        return "│"
+    if char[-1] in ("─", "┌", "┬", "├", "┼", "└", "┴"):
+        return "├"
+    return "│"
+
+
+def uc(char):
+    if len(char) == 0:
+        return "─"
+    if char[0] in ("│", "├", "┼", "┤", "└", "┴", "┘"):
+        return "┬"
+    return "─"
+
+
+def dc(char):
+    if len(char) == 0:
+        return "─"
+    if char[0] in ("│", "┌", "┬", "┐", "├", "┼", "┤"):
+        return "┴"
+    return "─"
 
 
 def print_box(header, text):
@@ -35,8 +63,8 @@ def print_box(header, text):
     if max_len < len(header) + 4:
         max_len = len(header) + 4
     shift = "─"*(max_len - len(header) - 3)
-    ftemplate = '│{:<' + str(max_len) + '}│'
+    ftemplate = '{:<' + str(max_len) + '}'
 
-    print(template.format('┌', header, shift, '┐'))
-    print("\n".join(ftemplate.format(i) for i in text))
-    print(template.format('└', header, shift, '┘'))
+    print(template.format('┌', uc(text[0]), header, shift, '┐'))
+    print("\n".join(lc(i) + ftemplate.format(i) + rc(i) for i in text))
+    print(template.format('└', dc(text[-1]), header, shift, '┘'))

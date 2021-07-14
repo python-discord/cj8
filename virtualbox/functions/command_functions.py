@@ -6,8 +6,10 @@ from virtualbox.argssystem.classes import Keyword, Optional, Flag
 from virtualbox.exceptions import NoSuchFileOrDirectory
 from virtualbox.exceptions import CommandNotFound
 from virtualbox.unicode import encode
-from virtualbox.vulnerabilities import VULNERABILITIES
+from virtualbox.vulnerabilities import VULNERABILITIES, add_failure, add_vulnerabillity, remove_vulnerabillity
 from config import MAIN_PATH
+import random
+import time
 
 # COMMAND LIST
 functions_list = []
@@ -174,10 +176,10 @@ def help_function(name: Optional(str, None), extend: Flag(True) = False):
         return
 
     to_print = get_command_doc(name).split("[EXTEND]")
-    print(to_print[0].strip())
+    print_box('helper', to_print[0].strip())
 
     if extend:
-        print(to_print[1].strip())
+        print_box('helper', to_print[1].strip())
 
 
 @add_function(("encrypt", "enc"), "user_input", "fs", "user")
@@ -259,8 +261,8 @@ def search(what: str, fs, user):
 
 @add_function(("portscann", "nmap"), "user_input", "fs", "user", "term")
 @expand_args(0, "port")
-def portscanner(port: Optiona[int, None], fs, user, term):
-"""portscan [port:int]
+def portscanner(port: Optional(int, None), fs, user, term):
+    """portscan [port:int]
     [EXTEND]
     portscan - scans for port in network
     """
@@ -271,16 +273,17 @@ def portscanner(port: Optiona[int, None], fs, user, term):
         print_box("PortScanner", [f"Scanning Network for Port: {port}"])
         time.sleep(1)
         term.clear
-        print_box("PortScanner", [f"Found Port in Network:", f"{port}/TCP [State: open]", "Scanning Port..."])
+        print_box("PortScanner", ["Found Port in Network:", f"{port}/TCP [State: open]", "Scanning Port..."])
         time.sleep(1)
         term.clear
         term.clear
+        output = random.choice(outputs)
         print_box("PortScanner", [f"Port {port} attackable. ", "Attack launchend. ", f"Output: {output}"])
     else:
         # 5-7 to show user a portscanner experience and show hint/ no hint
         for i in range(random.randint(5, 7)):
             port = ports[i]
-            print_box("PortScanner", [f"Found Port in Network: ", f"{port}/TCP [State: open]", "Scanning Port..."])
+            print_box("PortScanner", ["Found Port in Network: ", f"{port}/TCP [State: open]", "Scanning Port..."])
             time.sleep(0.4)
         inp = int(input("Select a port to scan: "))
         with term.cbreak():
@@ -292,12 +295,13 @@ def portscanner(port: Optiona[int, None], fs, user, term):
             else:
                 print_box("PortScanner", ["The Port you entered wasnt found in the Network!"])
 
-@add_function(("devresetintro"))
+
+@add_function(("devresetintro", ))
 def dev_reset():
+    """replace docstring if you want help for this function"""
     # script_dir = os.path.dirname(__file__)
     # script_dir = script_dir.replace('functions/', '') it will crash without argumnts
-    file_txt = str(MAIN_PATH + 'first_game.txt')
-    with open('first_game.txt', 'w') as firstgamefile:
+    with open(MAIN_PATH + 'first_game.txt', 'w') as firstgamefile:
         firstgamefile.truncate()
         firstgamefile.write('0')
 
@@ -307,18 +311,18 @@ def add_vulnerabillity(vulnerability):
 
 
 def remove_vulnerabillity(vulnerability):
-        VULNERABILITIES.remove(vulnerability)
+    VULNERABILITIES.remove(vulnerability)
 
 
-@add_function(("vscan"))
+@add_function(("vscan", ))
 def hint():
-    print_box("vscan",["Looking for vulnerabilities..."])
-    #selects random vulnerability
+    """replace docstring if you want help for this function"""
+    print_box("vscan", ["Looking for vulnerabilities..."])
+    # selects random vulnerability
     chosen_vulnerability = random.choice(VULNERABILITIES)
-    #display our selected vulnerability.
-    print_box("vscan",[f"Vulnerability found: {chosen_vulnerability}"])
-    #removes vulnerability from the list.
+    # display our selected vulnerability.
+    print_box("vscan", [f"Vulnerability found: {chosen_vulnerability}"])
+    # removes vulnerability from the list.
     remove_vulnerabillity(chosen_vulnerability)
-    #add 1 failure point.
+    # add 1 failure point.
     add_failure()
-

@@ -1,9 +1,7 @@
-from functions.command_functions import get_entry, random_test
-from functions.blessed_functions import print_tree
+from functions.command_functions import get_entry
+from functions.blessed_functions import print_tree, print_box
 from exceptions import CannotFullFillFunction
 from config import START_PATH, MAIN_PATH
-from random import randint
-from time import sleep
 from blessed import Terminal
 from copy import copy
 from fs.fs_dir import Dir
@@ -23,12 +21,12 @@ class User:
     uid = 0
 
 
-
 # is't it declared somewhere already?
 def add_failure():
     global failed_tasks
     failed_tasks += 1
     print(f"DEBUG: failues: {failed_tasks}")
+
 
 # it should be moved into blessing
 def clear_term():
@@ -47,17 +45,18 @@ def user_input_cmd(fs, user):
     global term
     # clear_term()
     while True:
-        #try:
+        # try:
         user_input = input(">>>  ").split()
         entry = get_entry(user_input[0])
         entry[0](*ProcessArgs(entry[1], locals()))
-        #except Exception as e:
+        # except Exception as e:
         #   print(e)
 
 # should be moved into it's own file
 def start(fs, user):
-    firstgamefile = open(MAIN_PATH + 'first_game.txt', 'r')
-    content = firstgamefile.readline()
+    content = ""
+    with open(MAIN_PATH + 'first_game.txt', 'r') as f:
+        content = f.readline()
     clear_term()
     if content[0] == '0':
         print_box('Intro',
@@ -83,9 +82,9 @@ def start(fs, user):
                    'Access gained.',
                    'AI will launch...)'])
         clear_term()
-        printhelp_first('This is the file tree, here, you can see every file in the operating system!')
+        print_box('helper', 'This is the file tree, here, you can see every file in the operating system!')
         print_tree("System", fs, user)
-        printhelp_first('First, type "help" in the console to see all of the commands you can use!')
+        print_box('helper', 'First, type "help" in the console to see all of the commands you can use!')
         with open('first_game.txt', 'w') as firstgamefile:
             firstgamefile.truncate()
             firstgamefile.write('1')
