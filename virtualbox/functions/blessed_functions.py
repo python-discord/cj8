@@ -9,29 +9,18 @@ print(term.home + term.clear + term.move_y(term.height // 2))
 BLANK_LINES = 50
 
 
-def treat_subdir(rest, intend):
+def treat_subdir(rest, add):
     result = []
-    for i in rest:
+    for j, i in enumerate(rest):
+        s = '└' if len(rest) - 1 == j else '├'
         if isinstance(i, tuple):
-            # directories
-            if len(result) > 1:  # test for no directory above
-                result.append((len(intend) - 1) * ' ' + '├' +i[0])  # new directory branch
-            else:  # directory found above
-                result.append((len(intend) - 1) * ' ' + '|' + i[0])  # directory chain
-            result += treat_subdir(i[1], intend + ' ' * 3)  # increase indent level
-        else:
-            # files
-            if len(result) < 1:  # test for no file above
-                result.append(((len(intend) - 4) * ' ') + '└──┐')  # new file branch
-            try:
-                exception = rest[rest.index(i)+1]
-                true_false = True
-            except:
-                true_false = False
-            if true_false == True:
-                result.append(((len(intend) - 1) * ' ') + '├' + i)  # list next file
+            if len(i[1]) == 0:
+                result.append(add + s + '─' + i[0])
             else:
-                result.append(((len(intend) - 1) * ' ') + '└' + i)  # list next file
+                result.append(add + s + '┬' + i[0])
+                result += treat_subdir(i[1], add + (" " if s == '└' else '│'))
+        else:
+            result.append(add + s + i)
 
     return result
 
@@ -57,9 +46,38 @@ def printhelp_first(arg):
 def print_tree(header, directory, user):
     print_box(header, treat_subdir(directory.walk(user), ''))
     # "│", "─", " ┌", "┬", "┐", "├", "┼", "┤", "└", "┴", "┘"]
-    # print(term.green_on_black(f'├{indent}{path.basename(root)}/{extra_blank_needed}│'))
-    # print(term.green_on_black(f'{sub_indent}{f}{extra_blank_needed}│'))
-    # print(term.green_on_black(f '└─ /{header}/' + ('─' * upper_lenght) + '┘'))
+
+
+def lc(char):
+    if len(char) == 0:
+        return "│"
+    if char[0] in ("─", "┬", "┐", "┼", "┤"  "┴", "┘"):
+        return "├"
+    return "│"
+
+
+def rc(char):
+    if len(char) == 0:
+        return "│"
+    if char[-1] in ("─", "┌", "┬", "├", "┼", "└", "┴"):
+        return "├"
+    return "│"
+
+
+def uc(char):
+    if len(char) == 0:
+        return "─"
+    if char[0] in ("│", "├", "┼", "┤", "└", "┴", "┘"):
+        return "┬"
+    return "─"
+
+
+def dc(char):
+    if len(char) == 0:
+        return "─"
+    if char[0] in ("│", "┌", "┬", "┐", "├", "┼", "┤"):
+        return "┴"
+    return "─"
 
 
 def print_box(header, text):
