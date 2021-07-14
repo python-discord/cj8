@@ -7,8 +7,8 @@ from asciimatics.renderers import Box, FigletText, StaticRenderer
 from asciimatics.scene import Scene
 from asciimatics.screen import Screen
 
-import exceptions
-from sprites.characters import character_box, character_box_pushing
+import resources.exceptions as exceptions
+from resources.sprites.characters import character_box, character_box_pushing
 
 
 # Wish title_screen and title_input_handler were more closely linked, maybe use a structure similar to controller.py

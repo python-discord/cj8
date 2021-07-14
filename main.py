@@ -9,9 +9,9 @@ from asciimatics.exceptions import ResizeScreenError
 from asciimatics.scene import Scene
 from asciimatics.screen import Screen
 
-import exceptions
-import main_pages as mp
-from gamelogic.controller import GameController, game_IH
+import resources.exceptions as exceptions
+import resources.scenes.main_pages as mp
+from resources.scenes.controller import GameController, game_IH
 
 Scenes = Union[Callable, List[Scene]]
 

@@ -11,8 +11,8 @@ from asciimatics.renderers import SpeechBubble
 from asciimatics.scene import Scene
 from asciimatics.screen import Screen
 
-import exceptions
-from sprites.maps import LEVELS
+import resources.exceptions as exceptions
+from resources.sprites.maps import LEVELS
 
 # Mappings of directional trigger keys such as movement or tag
 # to their corresponding properties/direction/map changes.
