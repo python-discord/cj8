@@ -6,7 +6,7 @@ import os
 term = Terminal()
 print(term.home + term.clear + term.move_y(term.height // 2))
 
-BLANK_LINES = 50
+BLANK_LINES = 70
 
 
 def treat_subdir(rest, intend):

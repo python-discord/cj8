@@ -11,14 +11,18 @@ term = Terminal()
 
 failed_tasks = 0
 
-
-def add_failure():
-    global failed_tasks
-    failed_tasks += 1
-    print(f"DEBUG: failures: {failed_tasks}")
+OSlog = ['unknown user: connected,']
 
 
 # COMMAND LIST
+
+def add_failure(value):
+    global failed_tasks
+    failed_tasks += value
+    print(f"DEBUG: failues: {failed_tasks}")
+    OSlog.append(f"SECURITY AI: became more aware of unknown user,")
+
+
 def ls(fs, user):
     """ls
     ls - list files and directories in current directory
@@ -62,10 +66,6 @@ def random_test():
     clear_term()
 
 
-def add_failure(value):
-    global failed_tasks
-    failed_tasks += value
-    print(f"DEBUG: failues: {failed_tasks}")
 
 
 def cd(user_input, fs, user):
@@ -186,7 +186,7 @@ def read(user_input, fs, user):
     """
     mode = True if len(user_input) > 2 and user_input[2] == "bin" else False
     print_box("read",[f"{fs.getFile(user, user_input[1].split(' / ')).read(user, mode)}"])
-
+    OSlog.append(f"unknown user: read {user_input[1]},")
 
 def write(user_input, fs, user):
     """write [file:string] [content]
@@ -228,6 +228,7 @@ def search(user_input, fs, user):
         raise NoSuchFileOrDirectory
 
     print_box("search", result)
+    OSlog.append(f"unknown user: searched {user_input[1]},")
 
 
 def portscanner(user_input, fs, user):
@@ -318,6 +319,7 @@ def morsescan(user_input, fs, user):
                 dec_msg.append(morse_dict[new_msg[j]])
 
         print_box("morsescan",["Decoded Message is: " + ''.join(dec_msg)])  # end the infinite while loop
+        OSlog.append(f"unknown user: Decoded Message is: " + ''.join(dec_msg) + ",")
         break
 
 
@@ -328,6 +330,8 @@ def hint(user_input, fs, user):
     """
     global VULNERABILITIES
     print_box("vscan",["Looking for vulnerabilities..."])
+    time.sleep(3)
+    clear_term()
     #selects random vulnerability
     chosen_vulnerability = random.choice(VULNERABILITIES)
     #display our selected vulnerability.
@@ -335,7 +339,9 @@ def hint(user_input, fs, user):
     #removes vulnerability from the list.
     remove_vulnerabillity(chosen_vulnerability)
     #add 1 failure point.
-    add_failure()
+    add_failure(10)
+    OSlog.append(f"unknown user: found vulnerability,")
+    OSlog.append(f"SECURITY AI: detecting unknown user,")
 
 
 def ipcypher(listl):
@@ -400,7 +406,7 @@ def ipsearch(user_input, fs, user):
     clear_term()
     printlist.append('You can scan these IPs by using "ipscan [ip]!"')
     print_box('Ips found:', printlist)
-
+    OSlog.append(f"unknown user: performed ip search,")
 
 def ipscan(user_input, fs, user):
     """
@@ -425,6 +431,15 @@ def ipscan(user_input, fs, user):
                 if i % 2 == 0:
                     retstring += letter
     print_box('Scanned IP:', [f'The Ip: "{ip}"', f'Can be decyphered to: "{retstring}"'])
+    OSlog.append(f"unknown user: , The Ip: {ip} Can be decyphered to: {retstring},")
+
+def logs(user_input, fs, user):
+    """
+        logs
+        logs - shows log history
+        [EXTEND]
+        """
+    print_box("LOGS", OSlog)
 
 
 # COMMAND LIST
@@ -453,5 +468,7 @@ user_commands = {"ls": ls,
                  "vscan" : hint,
                  "morse": morsescan,
                  "ipscan": ipscan,
-                 "ipsearch": ipsearch
+                 "ipsearch": ipsearch,
+                 "logs": logs
+
                  }
