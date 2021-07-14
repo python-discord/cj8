@@ -2,9 +2,8 @@ from .blessed_functions import print_box, print_tree, clear_term, print_loading
 from .generalfunctions import inAny
 from virtualbox.exceptions import NoSuchFileOrDirectory
 from virtualbox.exceptions import CommandNotFound
-from virtualbox.unicode import encode
 from virtualbox.vulnerabilities import VULNERABILITIES, add_failure, add_vulnerabillity, remove_vulnerabillity
-from config import MAIN_PATH
+from virtualbox.config import MAIN_PATH
 import random
 import time
 
