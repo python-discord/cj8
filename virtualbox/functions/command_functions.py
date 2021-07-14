@@ -501,7 +501,7 @@ def logs():
     print_box("LOGS", OSlog)
 
 
-@add_function(("pscan", "hashcat"))
+@add_function(("pwscan", "hashcat"))
 def passwordscan():
     """
            pscan
