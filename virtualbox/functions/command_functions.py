@@ -292,8 +292,8 @@ def portscanner(port: Optional(int, None), fs, user):
     [EXTEND]
     """
     ports = [str(port) for port in [22, 80, 9929, 8898, 22542, 187, 32312]]
-    outputs = ['not a hint',
-    'not a hint', 'not a hint', 'not a hint', 'not a hint', 'a hint', 'a hint', 'a hint', 'a hint']
+    outputs = ['yes', 'missing data', 'missing data', 'missing data', 'missing data', 'missing data',
+               'missing data', 'missing data', 'missing data']
     # if specified var (= if user_input contains specific port)
     if port is not None:
         # Different Prints to show user a portscanner experience and show hint/ no hint
@@ -319,6 +319,8 @@ def portscanner(port: Optional(int, None), fs, user):
             print_box("PortScanner", [f"Port {inp} attackable. ", "Attack launchend. ", f"Output: {output}"])
         else:
             print_box("PortScanner", ["The Port you entered wasnt found in the Network!"])
+
+
 @add_function(("devresetintro", ))
 def dev_reset():
     """replace docstring if you want help for this function"""
@@ -422,9 +424,8 @@ def gethint():
     return random.choice(hints)
 
 
-@add_function(("ipsearch", ), "user_input")
-@expand_args(0, "user_input")
-def ipsearch(user_input: str):
+@add_function(("ipsearch", ))
+def ipsearch():
     """
     ipsearch
     ipsearch - Search the system for attackable ips
