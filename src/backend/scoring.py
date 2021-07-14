@@ -5,7 +5,7 @@ import yaml
 
 from config import SCORE_FILE
 from src.backend.core import CoreBackend
-from src.backend.events import BaseEvent, EventTypes, LevelLoadedEvent
+from src.backend.events import BaseEvent, EventTypes, FailedEvent, LevelLoadedEvent
 
 
 class CoreScoring:
@@ -91,6 +91,8 @@ class CoreScoring:
     def _handle_ball_movement(self, event: BaseEvent) -> None:
         self._tiles_visited += 1
         self._max_score -= 1
+        if self.current_score <= 0:
+            self.backend.emit_event(FailedEvent())
 
     @property
     def current_score(self) -> int:
@@ -99,7 +101,7 @@ class CoreScoring:
 
     @property
     def elapsed_seconds(self) -> int:
-        """Return str of seconds since starting level"""
+        """Return int of seconds since starting level"""
         if self._level_start_time:
             return (datetime.now() - self._level_start_time).seconds
         return 0

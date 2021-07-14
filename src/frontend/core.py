@@ -3,7 +3,7 @@ import os
 import time
 from pathlib import Path
 from shutil import get_terminal_size
-from typing import NoReturn, Optional
+from typing import List, NoReturn, Optional
 
 from rich.align import Align
 from rich.color import Color
@@ -15,7 +15,7 @@ from rich.text import Text
 from rich.tree import Tree
 
 from src.backend.core import CoreBackend
-from src.backend.events import BaseEvent
+from src.backend.events import BaseEvent, EventTypes
 from src.backend.mutators import CoreMutators
 from src.backend.scoring import CoreScoring
 from src.backend.tiles import PauseTile
@@ -51,8 +51,9 @@ class CoreFrontend:
         self.mutators = CoreMutators(self.backend)
         self.keyboard_handler: BaseKeyboardHandler = KeyboardFactory.get(self.backend)
         self._paused = False
+        self._failed = False
 
-        self.backend.register_hook(self.toggle_pause)
+        self.backend.register_hook(self._event_handler)
 
     def start_loop(self) -> NoReturn:
         """Start the render loop"""
@@ -79,6 +80,16 @@ class CoreFrontend:
                 # Add sleep only if frame was rendered faster than expected
                 if sleep_period > 0:
                     time.sleep(sleep_period)
+
+    def _event_handler(self, event: BaseEvent) -> None:
+        event_dispatcher = {
+            EventTypes.pause.value: self.toggle_pause,
+            EventTypes.failed.value: self.game_over,
+        }
+        event_type = event.type
+
+        if event_type in event_dispatcher:
+            event_dispatcher[event_type]()
 
     def _check_terminal_size(self) -> None:
         BYPASS = os.environ.get("BYPASS_SIZE_CHECK", "False") == "True"
@@ -142,16 +153,51 @@ class CoreFrontend:
     @property
     def menu(self) -> Panel:
         """Return main menu panel."""
-        layout = Layout()
+        return self.create_panel(self._title, self.story.prologue, "Press N to Start.")
 
-        title = self._get_title()
+    @property
+    def end_screen(self) -> Panel:
+        """Return game over panel."""
+        return self.create_panel(
+            self._fail_text, self.story.failed, "Press M to return to Main Menu."
+        )
+
+    @property
+    def _title(self) -> str:
+        """Return title for terminal size"""
+        return self._get_static_text(
+            ["title_full.txt", "title_small.txt"], default="[b]Panthera's Box"
+        )
+
+    @property
+    def _fail_text(self) -> str:
+        """Return game over text"""
+        return self._get_static_text(
+            ["failed_full.txt", "failed_small.txt"], default="[b]Game Over"
+        )
+
+    def _get_static_text(self, file_names: List[str], default: str = None) -> str:
+        width, height = get_terminal_size()
+        for file_name in file_names:
+            path = Path(__file__).absolute().parent / f"static/{file_name}"
+            with open(path, encoding="utf-8") as fd:
+                text = fd.read()
+                if width >= max([len(line) for line in text.split("\n")]):
+                    break
+        else:
+            text = default
+        return text
+
+    def create_panel(self, title: str, body: str, footer: str) -> Panel:
+        """Return vertical panel with text"""
+        layout = Layout()
 
         layout.split_column(
             Layout(name="Title"),
             Layout(
                 Align(
                     Panel(
-                        Text(self.story.prologue, justify="center"),
+                        Text(body, justify="center"),
                         expand=False,
                         padding=(1, 6),
                     ),
@@ -159,29 +205,23 @@ class CoreFrontend:
                     vertical="middle",
                 )
             ),
-            Layout(Align("Press N to Start.", align="center", vertical="middle")),
+            Layout(Align(footer, align="center", vertical="middle")),
         )
         layout["Title"].ratio = 3
         layout["Title"].update(Align(title, align="center", vertical="middle"))
 
         return Panel(layout)
 
-    def _get_title(self) -> str:
-        width, height = get_terminal_size()
-        title = "[b]Panthera's Box"
-        title_files = ["title_full.txt", "title_small.txt"]
-        for title_file in title_files:
-            path = Path(__file__).absolute().parent / f"static/{title_file}"
-            with open(path, encoding="utf-8") as fd:
-                title = fd.read()
-                if width >= max([len(line) for line in title.split("\n")]):
-                    break
-        return title
-
     def create_layout(self) -> Layout:
         """Create layout object to display."""
         if not self.backend.board:
+            self._failed = False
+            self._paused = False
             return Layout(self.menu)
+
+        if self._failed:
+            return Layout(self.end_screen)
+
         layout = Layout()
         layout.split_row(
             Layout(name="Display"),
@@ -191,7 +231,11 @@ class CoreFrontend:
         layout["Display"].update(Align(self.display, align="center", vertical="middle"))
         return layout
 
-    def toggle_pause(self, event: BaseEvent) -> None:
-        """Handle only pause events"""
-        if event.type == "pause":
-            self._paused = not self._paused
+    def toggle_pause(self) -> None:
+        """Toggle the pause state"""
+        self._paused = not self._paused
+
+    def game_over(self) -> None:
+        """Show the game over screen"""
+        self._failed = True
+        self._paused = True

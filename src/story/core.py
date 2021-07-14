@@ -34,6 +34,11 @@ class CoreStory:
         """Get the prologue about the game"""
         return self.manifest_conf["main"]["prologue"]
 
+    @property
+    def failed(self) -> str:
+        """Get game over story text"""
+        return self.manifest_conf["main"]["failed"]
+
     def story_callback(self, event: BaseEvent) -> None:
         """Callback to handle StoryEvents"""
         if event.type == EventTypes.story.value:
