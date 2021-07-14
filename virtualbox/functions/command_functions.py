@@ -323,8 +323,8 @@ def morsescan(user_input, fs, user):
 
 def hint(user_input, fs, user):
     """vscan
-    [EXTEND]
     vscan - scans for vulnerabilities in network
+    [EXTEND]
     """
     global VULNERABILITIES
     print_box("vscan",["Looking for vulnerabilities..."])
