@@ -43,11 +43,11 @@ def ProcessArgs(args, argsDicit):
 def user_input_cmd(fs, user):
     while True:
         try:
-        user_input = input(">>>  ").split()
-        entry = get_entry(user_input[0])
-        entry[0](*ProcessArgs(entry[1], locals()))
+            user_input = input(">>>  ").split()
+            entry = get_entry(user_input[0])
+            entry[0](*ProcessArgs(entry[1], locals()))
         except Exception as e:
-           print(e)
+            print(e)
 
 
 # should be moved into it's own file
