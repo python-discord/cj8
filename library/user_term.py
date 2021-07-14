@@ -18,22 +18,24 @@ class UserTermState:
     user_select_space: int = 0
 
 
-def starting_user_section() -> list[str]:
+def starting_user_section() -> str:
     """Starting Terminal"""
-    output: list[str] = []
-    output += "┌─term────────────────────────────┐"
-    output += "\n│                                 │"
-    output += "\n│      shall we play a game?      │"
-    output += "\n│             (y/n?)              │"
-    output += "\n│                                 │"
-    output += "\n└(Enter to confirm)───('q' to esc)┘"
+    item: list[str] = []
+    item.append("┌─term────────────────────────────┐")
+    item.append("\n│                                 │")
+    item.append("\n│      shall we play a game?      │")
+    item.append("\n│             (y/n?)              │")
+    item.append("\n│                                 │")
+    item.append("\n└(Enter to confirm)───('q' to esc)┘")
+
+    output = "".join(update_user_section(item))
 
     return output
 
 
 def update_user_section(updated_info: list[str]) -> list[str]:
     """To add your information to the terminal you have 3 lines with 31 spaces"""
-    output: list[str] = []
+    item: list[str] = []
 
     for i in updated_info:
         if len(i) > 31:
@@ -50,11 +52,13 @@ def update_user_section(updated_info: list[str]) -> list[str]:
     elif len(updated_info) == 3:
         updated_info += " "
 
-    output += "┌─term────────────────────────────┐"
-    output += "\n│ " + "".join(updated_info[0]).ljust(31) + " │"
-    output += "\n│ " + "".join(updated_info[1]).ljust(31) + " │"
-    output += "\n│ " + "".join(updated_info[2]).ljust(31) + " │"
-    output += "\n│ " + "".join(updated_info[3]).ljust(31) + " │"
-    output += "\n└(Enter to confirm)───('q' to esc)┘"
+    item += "┌─term────────────────────────────┐"
+    item += "\n│ " + "".join(updated_info[0]).ljust(31) + " │"
+    item += "\n│ " + "".join(updated_info[1]).ljust(31) + " │"
+    item += "\n│ " + "".join(updated_info[2]).ljust(31) + " │"
+    item += "\n│ " + "".join(updated_info[3]).ljust(31) + " │"
+    item += "\n└(Enter to confirm)───('q' to esc)┘"
+
+    output = "".join(update_user_section(item))
 
     return output
