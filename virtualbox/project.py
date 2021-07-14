@@ -1,11 +1,10 @@
-from functions.command_functions import get_entry
-from functions.blessed_functions import print_tree, print_box
-from exceptions import CannotFullFillFunction
-from config import START_PATH, MAIN_PATH
-from blessed import Terminal
-from copy import copy
-from fs.fs_dir import Dir
 
+from functions.command_functions import user_commands, random_test
+from functions.blessed_functions import print_tree, clear_term, printstart, printhelp_first, print_box
+from exceptions import CannotFullFillFunction
+from config import START_PATH
+from random import randint
+from time import sleep
 
 
 from fs.fs_dir import Dir
@@ -19,20 +18,7 @@ class User:
     uid = 0
 
 
-
-# is't it declared somewhere already?
-def add_failure():
-    global failed_tasks
-    failed_tasks += 1
-    print(f"DEBUG: failues: {failed_tasks}")
-
-
-# it should be moved into blessing
-def clear_term():
-    print(term.clear)
-
-
-def ProcessArgs(args, argsDicit):
+def ProcessArgs(function, argsDicit):
     try:
         return [argsDicit[i] for i in function.__code__.co_varnames[:function.__code__.co_argcount]]
     except KeyError:
@@ -42,15 +28,30 @@ def ProcessArgs(args, argsDicit):
 # COMMAND MANAGER
 def user_input_cmd(fs, user):
     while True:
+<<<<<<< HEAD
         try:
             user_input = input(">>>  ").split()
             entry = get_entry(user_input[0])
             entry[0](*ProcessArgs(entry[1], locals()))
         except Exception as e:
             print(e)
+=======
+        user_input = input(">>>  ").split()
+        try:
+            if user_input[0] in user_commands:
+                try:
+                    clear_term()
+                    if randint(1, 20) == 1:
+                        random_test()
+                    function = user_commands[user_input[0]]
+                    function(*ProcessArgs(function, locals()))
+                except Exception as e:
+                    print(e)
+        except:
+            print('must include command listed in "help"')
+>>>>>>> parent of 90b735c (Merge branch 'SirMerge' into main)
 
 
-# should be moved into it's own file
 def start(fs, user):
     firstgamefile = open('first_game.txt', 'r')
     content = firstgamefile.readline()

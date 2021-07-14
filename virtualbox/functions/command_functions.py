@@ -1,12 +1,19 @@
 from .blessed_functions import print_box, print_tree, clear_term, print_loading
 from .generalfunctions import inAny
 from virtualbox.exceptions import NoSuchFileOrDirectory
+<<<<<<< HEAD
 from virtualbox.exceptions import CommandNotFound
 from virtualbox.vulnerabilities import VULNERABILITIES, add_failure, add_vulnerabillity, remove_vulnerabillity
 from virtualbox.config import MAIN_PATH
 import random
+=======
+from exceptions import CommandNotFound
+>>>>>>> parent of 90b735c (Merge branch 'SirMerge' into main)
 import time
-
+from blessed import Terminal
+import random
+import os
+term = Terminal()
 
 failed_tasks = 0
 
@@ -137,11 +144,15 @@ def help_function(user_input):
     if len(user_input) == 1:
         print_box("commands", user_commands.keys())
         return
-    to_print = get_command_doc(name).split("[EXTEND]")
-    print_box('helper', to_print[0].strip())
 
-    if extend:
-        print_box('helper', to_print[1].strip())
+    try:
+        to_print = user_commands[user_input[1]].__doc__.split("[EXTEND]")
+    except KeyError:
+        raise CommandNotFound()
+
+    print_box("help", [f"{to_print[0].strip()}"])
+    if len(user_input) > 2 and user_input[2] == "yes":
+       print_box("help", [f"{to_print[1].strip()}"])
 
 
 def encrypt(user_input, fs, user):
@@ -225,8 +236,6 @@ def search(user_input, fs, user):
     print_box("search", result)
 
 
-@add_function(("portscann", "nmap"), "user_input", "fs", "user", "term")
-@expand_args(0, "port")
 def portscanner(user_input, fs, user):
     """portscan [port:int]
     portscan - scans for port in network
@@ -244,37 +253,90 @@ def portscanner(user_input, fs, user):
         print_loading(f"Scanning Port {user_input[1]}")
         output = random.choice(outputs)
         print_box("PortScanner", [f"Port {user_input[1]} attackable. ", "Attack launchend. ", f"Output: {output}"])
- 
+    else:
+        # 5-7 to show user a portscanner experience and show hint/ no hint
+        print_loading("Scanning Ports")
+        print_this = ["Found Ports in Network: "]
+        for i in range(random.randint(5, 7)):
+            print_this.append(ports[i] + "/TCP [State: open]")
+        print_box("PortScanner", print_this)
+        time.sleep(1)
+        inp = input("Select a port to scan: ")
+        with term.cbreak():
+            if inp in ports:
+                output = random.choice(outputs)
+                print_loading(f"Scanning Port {inp}")
+                term.clear
+                print_box("PortScanner", [f"Port {inp} attackable. ", "Attack launchend. ", f"Output: {output}"])
+            else:
+                print_box("PortScanner", ["The Port you entered wasnt found in the Network!"])
 
 
 
-@add_function(("devresetintro", ))
 def dev_reset():
-    """replace docstring if you want help for this function"""
-    # script_dir = os.path.dirname(__file__)
-    # script_dir = script_dir.replace('functions/', '') it will crash without argumnts
-    with open(MAIN_PATH + 'first_game.txt', 'w') as firstgamefile:
+    script_dir = os.path.dirname(__file__)
+    script_dir = script_dir.replace('functions/', '')
+    file_txt = str(script_dir + 'first_game.txt')
+    with open('first_game.txt', 'w') as firstgamefile:
         firstgamefile.truncate()
         firstgamefile.write('0')
 
+VULNERABILITIES = ["clue1","clue2"]
+
 
 def add_vulnerabillity(vulnerability):
+    global VULNERABILITIES
     VULNERABILITIES.append(vulnerability)
 
+
 def remove_vulnerabillity(vulnerability):
-    VULNERABILITIES.remove(vulnerability)
+    global VULNERABILITIES
+    try:
+        VULNERABILITIES.remove(vulnerability)
+    except ValueError:
+        pass
 
 
-@add_function(("vscan", ))
-def hint():
-    """replace docstring if you want help for this function"""
-    print_box("vscan", ["Looking for vulnerabilities..."])
-    # selects random vulnerability
+def hint(user_input, fs, user):
+    """vscan
+    [EXTEND]
+    vscan - scans for vulnerabilities in network
+    """
+    global VULNERABILITIES
+    print_box("vscan",["Looking for vulnerabilities..."])
+    #selects random vulnerability
     chosen_vulnerability = random.choice(VULNERABILITIES)
-    # display our selected vulnerability.
-    print_box("vscan", [f"Vulnerability found: {chosen_vulnerability}"])
-    # removes vulnerability from the list.
+    #display our selected vulnerability.
+    print_box("vscan",[f"Vulnerability found: {chosen_vulnerability}"])
+    #removes vulnerability from the list.
     remove_vulnerabillity(chosen_vulnerability)
-    # add 1 failure point.
+    #add 1 failure point.
     add_failure()
 
+
+
+# COMMAND LIST
+user_commands = {"ls": ls,
+                 "touch": add,
+                 "add": add,
+                 "mkdir": mkdir,
+                 "rm": rm,
+                 "mv": mv,
+                 "cp": cp,
+                 "dir": dir_cat,
+                 "h": help_function,
+                 "help": help_function,
+                 "encrypt": encrypt,
+                 "decrypt": decrypt,
+                 "decryptread": decryptread,
+                 "read": read,
+                 "write": write,
+                 "dir": dir_cat,
+                 "quickcrypt": quickcrypt,
+                 "read": read,
+                 "search": search,
+                 "portscan": portscanner,
+                 "cd": cd,
+                 "devresetintro": dev_reset,
+                 "vscan" : hint
+                 }
