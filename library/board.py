@@ -40,9 +40,9 @@ class Board:
             # this turns our grid of ["X", "O", "•"] into [True, False, False] by applying the condition to every spot
             ticks = grid == player
 
-            # Summing over True treats True as 1, False as 0. 3 Trues = 3, so "won" rows are 3.
-            # Because this is a 3x3 board, this results in a list of 3 True/False
-            # indicating whether each row was won by this player
+            # Summing over booleans treats True as 1, False as 0. 3 Trues = 3, so "won" rows sum to 3.
+            # Because this is a 3x3 board, this results in a list of 3 counts that can be compared to 3
+            # to determine True/False indicating whether each row was won by this player
             horizontals = ticks.sum(axis=0) == 3
             if horizontals.any():
                 return player
