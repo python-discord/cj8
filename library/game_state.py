@@ -39,6 +39,8 @@ class GameState:
     good_move: bool
 
     save_subgrid_bool: bool
+    update_board: bool
+
     player_active: int
     term_info: list
 
@@ -51,6 +53,7 @@ class GameState:
         self.current: int = 0
         self.good_move = False
         self.save_subgrid_bool: bool = False
+        self.update_board: bool = False
         self.player_active: int = 0
         self.term_info: list = [""] * 3
         self.user_select_subgrid: int = 0
@@ -83,7 +86,7 @@ class GameState:
     def wait_for_ready(self, term: blessed.Terminal) -> None:
         """Wait for the player to start turn"""
         self.current = 10
-        self.player_active = 1 if self.player_active == 2 else 2
+        self.player_active = 1 if self.player_active == 2 else 1
 
         if self.user_input == "y":
             self.term_info[0] = f"Player {self.player_active} Active"
@@ -113,7 +116,7 @@ class GameState:
                 f"Current: SubGrid {self.user_select_subgrid} "
                 f"| Space {self.user_select_space}"
             )
-        elif self.user_input == "KEY_ENTER":
+        elif self.user_input == "KEY_ENTER" and self.user_select_subgrid != 0:
             self.term_info[1] = "Select Space by entering 1-9"
             self.confirm_entry(term)
             self.next = 30
@@ -130,8 +133,9 @@ class GameState:
                 f"Current: SubGrid {self.user_select_subgrid} "
                 f"| Space {self.user_select_space}"
             )
-        elif self.user_input == "KEY_ENTER":
+        elif self.user_input == "KEY_ENTER" and self.user_select_space != 0:
             self.confirm_entry(term)
+
             if self.confirm_good_move():
                 self.next = 40  # go to exectue move
             else:
@@ -161,23 +165,30 @@ class GameState:
         self.current = 40
 
         # update board
+        self.update_board = True
 
         # reset state
         # TODO check if subgrid needs to be reset
         _saved_space_selection = self.user_select_space
 
-        term_info = [""] * 3
-        term_info[0] = f"Player {self.player_active} Active"
-        term_info[1] = "Ready? press y"
+        self.term_info[0] = " "
+        self.term_info[1] = f"Player{self.player_active} selected:"
+        self.term_info[2] = (
+            f"Current: SubGrid {self.user_select_subgrid} "
+            f"| Space {self.user_select_space}"
+        )
         self.redraw_user_term(term)
 
-        self.__init__
+        self.next = 10
 
         # TODO handle logic for next grid below is a placeholder *this may be good enough
-        self.user_select_subgrid = _saved_space_selection
+        if self.save_subgrid_bool:
+            self.user_select_subgrid = _saved_space_selection
 
     def confirm_good_move(self) -> bool:
         """Handle the entry of a bad move"""
+        # guilty until proven innocent
         self.good_move = False
 
+        self.good_move = True
         return self.good_move
