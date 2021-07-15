@@ -107,9 +107,11 @@ def start(fs, user):
                    'Welcome operator. Press Enter to coninue'])
         input()
         clear_term()
-        printhelp_first('This is the file tree, here, you can see every file in the operating system!')
+        printhelp_first('This is the file tree, here, you can see every file in the operating system')
         print_tree("System", fs, user)
-        printhelp_first('First, type "help" in the console to see all of the commands you can use!')
+        printhelp_first('First, type "help" in the console to see all of the commands you can use')
+        printhelp_first('If you would like a tutorial type "tutorial" or "t"')
+
         with open('first_game.txt', 'w') as firstgamefile:
             firstgamefile.truncate()
             firstgamefile.write('1')
