@@ -1,3 +1,4 @@
+import sys
 from time import sleep
 
 from rich.layout import Layout
@@ -37,7 +38,7 @@ def run_game(layout: Layout, game_resources: GameResources) -> Panel:
 
 def main() -> None:
     """Main function that sets up game and runs main game loop"""
-    game_resources = GameResources()
+    game_resources = GameResources(testing)
     game_resources.draw()
 
     game_panel = Panel(game_resources.level.to_string())
@@ -48,11 +49,15 @@ def main() -> None:
     layout["footer"].update(Panel('footer'))
     layout["tree"].update(Panel('tree'))
 
-    with Live(layout, refresh_per_second=10, screen=False):
+    with Live(layout, refresh_per_second=10, screen=True):
         while game_resources.player.playing:
             run_game(layout, game_resources)
         end_screen(layout)
 
 
 if __name__ == "__main__":
+    if sys.argv[-1] == "--test":
+        testing = True
+    else:
+        testing = False
     main()
