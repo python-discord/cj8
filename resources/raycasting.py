@@ -145,7 +145,7 @@ def raycast(level_layout: List[str], px: int, py: int, visible_range: int, opaqu
 
         # get amount of x and y delta using trig to make the absolute delta 1 in the specified heading (i)
         dx = cos_table[heading]
-        dy = sin_table[heading]
+        dy = sin_table[heading] * .5
 
         for _ in range(visible_range):  # Cast the ray
             ray_x += dx
