@@ -298,7 +298,7 @@ def portscanner(port: Optional(int, None), fs, user):
                  164: "net config decryption code: app12ut",
                  "no_hint": 'missing data'}
     if port is not None:
-        print_loading(f"Scanning network for port {port}")
+        print_loading(f"Scanning network for port {port}", '2')
         if port in ports:
             if port in port_hint.keys():
                 print_this = port_hint[port]
