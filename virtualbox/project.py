@@ -13,10 +13,11 @@ import threading
 
 
 def playbgm():
-    # Music: Mire. - Bury
+    playsound('bgm_part01.mp3', block=False)
+    sleep(40)
     while True:
-        playsound('music.mp3', block=False)
-        sleep(235.55)
+        playsound('bgm_part02.mp3', block=False)
+        sleep(16)
 
 
 # file system imports
