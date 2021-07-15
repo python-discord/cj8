@@ -33,7 +33,24 @@ def starting_user_section() -> str:
     return output
 
 
-def update_user_section(updated_info: list[str]) -> list[str]:
+def convert_to_space_location(space_num: int) -> list:
+    """Convert int to grid location"""
+    grid_map = {
+        1: [2, 0],
+        2: [2, 1],
+        3: [2, 2],
+        4: [1, 0],
+        5: [1, 1],
+        6: [1, 2],
+        7: [0, 0],
+        8: [0, 1],
+        9: [0, 2],
+    }
+
+    return grid_map[space_num]
+
+
+def update_user_section(updated_info: list[str]) -> str:
     """To add your information to the terminal you have 3 lines with 31 spaces"""
     item: list[str] = []
 
@@ -62,3 +79,7 @@ def update_user_section(updated_info: list[str]) -> list[str]:
     output = "".join(update_user_section(item))
 
     return output
+
+
+if __name__ == "__main__":
+    print(convert_to_space_location(1))
