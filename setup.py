@@ -1,6 +1,6 @@
 from setuptools import setup
 
-required_packages = ['rich', 'Pillow']
+required_packages = ['rich', 'Pillow', 'keyboard']
 
 setup(
     name='pantheras_box',
