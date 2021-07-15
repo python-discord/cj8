@@ -41,4 +41,21 @@ with term.fullscreen(), term.cbreak(), term.hidden_cursor():
                     working_space_location[0], working_space_location[1]
                 ] = "0"
 
+            state.change_player()
             board.draw_board(term)
+
+            state.update_board = False
+            # TODO handle logic for next grid below is a placeholder *this may be good enough
+            state.save_subgrid_bool = True
+            if state.save_subgrid_bool:
+                state.user_select_subgrid = state.user_select_space
+                state.term_info[2] = (
+                    f"Current: SubGrid {state.user_select_subgrid} "
+                    f"| Space {state.user_select_space}"
+                )
+            else:
+                state.user_select_subgrid = 0
+
+            state.user_select_space = 0
+
+            state.redraw_user_term(term)

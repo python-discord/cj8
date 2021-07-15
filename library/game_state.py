@@ -1,34 +1,8 @@
+import time
+
 import blessed
 
-
-def update_user_section(term: blessed.Terminal, updated_info: list[str]) -> None:
-    """To add your information to the terminal you have 3 lines with 31 spaces"""
-    for i in updated_info:
-        if len(i) > 31:
-            raise NameError("Terminal contents too big")
-
-    print(term.move_xy(0, 18))
-
-    # theres a better way to do this im just too dumb to think of it atm
-    if len(updated_info) == 1:
-        updated_info += " "
-        updated_info += " "
-        updated_info += " "
-    elif len(updated_info) == 2:
-        updated_info += " "
-        updated_info += " "
-    elif len(updated_info) == 3:
-        updated_info += " "
-
-    item: list = [""] * 6
-    item[0] = "┌─term────────────────────────────┐"
-    item += "\n│ " + "".join(updated_info[0]).ljust(31) + " │"
-    item += "\n│ " + "".join(updated_info[1]).ljust(31) + " │"
-    item += "\n│ " + "".join(updated_info[2]).ljust(31) + " │"
-    item += "\n│ " + "".join(updated_info[3]).ljust(31) + " │"
-    item += "\n└(Enter to confirm)───('q' to esc)┘"
-
-    print("".join(item))
+from .user_term import update_user_section
 
 
 class GameState:
@@ -73,8 +47,6 @@ class GameState:
             self.update_subgrid_select(term)
         elif self.next == 30:
             self.update_space_select(term)
-        elif self.next == 40:
-            self.end_of_turn(term)
         else:
             pass
 
@@ -86,20 +58,25 @@ class GameState:
     def wait_for_ready(self, term: blessed.Terminal) -> None:
         """Wait for the player to start turn"""
         self.current = 10
-        self.player_active = 1 if self.player_active == 2 else 1
+        if self.player_active == 0:
+            self.player_active = 1
 
-        if self.user_input == "y":
+        if self.user_input == "y" or self.user_input == "KEY_ENTER":
             self.term_info[0] = f"Player {self.player_active} Active"
 
-            if self.save_subgrid_bool:
+            if self.user_select_subgrid != 0:
                 self.next = 30  # skip to space select
                 self.term_info[1] = "Select Space by entering 1-9"
             else:
                 self.next = 20  # go to subgrid select
                 self.term_info[1] = "Select SubGrid by entering 1-9"
 
-            self.term_info[2] = ""
+            self.term_info[2] = (
+                f"Current: SubGrid {self.user_select_subgrid} "
+                f"| Space {self.user_select_space}"
+            )
             self.redraw_user_term(term)
+            return None
 
         else:
             self.next = 10
@@ -134,25 +111,27 @@ class GameState:
                 f"| Space {self.user_select_space}"
             )
         elif self.user_input == "KEY_ENTER" and self.user_select_space != 0:
-            self.confirm_entry(term)
-
             if self.confirm_good_move():
-                self.next = 40  # go to exectue move
+                self.update_board = True  # good to place player token
             else:
-                self.next = 50  # go to error handling and reset values
+                pass  # TODO go to error handling and reset values
+
+            self.confirm_entry(term)
 
         self.redraw_user_term(term)
 
+        if self.update_board:
+            time.sleep(1)
+            self.end_of_turn(term)
+
     def confirm_entry(self, term: blessed.Terminal) -> None:
         """Confirm user pressed enter"""
-        if self.user_select_subgrid != 0:
+        if self.user_select_subgrid != 0 and self.current == 20:
             self.term_info[1] = "Select Space by entering 1-9"
-        elif self.user_select_space != 0:
-            self.term_info[1] = "Confirm Selection?"
-        else:
+        elif self.user_select_space != 0 and self.current == 30:
             # show confirmation
             self.term_info[0] = " "
-            self.term_info[1] = f"Player{self.player_active} selected:"
+            self.term_info[1] = "Player selected:"
             self.term_info[2] = (
                 f"Current: SubGrid {self.user_select_subgrid} "
                 f"| Space {self.user_select_space}"
@@ -167,28 +146,23 @@ class GameState:
         # update board
         self.update_board = True
 
-        # reset state
-        # TODO check if subgrid needs to be reset
-        _saved_space_selection = self.user_select_space
-
-        self.term_info[0] = " "
-        self.term_info[1] = f"Player{self.player_active} selected:"
-        self.term_info[2] = (
-            f"Current: SubGrid {self.user_select_subgrid} "
-            f"| Space {self.user_select_space}"
-        )
-        self.redraw_user_term(term)
-
-        self.next = 10
-
-        # TODO handle logic for next grid below is a placeholder *this may be good enough
-        if self.save_subgrid_bool:
-            self.user_select_subgrid = _saved_space_selection
+        # circle back to top
+        self.wait_for_ready(term)
 
     def confirm_good_move(self) -> bool:
         """Handle the entry of a bad move"""
+        # TODO need to finish this. maybe move to game logic?
         # guilty until proven innocent
         self.good_move = False
 
         self.good_move = True
         return self.good_move
+
+    def change_player(self) -> None:
+        """Change Player"""
+        if self.player_active == 1:
+            self.player_active = 2
+        else:
+            self.player_active = 1
+
+        self.term_info[0] = f"Player {self.player_active} Active"

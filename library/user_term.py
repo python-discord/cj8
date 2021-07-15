@@ -1,36 +1,4 @@
-import dataclasses
-
-
-@dataclasses.dataclass()
-class UserTermState:
-    """Reset machine for next turn"""
-
-    subgrid_select_bool: bool = True
-    space_select_bool: bool = True
-
-    wait_for_ready: bool = True
-    user_confirm_bool: bool = True
-    start_of_turn: bool = True
-    end_of_turn: bool = False
-    save_subgrid: bool = True
-
-    user_select_subgrid: int = 0
-    user_select_space: int = 0
-
-
-def starting_user_section() -> str:
-    """Starting Terminal"""
-    item: list[str] = []
-    item.append("┌─term────────────────────────────┐")
-    item.append("\n│                                 │")
-    item.append("\n│      shall we play a game?      │")
-    item.append("\n│             (y/n?)              │")
-    item.append("\n│                                 │")
-    item.append("\n└(Enter to confirm)───('q' to esc)┘")
-
-    output = "".join(update_user_section(item))
-
-    return output
+import blessed
 
 
 def convert_to_space_location(space_num: int) -> list:
@@ -50,13 +18,13 @@ def convert_to_space_location(space_num: int) -> list:
     return grid_map[space_num]
 
 
-def update_user_section(updated_info: list[str]) -> str:
+def update_user_section(term: blessed.Terminal, updated_info: list[str]) -> None:
     """To add your information to the terminal you have 3 lines with 31 spaces"""
-    item: list[str] = []
-
     for i in updated_info:
         if len(i) > 31:
             raise NameError("Terminal contents too big")
+
+    print(term.move_xy(0, 18))
 
     # theres a better way to do this im just too dumb to think of it atm
     if len(updated_info) == 1:
@@ -69,17 +37,12 @@ def update_user_section(updated_info: list[str]) -> str:
     elif len(updated_info) == 3:
         updated_info += " "
 
-    item += "┌─term────────────────────────────┐"
+    item: list = [""] * 6
+    item[0] = "┌─term────────────────────────────┐"
     item += "\n│ " + "".join(updated_info[0]).ljust(31) + " │"
     item += "\n│ " + "".join(updated_info[1]).ljust(31) + " │"
     item += "\n│ " + "".join(updated_info[2]).ljust(31) + " │"
     item += "\n│ " + "".join(updated_info[3]).ljust(31) + " │"
     item += "\n└(Enter to confirm)───('q' to esc)┘"
 
-    output = "".join(update_user_section(item))
-
-    return output
-
-
-if __name__ == "__main__":
-    print(convert_to_space_location(1))
+    print("".join(item))
