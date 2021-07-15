@@ -13,7 +13,7 @@ from playsound import playsound
 #Music: Mire. - Bury
 while True:
     playsound('music.mp3', block=False)
-    time.sleep(235.55)
+    sleep(235.55)
 
 
 # file system imports
