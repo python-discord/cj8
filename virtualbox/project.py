@@ -1,5 +1,5 @@
 from functions.command_functions import random_test, get_entry
-from functions.blessed_functions import print_tree, clear_term, printhelp_first, print_box
+from functions.blessed_functions import print_tree, clear_term, printhelp_first, print_box, print_loading
 from random import randint
 from time import sleep
 from users.user import User, ROOT
@@ -8,6 +8,13 @@ from exceptions import CannotFullFillFunction
 from config import START_PATH
 from copy import copy
 from fs.fs_dir import Dir
+from playsound import playsound
+
+#Music: Mire. - Bury
+while True:
+    playsound('music.mp3', block=False)
+    time.sleep(235.55)
+
 
 # file system imports
 fs = Dir.FromPath(START_PATH, None, 7, 0, 0)
@@ -45,6 +52,7 @@ def user_input_cmd(fs, user):
 def start(fs, user):
     firstgamefile = open('first_game.txt', 'r')
     content = firstgamefile.readline()
+    print_loading('Loading Operating System ', '40')
     clear_term()
     if content[0] == '0':
         print_box('Intro',

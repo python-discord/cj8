@@ -142,7 +142,7 @@ def print_box(header, text):
 #     print(template.format('└', dc(text[-1], 0), header, dshift, '┘'))
 
 
-def print_loading(prompt):
+def print_loading(prompt, dividend):
     '''
     prompt: str
     clears screen and prints a loading bar following the prompt
@@ -152,6 +152,7 @@ def print_loading(prompt):
     print_this = prompt + " "
     for i in range(BLANK_LINES - len(prompt)):
         clear_term()
-        print(term.home + term.clear + term.move_y(term.height // 2) + term.green_on_black(print_this))
+        # print(term.home + term.clear + term.move_y(term.height // 2) + term.green_on_black(print_this))
+        print(term.green_on_black(print_this))
         print_this += "█"
-        sleep(random()/2)
+        sleep(random()/int(dividend))
