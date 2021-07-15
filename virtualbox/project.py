@@ -46,8 +46,8 @@ def user_input_cmd(fs, user):
         # clear_term()
         # if randint(1, 30) == 1:
         #     random_test()
-            entry = get_entry(user_input[0])
-            entry[0](*ProcessArgs(entry[1], locals()))
+        entry = get_entry(user_input[0])
+        entry[0](*ProcessArgs(entry[1], locals()))
         # except Exception as e:
         #    print(e)
 
