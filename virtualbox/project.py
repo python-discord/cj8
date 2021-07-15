@@ -13,10 +13,10 @@ import threading
 
 
 def playbgm():
-    playsound('bgm_part01.mp3', block=False)
+    playsound('music/bgm_part01.mp3', block=False)
     sleep(40)
     while True:
-        playsound('bgm_part02.mp3', block=False)
+        playsound('music/bgm_part02.mp3', block=False)
         sleep(16)
 
 
