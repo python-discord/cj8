@@ -8,6 +8,13 @@ from exceptions import CannotFullFillFunction
 from config import START_PATH
 from copy import copy
 from fs.fs_dir import Dir
+from playsound import playsound
+
+#Music: Mire. - Bury
+while True:
+    playsound('music.mp3', block=False)
+    time.sleep(235.55)
+
 
 # file system imports
 fs = Dir.FromPath(START_PATH, None, 7, 0, 0)
