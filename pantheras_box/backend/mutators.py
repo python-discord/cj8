@@ -1,9 +1,9 @@
 from abc import ABC, abstractmethod
 from typing import List
 
-from src.backend.core import CoreBackend
-from src.backend.events import BaseEvent, MutatorEvent
-from src.file_logging import logger
+from pantheras_box.backend.core import CoreBackend
+from pantheras_box.backend.events import BaseEvent, MutatorEvent
+from pantheras_box.file_logging import logger
 
 
 class BaseMutator(ABC):

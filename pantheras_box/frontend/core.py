@@ -14,14 +14,14 @@ from rich.table import Table
 from rich.text import Text
 from rich.tree import Tree
 
-from src.backend.core import CoreBackend
-from src.backend.events import BaseEvent, EventTypes
-from src.backend.mutators import CoreMutators
-from src.backend.scoring import CoreScoring
-from src.backend.tiles import PauseTile
-from src.keyboard_handlers.core import BaseKeyboardHandler, KeyboardFactory
-from src.sounds.core import CoreSounds
-from src.story.core import CoreStory
+from pantheras_box.backend.core import CoreBackend
+from pantheras_box.backend.events import BaseEvent, EventTypes
+from pantheras_box.backend.mutators import CoreMutators
+from pantheras_box.backend.scoring import CoreScoring
+from pantheras_box.backend.tiles import PauseTile
+from pantheras_box.keyboard_handlers.core import BaseKeyboardHandler, KeyboardFactory
+from pantheras_box.sounds.core import CoreSounds
+from pantheras_box.story.core import CoreStory
 
 
 class CoreFrontend:

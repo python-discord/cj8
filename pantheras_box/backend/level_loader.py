@@ -5,7 +5,7 @@ from typing import List, Optional, Tuple
 
 from PIL import Image
 
-from src.backend.tiles import (
+from pantheras_box.backend.tiles import (
     BallTile,
     BaseTile,
     GoalTile,
@@ -14,7 +14,7 @@ from src.backend.tiles import (
     StoryTile,
     WallTile,
 )
-from src.file_logging import logger
+from pantheras_box.file_logging import logger
 
 
 class BoardCollection:

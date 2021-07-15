@@ -3,9 +3,10 @@ from typing import Dict, Optional
 
 import yaml
 
-from config import SCORE_FILE
-from src.backend.core import CoreBackend
-from src.backend.events import BaseEvent, EventTypes, FailedEvent, LevelLoadedEvent
+from pantheras_box.backend.core import CoreBackend
+from pantheras_box.backend.events import BaseEvent, EventTypes, FailedEvent, \
+    LevelLoadedEvent
+from pantheras_box.config import SCORE_FILE
 
 
 class CoreScoring:

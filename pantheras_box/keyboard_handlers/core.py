@@ -2,8 +2,8 @@ import logging
 import sys
 from abc import ABC
 
-from src.backend.core import CoreBackend
-from src.file_logging import logger
+from pantheras_box.backend.core import CoreBackend
+from pantheras_box.file_logging import logger
 
 
 class BaseKeyboardHandler(ABC):
@@ -50,11 +50,11 @@ class KeyboardFactory:
         platform = sys.platform
 
         if platform in (KeyboardFactory.LINUX, KeyboardFactory.MACOS):
-            from src.keyboard_handlers.fallback import FallbackKeyboardHandler
+            from pantheras_box.keyboard_handlers.fallback import FallbackKeyboardHandler
 
             return FallbackKeyboardHandler(backend)
 
         # Return the default handler
-        from src.keyboard_handlers.default import DefaultKeyboardHandler
+        from pantheras_box.keyboard_handlers.default import DefaultKeyboardHandler
 
         return DefaultKeyboardHandler(backend)

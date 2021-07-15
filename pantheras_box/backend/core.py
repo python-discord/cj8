@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import Callable, List, Optional, Tuple
 
-from src.backend.events import (
+from pantheras_box.backend.events import (
     BallMovementEvent,
     EventsMixin,
     LevelLoadedEvent,
@@ -9,8 +9,8 @@ from src.backend.events import (
     StoryEvent,
     VictoryEvent,
 )
-from src.backend.level_loader import BoardCollection, CoreLevelLoader
-from src.backend.tiles import (
+from pantheras_box.backend.level_loader import BoardCollection, CoreLevelLoader
+from pantheras_box.backend.tiles import (
     BaseTile,
     BlindTile,
     CardinalDirection,

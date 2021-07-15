@@ -3,9 +3,9 @@ from pathlib import Path
 
 from playsound import PlaysoundException, playsound
 
-from src.backend.core import CoreBackend
-from src.backend.events import BaseEvent, EventTypes
-from src.file_logging import logger
+from pantheras_box.backend.core import CoreBackend
+from pantheras_box.backend.events import BaseEvent, EventTypes
+from pantheras_box.file_logging import logger
 
 
 class CoreSounds:

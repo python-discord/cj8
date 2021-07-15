@@ -3,8 +3,8 @@ from typing import Dict, Optional
 
 import yaml
 
-from src.backend.core import CoreBackend
-from src.backend.events import BaseEvent, EventTypes, StoryEvent
+from pantheras_box.backend.core import CoreBackend
+from pantheras_box.backend.events import BaseEvent, EventTypes, StoryEvent
 
 
 class CoreStory:

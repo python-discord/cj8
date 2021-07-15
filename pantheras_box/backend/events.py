@@ -3,7 +3,7 @@ from abc import ABC, abstractmethod
 from enum import Enum
 from typing import Callable, Optional, Set
 
-from src.file_logging import logger
+from pantheras_box.file_logging import logger
 
 
 class EventTypes(Enum):

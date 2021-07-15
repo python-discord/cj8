@@ -4,14 +4,10 @@ from typing import NoReturn
 from pantheras_box.frontend.core import CoreFrontend
 
 
-def main() -> NoReturn:
+def run_game() -> NoReturn:
     """Run the game."""
     frontend = CoreFrontend()
     try:
         frontend.start_loop()
     except KeyboardInterrupt:
         sys.exit(0)
-
-
-if __name__ == "__main__":
-    main()

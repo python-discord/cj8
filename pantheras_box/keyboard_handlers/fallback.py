@@ -3,8 +3,8 @@ from typing import Union
 from pynput import keyboard
 from pynput.keyboard import Key, KeyCode
 
-from src.backend.core import CoreBackend
-from src.keyboard_handlers.core import BaseKeyboardHandler
+from pantheras_box.backend.core import CoreBackend
+from pantheras_box.keyboard_handlers.core import BaseKeyboardHandler
 
 
 class FallbackKeyboardHandler(BaseKeyboardHandler):
