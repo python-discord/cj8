@@ -61,18 +61,23 @@ class Map(Effect):
     and controls the map in general.
     """
 
-    def __init__(self, screen: Screen, game_map: List[str]):
+    def __init__(self, screen: Screen, game_map: str):
         super(Map, self).__init__(screen)
-        self.map = [''.join([choice(texturing) if char == ' ' else char for char in line]) for line in game_map]
+        
+        # self.map = [''.join([choice(texturing) if char == ' ' else char for char in line]) for line in game_map]
+        self.map: List[str] = "".join(
+            "." if char == " " and counter % 2 else char
+            for counter, char in enumerate(deepcopy(game_map))
+        ).split("\n")
 
-        for i, line in enumerate(game_map):
+        for i, line in enumerate(self.map):
             j = line.find('@')
             if j > -1:
                 self.player_x = j
                 self.player_y = i
                 self.map[i] = line.replace('@', ' ')
 
-        self.vision = 3  # will have a way to change this later
+        self.vision = 4  # will have a way to change this later
 
         # print(f"player: ({self.player_x},{self.player_y})")
         # print(f"map: ({self.map_x},{self.map_y})")
@@ -87,9 +92,11 @@ class Map(Effect):
 
         for i in range(offset_y):
             self.screen.print_at(" " * self.screen.width, 0, i)
+
         for i, line in enumerate(raycast(self.map, self.player_x, self.player_y, 7, '#', ' ')):
             line = ' ' * offset_x[0] + line + ' ' * offset_x[1]
             self.screen.print_at(line, 0, offset_y + i)
+
         for i in range(offset_y + len(self.map), self.screen.height):
             self.screen.print_at(" " * self.screen.width, 0, i)
 
@@ -182,7 +189,10 @@ class GameController(Scene):
             return GameController.CORRECT_WALL
 
         # If not, we send the information of that location
-        return GameController.SPRITE_MAP[self.map.map[y][x]]
+        return GameController.SPRITE_MAP.get(
+            self.map.map[y][x],
+            GameController.EMPTY_SPACE,
+        )
 
     def speak(self, text: str, duration: int = 20) -> None:
         """Text to be spoken by the character"""
