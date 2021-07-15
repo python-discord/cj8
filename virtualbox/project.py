@@ -9,11 +9,14 @@ from config import START_PATH
 from copy import copy
 from fs.fs_dir import Dir
 from playsound import playsound
+import threading
 
-#Music: Mire. - Bury
-while True:
-    playsound('music.mp3', block=False)
-    time.sleep(235.55)
+
+def playbgm():
+    # Music: Mire. - Bury
+    while True:
+        playsound('music.mp3', block=False)
+        sleep(235.55)
 
 
 # file system imports
@@ -133,4 +136,10 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    t1 = threading.Thread(target=main)
+    t2 = threading.Thread(target=playbgm)
+    t1.start()
+    t2.start()
+
+
+
