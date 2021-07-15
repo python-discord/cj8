@@ -156,31 +156,6 @@ class Dir(AC):
     def getFile(self, user, path):
         return self.getType(user, path, File, NotAnFile)
 
-    "permisions managment"
-    @AC.owncheck
-    @update
-    def chown(self, user, name, chuser=None, chgroup=None):
-        if chuser is not None:
-            self.uid = chuser.id
-        if chgroup is not None:
-            self.gid = chgroup.id
-
-    @AC.owncheck
-    @update
-    def chmod(self, user, up, op):
-        if self.up is not None:
-            self.up = up
-        if self.op is not None:
-            self.op = op
-
-    @AC.owncheck
-    @update
-    def chadd(self, user, up, op):
-        if self.up is not None:
-            self.up |= up
-        if self.op is not None:
-            self.op |= op
-
     "self managment"
     def delete(self):
         shutil.rmtree(self.path)

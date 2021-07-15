@@ -23,7 +23,6 @@ class AC(copy):
         return False
 
     """wraper permisons check"""
-    @staticmethod
     def owncheck(function):
         def check(self, user, *args):
             if user.id == self.uid or user.uid == 0:
@@ -31,7 +30,6 @@ class AC(copy):
             raise PermisionDenied()
         return check
 
-    @staticmethod
     def execcheck(function):
         def check(self, user, *args):
             if self.p_check(1, user) or user.uid == 0:
@@ -39,7 +37,6 @@ class AC(copy):
             raise PermisionDenied()
         return check
 
-    @staticmethod
     def writecheck(function):
         def check(self, user, *args):
             if self.p_check(2, user) or user.uid == 0:
@@ -47,10 +44,29 @@ class AC(copy):
             raise PermisionDenied()
         return check
 
-    @staticmethod
     def readcheck(function):
         def check(self, user, *args):
             if self.p_check(4, user) or user.uid == 0:
                 return function(self, user, *args)
             return PermisionDenied()
         return check
+
+    # permisions managment
+
+    @owncheck
+    def chown(self, user, chuser):
+        self.uid = chuser.uid
+
+    @owncheck
+    def chmod(self, user, up, op):
+        if self.up is not None:
+            self.up = up
+        if self.op is not None:
+            self.op = op
+
+    @owncheck
+    def chadd(self, user, up, op):
+        if self.up is not None:
+            self.up |= up
+        if self.op is not None:
+            self.op |= op
