@@ -9,6 +9,7 @@ class Enemy(AbstractDungeonEntity):
     def __init__(self, aggro_radius: int, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.aggro_radius = aggro_radius
+        self.entity_type = "enemy"
         self.target: dict = {}
 
     def mill(self) -> None:
@@ -29,15 +30,26 @@ class Enemy(AbstractDungeonEntity):
         move_y = 0
 
         # find direction
-        if self.x < x:
-            move_x = 1
-        if self.x > x:
-            move_x = -1
-
-        if self.y < y:
-            move_y = 1
-        if self.y > y:
-            move_y = -1
+        if abs(x - self.x) > abs(y - self.y):
+            if self.x < x:
+                move_x = 1
+            if self.x > x:
+                move_x = -1
+        elif abs(x - self.x) < abs(y - self.y):
+            if self.y < y:
+                move_y = 1
+            if self.y > y:
+                move_y = -1
+        else:
+            # like a pawn, this can strike diagonally if the x and y abs values are the same
+            if self.x < x:
+                move_x = 1
+            if self.x > x:
+                move_x = -1
+            if self.y < y:
+                move_y = 1
+            if self.y > y:
+                move_y = -1
 
         # move in that direction
         self.new_positions["x"] = move_x

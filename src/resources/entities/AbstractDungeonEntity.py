@@ -1,11 +1,10 @@
 from rich.text import Text
 
-from .Entity import Entity
 from .level.LevelResources import LevelResources
 from .level.Tile import Tile
 
 
-class AbstractDungeonEntity(Entity):
+class AbstractDungeonEntity:
     """Base class to set items color and location"""
 
     def __init__(
@@ -21,7 +20,6 @@ class AbstractDungeonEntity(Entity):
         self.y = y
         self.symbol = Text(symbol)
         self.ground_symbol: LevelResources = Tile(text=ground_symbol, style="bold magenta")
-        self.entity_type = ""
 
         self.new_positions: dict = {"x": 0, "y": 0}
 

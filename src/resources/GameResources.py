@@ -20,13 +20,13 @@ class GameResources:
         x = entity.new_positions["x"]
         y = entity.new_positions["y"]
         try:
-            if self.level.board[entity.y + y][entity.x + x].entity_type in ("tile", "character"):
+            if str(self.level.board[entity.y + y][entity.x + x]) in ("'", "$"):
                 self.level.board[entity.y][entity.x] = entity.ground_symbol
                 entity.x += x
                 entity.y += y
                 entity.ground_symbol = self.level.board[entity.y][entity.x]
                 entity.new_positions = {"x": 0, "y": 0}
-        except (AttributeError, IndexError):
+        except IndexError:
             pass
 
     def draw_entity(self, entity: AbstractDungeonEntity) -> None:
