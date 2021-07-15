@@ -1,7 +1,8 @@
 from __future__ import division
 
-from copy import deepcopy
+# from copy import deepcopy
 from math import ceil
+from random import choice
 from typing import Any, List, Optional, Tuple
 
 from asciimatics.effects import Effect, Print
@@ -13,6 +14,8 @@ from asciimatics.screen import Screen
 
 import resources.exceptions as exceptions
 from resources.sprites.maps import LEVELS
+from resources.raycasting import raycast
+from resources.generation import even_random_distribution as r_distribution
 
 # Mappings of directional trigger keys such as movement or tag
 # to their corresponding properties/direction/map changes.
@@ -49,6 +52,8 @@ DIRECTIONAL_MANEUVER_MAPPINGS = [
     },
 ]
 
+texturing = r_distribution([' ', '.', ','], [80, 10, 10], 1000)
+
 
 class Map(Effect):
     """
@@ -58,6 +63,8 @@ class Map(Effect):
 
     def __init__(self, screen: Screen, game_map: str):
         super(Map, self).__init__(screen)
+        
+        # self.map = [''.join([choice(texturing) if char == ' ' else char for char in line]) for line in game_map]
         self.map: List[str] = "".join(
             "." if char == " " and counter % 2 else char
             for counter, char in enumerate(deepcopy(game_map))
@@ -86,23 +93,9 @@ class Map(Effect):
         for i in range(offset_y):
             self.screen.print_at(" " * self.screen.width, 0, i)
 
-        for i, chars in enumerate(self.map):
-            if offset_x[0] >= 0:
-
-                if abs(self.player_y - i) <= self.vision:
-                    # y_dist determines if it's a square or diamond view
-                    left_vision = self.player_x - self.vision
-                    right_vision = self.player_x + self.vision + 1
-                    chars = (
-                        " " * offset_x[0] + " " * left_vision
-                        + chars[max(left_vision, 0):min(right_vision, len(chars))]
-                        + " " * right_vision + " " * offset_x[1]
-                    )
-                else:
-                    chars = " " * self.screen.width
-            else:
-                chars = chars[-offset_x[0]:] + " " * offset_x[1]
-            self.screen.print_at(chars, 0, offset_y + i)
+        for i, line in enumerate(raycast(self.map, self.player_x, self.player_y, 7, '#', ' ')):
+            line = ' ' * offset_x[0] + line + ' ' * offset_x[1]
+            self.screen.print_at(line, 0, offset_y + i)
 
         for i in range(offset_y + len(self.map), self.screen.height):
             self.screen.print_at(" " * self.screen.width, 0, i)
@@ -146,6 +139,9 @@ class GameController(Scene):
 
     # Here we decide the signal each sprite sends to the game
     SPRITE_MAP = {
+        " ": EMPTY_SPACE,
+        ".": EMPTY_SPACE,
+        ",": EMPTY_SPACE,
         "X": WRONG_WALL,
         "#": WRONG_WALL,
         "|": WRONG_WALL,
