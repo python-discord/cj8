@@ -56,18 +56,21 @@ class Map(Effect):
     and controls the map in general.
     """
 
-    def __init__(self, screen: Screen, game_map: List[str]):
+    def __init__(self, screen: Screen, game_map: str):
         super(Map, self).__init__(screen)
-        self.map: List[str] = deepcopy(game_map)
+        self.map: List[str] = "".join(
+            "." if char == " " and counter % 2 else char
+            for counter, char in enumerate(deepcopy(game_map))
+        ).split("\n")
 
-        for i, line in enumerate(game_map):
+        for i, line in enumerate(self.map):
             j = line.find('@')
             if j > -1:
                 self.player_x = j
                 self.player_y = i
                 self.map[i] = line.replace('@', ' ')
 
-        self.vision = 3  # will have a way to change this later
+        self.vision = 4  # will have a way to change this later
 
         # print(f"player: ({self.player_x},{self.player_y})")
         # print(f"map: ({self.map_x},{self.map_y})")
@@ -82,21 +85,25 @@ class Map(Effect):
 
         for i in range(offset_y):
             self.screen.print_at(" " * self.screen.width, 0, i)
+
         for i, chars in enumerate(self.map):
             if offset_x[0] >= 0:
-                y_dist = abs(self.player_y - i)
-                if y_dist <= self.vision:
-                    # currently a diamond view, get rid of y_dist to make it square view
-                    left_vision = self.player_x - self.vision + y_dist
-                    right_vision = self.player_x + self.vision + 1 - y_dist
-                    chars = " " * offset_x[0] + " " * left_vision \
-                            + chars[max(left_vision, 0):min(right_vision, len(chars))] \
-                            + " " * right_vision + " " * offset_x[1]
+
+                if abs(self.player_y - i) <= self.vision:
+                    # y_dist determines if it's a square or diamond view
+                    left_vision = self.player_x - self.vision
+                    right_vision = self.player_x + self.vision + 1
+                    chars = (
+                        " " * offset_x[0] + " " * left_vision
+                        + chars[max(left_vision, 0):min(right_vision, len(chars))]
+                        + " " * right_vision + " " * offset_x[1]
+                    )
                 else:
                     chars = " " * self.screen.width
             else:
                 chars = chars[-offset_x[0]:] + " " * offset_x[1]
             self.screen.print_at(chars, 0, offset_y + i)
+
         for i in range(offset_y + len(self.map), self.screen.height):
             self.screen.print_at(" " * self.screen.width, 0, i)
 
@@ -139,7 +146,6 @@ class GameController(Scene):
 
     # Here we decide the signal each sprite sends to the game
     SPRITE_MAP = {
-        " ": EMPTY_SPACE,
         "X": WRONG_WALL,
         "#": WRONG_WALL,
         "|": WRONG_WALL,
@@ -187,7 +193,10 @@ class GameController(Scene):
             return GameController.CORRECT_WALL
 
         # If not, we send the information of that location
-        return GameController.SPRITE_MAP[self.map.map[y][x]]
+        return GameController.SPRITE_MAP.get(
+            self.map.map[y][x],
+            GameController.EMPTY_SPACE,
+        )
 
     def speak(self, text: str, duration: int = 20) -> None:
         """Text to be spoken by the character"""
