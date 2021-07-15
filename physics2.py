@@ -12,7 +12,7 @@ COLLISION_TYPES = {"box_to_target": 0,
 
 
 class Object(pygame.Rect):
-    speed: List[float, float] = [0, 0]
+    speed: List[float] = [0, 0]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
