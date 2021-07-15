@@ -63,7 +63,7 @@ class Map(Effect):
 
     def __init__(self, screen: Screen, game_map: List[str]):
         super(Map, self).__init__(screen)
-        self.map: List[str] = [''.join([choice(texturing) if char == ' ' else char for char in line]) for line in game_map]
+        self.map = [''.join([choice(texturing) if char == ' ' else char for char in line]) for line in game_map]
 
         for i, line in enumerate(game_map):
             j = line.find('@')
@@ -133,6 +133,8 @@ class GameController(Scene):
     # Here we decide the signal each sprite sends to the game
     SPRITE_MAP = {
         " ": EMPTY_SPACE,
+        ".": EMPTY_SPACE,
+        ",": EMPTY_SPACE,
         "X": WRONG_WALL,
         "#": WRONG_WALL,
         "|": WRONG_WALL,
