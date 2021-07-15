@@ -296,7 +296,12 @@ def portscanner(port: Optional(int, None), fs, user):
              164, 224, 353, 522, 529, 634, 698, 934, 988, 996]
     port_hint = {22: 'Scannable Ip: 3861.7679.7174.6743.61.59.77.74.65.76.81.40.57.70.61.68.25.59.59.61.75.75.33.75.38.61.77.76.74.71.70.25.76.71.69.38.61.76',
                  164: "net config decryption code: app12ut",
-                 "no_hint": 'missing data'}
+                 "no_hint": 'missing data',
+                 7: '444.',
+                 74: '5123.',
+                 522: '4123',
+                 988: '01*1*111*11*0110*01*000*000*011*111*010*100*1*0*11*0110',
+                 529: '4359.5770.4464.6574.60.33.40'}
     if port is not None:
         print_loading(f"Scanning network for port {port}", '2')
         if port in ports:
@@ -412,11 +417,11 @@ def ipcypher(listl):
                 retstring += f'.{cyphernum}'
         lostl.append(retstring)
     return lostl
-# print(ipcypher(['NetworkSecurityPanelAccessIsNeutronAtomNet']))
+# print(ipcypher(['ScanThirdIP']))
 
 
 def gethint():
-    hints = ['hello test fake'] # Words split by a space, words cant be longer than 8 letters, wouldnt recommend longer hint than 4-5 words. Best is 3 words
+    hints = ['no_connection false_access AtomToor45tpf unsecure_route unknown missing_port invalid_access unsecure_route missing_ip zero_access'] # Words split by a space, words cant be longer than 8 letters, wouldnt recommend longer hint than 4-5 words. Best is 3 words
     return random.choice(hints)
 
 
@@ -504,7 +509,7 @@ def passwordscan():
            pwscan/hashcat - scans locally stored insecure passwords
            [EXTEND]
     """
-    pwlist = ['1password', '2password', '3password']
+    pwlist = ['df23jsq', 'qsAtom5', 'LQR', "1234567", "54354fd32", "444hdFAaws", "guuf2321d"]
     all1 = list(string.ascii_letters + string.digits)
     this_will_be_stupid = []
     print_box('PasswordScanner', ['Getting Operating System...', 'Filtring FileSystem...', 'Scanning for Passwords...'])

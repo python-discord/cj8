@@ -11,9 +11,9 @@ from fs.fs_dir import Dir
 from playsound import playsound
 
 #Music: Mire. - Bury
-while True:
-    playsound('music.mp3', block=False)
-    sleep(235.55)
+# while True:
+#     playsound('music.mp3', block=False)
+#     sleep(235.55)
 
 
 # file system imports
@@ -39,14 +39,14 @@ def user_input_cmd(fs, user):
         user_input = input(">>>  ").strip().split()
         if len(user_input) == 0:
             continue
-        # try:
-        # clear_term()
-        # if randint(1, 30) == 1:
-        #     random_test()
-        entry = get_entry(user_input[0])
-        entry[0](*ProcessArgs(entry[1], locals()))
-        # except Exception as e:
-        #    print(e)
+        try:
+            clear_term()
+            # if randint(1, 30) == 1:
+            #     random_test()
+            entry = get_entry(user_input[0])
+            entry[0](*ProcessArgs(entry[1], locals()))
+        except Exception as e:
+            print(e)
 
 
 def start(fs, user):
