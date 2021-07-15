@@ -288,29 +288,32 @@ def search(what: str, fs, user):
 @expand_args(0, "port")
 def portscanner(port: Optional(int, None), fs, user):
     """portscan [port:int]
-    portscan - scans for port in network
     [EXTEND]
+    portscan - scans for port in network
     """
-    ports = [str(port) for port in [22, 80, 9929, 8898, 22542, 187, 32312]]
-    outputs = ['yes', 'missing data', 'missing data', 'missing data', 'missing data', 'missing data',
-               'missing data', 'missing data', 'missing data']
-    # if specified var (= if user_input contains specific port)
+    ports = [2, 5, 7, 12, 15, 19, 20, 22, 26, 31,
+             33, 55, 62, 73, 74, 80, 81, 89, 91, 93,
+             164, 224, 353, 522, 529, 634, 698, 934, 988, 996]
+    port_hint = {22: 'Scannable Ip: 3861.7679.7174.6743.61.59.77.74.65.76.81.40.57.70.61.68.25.59.59.61.75.75.33.75.38.61.77.76.74.71.70.25.76.71.69.38.61.76',
+                 164: "net config decryption code: app12ut",
+                 "no_hint": 'missing data'}
     if port is not None:
-        print_loading(f"Scanning Port {port}")
-        num_in_list = 0
-        for i in range(len(ports)):
-            if port == ports[i]:
-                print(port[i])
-                num_in_list = i
-        print_box("PortScanner", [f"Port {port} attackable. ", "Attack launchend. ", f"Output: {outputs[num_in_list]}"])
-    else:
-        # 5-7 to show user a portscanner experience and show hint/ no hint
-        print_loading("Scanning Ports")
-        print_this = ["Found Ports in Network: "]
-        for i in range(random.randint(5, 7)):
-            print_this.append(ports[i] + "/TCP [State: open]")
-        print_box("PortScanner", print_this)
+        print_loading(f"Scanning network for port {port}")
+        if port in ports:
+            if port in port_hint.keys():
+                print_this = port_hint[port]
+            else:
+                print_this = port_hint["no_hint"]
+            print_box("PortScanner", [f"Found port in network:", f"{port}/TCP [State: open]", print_this])
+        else:
+            print_box("PortScanner", [f"Port {port} not found in network"])
 
+    else:
+        print_loading("Scanning network for ports")
+        print_this = ["Found Ports in network: "]
+        for p in ports:
+            print_this.append(f"{p}/TCP [State: open]")
+        print_box("PortScanner", print_this)
 
 
 @add_function(("devresetintro", ))
