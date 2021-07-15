@@ -24,7 +24,7 @@ def run_game(layout: Layout, game_resources: GameResources) -> Panel:
 
     Layout: Layout  Holds all the rich renderables for the game. Updated with a new panel each tick.
     """
-    game_resources.update()
+    game_resources.update(bless)
     game_resources.draw()
 
     panel = Panel(game_resources.level.to_string())
@@ -38,7 +38,7 @@ def run_game(layout: Layout, game_resources: GameResources) -> Panel:
 
 def main() -> None:
     """Main function that sets up game and runs main game loop"""
-    game_resources = GameResources(testing)
+    game_resources = GameResources(testing, bless)
     game_resources.draw()
 
     game_panel = Panel(game_resources.level.to_string())
@@ -55,9 +55,11 @@ def main() -> None:
         end_screen(layout)
 
 
+testing = False
+bless = False
 if __name__ == "__main__":
     if sys.argv[-1] == "--test":
         testing = True
-    else:
-        testing = False
+    elif sys.argv[-1] == "--bless":
+        bless = True
     main()

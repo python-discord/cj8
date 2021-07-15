@@ -1,6 +1,12 @@
+from collections import deque
+from threading import Thread
+
+from blessed import Terminal
 from pynput.keyboard import Key, Listener
 
 from .AbstractDungeonEntity import AbstractDungeonEntity
+
+term = Terminal()
 
 
 class Character(AbstractDungeonEntity):
@@ -10,6 +16,7 @@ class Character(AbstractDungeonEntity):
         super().__init__(*args, **kwargs)
         self.entity_type = "character"
         self.playing = True
+        self.commands = deque()
 
     def press(self, key: Key) -> None:
         """Reads keyboard input"""
@@ -40,3 +47,35 @@ class Character(AbstractDungeonEntity):
         """Uses listener that reads keyboard input from press"""
         with Listener(on_press=self.press, on_release=self.release) as listener:  # set keys to be read immediately
             listener.join()
+
+    def move(self, direction: str) -> None:
+        """Move player"""
+        if direction == 'a':
+            self.new_positions["x"] = -1
+        if direction == 'd':
+            self.new_positions["x"] = 1
+        if direction == 'w':
+            self.new_positions["y"] = -1
+        if direction == 's':
+            self.new_positions["y"] = 1
+        if direction == 'p':
+            self.playing = False
+
+    def start(self) -> None:
+        """Start thread"""
+        Thread(target=self.control, args=()).start()
+
+    def control(self) -> None:
+        """Get keyboard controls"""
+        while self.playing:
+            with term.cbreak():  # set keys to be read immediately
+                inp = term.inkey()  # wait and read one character
+                self.commands.append(inp)
+
+    def update(self) -> None:
+        """Turn based update"""
+        command = ""
+        while len(command) == 0:
+            if len(self.commands) > 0:
+                command = (self.commands.pop())
+                self.move(command)

@@ -4,6 +4,8 @@ from os import DirEntry
 
 from rich.tree import Tree
 
+from ..resources.entities.level.Level import Level
+
 
 class Node:
     """The Node class represents a folder in the folder structure or a room in the dungeon."""
@@ -14,6 +16,7 @@ class Node:
         self.path = path  # the path from the root dir (e.g. ./fstree/Node.py)
         self.children: list[DirEntry] = []  # a list of folders in the current folder
         self.files: list[DirEntry] = []  # a list of files in the current folder
+        self.level: Level = Level(12, 8, self.children)
 
     def display(self) -> None:
         """Prints the contents of the current folder. Similar to the ls command."""

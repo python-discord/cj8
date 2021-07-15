@@ -10,14 +10,14 @@ from .Wall import Wall
 class Level:
     """Generates and contains a level"""
 
-    def __init__(self, width: int, height: int, children: list, files: list) -> None:
+    def __init__(self, width: int, height: int, children: list, door: (int, int) = (0, 0)) -> None:
+        self.entrance = (0, 0)
         self.board = []
         self.width = width
         self.height = height
-        self.door = Door(text="#", style="bold green")
         self.generate_level(width, height)
         self.set_border()
-        self.add_doors(len(children))
+        self.add_doors(len(children), door)
 
     def generate_level(self, x: int, y: int) -> None:
         """Generates level"""
@@ -28,8 +28,23 @@ class Level:
                 row.append(tile)
             self.board.append(row)
 
-    def add_doors(self, doors: int) -> None:
+    def add_doors(self, doors: int, first_door: (int, int)) -> None:
         """Add doors to level"""
+        if first_door != (0, 0):
+            self.first_door = first_door
+            door = Door(text="#", style="bold green")
+            y, x = first_door
+            if first_door[0] == 0:
+                y = self.height - 1
+            if first_door[1] == 0:
+                x = self.width - 1
+            if first_door[0] == self.height - 1:
+                y = 0
+            if first_door[1] == self.width - 1:
+                x = 0
+            self.entrance = (y, x)
+            self.board[y][x] = door
+            doors -= 1
         while doors:
             direction: int = randint(0, doors) % 3
             x: int = 0
@@ -44,8 +59,11 @@ class Level:
                 y = randint(1, self.height - 2)
                 x = 0
 
-            if self.board[y][x] != self.door:
-                self.board[y][x] = self.door
+            if str(self.board[y][x]) != "#":
+                door = Door(text="#", style="bold green")
+                door.id = doors
+                door.pos = (y, x)
+                self.board[y][x] = door
                 doors -= 1
 
     def set_border(self) -> None:

@@ -1,19 +1,26 @@
+from ..LevelSelector import LevelSelector
 from .entities.AbstractDungeonEntity import AbstractDungeonEntity
 from .entities.character import Character
 from .entities.ColorChanger import ColorChanger
 from .entities.EnemyManager import EnemyManager
-from .entities.level.Level import Level
 
 
 class GameResources:
     """Holds objects that are used for during game runtime"""
 
-    def __init__(self, testing: bool):
-        self.level = Level(20, 15, [1, 2, 3, 4], [])
+    def __init__(self, testing: bool, bless: bool):
+        self.level_selector = LevelSelector()
+
+        self.level = self.level_selector.create_level()
         self.player = Character(symbol="$", x=self.level.width // 2, y=self.level.height // 2)
+
+        if bless:
+            self.player.start()
+
         self.test_color_changer = ColorChanger(x=2, y=2, symbol="@")
         self.enemy_manager = EnemyManager(self.level)
-        self.enemy_manager.spawn_random_enemies(self.player.x, self.player.y, 6)
+
+        self.enemy_manager.spawn_random_enemies(self.player.x, self.player.y, 2)
         self.testing = testing
 
     def update_entity(self, entity: AbstractDungeonEntity) -> None:
@@ -21,7 +28,7 @@ class GameResources:
         x = entity.new_positions["x"]
         y = entity.new_positions["y"]
         try:
-            if str(self.level.board[entity.y + y][entity.x + x]) in ("'", "@", "$"):
+            if str(self.level.board[entity.y + y][entity.x + x]) in ("'", "$", "@", "#"):
                 self.level.board[entity.y][entity.x] = entity.ground_symbol
                 entity.x += x
                 entity.y += y
@@ -34,12 +41,20 @@ class GameResources:
         """Draws a single entity onto the level"""
         self.level.board[entity.y][entity.x] = entity.symbol
 
-    def update(self) -> None:
+    def update(self, bless: bool) -> None:
         """Updates all game objects"""
-        self.player.keyboard_input()
+        if bless:
+            self.player.update()
+        else:
+            self.player.keyboard_input()
+
         self.update_entity(self.player)
 
-        # self.enemy_manager.update(self.player.x, self.player.y)
+        # if player walks on door generate new level
+        if str(self.level.board[self.player.y][self.player.x]) == "#":
+            self.level = self.level_selector.create_level((self.player.y, self.player.x))
+            self.player.x = self.level.entrance[1]
+            self.player.y = self.level.entrance[0]
 
         for enemy in self.enemy_manager.enemy_list:
             if enemy.is_in_radius(self.player.x, self.player.y):
@@ -58,13 +73,15 @@ class GameResources:
 
         The last drawn entities will appear on top of ones before it.
         """
-        self.draw_entity(self.player)
-
         if self.enemy_manager.collisions_with_player(self.player.x, self.player.y):
             self.player.playing = False
-            return False
         else:
             for enemy in self.enemy_manager.enemy_list:
                 self.draw_entity(enemy)
             self.draw_entity(self.test_color_changer)
-            return True
+
+        self.draw_entity(self.player)
+
+    def overlaps(self, first_entity: AbstractDungeonEntity, second_entity: AbstractDungeonEntity) -> bool:
+        """Checks if two entities overlap"""
+        return first_entity.x == second_entity.x and first_entity.x == second_entity.y
