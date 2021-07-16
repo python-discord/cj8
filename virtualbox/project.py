@@ -69,19 +69,25 @@ def start(fs, user, term):
     print_loading('Loading Operating System:', term)
     clear_term(term)
     if content[0] == '0':
-        print_box('Intro',
-           [' You are Netsec architect working for the USA, you just managed to get into a System controlling the Atomic Program of the Iran. Originally your job was to analyze the Data and to find out if there are any files which could gives hints to imminent nuclear attacks.'], term)
+        print_box('Introduction',
+           ['As a network security architect working for the USA, you broke into the system controlling '
+            'the Atomic Program of Iran. Your job is to analyze the data and recognise any signs '
+            'of imminent nuclear attacks.'], term)
         input()
         clear_term(term)
-        print_box('Intro',
-           [' You realise that there wil be an stealth launch attack very soon, it is targeted at Europe. You will not have enough time to contact the European agency. Your only chance to stop this is to deactivate it yourself.'], term)
+        print_box('Introduction',
+           ['You found out that there is a secretive attack scheduled, targeting at Europe. '
+            'There is barely any time left to report to the European agency. '
+            'Your only chance to stop the attack is to deactivate the launch yourself.'], term)
         input()
         clear_term(term)
-        print_box('Intro',
-           [' The system has a built in artificial intelligence built to stop intruders. It will work against you and try to stop you. You will need to hack this system and gain root access and shut down the nuclear launch so that you have enough time to warn the EA.'], term)
+        print_box('Introduction',
+           ['The system has a built in artificial intelligence programmed to stop intruders. '
+            'It will work against you and try to stop you. '
+            'Your mission is to hack the system and gain root access to shut down the nuclear launch. '], term)
         input()
         clear_term(term)
-        print_box('Intro',
+        print_box('Introduction',
                 ['Booting OS drive...',
                  '',
                  '',
@@ -89,56 +95,57 @@ def start(fs, user, term):
                  ''], term)
         sleep(0.5)
         clear_term(term)
-        print_box('Intro',
-                  ['Booting OS drive... COMPLETE',
-                   'Securing connection...',
+        print_box('Introduction',
+                  ['Booting OS Drive... COMPLETE',
+                   'Securing Connection...',
                    '',
                    '',
                    ''], term)
         sleep(0.5)
         clear_term(term)
-        print_box('Intro',
-                  ['Booting OS drive... COMPLETE',
+        print_box('Introduction',
+                  ['Booting OS Drive... COMPLETE',
                    'Securing Connection...COMPLETE',
                    'Clearing Entry Logs...',
                    '',
                    ''], term)
         sleep(0.5)
         clear_term(term)
-        print_box('Intro',
-                  ['Booting OS drive... COMPLETE',
+        print_box('Introduction',
+                  ['Booting OS Drive... COMPLETE',
                    'Securing Connection...COMPLETE',
                    'Clearing Entry Logs...COMPLETE',
-                   'INITIALIZING ANTI-THREAT AI...',
+                   'Initializing Anti-threat AI...',
                    ''], term)
         sleep(0.5)
         clear_term(term)
-        print_box('Intro',
-                  ['Booting OS drive... COMPLETE',
+        print_box('Introduction',
+                  ['Booting OS Drive... COMPLETE',
                    'Securing Connection...COMPLETE',
                    'Clearing Entry Logs...COMPLETE',
-                   'INITIALIZING ANTI-THREAT AI...COMPLETE',
+                   'Initializing Anti-threat AI...COMPLETE',
                    ''], term)
         sleep(0.5)
         clear_term(term)
-        print_box('Intro',
-                  ['Booting OS drive... COMPLETE',
+        print_box('Introduction',
+                  ['Booting OS Drive... COMPLETE',
                    'Securing Connection...COMPLETE',
                    'Clearing Entry Logs...COMPLETE',
-                   'INITIALIZING ANTI-THREAT AI...COMPLETE',
-                   'Welcome operator. Press Enter to coninue'], term)
+                   'Initializing Anti-threat AI...COMPLETE',
+                   '',
+                   'Welcome, operator. Press Enter to coninue'], term)
         input()
         clear_term(term)
-        echo('This is the file tree, here, you can see every file in the operating system!', term)
+        echo('This is the file tree. Here, you can see every file in the operating system.', term)
         print_tree("System", fs, user, term)
-        echo('First, type "help" in the console to see all of the commands you can use!', term)
-        echo('If you would like a tutorial type "tutorial" or "t"', term)
+        echo('First, type "help" or "h" in the console to see all the commands available.', term)
+        echo('To see a tutorial, type "tutorial" or "t"', term)
         with open('first_game.txt', 'w') as firstgamefile:
             firstgamefile.truncate()
             firstgamefile.write('1')
             echo('SYSTEM HACKED username = user, password = 1234567', term)
     else:
-        print_box('Welcome Back', ['', 'Your Game-State was loaded again! ', ''], term)
+        print_box('Welcome Back', ['', 'Your Game-State is loaded again.', ''], term)
         echo('SYSTEM HACKED username = user, password = 1234567', term)
 
 
