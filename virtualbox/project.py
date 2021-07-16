@@ -16,11 +16,11 @@ from os import getcwd
 
 
 def playbgm():
-    # playsound('music/bgm_part01.mp3', block=False)
-    # sleep(40)
-    # while True:
-    #     playsound('music/bgm_part02.mp3', block=False)
-         sleep(16)
+    playsound('music/bgm_part01.mp3', block=False)
+    sleep(40)
+    while True:
+        playsound('music/bgm_part02.mp3', block=False)
+        sleep(16)
 
 
 # file system imports
@@ -137,11 +137,11 @@ def start(fs, user, term):
 def main():
     global fs
     # resets os directory to initial
-    # current_dir = getcwd()
-    # src = current_dir + '/default-files'
-    # dest = current_dir + '/OS'
-    # rmtree(dest)
-    # copytree(src, dest)
+    current_dir = getcwd()
+    src = current_dir + '/default-files'
+    dest = current_dir + '/OS'
+    rmtree(dest)
+    copytree(src, dest)
 
     # start game
     start(fs, ROOT, term)
