@@ -467,9 +467,9 @@ def ipsearch(term):
     OSlog.append(f"unknown user: performed ip search,")
 
 
-@add_function(("ipscan", ), "user_input")
+@add_function(("ipscan", ), "user_input", "term")
 @expand_args(0, "user_input")
-def ipscan(user_input: str):
+def ipscan(user_input: str, term):
     """
     ipscan [ip]
     ipscan - decyphers a ip to words
@@ -491,7 +491,7 @@ def ipscan(user_input: str):
             if letter in list_letters:
                 if i % 2 == 0:
                     retstring += letter
-    print_box('Scanned IP:', [f'The Ip: "{ip}"', f'Can be decyphered to: "{retstring}"'])
+    print_box('Scanned IP:', [f'The Ip: "{ip}"', f'Can be decyphered to: "{retstring}"'],term)
     OSlog.append(f"unknown user: , The Ip: {ip} Can be decyphered to: {retstring},")
 
 
@@ -515,7 +515,7 @@ def passwordscan():
     pwlist = ['df23jsq', 'qsAtom5', 'LQR', "1234567", "54354fd32", "444hdFAaws", "guuf2321d"]
     all1 = list(string.ascii_letters + string.digits)
     this_will_be_stupid = []
-    print_box('PasswordScanner', ['Getting Operating System...', 'Filtring FileSystem...', 'Scanning for Passwords...'])
+    print_box('PasswordScanner', ['Getting Operating System...', 'Filtring FileSystem...', 'Scanning for Passwords...'],term)
     time.sleep(2)
     clear_term(term)
     for item in pwlist:
