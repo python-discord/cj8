@@ -1,8 +1,8 @@
 from __future__ import division
 
-# from copy import deepcopy
+from copy import deepcopy
 from math import ceil
-from random import choice
+# from random import choice
 from typing import Any, List, Optional, Tuple
 
 from asciimatics.effects import Effect, Print
@@ -77,7 +77,7 @@ class Map(Effect):
                 self.player_y = i
                 self.map[i] = line.replace('@', ' ')
 
-        self.vision = 4  # will have a way to change this later
+        self.vision = 10  # will have a way to change this later
 
         # print(f"player: ({self.player_x},{self.player_y})")
         # print(f"map: ({self.map_x},{self.map_y})")
@@ -93,7 +93,7 @@ class Map(Effect):
         for i in range(offset_y):
             self.screen.print_at(" " * self.screen.width, 0, i)
 
-        for i, line in enumerate(raycast(self.map, self.player_x, self.player_y, 7, '#', ' ')):
+        for i, line in enumerate(raycast(self.map, self.player_x, self.player_y, self.vision, '#', ' ')):
             line = ' ' * offset_x[0] + line + ' ' * offset_x[1]
             self.screen.print_at(line, 0, offset_y + i)
 
