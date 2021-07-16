@@ -36,6 +36,7 @@ class GameState:
         elif self.next == 30:
             self.update_space_select(term, board)
         else:
+            # TODO error state catch all
             pass
 
     def redraw_user_term(self, term: blessed.Terminal) -> None:
@@ -104,7 +105,7 @@ class GameState:
                 self.next = 30  # TODO go to error handling and reset values
                 self.term_info[
                     1
-                ] = f"{term.red}*-That is an illegal move-*{term.normal}"
+                ] = f"{term.red}{term.bold}*-That is an illegal move-*{term.normal}"
                 self.redraw_user_term(term)
                 time.sleep(1)
                 self.term_info[1] = "Select Space by entering 1-9"
@@ -147,12 +148,9 @@ class GameState:
         self.good_move = False
 
         working_space_location = convert_to_space_location(self.user_select_space)
-        if (
-            board.collect_subgrid(str(self.user_select_subgrid))[
-                working_space_location[0], working_space_location[1]
-            ]
-            == "·"
-        ):
+        if board.collect_subgrid(str(self.user_select_subgrid))[
+            working_space_location[0], working_space_location[1]
+        ] not in ("X", "O"):
             self.good_move = True
 
         return self.good_move

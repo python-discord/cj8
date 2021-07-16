@@ -22,16 +22,7 @@ def update_user_section(term: blessed.Terminal, updated_info: list[str]) -> None
     """To add your information to the terminal you have 4 lines with 31 spaces"""
     print(term.move_xy(0, 18))
 
-    # theres a better way to do this im just too dumb to think of it atm
-    if len(updated_info) == 1:
-        updated_info += " "
-        updated_info += " "
-        updated_info += " "
-    elif len(updated_info) == 2:
-        updated_info += " "
-        updated_info += " "
-    elif len(updated_info) == 3:
-        updated_info += " "
+    updated_info += [" "] * (4 - len(updated_info))
 
     item = "\n".join(
         [

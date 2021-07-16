@@ -39,7 +39,7 @@ with term.fullscreen(), term.cbreak(), term.hidden_cursor():
             elif state.player_active == 2:
                 board.collect_subgrid(str(state.user_select_subgrid))[
                     working_space_location[0], working_space_location[1]
-                ] = "0"
+                ] = "O"
 
             state.change_player()
             board.draw_board(term)
