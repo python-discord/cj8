@@ -1,10 +1,9 @@
-from functions.command_functions import random_test, get_entry
+from functions.command_functions import get_entry
 from functions.blessed_functions import print_tree, clear_term, echo, print_box, print_loading, request
-from random import randint
 from time import sleep
 from users.user import User, ROOT
 from users.uid import Uidspace
-from users.login import login 
+from users.login import login
 from exceptions import CannotFullFillFunction
 from config import START_PATH
 from copy import copy
@@ -22,18 +21,13 @@ def playbgm():
         sleep(16)
 
 
-
-
 # file system imports
 fs = Dir.FromPath(START_PATH, None, 7, 0, 0)
-
 # Users uid space
 users_uid_space = Uidspace(1)
-
 # User
 Users = User.loadUsers(ROOT, fs, users_uid_space)
 Users[ROOT.name] = ROOT
-
 # Term
 term = Terminal()
 
@@ -151,8 +145,3 @@ if __name__ == "__main__":
     t2 = threading.Thread(target=playbgm)
     t1.start()
     t2.start()
-
-
-
-
-

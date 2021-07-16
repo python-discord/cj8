@@ -1,4 +1,4 @@
-from .blessed_functions import print_tree, clear_term, print_box, print_loading, echo, request
+from .blessed_functions import print_tree, clear_term, print_box, print_loading, echo
 from virtualbox.argssystem.functions import expand_args
 from virtualbox.argssystem.classes import Keyword, Optional, Flag
 from virtualbox.exceptions import NoSuchFileOrDirectory
@@ -17,7 +17,7 @@ functions_list = []
 user_commands = {}
 
 failed_tasks = 0
-VULNERABILITIES = ["clue1","clue2"]
+VULNERABILITIES = ["clue1", "clue2"]
 OSlog = ['unknown user: connected,']
 
 
@@ -52,13 +52,11 @@ def get_command_doc(name):
 
 
 # COMMAND LIST
-
-
 def add_failure(value):
     global failed_tasks
     failed_tasks += value
     echo(f"DEBUG: failues: {failed_tasks}")
-    OSlog.append(f"SECURITY AI: became more aware of unknown user,")
+    OSlog.append("SECURITY AI: became more aware of unknown user,")
 
 
 @add_function(("ls", "dir"), "fs", "user", "term")
@@ -68,41 +66,6 @@ def ls(fs, user, term):
     [EXTEND]
     """
     print_box("ls", fs.stringList(user), term)
-
-
-def random_test(term):
-    print_box("OS SECURITY",
-            ["SECURITY BREACH DETECTED",
-            """         ____,'`-, """,
-            """         _,--'   ,/::.; """,
-            """      ,-'       ,/::,' `---.___        ___,_ """,
-            """      |       ,:';:/        ;'"``--./ ,-^.;--. """,
-            """       |:     ,:';,'         '         `.   ;`   `-. """,
-            """        \:.,:::/;/ -:.                   `  | `     `-. """,
-            """         \:::,'//__.;  ,;  ,  ,  :.`-.   :. |  ;       :. """,
-            """          \,',';/O)^. :'  ;  :   '__` `  :::`.       .:' ) """,
-            """          |,'  |\__,: ;      ;  '/O)`.   :::`;       ' ,' """,
-            """               |`--''            \__,' , ::::(       ,' """,
-            """               `    ,            `--' ,: :::,'\   ,-' """,
-            """                | ,;         ,    ,::'  ,:::   |,' """,
-            """                |,:        .(          ,:::|   ` """,
-            """                ::'_   _   ::         ,::/:| """,
-            """               ,',' `-' \   `.      ,:::/,:| """,
-            """             | : _  _   |   '     ,::,' ::: """,
-            """              | \ O`'O  ,',   ,    :,'   ;:: """,
-            """               \ `-'`--',:' ,' , ,,'      :: """,
-            """                ``:.:.__   ',-','        ::' """,
-            """                       |:  ::::.       ::' """,
-            """                       |:  ::::::    ,::' """
-            ])
-    echo("enter animal above...". term)
-    user_input = request(">>>  ", term)
-    if user_input.lower() == "dog":
-        echo("correct", term)
-        add_failure(5)
-    else:
-        echo("incorrect", term)
-    clear_term(term)
 
 
 @add_function(("cd", ), 'user_input', "fs", "user", "term", 'rootfs')
@@ -249,6 +212,7 @@ def read(file: str, fs, user, term, bin: Flag(True) = False):
     """
     print_box("read", [fs.getFile(user, file.split("/")).read(user, bin)], term)
 
+
 @add_function(("write", ), "user_input", "fs", "user")
 @expand_args(0, "file", "content", "bin")
 def write(file: str, content: str, fs, user, bin: Flag(True) = False):
@@ -284,7 +248,7 @@ def search(what: str, path: str, fs, rootfs, user, term):
         result = search_back(what, rootfs.getDir(user, path[1:].split('/')).walk(user), '')
     else:
         path = path.split('/')
-        result = search_back(what, fs.getDir(user, path).walk(user),  path[-1])
+        result = search_back(what, fs.getDir(user, path).walk(user), path[-1])
 
     if len(result) == 0:
         raise NoSuchFileOrDirectory
@@ -303,7 +267,8 @@ def portscanner(port: Optional(int, None), fs, user, term):
     ports = [2, 5, 7, 12, 15, 19, 20, 22, 26, 31,
              33, 55, 62, 73, 74, 80, 81, 89, 91, 93,
              164, 224, 353, 522, 529, 634, 698, 934, 988, 996]
-    port_hint = {22: 'Scannable Ip: 3861.7679.7174.6743.61.59.77.74.65.76.81.40.57.70.61.68.25.59.59.61.75.75.33.75.38.61.77.76.74.71.70.25.76.71.69.38.61.76',
+    port_hint = {22: 'Scannable Ip: 3861.7679.7174.6743.61.59.77.74.65.76.81.40.57.\
+        70.61.68.25.59.59.61.75.75.33.75.38.61.77.76.74.71.70.25.76.71.69.38.61.76',
                  164: "net config decryption code: app12ut",
                  "no_hint": 'missing data',
                  7: '444.',
@@ -311,7 +276,7 @@ def portscanner(port: Optional(int, None), fs, user, term):
                  522: '4123',
                  988: '01*1*111*11*0110*01*000*000*011*111*010*100*1*0*11*0110',
                  529: '4359.5770.4464.6574.60.33.40',
-                 80 : 'shutdown.txt = ttqrsfll',
+                 80: 'shutdown.txt = ttqrsfll',
                  91: "shutdown code = meeting transcript word (6+7+10+11)"}
     if port is not None:
         print_loading(f"Scanning network for port {port}", '2')
@@ -320,7 +285,7 @@ def portscanner(port: Optional(int, None), fs, user, term):
                 print_this = port_hint[port]
             else:
                 print_this = port_hint["no_hint"]
-            print_box("PortScanner", [f"Found port in network:", f"{port}/TCP [State: open]", print_this], term)
+            print_box("PortScanner", [f"Found port in network: {port}/TCP [State: open]", print_this], term)
         else:
             print_box("PortScanner", [f"Port {port} not found in network"], term)
 
@@ -381,7 +346,7 @@ def morsescan(user_input: str, term):
             if new_msg[j] in morse_dict.keys():
                 dec_msg.append(morse_dict[new_msg[j]])
 
-        print_box("morsescan",["Decoded Message is: " + ''.join(dec_msg)], term)  # end the infinite while loop
+        print_box("morsescan", ["Decoded Message is: " + ''.join(dec_msg)], term)  # end the infinite while loop
         OSlog.append("unknown user: Decoded Message is: " + ''.join(dec_msg) + ",")
         break
 
@@ -393,19 +358,19 @@ def hint(term):
     vscan - scans for vulnerabilities in network
     """
     global VULNERABILITIES
-    print_box("vscan",["Looking for vulnerabilities..."], term)
+    print_box("vscan", ["Looking for vulnerabilities..."], term)
     time.sleep(3)
     clear_term(term)
-    #selects random vulnerability
+    # selects random vulnerability
     chosen_vulnerability = random.choice(VULNERABILITIES)
-    #display our selected vulnerability.
-    print_box("vscan",[f"Vulnerability found: {chosen_vulnerability}"], 'term')
-    #removes vulnerability from the list.
+    # display our selected vulnerability.
+    print_box("vscan", [f"Vulnerability found: {chosen_vulnerability}"], 'term')
+    # removes vulnerability from the list.
     remove_vulnerabillity(chosen_vulnerability)
-    #add 1 failure point.
+    # add 1 failure point.
     add_failure(10)
-    OSlog.append(f"unknown user: found vulnerability,")
-    OSlog.append(f"SECURITY AI: detecting unknown user,")
+    OSlog.append("unknown user: found vulnerability,")
+    OSlog.append("SECURITY AI: detecting unknown user,")
 
 
 def ipcypher(listl):
@@ -432,7 +397,10 @@ def ipcypher(listl):
 
 
 def gethint():
-    hints = ['no_connection false_access AtomToor45tpf unsecure_route unknown missing_port invalid_access unsecure_route missing_ip zero_access'] # Words split by a space, words cant be longer than 8 letters, wouldnt recommend longer hint than 4-5 words. Best is 3 words
+    # Words split by a space, words cant be longer than 8 letters
+    # wouldnt recommend longer hint than 4-5 words. Best is 3 words
+    hints = ['no_connection false_access AtomToor45tpf unsecure_route unknown missing_port invalid_acces\
+        unsecure_route missing_ip zero_access']
     return random.choice(hints)
 
 
@@ -447,9 +415,10 @@ def ipsearch(term):
     hintlist = hint.split()
     hintlist = ipcypher(hintlist)
     for item in hintlist:
-        random_int = random.randint(1,2)
+        random_int = random.randint(1, 2)
         for i in range(random_int):
-            randip = str(f"{random.randint(100,99999)}.{random.randint(1000,9999)}.{random.randint(100,9999)}.{random.randint(1,999)}")
+            randip = str(f"{random.randint(100,99999)}.{random.randint(1000,9999)}\
+                .{random.randint(100,9999)}.{random.randint(1,999)}")
             clear_term(term)
             print_box('Found IP', ['Scanning:', randip, 'Not Attackable'], term)
             time.sleep(0.5)
@@ -457,12 +426,14 @@ def ipsearch(term):
         print_box('Found IP', ['Scanning:', item, 'Attackable'], term)
         time.sleep(0.5)
         if random_int == 1:
-            randip = str(f"{random.randint(100,99999)}.{random.randint(1000,9999)}.{random.randint(100,9999)}.{random.randint(1,999)}")
+            randip = str(f"{random.randint(100,99999)}.{random.randint(1000,9999)}\
+                .{random.randint(100,9999)}.{random.randint(1,999)}")
             clear_term(term)
             print_box('Found IP', ['Scanning:', randip, 'Not Attackable'], term)
             time.sleep(0.5)
     time.sleep(0.5)
-    randip = str(f"{random.randint(100,99999)}.{random.randint(1000,9999)}.{random.randint(100,9999)}.{random.randint(1,999)}")
+    randip = str(f"{random.randint(100,99999)}.{random.randint(1000,9999)}\
+        .{random.randint(100,9999)}.{random.randint(1, 999)}")
     clear_term(term)
     print_box('Found IP', ['Scanning:', randip, 'Not Attackable'], term)
     time.sleep(1)
@@ -485,13 +456,13 @@ def ipscan(user_input: str, term):
     """
     retstring = ''
     list_letters = list(string.ascii_letters)
-    ip = user_input # Change to 0?
+    ip = user_input  # Change to 0?
     ip_no_dots = ip.replace('.', '')
     range_num = len(ip_no_dots)
     for i in range(0, range_num, 1):
         try:
             num1, num2 = ip_no_dots[i], ip_no_dots[i+1]
-        except:
+        except IndexError:
             pass
         else:
             chr_this = int(int(num1 + num2) + 40)
@@ -499,7 +470,7 @@ def ipscan(user_input: str, term):
             if letter in list_letters:
                 if i % 2 == 0:
                     retstring += letter
-    print_box('Scanned IP:', [f'The Ip: "{ip}"', f'Can be decyphered to: "{retstring}"'],term)
+    print_box('Scanned IP:', [f'The Ip: "{ip}"', f'Can be decyphered to: "{retstring}"'], term)
     OSlog.append(f"unknown user: , The Ip: {ip} Can be decyphered to: {retstring},")
 
 
@@ -523,7 +494,9 @@ def passwordscan(term):
     pwlist = ['df23jsq', 'qsAtom5', 'LQR', "1234567", "54354fd32", "444hdFAaws", "guuf2321d"]
     all1 = list(string.ascii_letters + string.digits)
     this_will_be_stupid = []
-    print_box('PasswordScanner', ['Getting Operating System...', 'Filtring FileSystem...', 'Scanning for Passwords...'],term)
+    print_box('PasswordScanner', ['Getting Operating System...',
+                                  'Filtring FileSystem...',
+                                  'Scanning for Passwords...'], term)
     time.sleep(2)
     clear_term(term)
     for item in pwlist:
@@ -633,67 +606,68 @@ def clear(term):
     clear_term(term)
 
 
-@add_function(("tutorial", "t" ), "user_input", 'term')
+@add_function(("tutorial", "t"), "user_input", 'term')
 @expand_args(0, "user_input")
 def tutorial(user_input: Optional(int, None), term):
     if user_input is None or user_input == 1:
-        print_box("tutorial",[
-
-                        "help 1: getting around the os (1/4)",
-                        "---------------------",
-                        'there are multiple help menus try "help 2"',
-                        "---------------------",
-                        "tree - lets you see the full file system",
-                        "cd - will let you move into a new directorly",
-                        "dir - will let you see a list of directories you can cd into",
-                        "search (input) - lets you search the operating system for specific files."
-        ], term)
+        print_box("tutorial", [
+                  "help 1: getting around the os (1/4)",
+                  "---------------------",
+                  'there are multiple help menus try "help 2"',
+                  "---------------------",
+                  "tree - lets you see the full file system",
+                  "cd - will let you move into a new directorly",
+                  "dir - will let you see a list of directories you can cd into",
+                  "search (input) - lets you search the operating system for specific files."], term)
     else:
         if user_input == 2:
             print_box("tutorial", [
-            "help 2: files (2/4)",
-            "---------------------",
-            'there are multiple help menus try "help 3"',
-            "---------------------",
-            "read (filename) - will let you read files you must be in the same directory first",
-            "write (filename (content) - will let you add info into files",
-            "touch (filename) - creates a new file",
-            "mkdir (name) - makes a new directory in current path",
-            "help - will list all commands",
-            "help (command name) - shows the inputs in the command and explains it"], term)
+                      "help 2: files (2/4)",
+                      "---------------------",
+                      'there are multiple help menus try "help 3"',
+                      "---------------------",
+                      "read (filename) - will let you read files you must be in the same directory first",
+                      "write (filename (content) - will let you add info into files",
+                      "touch (filename) - creates a new file",
+                      "mkdir (name) - makes a new directory in current path",
+                      "help - will list all commands",
+                      "help (command name) - shows the inputs in the command and explains it"], term)
         elif user_input == 3:
             print_box("tutorial", [
-            "help 3: hacking (3/4)",
-            "---------------------",
-            'you have alot of hacking tools at your disposal',
-            "---------------------",
-            "decrypt (file) (password) - used to make files readable",
-            "scans:",
-            "pwscan - attempts to find insecure passwords stored in logs",
-            "ipsearch - attempts to list connect ips to the operating system",
-            "ipscan (ip)- scans a specific ip to find out more information",
-            "portscan - lists open ports",
-            "portscan (port id) - scans port to find out more information",
-            "morse (code) - translates morse code from 1 and 0 to english"], term)
+                      "help 3: hacking (3/4)",
+                      "---------------------",
+                      'you have alot of hacking tools at your disposal',
+                      "---------------------",
+                      "decrypt (file) (password) - used to make files readable",
+                      "scans:",
+                      "pwscan - attempts to find insecure passwords stored in logs",
+                      "ipsearch - attempts to list connect ips to the operating system",
+                      "ipscan (ip)- scans a specific ip to find out more information",
+                      "portscan - lists open ports",
+                      "portscan (port id) - scans port to find out more information",
+                      "morse (code) - translates morse code from 1 and 0 to english"], term)
         else:
             print_box("tutorial", [
-            "help 4: advanced (4/4)",
-            "---------------------",
-            "logs - lets you track actions performed on the operating system",
-            "rm (name) - remove files or directories (warning: no way to revert)",
-            "cp - lets you copy a file"], term)
+                      "help 4: advanced (4/4)",
+                      "---------------------",
+                      "logs - lets you track actions performed on the operating system",
+                      "rm (name) - remove files or directories (warning: no way to revert)",
+                      "cp - lets you copy a file"], term)
 
 
-@add_function(("shutdown", ), "user_input", "term",'user')
+@add_function(("shutdown", ), "user_input", "term", 'user')
 @expand_args(0, "user_input")
 def shutdown(user_input: str, term, user):
     if user_input == "AtomicProgramIranShutdown" and user.uid == 0:
         print_box("SHUTDOWN", ["PRESS ENTER TO INITIATE SHUTDOWN"], term)
         input()
-        print_box("SHUTDOWN", ["SHUTDOWN CONFIRMED", "UNARMING NUCLEAR WEAPONS", "LAUNCHING FAIL SAFE","SUCCESSFULLY SHUTDOWN..."], term)
+        print_box("SHUTDOWN", ["SHUTDOWN CONFIRMED",
+                               "UNARMING NUCLEAR WEAPONS",
+                               "LAUNCHING FAIL SAFE",
+                               "SUCCESSFULLY SHUTDOWN..."], term)
         exit()
     else:
-        print_box("SHUTDOWN",["MISSING ROOT PRIVILAGE OR INCORRECT PASSWORD"],term)
+        print_box("SHUTDOWN", ["MISSING ROOT PRIVILAGE OR INCORRECT PASSWORD"], term)
 
 
 

@@ -134,32 +134,6 @@ def print_box(header, text, term):
 def clear_term(term):
     echo(term.clear, term)
 
-# term_box from sirmerge
-
-# def term_box(header, text):
-#     if len(text) == 0:
-#         echo(template.format('┌', header, "", '┐'))
-#         echo(template.format('└', header, "", '┘'))
-#         return
-#
-#     max_len = max(map(len, text))
-#     if max_len < len(header) + 4:
-#         max_len = len(header) + 4
-#
-#     shift = len(header) + 3
-#
-#     ushift = ""
-#     dshift = ""
-#     for i in range(max_len - shift):
-#         ushift += uc(text, shift + i)
-#         dshift += dc(text, shift + i)
-#
-#     ftemplate = '{:<' + str(max_len) + '}'
-#
-#     echo(template.format('┌', uc(text[0], 0), header, ushift, '┐'))
-#     echo("\n".join(lc(i, 0) + ftemplate.format(i) + rc(i, -1) for i in text))
-#     echo(template.format('└', dc(text[-1], 0), header, dshift, '┘'))
-
 
 def print_loading(prompt, term):
     '''
