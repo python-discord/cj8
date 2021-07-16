@@ -66,7 +66,7 @@ def user_input_cmd(fs, user, term):
 def start(fs, user, term):
     firstgamefile = open('first_game.txt', 'r')
     content = firstgamefile.readline()
-    print_loading('Loading Operating System 40', term)
+    print_loading('Loading Operating System:', term)
     clear_term(term)
     if content[0] == '0':
         print_box('Intro',

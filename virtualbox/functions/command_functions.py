@@ -302,7 +302,9 @@ def portscanner(port: Optional(int, None), fs, user):
                  74: '5123.',
                  522: '4123',
                  988: '01*1*111*11*0110*01*000*000*011*111*010*100*1*0*11*0110',
-                 529: '4359.5770.4464.6574.60.33.40'}
+                 529: '4359.5770.4464.6574.60.33.40',
+                 80 : 'shutdown.txt = ttqrsfll',
+                 91: "shutdown code = meeting transcript word (6+7+10+11)"}
     if port is not None:
         print_loading(f"Scanning network for port {port}", '2')
         if port in ports:
@@ -418,9 +420,7 @@ def ipcypher(listl):
                 retstring += f'.{cyphernum}'
         lostl.append(retstring)
     return lostl
-
-# print(ipcypher(['ScanThirdIP']))
-
+# print(ipcypher(['nineone']))
 
 
 def gethint():
@@ -622,7 +622,7 @@ def clear(term):
     [EXPAND]
     what do you expect here? thats it
     '''
-    term_clear(term)
+    clear_term(term)
 
 
 @add_function(("tutorial", "t" ), "user_input", 'term')
@@ -676,8 +676,16 @@ def tutorial(user_input: Optional(int, None), term):
             "cp - lets you copy a file"], term)
 
 
-
-
+@add_function(("shutdown", ), "user_input", "term",'user')
+@expand_args(0, "user_input")
+def shutdown(user_input: str, term, user):
+    if user_input == "AtomicProgramIranShutdown" and user.uid == 0:
+        print_box("SHUTDOWN", ["PRESS ENTER TO INITIATE SHUTDOWN"], term)
+        input()
+        print_box("SHUTDOWN", ["SHUTDOWN CONFIRMED", "UNARMING NUCLEAR WEAPONS", "LAUNCHING FAIL SAFE","SUCCESSFULLY SHUTDOWN..."], term)
+        exit()
+    else:
+        print_box("SHUTDOWN",["MISSING ROOT PRIVILAGE OR INCORRECT PASSWORD"],term)
 
 
 

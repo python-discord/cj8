@@ -134,5 +134,5 @@ def print_loading(prompt, term):
     term_this = prompt + " "
     for i in range(BLANK_LINES - len(prompt)):
         echo(term.home + term.clear + term.move_y(term.height // 2) + term.green_on_black(term_this), term)
-        # term_this += LOADING_BAR
+        term_this += "█"
         sleep(random()/2)
