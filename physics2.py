@@ -105,9 +105,13 @@ class Space:
 
             if debug:
                 index = 0
-                logging.info(f"resolving collision{index}, {collision}: \n"
-                             f"\t item1 stats: topleft: {item1.topleft}, speed: {item1.speed} \n"
-                             f"\t item2 stats: topleft: {item2.topleft}, speed: {item2.speed}")
+                if item2 != "wall":
+                    logging.info(f"resolving collision{index}, {collision}: \n"
+                                 f"\t item1 stats: topleft: {item1.topleft}, speed: {item1.speed} \n"
+                                 f"\t item2 stats: topleft: {item2.topleft}, speed: {item2.speed}")
+                else:
+                    logging.info(f"resolving collision{index}, {collision}: \n"
+                                 f"\t item1 stats: topleft: {item1.topleft}, speed: {item1.speed}")
 
             if collision_type == COLLISION_TYPES["box_to_target"]:
                 self.targets_to_engage.remove(item2)
@@ -187,9 +191,13 @@ class Space:
                     item1.bottom = self.h
 
             if debug:
-                logging.info(f"resolved collision{index}, {collision}: \n"
-                             f"\t item1 stats: topleft: {item1.topleft}, speed: {item1.speed} \n"
-                             f"\t item2 stats: topleft: {item2.topleft}, speed: {item2.speed}")
+                if item2 != "wall":
+                    logging.info(f"resolved collision{index}, {collision}: \n"
+                                 f"\t item1 stats: topleft: {item1.topleft}, speed: {item1.speed} \n"
+                                 f"\t item2 stats: topleft: {item2.topleft}, speed: {item2.speed}")
+                else:
+                    logging.info(f"resolved collision{index}, {collision}: \n"
+                                 f"\t item1 stats: topleft: {item1.topleft}, speed: {item1.speed} \n")
                 index += 1
 
     def move_player(self, player: Object, key: str):
