@@ -76,3 +76,13 @@ class ConversionErrorMulti(Exception):
 class WrongKeywordUsage(Exception):
     def __init__(self, name):
         super().__init__("bad keyword syntax! peroper keyword syntax is {}:value".format(name))
+
+
+class InvalidLoginOrPassword(Exception):
+    def __init__(self):
+        super().__init__("invalid login or password! try again")
+
+
+class NoSuchUser(Exception):
+    def __init__(self, name):
+        super().__init__(f"user {name} does not exist")
