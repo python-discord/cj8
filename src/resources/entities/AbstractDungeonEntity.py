@@ -60,7 +60,7 @@ class AbstractDungeonEntity:
         """Compare AbstractEntityObjects for inequaulity"""
         return self.color != obj.color
 
-    def set_color(self, color: str) -> None:
+    def set_color(self, color: str) -> str:
         """Determines if color can be set or called by random"""
         if not color:
             color = self._choose_random_color()

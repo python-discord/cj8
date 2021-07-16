@@ -29,6 +29,7 @@ class LevelSelector:
         level = Level(10, 15, self.cur)
         level.generate_level()
         level.create_doors(door)
+        level.spawn_random_changers()
 
         self.levels.update({id(self.cur): level})
 

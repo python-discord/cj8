@@ -1,8 +1,10 @@
-from random import randint
+from random import choice, randint, shuffle
 
 from rich.text import Text
 
 from src.fstree.Node import Node
+from src.resources.constants import COLOR_CHANGER_CHOICES
+from src.resources.entities.ColorChanger import ColorChanger
 
 from .Door import Door
 from .Tile import Tile
@@ -20,6 +22,7 @@ class Level:
         self.height = height
         self.cur_node = cur_node
         self.doors = {}
+        self.color_changers = []
 
     def create_doors(self, entrance: (int, int)) -> None:
         """Creates a door given an entrance or generates a random door on the first iteration"""
@@ -87,47 +90,6 @@ class Level:
 
         return y, x
 
-    def add_doors(self, first_door: (int, int)) -> None:
-        """Add doors to level"""
-        door_num = len(self.cur_node.children)
-
-        if first_door != (0, 0):
-            self.first_door = first_door
-            door = Door(text="#", style="bold green")
-            y, x = first_door
-            if first_door[0] == 0:
-                y = self.height - 1
-            if first_door[1] == 0:
-                x = self.width - 1
-            if first_door[0] == self.height - 1:
-                y = 0
-            if first_door[1] == self.width - 1:
-                x = 0
-            self.entrance = (y, x)
-            self.board[y][x] = door
-            door_num -= 1
-
-        while door_num:
-            direction: int = randint(0, door_num) % 3
-            x: int = 0
-            y: int = 0
-            if direction == 2:
-                y = randint(1, self.height - 2)
-                x = self.width - 1
-            if direction == 1:
-                x = randint(1, self.width - 2)
-                y = self.height - 1
-            if direction == 0:
-                y = randint(1, self.height - 2)
-                x = 0
-
-            if str(self.board[y][x]) != "#":
-                door = Door(text="#", style="bold green")
-                door.id = door_num
-                door.pos = (y, x)
-                self.board[y][x] = door
-                door_num -= 1
-
     def set_border(self) -> None:
         """Creates a walls around the level"""
         for i in range(self.width):
@@ -149,3 +111,19 @@ class Level:
                 string_map += col
             string_map += "\n"
         return string_map
+
+    def spawn_random_changers(self, num: int = 3) -> None:
+        """Spawns color changers randomly"""
+        shuffle(COLOR_CHANGER_CHOICES)
+        new_list = COLOR_CHANGER_CHOICES.copy()
+        while num > 0:
+            y = randint(2, self.height-2)
+            x = randint(2, self.width-2)
+
+            if str(self.board[y][x]) == "'":
+                num -= 1
+
+                color = choice(new_list)
+                new_list.pop(new_list.index(color))
+                color_changer = ColorChanger(x=x, y=y, symbol='@', color=color)
+                self.color_changers.append(color_changer)
