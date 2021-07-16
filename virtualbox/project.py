@@ -130,14 +130,14 @@ def start(fs, user, term):
         clear_term(term)
         echo('This is the file tree. Here, you can see every file in the operating system.', term)
         print_tree("System", fs, user, term)
-        echo('First, type "help" or "h" in the console to see all the commands available.', term)
-        echo('To see a tutorial, type "tutorial" or "t"', term)
+        echo('Type "h" or "help" to see all commands available.', term)
+        echo('Type "t" or "tutorial" to see a tutorial, ', term)
         with open('first_game.txt', 'w') as firstgamefile:
             firstgamefile.truncate()
             firstgamefile.write('1')
             echo('SYSTEM HACKED username = user, password = 1234567', term)
     else:
-        print_box('Welcome Back', ['', 'Your Game-State is loaded again.', ''], term)
+        print_box('Welcome Back', ['', 'Your game state is reloaded.', ''], term)
         echo('SYSTEM HACKED username = user, password = 1234567', term)
 
 
