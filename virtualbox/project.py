@@ -152,7 +152,7 @@ if __name__ == "__main__":
     t2 = threading.Thread(target=playbgm)
     t1.start()
     t2.start()
-    main()
+
 
 
 
