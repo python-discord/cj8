@@ -77,7 +77,7 @@ def main() -> None:
 
     start_screen()
 
-    with Live(layout, refresh_per_second=10, screen=True):
+    with Live(layout, refresh_per_second=10, screen=False):
         while game_resources.player.playing:
             run_game(layout, game_resources)
         end_screen(layout)
