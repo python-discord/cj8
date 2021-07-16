@@ -20,6 +20,8 @@ class FileStructureTree:
         """Recursively adds subfolders as nodes to the tree."""
         with scandir(node.path) as it:
             for entry in it:
+                if entry.name.startswith('.') or entry.name.startswith('__'):
+                    continue
                 if entry.is_dir():
                     node.children.append(Node(node, entry))
                 else:

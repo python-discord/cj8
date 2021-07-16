@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from os import DirEntry
 
+from rich.text import Text
 from rich.tree import Tree
 
 
@@ -32,3 +33,37 @@ class Node:
             if child.path.name.startswith("."):
                 continue
             child.walk_dir(branch)
+
+    def display_node(self) -> None:
+        """Displays current location in directory"""
+        if not isinstance(self.path, str):
+            path = self.path.name
+        else:
+            path = self.path
+
+        if self.parent is not None:
+            if not isinstance(self.parent.path, str):
+                parent_path = self.parent.path.name
+            else:
+                parent_path = self.parent.path
+            tree = Tree(parent_path, style="bold yellow")
+        else:
+            tree = Tree(Text(path, style="bold yellow"))
+
+        # checks if the path is not a string and rather an os.DirEntry
+
+        if self.parent is not None:
+            for child in self.parent.children:
+                if child.path is not self.path:
+                    tree.add(Text(child.path.name, style="bold yellow"))
+
+        branch = Tree(path)
+        for child in self.children:
+            branch.add(Text(child.path.name, style="bold green"))
+
+        for file in self.files:
+            tree.add(Text(file.name, style="bold red"))
+
+        tree.add(branch)
+
+        return tree

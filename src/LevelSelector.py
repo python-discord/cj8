@@ -5,8 +5,8 @@ from .resources.entities.level.Level import Level
 class LevelSelector:
     """Creates and stores levels"""
 
-    def __init__(self):
-        self.file_structure = FileStructureTree(".")
+    def __init__(self, fsf: FileStructureTree):
+        self.file_structure = fsf
         self.cur = self.file_structure.root
         self.levels = {}
 
