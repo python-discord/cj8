@@ -124,7 +124,7 @@ def start(fs, user, term):
         input()
         clear_term(term)
         echo('This is the file tree, here, you can see every file in the operating system!', term)
-        print_tree("System", fs, user)
+        print_tree("System", fs, user, term)
         echo('First, type "help" in the console to see all of the commands you can use!', term)
         echo('If you would like a tutorial type "tutorial" or "t"', term)
         with open('first_game.txt', 'w') as firstgamefile:
