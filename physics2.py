@@ -167,7 +167,7 @@ class Space:
         jump_height = 7
         jump_speed = self.gravity * math.sqrt((jump_height / self.gravity) * 2)
         if key == "up" and self.player_on_ground:
-            player.speed[1] -= jump_speed
+            player.speed[1] = jump_speed * -1
         if key == "down":
             player.speed[1] += jump_speed
         if key == "right":
