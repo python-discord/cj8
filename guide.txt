@@ -1,0 +1,22 @@
+|  | /~~\ |  |  |  ~~|~~/~~\   |~~\|    /\\   /
+|--||    ||  |  |    | |    |  |__/|   /__\\ /
+|  | \__/  \/ \/     |  \__/   |   |__/    \|
+
+Welcome to Venturing Virus!
+-------------------------
+A virus has made its way into your directory (disclaimer that the virus is nonexistent and fictional)!
+You are trying to dig down in the directory all the way to the bottom, where it is said that the virus has installed itself.
+As you make your way through the directory, dangers will arise such as the enemies roaming your directory, where each enemy comes from a corrupted file.
+However, the further down you go, the closer you are to finding the roots of the virus, and saving your directory.
+
+Press w, a, s, and d to move forward, left, backward, and right respectively.
+The green '#' symbol you see are the doors, which lead down to the children directories, and the further down you venture through these doors,
+the closer you are to the root of the virus.
+The '@' symbol is a color changer, which will allow you to change colors and fight the enemies, as each enemy is vulnerable to a certain color.
+
+Good luck!
+------------------------
+Made by Acute Alligators
+------------------------
+
+[b] back

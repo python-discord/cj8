@@ -8,6 +8,32 @@ from rich.text import Text
 
 from src.resources.GameResources import GameResources
 from src.resources.PanelLayout import PanelLayout
+from src.resources.startscreen import StartScreen
+
+
+def start_screen() -> None:
+    """Start screen"""
+    screen = StartScreen()
+    layout_screen = screen.layout
+    layout_screen.update(
+        screen.display_screen()
+    )
+
+    with Live(layout_screen, refresh_per_second=10, screen=True):
+        while screen.in_start:
+            screen.keyboard_input()
+            # start screen
+            if screen.guide is True:
+                layout_screen.update(
+                    screen.display_guide()
+                )
+            else:
+                layout_screen.update(
+                    screen.display_screen()
+                )
+
+    # loading bar once 's' is pressed
+    screen.loading_bar()
 
 
 def end_screen(layout: Layout) -> None:
@@ -42,12 +68,14 @@ def main() -> None:
     game_resources.draw()
 
     game_panel = Panel(game_resources.level.to_string())
-    layout = PanelLayout.make_layout()
+    layout = PanelLayout.make_layout(start=False)
     layout["main_game"].update(game_panel)
 
     # Panels to update
     layout["footer"].update(Panel('footer'))
     layout["tree"].update(Panel('tree'))
+
+    start_screen()
 
     with Live(layout, refresh_per_second=10, screen=True):
         while game_resources.player.playing:
