@@ -11,6 +11,8 @@ from fs.fs_dir import Dir
 from playsound import playsound
 from blessed import Terminal
 import threading
+from shutil import copytree, rmtree
+from os import getcwd
 
 
 def playbgm():
@@ -47,9 +49,6 @@ def user_input_cmd(fs, user, rootfs, term):
             continue
         try:
             clear_term(term)
-
-            # if randint(1, 30) == 1:
-            #     random_test()
             entry = get_entry(user_input[0])
             entry[0](*ProcessArgs(entry[1], locals()))
         except Exception as e:
@@ -135,6 +134,14 @@ def start(fs, user, term):
 
 def main():
     global fs
+    # resets os directory to initial
+    current_dir = getcwd()
+    src = current_dir + '/default-files'
+    dest = current_dir + '/OS'
+    rmtree(dest)
+    copytree(src, dest)
+
+    # start game
     start(fs, ROOT, term)
     clear_term(term)
     user_input_cmd(copy(fs), login(Users, term), fs, term)
