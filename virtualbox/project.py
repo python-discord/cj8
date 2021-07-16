@@ -46,21 +46,20 @@ def ProcessArgs(functionArgs, argsDicit):
 
 
 # COMMAND MANAGER
-def user_input_cmd(fs, user, term):
+def user_input_cmd(fs, user, rootfs, term):
     while True:
         user_input = request(">>>  ", term).strip().split()
         if len(user_input) == 0:
             continue
         try:
             clear_term(term)
+
             # if randint(1, 30) == 1:
             #     random_test()
             entry = get_entry(user_input[0])
             entry[0](*ProcessArgs(entry[1], locals()))
         except Exception as e:
-            print(e)
-
-
+            echo(e, term)
 
 
 def start(fs, user, term):
@@ -144,7 +143,7 @@ def main():
     global fs
     start(fs, ROOT, term)
     clear_term(term)
-    user_input_cmd(copy(fs), login(Users, term), term)
+    user_input_cmd(copy(fs), login(Users, term), fs, term)
 
 
 if __name__ == "__main__":

@@ -1,13 +1,12 @@
 from .blessed_functions import print_tree, clear_term, print_box, print_loading, echo, request
-from .generalfunctions import inAny
 from virtualbox.argssystem.functions import expand_args
 from virtualbox.argssystem.classes import Keyword, Optional, Flag
 from virtualbox.exceptions import NoSuchFileOrDirectory
 from virtualbox.exceptions import CommandNotFound
+from virtualbox.exceptions import InvalidLoginOrPassword
 from virtualbox.unicode import encode
 from virtualbox.cryptology import encrypt
 from virtualbox.config import MAIN_PATH
-
 import string
 import random
 import time
@@ -71,7 +70,7 @@ def ls(fs, user, term):
     print_box("ls", fs.stringList(user), term)
 
 
-def random_test():
+def random_test(term):
     print_box("OS SECURITY",
             ["SECURITY BREACH DETECTED",
             """         ____,'`-, """,
@@ -96,24 +95,27 @@ def random_test():
             """                       |:  ::::.       ::' """,
             """                       |:  ::::::    ,::' """
             ])
-    echo("enter animal above...")
-    user_input = request(">>>  ")
+    echo("enter animal above...". term)
+    user_input = request(">>>  ", term)
     if user_input.lower() == "dog":
-        echo("correct")
+        echo("correct", term)
         add_failure(5)
     else:
-        echo("incorrect")
+        echo("incorrect", term)
     clear_term(term)
 
 
-@add_function(("cd", ), 'user_input', "fs", "user", "term")
+@add_function(("cd", ), 'user_input', "fs", "user", "term", 'rootfs')
 @expand_args(0, "path")
-def cd(path: str, fs, user, term):
+def cd(path: str, fs, user, term, rootfs):
     """cd [path:string]
     [EXTEND]
     cd - change directory to specified path
     """
-    fs.copy(fs.getDir(user, path.split("/")))
+    if path[0] == '/':
+        fs.copy(rootfs.getDir(user, path[1:].split("/")))
+    else:
+        fs.copy(fs.getDir(user, path.split("/")))
     print_box("getdir", fs.stringList(user), term)
 
 
@@ -268,15 +270,21 @@ def search_back(what, walk, piervous):
     return result
 
 
-@add_function(("search", "find"), "user_input", "fs", "user", 'term')
-@expand_args(0, "what")
-def search(what: str, fs, user, term):
-    """search [name:string]
+@add_function(("search", "find"), "user_input", "fs", 'rootfs', "user", 'term')
+@expand_args(0, "what", 'path')
+def search(what: str, path: str, fs, rootfs, user, term):
+    """search [name:string] [path]
     [EXTEND]
     search - searches for file that contains name in it's name
     """
     "search [name]"
-    result = search_back(what, fs.walk(user), "")
+
+    result = []
+    if path[0] == '/':
+        result = search_back(what, rootfs.getDir(user, path[1:].split('/')).walk(user), '')
+    else:
+        path = path.split('/')
+        result = search_back(what, fs.getDir(user, path).walk(user),  path[-1])
 
     if len(result) == 0:
         raise NoSuchFileOrDirectory
@@ -286,7 +294,7 @@ def search(what: str, fs, user, term):
 
 @add_function(("portscan", "nmap"), "user_input", "fs", "user", 'term')
 @expand_args(0, "port")
-def portscanner(port: Optional(int, None), fs, user):
+def portscanner(port: Optional(int, None), fs, user, term):
     """
     portscan (optional[port:int])
     [EXTEND]
@@ -374,15 +382,15 @@ def morsescan(user_input: str, term):
                 dec_msg.append(morse_dict[new_msg[j]])
 
         print_box("morsescan",["Decoded Message is: " + ''.join(dec_msg)], term)  # end the infinite while loop
-        OSlog.append(f"unknown user: Decoded Message is: " + ''.join(dec_msg) + ",")
+        OSlog.append("unknown user: Decoded Message is: " + ''.join(dec_msg) + ",")
         break
 
 
 @add_function(("vscan", ), 'term')
 def hint(term):
     """vscan
-    vscan - scans for vulnerabilities in network
     [EXTEND]
+    vscan - scans for vulnerabilities in network
     """
     global VULNERABILITIES
     print_box("vscan",["Looking for vulnerabilities..."], term)
@@ -464,7 +472,7 @@ def ipsearch(term):
     clear_term(term)
     printlist.append('You can scan these IPs by using "ipscan [ip]!"')
     print_box('Ips found:', printlist, term)
-    OSlog.append(f"unknown user: performed ip search,")
+    OSlog.append("unknown user: performed ip search,")
 
 
 @add_function(("ipscan", ), "user_input", "term")
@@ -472,8 +480,8 @@ def ipsearch(term):
 def ipscan(user_input: str, term):
     """
     ipscan [ip]
-    ipscan - decyphers a ip to words
     [EXTEND]
+    ipscan - decyphers a ip to words
     """
     retstring = ''
     list_letters = list(string.ascii_letters)
@@ -506,7 +514,7 @@ def logs(term):
 
 
 @add_function(("pwscan", "hashcat"), 'term')
-def passwordscan():
+def passwordscan(term):
     """
            pwscan
            [EXTEND}

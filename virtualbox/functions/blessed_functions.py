@@ -4,7 +4,7 @@ from random import random
 
 
 def echo(args, term, **keywords):
-    print(term.green_on_black(args), **keywords, flush=True)
+    print(term.green_on_black(str(args)), **keywords, flush=True)
 
 
 def genl(term, args):
@@ -17,8 +17,45 @@ def echol(term, args):
     echo(genl(term, args), term)
 
 
-def request(args, term):
-    return input(term.green_on_black(args))
+def request(args, term, hist=[]):
+    echo(args, term, end='')
+    cursor = 0
+    hpos = 0
+    hist.insert(0, '')
+
+    with term.cbreak():
+        while True:
+            key = term.inkey()
+            if key.is_sequence:
+                if key.code == term.KEY_ENTER:
+                    echo('', term)
+                    return hist[hpos]
+                elif key.code == term.KEY_BACKSPACE and cursor != 0:
+                    hist[hpos] = hist[hpos][:-1]
+
+                    echo(term.move_left(1) + ' ' + term.move_left(1), term, end='')
+
+                    cursor -= 1
+                elif key.code == term.KEY_LEFT and cursor != 0:
+                    cursor -= 1
+                    echo(term.move_left(1), term, end='')
+                elif key.code == term.KEY_RIGHT and cursor != len(hist[hpos]):
+                    cursor += 1
+                    echo(term.move_right(1), term, end='')
+                elif key.code == term.KEY_UP and hpos + 1 != len(hist):
+                    echo(term.move_x(len(args)) + " "*len(hist[hpos]), term, end='')
+                    hpos += 1
+                    cursor = len(hist[hpos])
+                    echo(term.move_x(len(args)) + hist[hpos], term, end='')
+                elif key.code == term.KEY_DOWN and hpos != 0:
+                    echo(term.move_x(len(args)) + " "*len(hist[hpos]), term, end='')
+                    hpos -= 1
+                    cursor = len(hist[hpos])
+                    echo(term.move_x(len(args)) + hist[hpos], term, end='')
+            else:
+                hist[hpos] = hist[hpos][:cursor] + key + hist[hpos][cursor:]
+                echo(hist[hpos][cursor:] + term.move_x(cursor + 1 + len(args)), term, end='')
+                cursor += 1
 
 
 def treat_subdir(rest, add):
