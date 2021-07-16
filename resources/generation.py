@@ -1,5 +1,5 @@
-from typing import List, Any
 from random import random
+from typing import Any, List
 
 
 def even_random_distribution(return_values: List[Any], ratio_of_probabilities: List[float], times: int = 1) -> Any:
@@ -29,4 +29,3 @@ def even_random_distribution(return_values: List[Any], ratio_of_probabilities: L
         if last:
             returns.append(return_values[-1])
     return returns[:-1]
-
