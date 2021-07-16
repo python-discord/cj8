@@ -17,6 +17,10 @@ class Object(pygame.Rect):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
+    def get_position(self):
+        x, y = self.topleft
+        return round(x), round(y)
+
 
 class Space:
     targets_to_engage: List[Object] = []
@@ -188,3 +192,10 @@ class Space:
             new_x = object.topleft[0] + object.speed[0] * (1 / self.fps)
             new_y = object.topleft[1] + object.speed[1] * (1 / self.fps)
             object.topleft = new_x, new_y
+
+    def reset(self):
+        self.targets_to_engage = []
+        self.players = []
+        self.boxes = []
+        self.platforms = []
+        self.player_on_ground = False
