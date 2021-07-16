@@ -1,6 +1,7 @@
 # part02
 
 from earsketch import *
+
 init()
 setTempo(120)
 

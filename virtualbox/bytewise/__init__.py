@@ -1,10 +1,10 @@
 def sxor(content, element):
-    return bytearray(map(lambda x: shift(x[1], element) ^ x[0], enumerate(content)))
+    return bytearray(map(lambda x: shift(x[1], element) ^ (x[0] % 256), enumerate(content)))
 
 
 def rsxor(content, element):
     for index, item in enumerate(content):
-        content[index] = rshift(content[index] ^ index, element)
+        content[index] = rshift(content[index] ^ (index % 256), element)
     return content
 
 

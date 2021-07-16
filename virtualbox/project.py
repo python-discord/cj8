@@ -1,16 +1,19 @@
-from functions.command_functions import get_entry
-from functions.blessed_functions import print_tree, clear_term, echo, print_box, print_loading, request
-from time import sleep
-from users.user import User, ROOT
-from users.uid import Uidspace
-from users.login import login
-from exceptions import CannotFullFillFunction
-from config import START_PATH
-from copy import copy
-from fs.fs_dir import Dir
-from playsound import playsound
-from blessed import Terminal
 import threading
+from copy import copy
+from time import sleep
+
+from blessed import Terminal
+from config import START_PATH
+from exceptions import CannotFullFillFunction
+from fs.fs_dir import Dir
+from functions.blessed_functions import (
+    clear_term, echo, print_box, print_loading, print_tree, request
+)
+from functions.command_functions import get_entry
+from playsound import playsound
+from users.login import login
+from users.uid import Uidspace
+from users.user import ROOT, User
 
 
 def playbgm():
@@ -135,7 +138,7 @@ def start(fs, user, term):
 
 def main():
     global fs
-    start(fs, ROOT, term)
+    # start(fs, ROOT, term)
     clear_term(term)
     user_input_cmd(copy(fs), login(Users, term), fs, term)
 

@@ -1,7 +1,6 @@
-from os import sep
-from os.path import dirname
-from os.path import abspath
 import string
+from os import sep
+from os.path import abspath, dirname
 
 # sep is separator in Host OS
 

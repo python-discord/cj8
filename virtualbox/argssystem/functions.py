@@ -1,8 +1,11 @@
-from .classes import Optional
-from .classes import Flag
-from virtualbox.exceptions import WrongAmmountOfArguments, NoSuchFlagOrOption, WrongKeywordUsage
-from virtualbox.functions.generalfunctions import fill
 from functools import wraps
+
+from virtualbox.exceptions import (
+    NoSuchFlagOrOption, WrongAmmountOfArguments, WrongKeywordUsage
+)
+from virtualbox.functions.generalfunctions import fill
+
+from .classes import Flag, Optional
 
 
 def expand_args(argpos, *names, start=1):

@@ -1,7 +1,6 @@
-from virtualbox.exceptions import PermisionDenied
-from virtualbox.config import etcskel
-from virtualbox.config import passwd
+from virtualbox.config import etcskel, passwd
 from virtualbox.cryptology import customChiperEncrypt
+from virtualbox.exceptions import PermisionDenied
 from virtualbox.unicode import encode
 
 
@@ -43,7 +42,12 @@ class User:
         Users = {}
         for i in fs.getFile(ROOT, passwd).read(ROOT).strip().split("\n"):
             tmp = i.split(":")
-            Users[tmp[0]] = cls(tmp[0], int(tmp[1]), tmp[2], encode("".join(tmp[3:])))
+            password = b''
+
+            for i in map(lambda x : int(x).to_bytes(1, 'little'), tmp[3:]):
+                password += i
+
+            Users[tmp[0]] = cls(tmp[0], int(tmp[1]), tmp[2], password)
         return Users
 
     # self handeling
@@ -69,5 +73,5 @@ class User:
     def createHome(self, fs, user):
         fs.getDir(user, self.homePath).append(user, fs.getDir(etcskel), self.name)
 
-
-ROOT = User("root", 0, "/root", encode(""))
+input()
+ROOT = User("root", 0, "/root", b'\x14\x02\xfe9\xd6\xdd\x03\x020n\x1a5}\x92')

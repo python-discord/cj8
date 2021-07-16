@@ -1,6 +1,6 @@
-from virtualbox.exceptions import NoSuchIndex
 from collections.abc import Iterable
 
+from virtualbox.exceptions import NoSuchIndex
 
 # Wrappers
 

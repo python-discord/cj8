@@ -1,16 +1,19 @@
-from .blessed_functions import print_tree, clear_term, print_box, print_loading, echo
-from virtualbox.argssystem.functions import expand_args
-from virtualbox.argssystem.classes import Keyword, Optional, Flag
-from virtualbox.exceptions import NoSuchFileOrDirectory
-from virtualbox.exceptions import CommandNotFound
-from virtualbox.exceptions import InvalidLoginOrPassword
-from virtualbox.unicode import encode
-from virtualbox.cryptology import encrypt
-from virtualbox.config import MAIN_PATH
-import string
 import random
+import string
 import time
 
+from virtualbox.argssystem.classes import Flag, Keyword, Optional
+from virtualbox.argssystem.functions import expand_args
+from virtualbox.config import MAIN_PATH
+from virtualbox.cryptology import encrypt
+from virtualbox.exceptions import (
+    CommandNotFound, InvalidLoginOrPassword, NoSuchFileOrDirectory
+)
+from virtualbox.unicode import encode
+
+from .blessed_functions import (
+    clear_term, echo, print_box, print_loading, print_tree
+)
 
 # COMMAND LIST
 functions_list = []
@@ -180,7 +183,7 @@ def encryptword(phrashe: encode, password: encode, term, mode: Keyword(int) = 2)
     [EXTEND]
     encryptword - encrypts phrahse using 1 of 4 encryption algoritms and prints it back to user
     """
-    echo(encrypt(phrashe, password, mode=mode), term)
+    echo(list(map(int, encrypt(phrashe, password, mode=mode))), term)
 
 
 @add_function(("decrypt", "dec"), "user_input", "fs", "user")
@@ -668,7 +671,3 @@ def shutdown(user_input: str, term, user):
         exit()
     else:
         print_box("SHUTDOWN", ["MISSING ROOT PRIVILAGE OR INCORRECT PASSWORD"], term)
-
-
-
-

@@ -1,9 +1,10 @@
-from virtualbox.functions.command_functions import add_function
-from .user import ROOT
 from virtualbox.argssystem.functions import expand_args
-from virtualbox.unicode import encode
 from virtualbox.exceptions import InvalidLoginOrPassword, NoSuchUser
 from virtualbox.functions.blessed_functions import echo
+from virtualbox.functions.command_functions import add_function
+from virtualbox.unicode import encode
+
+from .user import ROOT
 
 
 @add_function(("su", "switchuser"), "user_input", "user", "Users")
