@@ -71,7 +71,7 @@ class Space:
         return collisions
 
     def resolve_collisions(self, collisions: List[Tuple[Object, Any, int]]):
-        def side(collision: Tuple[Object, Object, int], tolerance: float = 0.2):
+        def whatside(collision: Tuple[Object, Object, int], tolerance: float = 0.2):
             if abs(collision[0].top - collision[1].bottom) < tolerance:
                 return "top"
             if abs(collision[0].bottom - collision[1].top) < tolerance:
@@ -90,7 +90,7 @@ class Space:
                 self.targets_to_engage.remove(item2)
 
             if collision_type == COLLISION_TYPES["object_to_platform"]:
-                side = side(collision)
+                side = whatside(collision)
                 if side == "left":
                     item1.speed[0] = 0
                     item1.left = item2.right
@@ -108,7 +108,7 @@ class Space:
 
             if collision_type == COLLISION_TYPES["player_to_box"]:
                 item2.speed = [0, 0]
-                side = side(collision, tolerance=1)
+                side = whatside(collision, tolerance=1)
                 if side == "top":
                     item2.bottom = item1.top
                 if side == "bottom":
@@ -124,7 +124,7 @@ class Space:
                 if item2.collidelistall(self.players):
                     alpha_box = item2
 
-                side = side(collision, tolerance=1)
+                side = whatside(collision, tolerance=1)
                 if side == "top":
                     item2.speed = [0, 0]
                     item2.bottom = item1.top

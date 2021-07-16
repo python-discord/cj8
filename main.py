@@ -22,16 +22,17 @@ def main():
         while val != 'q':
             if map.space.targets_to_engage:
                 if val.name == "KEY_UP" or val.name == "KEY_w":
-                    map.space.move_player(map.player, key="up")
+                    map.space.move_player(map.player_rect, key="up")
                 if val.name == "KEY_DOWN" or val.name == "KEY_s":
-                    map.space.move_player(map.player, key="down")
+                    map.space.move_player(map.player_rect, key="down")
                 if val.name == "KEY_LEFT" or val.name == "KEY_a":
-                    map.space.move_player(map.player, key="left")
+                    map.space.move_player(map.player_rect, key="left")
                 if val.name == "KEY_RIGHT" or val.name == "KEY_d":
-                    map.space.move_player(map.player, key="right")
+                    map.space.move_player(map.player_rect, key="right")
 
                 map.space.step(fps)
                 map.delete()
+                map.sync_coords()
                 map.draw()
                 clock.tick(fps)
                 val = terminal.inkey(timeout=1/fps)
