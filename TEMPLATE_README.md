@@ -153,7 +153,7 @@ $ .venv/bin/Activate.ps1
 #### Installing the Dependencies
 Once the environment is created and activated, use this command to install the development dependencies.
 ```shell
-$ pip install -r dev-requirements.txt
+$ pip install -r dev-requirements_win.txt
 ```
 
 #### Exiting the environment

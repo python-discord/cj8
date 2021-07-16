@@ -17,8 +17,8 @@ black
 Pillow
 rich
 playsound
-keyboard
 
 # Linux support
 pynput
+# Unspecified as a dependancy of playsound on unix
 pygobject
