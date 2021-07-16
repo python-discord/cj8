@@ -1,7 +1,6 @@
-import sys
 from pathlib import Path
 
-from playsound import PlaysoundException, playsound
+from boombox import BoomBox
 
 from pantheras_box.backend.core import CoreBackend
 from pantheras_box.backend.events import BaseEvent, EventTypes
@@ -34,18 +33,16 @@ class CoreSounds:
                 f"[Sounds] No matching sound method for event {event} "
                 f"- {key_error.args}"
             )
-        except PlaysoundException as playsound_error:
+        except FileNotFoundError as file_not_file_error:
             logger.warning(
-                f"[Sounds] Failed to play sound for event {event} "
-                f"- {playsound_error.args}"
+                f"[Sounds] Sound not found for event {event} "
+                f"- {file_not_file_error.args}"
             )
 
     def play_sound(self, sound_name: str) -> None:
         """Play sound with specified name."""
         sound = self.SOUNDS_DIR / sound_name
-        # Currently, playsound does not support non-blocking mode on Linux
-        # https://github.com/TaylorSMarks/playsound/pull/72
-        playsound(str(sound), block=sys.platform == "linux")
+        BoomBox(str(sound)).play()
 
     def _play_story_sound(self) -> None:
         self.play_sound("story.wav")
@@ -58,6 +55,3 @@ class CoreSounds:
 
     def _play_failed_sound(self) -> None:
         self.play_sound("failed.wav")
-
-    def _play_ambient_sounds(self) -> None:
-        self.play_sound("ambient.wav")

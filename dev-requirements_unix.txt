@@ -16,9 +16,5 @@ flake8-isort~=4.0
 black
 Pillow
 rich
-playsound
-
-# Linux support
+boombox
 pynput
-# Unspecified as a dependancy of playsound on unix
-pygobject

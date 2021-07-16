@@ -2,7 +2,7 @@ import sys
 
 from setuptools import setup
 
-required_packages = ["rich", "Pillow", "playsound"]
+required_packages = ["rich", "Pillow", "boombox"]
 
 win_packages = ["keyboard"]
 unix_packages = ["pynput"]
@@ -24,7 +24,6 @@ setup(
         "pantheras_box.sounds",
         "pantheras_box.backend",
         "pantheras_box.frontend",
-        "pantheras_box.networking",
         "pantheras_box.keyboard_handlers",
     ],
     url="",
@@ -32,7 +31,7 @@ setup(
     author="Patient Panthers",
     author_email="",
     description="Pantheras box TUI game.",
-    install_requires=["rich", "Pillow", "keyboard", "playsound"],
+    install_requires=required_packages,
     entry_points={
         "console_scripts": [
             "pantheras_box = pantheras_box.run:run_game",
