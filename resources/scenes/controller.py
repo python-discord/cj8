@@ -15,8 +15,7 @@ from asciimatics.screen import Screen
 from playsound import playsound
 
 import resources.exceptions as exceptions
-
-from resources.generation import even_random_distribution as r_distribution
+# from resources.generation import even_random_distribution as r_distribution
 from resources.raycasting import raycast
 from resources.sprites.maps import LEVELS
 
