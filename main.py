@@ -1,16 +1,11 @@
-import sys
 from typing import NoReturn
 
-from pantheras_box.frontend.core import CoreFrontend
+from pantheras_box.run import run_game
 
 
 def main() -> NoReturn:
     """Run the game."""
-    frontend = CoreFrontend()
-    try:
-        frontend.start_loop()
-    except KeyboardInterrupt:
-        sys.exit(0)
+    run_game()
 
 
 if __name__ == "__main__":

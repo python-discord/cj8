@@ -29,7 +29,7 @@ class CoreSounds:
         try:
             event_dispatcher[event.type]()
         except KeyError as key_error:
-            logger.warning(
+            logger.debug(
                 f"[Sounds] No matching sound method for event {event} "
                 f"- {key_error.args}"
             )

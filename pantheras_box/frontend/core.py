@@ -3,7 +3,7 @@ import os
 import time
 from pathlib import Path
 from shutil import get_terminal_size
-from typing import List, NoReturn, Optional
+from typing import Dict, List, NoReturn, Optional
 
 from rich.align import Align
 from rich.color import Color
@@ -43,8 +43,8 @@ class CoreFrontend:
     MIN_WIDTH = 75
     MIN_HEIGHT = 40
 
-    def __init__(self):
-        self.backend: CoreBackend = CoreBackend()
+    def __init__(self, cli_args: Dict):
+        self.backend: CoreBackend = CoreBackend(cli_args)
         self.story: CoreStory = CoreStory(self.backend)
         self.sound: CoreSounds = CoreSounds(self.backend)
         self.scoring: CoreScoring = CoreScoring(self.backend)
@@ -70,12 +70,14 @@ class CoreFrontend:
         ) as live:
 
             while True:
-                now = datetime.datetime.now()
-                delta = (now - current_frame).microseconds
-                sleep_period = (frame_delta - delta) / 1_000_000
                 if not self._paused:
                     self.backend.tick()
                 live.update(self.create_layout())
+
+                # Save frame time to calculate sleep period
+                now = datetime.datetime.now()
+                delta = (now - current_frame).microseconds
+                sleep_period = (frame_delta - delta) / 1_000_000
                 current_frame = now
                 # Add sleep only if frame was rendered faster than expected
                 if sleep_period > 0:
