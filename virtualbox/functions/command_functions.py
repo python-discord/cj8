@@ -625,9 +625,9 @@ def clear(term):
     term_clear(term)
 
 
-@add_function(("tutorial", "t" ), "user_input")
+@add_function(("tutorial", "t" ), "user_input", 'term')
 @expand_args(0, "user_input")
-def tutorial(user_input: Optional(int, None)):
+def tutorial(user_input: Optional(int, None), term):
     if user_input is None or user_input == 1:
         print_box("tutorial",[
 
