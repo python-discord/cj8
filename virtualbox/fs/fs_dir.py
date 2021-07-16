@@ -138,12 +138,16 @@ class Dir(AC):
     def get(self, user, path):
         result = self
         for i in path:
+            if len(i) == 0:
+                continue
             result = result.shallowget(user, i)
         return result
 
     def getType(self, user, path, Type, exception):
         result = self
         for i in path:
+            if len(i) == 0:
+                continue
             result = result.shallowget(user, i)
         if type(result) != Type:
             raise exception()

@@ -40,41 +40,38 @@ def ProcessArgs(functionArgs, argsDicit):
 
 
 # COMMAND MANAGER
-def user_input_cmd(fs, user, term):
+def user_input_cmd(fs, user, rootfs, term):
     while True:
         user_input = request(">>>  ", term).strip().split()
         if len(user_input) == 0:
             continue
         try:
-            clear_term()
             # if randint(1, 30) == 1:
             #     random_test()
             entry = get_entry(user_input[0])
             entry[0](*ProcessArgs(entry[1], locals()))
         except Exception as e:
-            print(e)
-
-
+            echo(e, term)
 
 
 def start(fs, user, term):
     firstgamefile = open('first_game.txt', 'r')
     content = firstgamefile.readline()
     print_loading('Loading Operating System 40', term)
-    clear_term()
+    clear_term(term)
     if content[0] == '0':
         print_box('Intro',
            [' You are Netsec architect working for the USA, you just managed to get into a System controlling the Atomic Program of the Iran. Originally your job was to analyze the Data and to find out if there are any files which could gives hints to imminent nuclear attacks.'])
-        input()
-        clear_term()
+        request(term)
+        clear_term(term)
         print_box('Intro',
            [' You realise that there wil be an stealth launch attack very soon, it is targeted at Europe. You will not have enough time to contact the European agency. Your only chance to stop this is to deactivate it yourself.'])
-        input()
-        clear_term()
+        request(term)
+        clear_term(term)
         print_box('Intro',
-           [' The system has a built in artificial intelligence built to stop intruders. It will work against you and try to stop you. You will need to hack this system and gain root access and shut down the nuclear launch so that you have enough time to warn the EA.'])
-        input()
-        clear_term()
+           [' The system has a built in artificial intelligence built to stop intruders. It will work against you and try to stop you. You will need to hack this system and gain root access and shut down the nuclear launch so that you have enough time to warn the EA.'], term)
+        request(term)
+        clear_term(term)
         print_box('Intro',
                 ['Booting OS drive...',
                  '',
@@ -82,7 +79,7 @@ def start(fs, user, term):
                  '',
                  ''])
         sleep(0.5)
-        clear_term()
+        clear_term(term)
         print_box('Intro',
                   ['Booting OS drive... COMPLETE',
                    'Securing connection...',
@@ -90,7 +87,7 @@ def start(fs, user, term):
                    '',
                    ''])
         sleep(0.5)
-        clear_term()
+        clear_term(term)
         print_box('Intro',
                   ['Booting OS drive... COMPLETE',
                    'Securing Connection...COMPLETE',
@@ -98,7 +95,7 @@ def start(fs, user, term):
                    '',
                    ''])
         sleep(0.5)
-        clear_term()
+        clear_term(term)
         print_box('Intro',
                   ['Booting OS drive... COMPLETE',
                    'Securing Connection...COMPLETE',
@@ -106,7 +103,7 @@ def start(fs, user, term):
                    'INITIALIZING ANTI-THREAT AI...',
                    ''])
         sleep(0.5)
-        clear_term()
+        clear_term(term)
         print_box('Intro',
                   ['Booting OS drive... COMPLETE',
                    'Securing Connection...COMPLETE',
@@ -114,15 +111,15 @@ def start(fs, user, term):
                    'INITIALIZING ANTI-THREAT AI...COMPLETE',
                    ''])
         sleep(0.5)
-        clear_term()
+        clear_term(term)
         print_box('Intro',
                   ['Booting OS drive... COMPLETE',
                    'Securing Connection...COMPLETE',
                    'Clearing Entry Logs...COMPLETE',
                    'INITIALIZING ANTI-THREAT AI...COMPLETE',
                    'Welcome operator. Press Enter to coninue'])
-        input()
-        clear_term()
+        request(term)
+        clear_term(term)
         echo('This is the file tree, here, you can see every file in the operating system!')
         print_tree("System", fs, user)
         echo('First, type "help" in the console to see all of the commands you can use!')
@@ -138,7 +135,7 @@ def main():
     global fs
     # start(fs, ROOT, term)
     clear_term(term)
-    user_input_cmd(copy(fs), login(Users, term), term)
+    user_input_cmd(copy(fs), login(Users, term), fs, term)
 
 
 if __name__ == "__main__":
