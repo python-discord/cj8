@@ -4,7 +4,7 @@ def sxor(content, element):
 
 def rsxor(content, element):
     for index, item in enumerate(content):
-        content[index] = rshift(content[index] ^ index, element)
+        content[index] = rshift(content[index] ^ (index % 256), element)
     return content
 
 

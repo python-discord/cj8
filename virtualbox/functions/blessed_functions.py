@@ -1,6 +1,7 @@
-from virtualbox.config import BLANK_LINES
-from time import sleep
 from random import random
+from time import sleep
+
+from virtualbox.config import BLANK_LINES
 
 
 def echo(args, term, **keywords):

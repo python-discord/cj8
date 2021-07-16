@@ -1,10 +1,11 @@
-from .fs_ac import AC
-from virtualbox.cryptology import encrypt
-from virtualbox.cryptology import decrypt
-from virtualbox.exceptions import CannotReadFileInTextMode
+import copy
 import os
 import shutil
-import copy
+
+from virtualbox.cryptology import decrypt, encrypt
+from virtualbox.exceptions import CannotReadFileInTextMode
+
+from .fs_ac import AC
 
 
 class File(AC):

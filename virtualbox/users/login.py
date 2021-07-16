@@ -1,6 +1,7 @@
-from virtualbox.functions.blessed_functions import echo, request
-from virtualbox.exceptions import InvalidLoginOrPassword
 from copy import copy
+
+from virtualbox.exceptions import InvalidLoginOrPassword
+from virtualbox.functions.blessed_functions import echo, request
 
 
 def login(Users, term):

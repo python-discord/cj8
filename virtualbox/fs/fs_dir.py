@@ -1,26 +1,32 @@
-from .fs_acl import ACL
-from .fs_ac import AC
-from .fs_file import File
-from virtualbox.config import sep
-from virtualbox.exceptions import NoSuchFileOrDirectory
-from virtualbox.exceptions import FileOrDirectoryAlreadyExist
-from virtualbox.exceptions import NotAnDirectory
-from virtualbox.exceptions import NotAnFile
-from virtualbox.exceptions import PermisionDenied
 import copy
 import os
 import shutil
+from typing import Any, Callable, Union
+
+from virtualbox.config import sep
+from virtualbox.exceptions import (
+    FileOrDirectoryAlreadyExist, NoSuchFileOrDirectory, NotAnDirectory,
+    NotAnFile, PermisionDenied
+)
+from virtualbox.users.user import User
+
+from .fs_ac import AC
+from .fs_acl import ACL
+from .fs_file import File
 
 
 class Dir(AC):
-    def __init__(self, up, op, uid, sub, path, acl):
+    """Directory class stores other directories and files in sub dicit and its acceses in acl dicit"""
+
+    def __init__(self, up: int, op: int, uid: int, sub: dict, path: str, acl: ACL):
         super().__init__(up, op, uid)
         self.sub = sub
         self.path = path
         self.acl = acl
 
     @classmethod
-    def FromPath(cls, path, father, up, op, uid):
+    def FromPath(cls, path: str, father: Union['Dir', None], up: int, op: int, uid: int) -> 'Dir':
+        """Creates directory from path"""
         acl = ACL.InitRead(path + sep + "acl.xml")
         self = Dir(up, op, uid, {} if father is None else {"..": father}, path, acl)
         for name, perm in acl:
@@ -32,30 +38,40 @@ class Dir(AC):
         return self
 
     @classmethod
-    def MkDirInit(cls, up, op, user, path, father):
+    def MkDirInit(cls, up: int, op: int, user: User, path: str, father: 'Dir'):
+        """Mkdir inicialization used to create class and directory on Host FS"""
         self = cls(up, op, user.uid, {"..": father}, path, ACL({}))
         self.create()
 
         return self
 
-    "wrapper checks"
-    def alreadyexist(function):
-        def check(self, user, name, *args):
+    # wrapper checks
+    def alreadyexist(function: Callable[['Dir', User, str, ...], Any]) -> Callable[['Dir', User, str, ...], Any]:
+        """Wrapper that file or directory is subdirectory of instance.
+
+        if it is the case raises FileOrDirectoryAlreadyExist
+        """
+        def check(self: 'Dir', user: User, name: str, *args: Any) -> Any:
             if name in self.sub:
                 raise FileOrDirectoryAlreadyExist()
             return function(self, user, name, *args)
         return check
 
-    def doesnotexist(function):
-        def check(self, user, name, *args):
+    def doesnotexist(function: Callable[['Dir', User, str, ...], Any]) -> Callable[['Dir', User, str, ...], Any]:
+        """Wrapper that file or directory is subdirectory of instance.
+
+        if it is the case raises NoSuchFileOrDirectory
+        """
+        def check(self: 'Dir', user: User, name: str, *args: Any) -> Any:
             if name not in self.sub:
                 raise NoSuchFileOrDirectory()
             return function(self, user, name, *args)
         return check
 
-    "auto update acl"
-    def update(function):
-        def check(self, *args):
+    # auto update acl
+    def update(function: Callable[['Dir', ...], Any]) -> Any:
+        """Wrapper that pdates acl"""
+        def check(self: 'Dir', *args) -> Any:
             tmp = function(self, *args)
             self.aclsave()
             return tmp
@@ -65,7 +81,8 @@ class Dir(AC):
     @AC.writecheck
     @alreadyexist
     @update
-    def mkdir(self, user, name):
+    def mkdir(self, user: str, name: str) -> True:
+        """Creates directory of given name as subdir of instance"""
         self.sub[name] = Dir.MkDirInit(self.up, self.op, user, self.path + sep + name, self)
         self.acl.add(name, (self.up, self.op, user.uid))
 
@@ -74,7 +91,8 @@ class Dir(AC):
     @AC.writecheck
     @alreadyexist
     @update
-    def touch(self, user, name):
+    def touch(self, user: str, name: str) -> True:
+        """Creates file of given name as subfile of instance"""
         self.sub[name] = File.TouchInit(self.up, self.op, user.uid, self.path + sep + name)
         self.acl.add(name, (self.up, self.op, user.uid))
         return True
@@ -82,7 +100,8 @@ class Dir(AC):
     @AC.writecheck
     @doesnotexist
     @update
-    def rm(self, user, name):
+    def rm(self, user: str, name: str) -> None:
+        """Removes directory or file of given name from subdirs/subfiles of instance"""
         self.sub[name].delete()
         del self.sub[name]
         if name in self.acl:
@@ -91,11 +110,13 @@ class Dir(AC):
     @AC.writecheck
     @alreadyexist
     @update
-    def append(self, user, object, name):
+    def append(self, user: User, object: Union['Dir', File], name: str) -> None:
+        """Appends file or directory as subdir/subfile"""
         self.sub[name] = object
         self.acl.add(name, object.perms)
 
-    def mv(self, user, name, to):
+    def mv(self, user: User, name: str, to: str) -> None:
+        """Moves instance to given path"""
         father = self.get(user, name[:-1])
         dest = self.getDir(user, to[:-1])
 
@@ -105,20 +126,24 @@ class Dir(AC):
         dest.set(user, to[-1], father.pop(user, name[-1]))
         dest.sub[to[-1]].mvSelf(user, self.path + sep + sep.join(to))
 
-    def cp(self, user, path, to):
+    def cp(self, user: User, path: str, to: str) -> None:
+        """Copies instance to given path"""
         dest = self.getDir(user, to[:-1])
         dest.append(user, self.get(user, path).cpSelf(user, self.path + sep + sep.join(to)), to[-1])
 
     @AC.readcheck
-    def ls(self, user):
+    def ls(self, user: User) -> dict:
+        """Listes subdirs/subfiles of instance"""
         return self.sub
 
     @AC.readcheck
-    def stringList(self, user):
+    def stringList(self, user: User) -> list:
+        """Listes names of subdir/subfiles of instance"""
         return list(self.sub.keys())
 
     @AC.readcheck
-    def walk(self, user):
+    def walk(self, user: User) -> list:
+        """Listes names of subdirs/subfiles and subsubfiles/subsubdirs etc"""
         try:
             Result = []
             for key, item in self.sub.items():
@@ -129,13 +154,18 @@ class Dir(AC):
         except PermisionDenied:
             return []
 
-    "change directory"
+    # change directory
     @doesnotexist
     @AC.readcheck
-    def shallowget(self, user, name):
+    def shallowget(self, user: User, name: str) -> Union['Dir', 'File']:
+        """Returns subdir/subfile of given name
+
+        will raise PerrmisonDenied if user does not have sufficent perrmisions
+        or NoSuchFileOrDirectory if subfile/subdirectory does not exist
+        """
         return self.sub[name]
 
-    def get(self, user, path):
+    def get(self, user: User, path: str) -> Union['Dir', 'File']:
         result = self
         for i in path:
             if len(i) == 0:
