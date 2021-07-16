@@ -1,25 +1,24 @@
 from __future__ import division
 
-# from copy import deepcopy
+from copy import deepcopy
 from math import ceil
 from pathlib import Path
 from random import choice
 from threading import Thread
-from typing import Any, List, Optional, Tuple
+from typing import List, Optional, Tuple
 
 from asciimatics.effects import Effect, Print
 from asciimatics.event import Event, KeyboardEvent
 from asciimatics.renderers import SpeechBubble
-# from asciimatics.sprites import Arrow, Plot, Sam
 from asciimatics.scene import Scene
 from asciimatics.screen import Screen
 from playsound import playsound
 
 import resources.exceptions as exceptions
+
+from resources.generation import even_random_distribution as r_distribution
 from resources.raycasting import raycast
 from resources.sprites.maps import LEVELS
-
-# from resources.generation import even_random_distribution as r_distribution
 
 # Mappings of directional trigger keys such as movement or tag
 # to their corresponding properties/direction/map changes.
@@ -27,29 +26,29 @@ from resources.sprites.maps import LEVELS
 # general approach.
 DIRECTIONAL_MANEUVER_MAPPINGS = [
     {
-        "movement_trigger_keys": (ord("a"), Screen.KEY_LEFT),
-        "tag_trigger_keys": (ord("A"),),
+        "movement_trigger_keys": (Screen.KEY_LEFT,),
+        "tag_trigger_keys": (ord("a"),),
         "wall": "l",
         "raycast_direction": (-1, 0),
         "map_movement": ("x", -1),
     },
     {
-        "movement_trigger_keys": (ord("d"), Screen.KEY_RIGHT),
-        "tag_trigger_keys": (ord("D"),),
+        "movement_trigger_keys": (Screen.KEY_RIGHT,),
+        "tag_trigger_keys": (ord("d"),),
         "wall": "r",
         "raycast_direction": (+1, 0),
         "map_movement": ("x", +1),
     },
     {
-        "movement_trigger_keys": (ord("w"), Screen.KEY_UP),
-        "tag_trigger_keys": (ord("W"),),
+        "movement_trigger_keys": (Screen.KEY_UP,),
+        "tag_trigger_keys": (ord("w"),),
         "wall": "u",
         "raycast_direction": (0, -1),
         "map_movement": ("y", -1),
     },
     {
-        "movement_trigger_keys": (ord("s"), Screen.KEY_DOWN),
-        "tag_trigger_keys": (ord("S"),),
+        "movement_trigger_keys": (Screen.KEY_DOWN,),
+        "tag_trigger_keys": (ord("s"),),
         "wall": "d",
         "raycast_direction": (0, +1),
         "map_movement": ("y", +1),
@@ -88,13 +87,14 @@ class Map(Effect):
     and controls the map in general.
     """
 
-    def __init__(self, screen: Screen, game_map: str):
+    def __init__(self, screen: Screen, game_level: int):
         super(Map, self).__init__(screen)
 
         # self.map = [''.join([choice(texturing) if char == ' ' else char for char in line]) for line in game_map]
+        self.level = game_level
         self.map: List[str] = "".join(
             "." if char == " " and counter % 2 else char
-            for counter, char in enumerate(game_map)
+            for counter, char in enumerate(deepcopy(LEVELS[game_level]))
         ).split("\n")
 
         for i, line in enumerate(self.map):
@@ -104,23 +104,26 @@ class Map(Effect):
                 self.player_y = i
                 self.map[i] = line.replace('@', ' ')
 
-        self.vision = 4  # will have a way to change this later
+        self.vision = 10  # will have a way to change this later
+        self.end_frame = float('inf')  # Game finishes after getting to this frame
+        # The Screen class has a frame counter but it only
+        # updates when the screen changes so it wont work as a way
+        # to finish the game
+        self.cur_frame = 0
 
-        # print(f"player: ({self.player_x},{self.player_y})")
-        # print(f"map: ({self.map_x},{self.map_y})")
-
-    def _update(self, _: Any = None) -> None:
+    def _update(self, frame_no: int) -> None:
         """
         This function is called every frame, here we draw the player centered at the screen
-        and the maps surrounding it.
+        and the map surrounding it.
         """
+
         offset_x = (self.screen.width // 2 - self.player_x, ceil(self.screen.width / 2) + self.player_x)
         offset_y = self.screen.height // 2 - self.player_y
 
         for i in range(offset_y):
             self.screen.print_at(" " * self.screen.width, 0, i)
 
-        for i, line in enumerate(raycast(self.map, self.player_x, self.player_y, 7, '#', ' ')):
+        for i, line in enumerate(raycast(self.map, self.player_x, self.player_y, self.vision, '#', ' ')):
             line = ' ' * offset_x[0] + line + ' ' * offset_x[1]
             self.screen.print_at(line, 0, offset_y + i)
 
@@ -129,13 +132,30 @@ class Map(Effect):
 
         self.screen.print_at("@", self.screen.width // 2, self.screen.height // 2)
 
-    @property
+        self.cur_frame = frame_no
+        if self.cur_frame >= self.end_frame:
+            raise exceptions.EnterLevel(self.level + 1)
+        if self.end_frame - self.cur_frame < 90:
+            text = f"Next level in: {(self.end_frame - self.cur_frame)//20 + 1}"
+            self.scene.add_effect(
+                Print(
+                    self.screen,
+                    SpeechBubble(text),
+                    int(self.screen.height * 0.1),
+                    x=(self.screen.width - len(text))//2
+                )
+            )
+            # self.screen.print_at(text,
+            #                      (self.screen.width - len(text))//2,
+            #                      int(self.screen.height * 0.2))
+
+    @ property
     def frame_update_count(self) -> int:
         """Required function for Effects."""
         # No animation required.
         return 0
 
-    @property
+    @ property
     def stop_frame(self) -> int:
         """Required function for Effects."""
         # No specific end point for this Effect. Carry on running forever.
@@ -178,15 +198,15 @@ class GameController(Scene):
     SPEECH = {
         # TODO: we can implement various different speeches
         # and pick one at random
-        ord('A'): "Is this the left wall?",
-        ord('D'): "Is this the right wall?",
-        ord('W'): "Is this the upper wall?",
-        ord('S'): "Is this the lower wall?",
+        ord('a'): "Is this the left wall?",
+        ord('d'): "Is this the right wall?",
+        ord('w'): "Is this the upper wall?",
+        ord('s'): "Is this the lower wall?",
     }
 
     def __init__(self, screen: Screen, level: int):
         self.screen = screen
-        self.map = Map(screen, LEVELS[level])
+        self.map = Map(screen, level)
         effects = [
             self.map,
         ]
@@ -195,6 +215,7 @@ class GameController(Scene):
         # he realizes he is in a box and finish the level
         self.tagged_walls = {}
         self.level = level
+        self.input_enabled = True
         super(GameController, self).__init__(effects, -1)
 
     def cast_ray(self, direction: Tuple[int], pos: Optional[List[int]] = None) -> int:
@@ -266,6 +287,9 @@ class GameController(Scene):
 
         # If that didn't handle it, check for a key that this demo understands.
         if isinstance(event, KeyboardEvent):
+            if not self.input_enabled:
+                return event
+
             key_code = event.key_code
             speech = None
             recognised = False  # Flag for if the key code is recognised
@@ -310,7 +334,8 @@ class GameController(Scene):
             if check == GameController.CORRECT_TAGS:
                 self.speak("I knew it!\nI was in a box all along!")
                 self.tagged_walls = {}
-                raise exceptions.EnterLevel(self.level + 1)
+                self.input_enabled = False
+                self.map.end_frame = self.map.cur_frame + 60
             elif check == GameController.WRONG_TAGS:
                 self.speak("Hmm... I don't think this is right.")
                 self.tagged_walls = {}
