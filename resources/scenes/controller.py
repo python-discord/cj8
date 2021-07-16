@@ -101,7 +101,7 @@ class Map(Effect):
             if j > -1:
                 self.player_x = j
                 self.player_y = i
-                self.map[i] = line.replace('@', ' ')
+                self.map[i] = line.replace('@', str(game_level + 1))
 
         self.vision = 10  # will have a way to change this later
         self.end_frame = float('inf')  # Game finishes after getting to this frame
@@ -141,8 +141,8 @@ class Map(Effect):
                     self.screen,
                     SpeechBubble(text),
                     int(self.screen.height * 0.1),
-                    x=(self.screen.width - len(text))//2
-                )
+                    x=(self.screen.width - len(text))//2,
+                ),
             )
             # self.screen.print_at(text,
             #                      (self.screen.width - len(text))//2,
