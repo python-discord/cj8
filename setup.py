@@ -1,6 +1,19 @@
+import sys
+
 from setuptools import setup
 
-required_packages = ["rich", "Pillow", "keyboard", "playsound"]
+required_packages = ["rich", "Pillow", "playsound"]
+
+win_packages = ["keyboard"]
+unix_packages = ["pynput"]
+
+WIN = "win32"
+LINUX = "linux"
+MACOS = "darwin"
+if sys.platform == WIN:
+    required_packages += win_packages
+elif sys.platform == LINUX:
+    required_packages += unix_packages
 
 setup(
     name="pantheras_box",
