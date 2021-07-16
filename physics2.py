@@ -118,6 +118,7 @@ class Space:
 
             if collision_type == COLLISION_TYPES["object_to_platform"]:
                 side = whatside(collision)
+                logging.info(f"collision happened at item1's {side} side")
                 if side == "left":
                     item1.speed[0] = 0
                     item1.left = item2.right
@@ -136,6 +137,7 @@ class Space:
             if collision_type == COLLISION_TYPES["player_to_box"]:
                 item2.speed = [0, 0]
                 side = whatside(collision, tolerance=1)
+                logging.info(f"collision happened at item1's {side} side")
                 if side == "top":
                     item2.bottom = item1.top
                 if side == "bottom":
@@ -152,6 +154,7 @@ class Space:
                     alpha_box = item2
 
                 side = whatside(collision, tolerance=1)
+                logging.info(f"collision happened at item1's {side} side")
                 if side == "top":
                     item2.speed = [0, 0]
                     item2.bottom = item1.top
