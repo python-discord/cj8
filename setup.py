@@ -2,7 +2,7 @@ import sys
 
 from setuptools import setup
 
-required_packages = ["rich", "Pillow", "boombox"]
+required_packages = ["boombox", "Pillow", "PyYAML", "rich"]
 
 win_packages = ["keyboard"]
 unix_packages = ["pynput"]
@@ -12,7 +12,7 @@ LINUX = "linux"
 MACOS = "darwin"
 if sys.platform == WIN:
     required_packages += win_packages
-elif sys.platform == LINUX:
+elif sys.platform in (LINUX, MACOS):
     required_packages += unix_packages
 
 setup(
@@ -34,9 +34,9 @@ setup(
     install_requires=required_packages,
     entry_points={
         "console_scripts": [
-            "pantheras_box = pantheras_box.run:run_game",
+            "pantheras-box = pantheras_box.run:run_game",
         ],
     },
-    package_data={"": ["**/*.txt", "**/*.yaml", "**/*.png"]},
+    package_data={"": ["**/*.txt", "**/*.yaml", "**/*.png", "**/*.wav"]},
     include_package_data=True,
 )

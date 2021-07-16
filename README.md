@@ -20,7 +20,7 @@ Panthera's box can be installed and run using two different methods:
 
 This will install the game as the package `pantheras_box`.
 
-2. Run the game: `pantheras_box`
+2. Run the game: `pantheras-box`
 
 ### Running without installing as a package
 

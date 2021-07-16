@@ -3,6 +3,7 @@
 # This list will have to be migrated if you wish to use another dependency manager.
 
 # Base tools
+black
 flake8~=3.7
 isort~=5.9
 pre-commit~=2.13.0
@@ -13,8 +14,8 @@ flake8-bandit~=2.1
 flake8-docstrings~=1.5
 flake8-isort~=4.0
 
-black
-Pillow
-rich
 boombox
 keyboard
+Pillow
+PyYAML
+rich
