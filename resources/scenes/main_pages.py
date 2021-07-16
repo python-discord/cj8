@@ -8,10 +8,14 @@ from asciimatics.scene import Scene
 from asciimatics.screen import Screen
 
 import resources.exceptions as exceptions
-from resources.sprites.characters import character_box, character_box_pushing
+from resources.sprites.characters import (
+    character_box, character_box_pushing, character_box_pushing2
+)
+
+# Wish title_screen and title_input_handler were more closely linked,
+# maybe use a structure similar to controller.py
 
 
-# Wish title_screen and title_input_handler were more closely linked, maybe use a structure similar to controller.py
 def title(screen: Screen) -> List[Scene]:
     """Title screen"""
     char_path, bubble_path = Path(), Path()
@@ -21,7 +25,9 @@ def title(screen: Screen) -> List[Scene]:
     # Opening character with box on his head
     char_sprite = Sprite(
         screen, path=char_path, renderer_dict={
-            "default": StaticRenderer(images=[character_box]*8 + [character_box_pushing]*10)
+            "default": StaticRenderer(images=[character_box]*8
+                                      + [character_box_pushing]*10
+                                      + [character_box_pushing2]*10)
         }
     )
 
