@@ -39,7 +39,6 @@ class Board:
         for player in ("X", "O"):
             # this turns our grid of ["X", "O", "•"] into [True, False, False] by applying the condition to every spot
             ticks = grid == player
-
             # Summing over True treats True as 1, False as 0. 3 Trues = 3, so "won" rows are 3.
             # Because this is a 3x3 board, this results in a list of 3 True/False
             # indicating whether each row was won by this player
@@ -53,7 +52,7 @@ class Board:
             # .diagonal() gets us a single diagonal list,
             # so these two rows are just True/False whether a diagonal is won
             diagonal_r = ticks.diagonal().sum() == 3
-            diagonal_l = ticks.fliplr().diagonal().sum() == 3
+            diagonal_l = np.fliplr(ticks).diagonal().sum() == 3  # type: ignore
             if diagonal_l or diagonal_r:
                 return player
 
@@ -195,23 +194,23 @@ class Board:
             print(
                 term.move_x(x + 2)
                 + f"{term.on_color_rgb(254, 0, 0)}─{term.normal}"
-                + term.move_x(x + 7)
+                + term.move_x(x + 8)
                 + f"{term.on_color_rgb(254, 0, 0)}─{term.normal}"
             )
             print(
                 term.move_x(x + 2)
                 + f"{term.on_color_rgb(254, 0, 0)} {term.normal}"
-                + term.move_x(x + 7)
+                + term.move_x(x + 8)
                 + f"{term.on_color_rgb(254, 0, 0)} {term.normal}"
             )
             print(
                 term.move_x(x + 2)
                 + f"{term.on_color_rgb(254, 0, 0)}─{term.normal}"
-                + term.move_x(x + 7)
+                + term.move_x(x + 8)
                 + f"{term.on_color_rgb(254, 0, 0)}─{term.normal}"
             )
             print(
-                term.move_xy(x + 3, y)
+                term.move_x(x + 3)
                 + f"{term.on_color_rgb(254, 0, 0)}│ {subgrid[0, 1]} │{term.normal}"
             )
 
