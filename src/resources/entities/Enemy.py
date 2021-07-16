@@ -56,14 +56,44 @@ class Enemy(AbstractDungeonEntity):
             self.new_positions["x"] = move_x
             self.new_positions["y"] = move_y
 
+    def run(self, x: int, y: int) -> None:
+        """Enemy movement  to run from player"""
+        move_x = 0
+        move_y = 0
+
+        # find direction
+        if abs(x - self.x) > abs(y - self.y):
+            if self.x > x:
+                move_x = 1
+            if self.x < x:
+                move_x = -1
+        elif abs(x - self.x) < abs(y - self.y):
+            if self.y > y:
+                move_y = 1
+            if self.y < y:
+                move_y = -1
+        else:
+            if self.x > x:
+                move_x = 1
+            if self.x < x:
+                move_x = -1
+            if self.y > y:
+                move_y = 1
+            if self.y < y:
+                move_y = -1
+
+        # move in that direction
+        self.new_positions["x"] = move_x
+        self.new_positions["y"] = move_y
+
     def is_in_radius(self, x: int, y: int) -> bool:
         """Check if player is in 'aggro' radius"""
         radius = self.aggro_radius
         if (y - radius <= self.y <= y + radius) and \
                 (x - radius <= self.x <= x + radius):
-            self.symbol.stylize("bold red")
+            self.symbol.stylize("bold " + self.symbol.style)
             self.target = {'x': x, 'y': y}
             return True
         else:
-            self.symbol.stylize("bold white")
+            self.symbol.stylize(self.symbol.style)
             return False

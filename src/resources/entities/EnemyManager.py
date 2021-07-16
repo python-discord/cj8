@@ -1,5 +1,6 @@
 from random import randint
 
+from src.resources.entities.character import Character
 from src.resources.entities.level import Level
 
 from .Enemy import Enemy
@@ -11,6 +12,7 @@ class EnemyManager:
     def __init__(self, level: Level):
         self.enemy_list = []
         self.level = level
+        self.enemies_down = 0
 
     def spawn_random_enemies(self, x_player: int, y_player: int, num: int) -> None:
         """Spawns a new enemies randomly"""
@@ -24,6 +26,16 @@ class EnemyManager:
                 enemy = Enemy(aggro_radius=3, x=x, y=y, symbol='^')
                 self.enemy_list.append(enemy)
 
-    def collisions_with_player(self, x: int, y: int) -> bool:
-        """Checks if player collided with enemy"""
-        return any([(enemy.x, enemy.y) == (x, y) for enemy in self.enemy_list])
+    def collisions_with_player(self, player: Character) -> bool:
+        """Checks if player collided with enemy, returns losing object"""
+        for enemy in self.enemy_list:
+            if (enemy.x, enemy.y) == (player.x, player.y) and (enemy < player):
+                return enemy
+            elif (enemy.x, enemy.y) == (player.x, player.y) and ((enemy > player) or (player.color == "bold white")):
+                return player
+        return 'draw'
+
+    def remove_enemy(self, enemy: type) -> None:
+        """Replace enemy with symbol"""
+        self.enemies_down += 1
+        self.enemy_list.pop(self.enemy_list.index(enemy))
