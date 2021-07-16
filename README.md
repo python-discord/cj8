@@ -18,7 +18,7 @@ Panthera's box can be installed and run using two different methods:
 
     1.1b `pip install git+https://github.com/Willd14469/cj8-patient-panthers` (Git)
 
-This will install the game as the package `pantheras_box`.
+    This will install the game as the package `pantheras_box`.
 
 2. Run the game: `pantheras-box`
 
