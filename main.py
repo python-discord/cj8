@@ -19,8 +19,6 @@ with term.fullscreen(), term.cbreak(), term.hidden_cursor():
 
     state = GameState(term)
 
-    val = ""
-
     while (val := term.inkey()) != "q":
 
         if val.is_sequence:
