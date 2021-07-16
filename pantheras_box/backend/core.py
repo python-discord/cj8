@@ -5,6 +5,7 @@ from pantheras_box.backend.events import (
     BallMovementEvent,
     EventsMixin,
     LevelLoadedEvent,
+    MutatorEvent,
     PauseEvent,
     StoryEvent,
     VictoryEvent,
@@ -84,12 +85,14 @@ class CoreBackend(DebugMixin, EventsMixin):
         If level_name is None, load a random level.
         """
         self._controls = {keys: None for keys in self.CONTROL_PAIRS}
+        self.emit_event(MutatorEvent(state=False))
         self.emit_event(StoryEvent())
         if not level_name:
             self._board = CoreLevelLoader.random_level()
         else:
             self._board = CoreLevelLoader.load(level_name)
         self._gen_controls()
+        self.emit_event(MutatorEvent.activate_random_mutator())
         self.emit_event(LevelLoadedEvent(self._board.level_name))
 
     def restart_level(self) -> None:

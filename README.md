@@ -11,8 +11,8 @@ Pantheras box can be installed and run by 2 different methods.
 1. Installing as a package.
 
     1.1a `pip install .` if the reposity has been cloned to your system
-    
-    or 
+
+    or
 
     1.1b `pip install git+https://github.com/Willd14469/cj8-patient-panthers`
 

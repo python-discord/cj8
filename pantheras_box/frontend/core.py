@@ -126,6 +126,7 @@ class CoreFrontend:
     def panel(self) -> Panel:
         """Return informational panel about current game."""
         tree = Tree("[b]Panthera's Box")
+        tree.add("[i]Rotate arrows to redirect the ball towards the goal.")
         tree.add(f"Level: [i]{self.backend.board.level_name}")
         tree.add(f"Win Count: [i]{self.backend.win_count}")
         tree.add(f"Elapsed: [i]{self.scoring.elapsed_seconds}s")

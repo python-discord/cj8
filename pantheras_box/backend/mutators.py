@@ -1,3 +1,4 @@
+import random
 from abc import ABC, abstractmethod
 from typing import List
 
@@ -58,6 +59,17 @@ class SpeedIncrease(BaseMutator):
         self.backend.TICKS_PER_MOVE += self.value
 
 
+class InvertControls(BaseMutator):
+    """Invert redirector controls"""
+
+    def _toggle(self) -> None:
+        self.backend.CONTROL_PAIRS = [(k2, k1) for k1, k2 in self.backend.CONTROL_PAIRS]
+        self.backend._gen_controls()
+
+    _activate = _toggle
+    _deactivate = _toggle
+
+
 class CoreMutators(BaseMutator):
     """
     Handles applying mutators that match an event
@@ -71,6 +83,7 @@ class CoreMutators(BaseMutator):
         self._mutators = {
             "FOV Reduce": FOVReduce(self.backend),
             "Speed Increase": SpeedIncrease(self.backend),
+            "Invert Controls": InvertControls(self.backend),
         }
 
     def event_callback(self, event: BaseEvent) -> None:
@@ -80,10 +93,12 @@ class CoreMutators(BaseMutator):
             return
 
         try:
-            if name := event.name:
-                mutator = self._mutators[name]
-            else:
+            if not (name := event.name):
                 mutator = self
+            elif name == MutatorEvent._RANDOM:
+                self._activate_random_mutators()
+            else:
+                mutator = self._mutators[name]
             state = event.state
         except KeyError as key_error:
             logger.warning(
@@ -114,6 +129,18 @@ class CoreMutators(BaseMutator):
             if mutator.state:
                 active_mutators.append(name)
         return active_mutators
+
+    def _activate_random_mutators(self) -> None:
+        """Activate random mutators, up to max_mutators"""
+        n = random.choices(
+            [0, 1, 2, 3],
+            weights=[50, 30, 15, 5],
+        )
+        for _ in range(n):
+            mutator = random.choice(self.mutators)
+            while mutator in self.active_mutators:
+                mutator = random.choice(self.mutators)
+            mutator.activate()
 
     def _activate(self) -> None:
         for mutator in self._mutators.values():

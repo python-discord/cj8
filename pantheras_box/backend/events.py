@@ -93,6 +93,8 @@ class MutatorEvent(BaseEvent):
     Default action is to enable.
     """
 
+    _RANDOM = "RANDOM"
+
     def __init__(self, name: Optional[str] = None, state: bool = True) -> None:
         super().__init__()
         self.name = name
@@ -101,6 +103,11 @@ class MutatorEvent(BaseEvent):
     @property
     def _type(self) -> str:
         return EventTypes.mutator.value
+
+    @classmethod
+    def activate_random_mutator(cls) -> "MutatorEvent":
+        """Return event to trigger random mutator"""
+        return cls(name=cls._RANDOM, state=True)
 
 
 class BallMovementEvent(BaseEvent):
