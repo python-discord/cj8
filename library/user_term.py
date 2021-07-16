@@ -33,12 +33,12 @@ def update_user_section(term: blessed.Terminal, updated_info: list[str]) -> None
     elif len(updated_info) == 3:
         updated_info += " "
 
-    item: list[str] = [""] * 6
-    item[0] = f"┌─{term.blue}term{term.normal}────────────────────────────┐"
-    item += "\n│ " + "".join(updated_info[0]).ljust(31) + " │"
-    item += "\n│ " + "".join(updated_info[1]).ljust(31) + " │"
-    item += "\n│ " + "".join(updated_info[2]).ljust(31) + " │"
-    item += "\n│ " + "".join(updated_info[3]).ljust(31) + " │"
-    item += f"\n└{term.green}(Enter to confirm){term.normal}───{term.red}('q' to esc){term.normal}┘"
+    item = "\n".join(
+        [
+            "┌─term────────────────────────────┐",
+            *("│ " + "".join(i).ljust(31) + " │" for i in updated_info),
+            "└(Enter to confirm)───('q' to esc)┘",
+        ]
+    )
 
     print("".join(item))

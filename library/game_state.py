@@ -14,7 +14,7 @@ class GameState:
     def __init__(self, term: blessed.Terminal):
         self.current: int = 0
         self.good_move = False
-        self.save_subgrid_bool: bool = False
+        self.save_subgrid: bool = False
         self.update_board: bool = False
         self.player_active: int = 0
         self.term_info: list[str] = [""] * 3
@@ -77,10 +77,8 @@ class GameState:
 
         if self.user_input in ("1", "2", "3", "4", "5", "6", "7", "8", "9"):
             self.user_select_subgrid = int(self.user_input)
-            self.term_info[2] = (
-                f"Current: SubGrid {self.user_select_subgrid} "
-                f"| Space {self.user_select_space}"
-            )
+            self.term_info[2] = f"Current: SubGrid {self.user_select_subgrid} "
+
         elif self.user_input == "KEY_ENTER" and self.user_select_subgrid != 0:
             self.term_info[1] = "Select Space by entering 1-9"
             self.confirm_entry(term)
@@ -150,7 +148,7 @@ class GameState:
 
         working_space_location = convert_to_space_location(self.user_select_space)
         if (
-            board.collect_subgrid(str(self.user_select_subgrid - 1))[
+            board.collect_subgrid(str(self.user_select_subgrid))[
                 working_space_location[0], working_space_location[1]
             ]
             == "·"

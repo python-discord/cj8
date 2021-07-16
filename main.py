@@ -33,11 +33,11 @@ with term.fullscreen(), term.cbreak(), term.hidden_cursor():
         if state.update_board:
             working_space_location = convert_to_space_location(state.user_select_space)
             if state.player_active == 1:
-                board.collect_subgrid(str(state.user_select_subgrid - 1))[
+                board.collect_subgrid(str(state.user_select_subgrid))[
                     working_space_location[0], working_space_location[1]
                 ] = "X"
             elif state.player_active == 2:
-                board.collect_subgrid(str(state.user_select_subgrid - 1))[
+                board.collect_subgrid(str(state.user_select_subgrid))[
                     working_space_location[0], working_space_location[1]
                 ] = "0"
 
@@ -46,9 +46,9 @@ with term.fullscreen(), term.cbreak(), term.hidden_cursor():
 
             state.update_board = False
             # TODO handle logic for next grid below is a placeholder *this may be good enough
-            state.save_subgrid_bool = True
+            state.save_subgrid = True
 
-            if state.save_subgrid_bool:
+            if state.save_subgrid:
                 state.user_select_subgrid = state.user_select_space
                 state.user_select_space = 0
                 state.term_info[2] = (
