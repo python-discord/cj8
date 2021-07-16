@@ -1,8 +1,6 @@
 from typing import List
-
 from blessed import Terminal
 
-import physics
 import physics2
 from sprites import Box, Platform, Player, Target, ThinkingBox
 
@@ -69,6 +67,18 @@ class Map:
         for i, box in enumerate(self.boxes):
             box.x, box.y = self.boxes_rect[i].get_position()
 
+    def create_level2(self):
+        self.player = Player(10, 26, self.terminal)
+
+        self.thinking_box = ThinkingBox(15, 26, self.terminal)
+
+        border1 = Platform(0, 30, 100, True, self.terminal)
+        platform1 = Platform(0, 7, 20, True, self.terminal)
+        platform2 = Platform(0, 25, 20, True, self.terminal)
+        self.platforms.append(platform1)
+        self.platforms.append(platform2)
+        self.platforms.append(border1)
+
     def delete(self):
         print(self.terminal.home + self.terminal.on_midnightblue + self.terminal.clear(), flush=True)
 
@@ -88,4 +98,4 @@ class Map:
         self.targets = []
         self.boxes = []
         self.platforms = []
-        self.space = physics.MySpace()
+        self.space.reset()
