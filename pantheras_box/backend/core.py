@@ -84,7 +84,6 @@ class CoreBackend(DebugMixin, EventsMixin):
 
         If level_name is None, load a random level.
         """
-        self._controls = {keys: None for keys in self.CONTROL_PAIRS}
         self.emit_event(MutatorEvent(state=False))
         self.emit_event(StoryEvent())
         if not level_name:
@@ -211,6 +210,7 @@ class CoreBackend(DebugMixin, EventsMixin):
         self._board.link_adjacents()
 
     def _gen_controls(self) -> None:
+        self._controls = {keys: None for keys in self.CONTROL_PAIRS}
         redirectors = [
             tile
             for row in self._board.all_tiles

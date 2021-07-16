@@ -97,6 +97,7 @@ class CoreMutators(BaseMutator):
                 mutator = self
             elif name == MutatorEvent._RANDOM:
                 self._activate_random_mutators()
+                return
             else:
                 mutator = self._mutators[name]
             state = event.state
@@ -135,17 +136,19 @@ class CoreMutators(BaseMutator):
         n = random.choices(
             [0, 1, 2, 3],
             weights=[50, 30, 15, 5],
-        )
+        )[0]
         for _ in range(n):
             mutator = random.choice(self.mutators)
             while mutator in self.active_mutators:
                 mutator = random.choice(self.mutators)
-            mutator.activate()
+            self._mutators[mutator].activate()
 
     def _activate(self) -> None:
         for mutator in self._mutators.values():
-            mutator.activate()
+            if not mutator.state:
+                mutator.activate()
 
     def _deactivate(self) -> None:
         for mutator in self._mutators.values():
-            mutator.deactivate()
+            if mutator.state:
+                mutator.deactivate()

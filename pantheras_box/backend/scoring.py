@@ -27,6 +27,7 @@ class CoreScoring:
         backend.register_hook(self._event_handler)
         self._max_score = 0
         self._tiles_visited = 0
+        self._current_level_name: Optional[str] = None
         self._level_start_time: Optional[datetime] = None
         self._level_finished_time: Optional[datetime] = None
         self._multiplier = 1
