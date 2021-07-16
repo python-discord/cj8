@@ -2,7 +2,9 @@ from __future__ import division
 
 from copy import deepcopy
 from math import ceil
-# from random import choice
+from pathlib import Path
+from random import choice
+from threading import Thread
 from typing import List, Optional, Tuple
 
 from asciimatics.effects import Effect, Print
@@ -10,8 +12,10 @@ from asciimatics.event import Event, KeyboardEvent
 from asciimatics.renderers import SpeechBubble
 from asciimatics.scene import Scene
 from asciimatics.screen import Screen
+from playsound import playsound
 
 import resources.exceptions as exceptions
+
 from resources.generation import even_random_distribution as r_distribution
 from resources.raycasting import raycast
 from resources.sprites.maps import LEVELS
@@ -51,7 +55,30 @@ DIRECTIONAL_MANEUVER_MAPPINGS = [
     },
 ]
 
-texturing = r_distribution([' ', '.', ','], [80, 10, 10], 1000)
+SFX_FOLDER = Path("resources", "sfx")
+SFX = {
+    "footsteps": tuple((SFX_FOLDER / "footsteps").iterdir()),
+    "tag": SFX_FOLDER / "tag.wav",
+    "wall_collision": SFX_FOLDER / "wall.wav",
+}
+ps_threads = {k: None for k in SFX.keys()}
+
+# texturing = r_distribution([' ', '.', ','], [80, 10, 10], 1000)
+
+
+def ps(sound_type: str) -> None:
+    """Play a sound according to the sound type."""
+    global ps_threads
+    ps_thread = ps_threads[sound_type]
+
+    if ps_thread is None or not ps_thread.is_alive():  # Doesn't allow overlaps
+        value = SFX[sound_type]
+        # Choose a random file if it's a tuple of files (ex. footsteps)
+        arg = choice(value) if isinstance(value, tuple) else value
+
+        # Change the global dictionary as well for alive testing
+        ps_thread = ps_threads[sound_type] = Thread(target=playsound, args=(str(arg),))
+        ps_thread.start()
 
 
 class Map(Effect):
@@ -267,25 +294,33 @@ class GameController(Scene):
             speech = None
             recognised = False  # Flag for if the key code is recognised
 
+            if key_code == ord("|"):  # debug skip
+                self.tagged_walls = {}
+                raise exceptions.EnterLevel(self.level + 1)
+
             # Iterate over the mappings, check to see if the key_code is
             # a movement or tag trigger key, then perform actions accordingly.
             for dm_mapping in DIRECTIONAL_MANEUVER_MAPPINGS:
                 if key_code in dm_mapping["movement_trigger_keys"]:
-                    if (
-                            self.cast_ray(dm_mapping["raycast_direction"])
-                            == GameController.EMPTY_SPACE
-                    ):
+                    collision = self.cast_ray(dm_mapping["raycast_direction"])
+
+                    if collision == GameController.EMPTY_SPACE:
+                        ps("footsteps")
+
                         axis, move = dm_mapping["map_movement"]
                         # Using setattr and getattr for dynamic attribute assignment
                         attr = (self.map, f"player_{axis}")
                         setattr(*attr, getattr(*attr) + move)
+                    elif collision in GameController.WALL:
+                        ps("wall_collision")
 
                     recognised = True
                     break
 
                 if key_code in dm_mapping["tag_trigger_keys"]:
-                    collision = self.cast_ray(dm_mapping["raycast_direction"])
+                    ps("tag")
 
+                    collision = self.cast_ray(dm_mapping["raycast_direction"])
                     if collision in GameController.WALL:
                         speech = GameController.SPEECH[key_code]
                     # If not colliding with a correct wall, assign False,
