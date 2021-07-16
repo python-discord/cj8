@@ -6,9 +6,11 @@ class GameTransition(Exception):
 
 class EnterLevel(GameTransition):
     """Raised when user starts the game"""
+    max_level = 0
 
     def __init__(self, level: int):
         self.level = level
+        EnterLevel.max_level = max(self.level, EnterLevel.max_level)
 
 
 class LevelSelector(GameTransition):

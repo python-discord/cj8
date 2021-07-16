@@ -24,7 +24,7 @@ def play_scenes(screen: Screen, scenes: Scenes, ih: Callable) -> Tuple[Scenes, C
         # If "scenes" is a function, return that original function on resize
         returned_scenes = scenes
         if callable(scenes):
-            scenes: List[Scene] = scenes(screen)
+            scenes = [scenes(screen)]
 
         try:
             # Update old effects to have new screen variable
@@ -45,8 +45,19 @@ def play_scenes(screen: Screen, scenes: Scenes, ih: Callable) -> Tuple[Scenes, C
                 ih = game_IH
             elif isinstance(e, exceptions.Title):
                 # Remember - unless next scene is a level, set "scenes" to a function (not a scene)
-                scenes = mp.title
-                ih = mp.title_IH
+                scenes = [mp.Title(screen)]
+                ih = mp.default_IH
+            elif isinstance(e, exceptions.LevelSelector):
+                scenes = [mp.LevelSelector(screen)]
+                ih = mp.default_IH
+            elif isinstance(e, exceptions.Settings):
+                scenes = [mp.Settings(screen)]
+                ih = mp.default_IH
+            elif isinstance(e, exceptions.Credits):
+                scenes = [mp.Credits(screen)]
+                ih = mp.default_IH
+            else:
+                sys.exit('wtf')
             # etc
 
         except exceptions.ExitGame:
@@ -61,8 +72,8 @@ def play_scenes(screen: Screen, scenes: Scenes, ih: Callable) -> Tuple[Scenes, C
 def main() -> None:
     """Main function."""
 
-    scenes = mp.title
-    ih = mp.title_IH
+    scenes = mp.Title
+    ih = mp.default_IH
 
     # Keep looping on resize, using whatever screen was showing at the time
     while True:
