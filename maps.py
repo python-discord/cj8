@@ -11,13 +11,10 @@ class Map:
     def __init__(self, terminal: Terminal):
         self.terminal = terminal
         self.player = 0
-        self.player_p: pymunk.Poly
         self.thinking_box = 0
         self.boxes = []
-        self.boxes_p: List[pymunk.Poly] = []
         self.targets = []
         self.platforms = []
-        self.space = physics.MySpace()
 
     def create_level1(self):
         self.player = Player(10, 26, self.terminal)
@@ -26,33 +23,32 @@ class Map:
         self.thinking_box = ThinkingBox(15, 26, self.terminal)
 
         box1 = Box(54, 21, self.terminal)
-        box1_p = self.space.add_object((54, 21), type="box")
-        self.boxes_p.append(box1_p)
         box2 = Box(70, 27, self.terminal)
-        box2_p = self.space.add_object((70, 27), type="box")
-        self.boxes_p.append(box2_p)
         self.boxes.append(box1)
         self.boxes.append(box2)
 
         platform1 = Platform(50, 23, 30, True, self.terminal)
-        self.space.add_object((50, 23), type="platform", w=30)
-        border1 = Platform(0, 29, 100, True, self.terminal)
-        self.space.add_object((0, 29), type="platform", w=100)
+        border1 = Platform(0, 30, 100, True, self.terminal)
         self.platforms.append(platform1)
         self.platforms.append(border1)
 
         target1 = Target(70, 21, self.terminal)
-        self.space.add_object((70, 22.9), type="target")
         target2 = Target(90, 27, self.terminal)
-        self.space.add_object((70, 28.9), type="target")
         self.targets.append(target1)
         self.targets.append(target2)
-
-    def sync_coords(self):
-        self.player.x, self.player.y = physics.get_position(self.player_p)
-        for i, box in enumerate(self.boxes):
-            box.x, box.y = physics.get_position(self.boxes_p[i])
     
+    def create_level2(self):
+        self.player = Player(10, 26, self.terminal)
+
+        self.thinking_box = ThinkingBox(15, 26, self.terminal)
+
+        border1 = Platform(0, 30, 100, True, self.terminal)
+        platform1 = Platform(0, 7, 20, True, self.terminal) 
+        platform2 = Platform(0, 25, 20, True, self.terminal)
+        self.platforms.append(platform1)
+        self.platforms.append(platform2)
+        self.platforms.append(border1)
+
 
     def delete(self):
         print(self.terminal.home + self.terminal.on_midnightblue + self.terminal.clear(),flush=True)
@@ -74,4 +70,3 @@ class Map:
         self.targets = []
         self.boxes = []
         self.platforms = []
-        self.space = physics.MySpace()
