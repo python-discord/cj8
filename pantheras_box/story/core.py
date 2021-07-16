@@ -5,6 +5,7 @@ import yaml
 
 from pantheras_box.backend.core import CoreBackend
 from pantheras_box.backend.events import BaseEvent, EventTypes, StoryEvent
+from pantheras_box.file_logging import logger
 
 
 class CoreStory:
@@ -50,7 +51,14 @@ class CoreStory:
         if not level_name:
             self.current_story = None
             return
-        self.current_story = self.manifest_conf["main"][level_name]
+
+        try:
+            self.current_story = self.manifest_conf["main"][level_name]
+        except KeyError as key_error:
+            logger.warning(
+                f"[Story] No matching story for level {level_name} "
+                f"- {key_error.args}"
+            )
 
 
 if __name__ == "__main__":

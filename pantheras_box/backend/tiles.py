@@ -188,3 +188,29 @@ class RedirectorTile(BaseTile):
         """Rotate redirector tile in direction specified."""
         turn = 1 if clockwise else -1
         self.direction = CardinalDirection((self.direction.value + turn) % 4)
+
+    @property
+    def is_facing_path(self) -> bool:
+        """Return whether redirector is facing a path tile."""
+        return isinstance(
+            getattr(self.adjacent_tiles, self.direction.name),
+            PathTile,
+        )
+
+    def ensure_facing_path(self) -> None:
+        """Rotate redirector towards a path tile, if not already."""
+        if self.is_facing_path:
+            return
+
+        adj_paths = []
+        for direction in CardinalDirection:
+            if isinstance(
+                getattr(self.adjacent_tiles, direction.name),
+                PathTile,
+            ):
+                adj_paths.append(direction)
+
+        if not adj_paths:
+            raise ValueError("Cannot rotate redirector to face a path tile")
+
+        self.direction = random.choice(adj_paths)
