@@ -46,7 +46,7 @@ def user_input_cmd(fs, user, term):
         if len(user_input) == 0:
             continue
         try:
-            clear_term()
+            clear_term(term)
             # if randint(1, 30) == 1:
             #     random_test()
             entry = get_entry(user_input[0])
@@ -61,68 +61,68 @@ def start(fs, user, term):
     firstgamefile = open('first_game.txt', 'r')
     content = firstgamefile.readline()
     print_loading('Loading Operating System 40', term)
-    clear_term()
+    clear_term(term)
     if content[0] == '0':
         print_box('Intro',
-           [' You are Netsec architect working for the USA, you just managed to get into a System controlling the Atomic Program of the Iran. Originally your job was to analyze the Data and to find out if there are any files which could gives hints to imminent nuclear attacks.'])
+           [' You are Netsec architect working for the USA, you just managed to get into a System controlling the Atomic Program of the Iran. Originally your job was to analyze the Data and to find out if there are any files which could gives hints to imminent nuclear attacks.'], term)
         input()
-        clear_term()
+        clear_term(term)
         print_box('Intro',
-           [' You realise that there wil be an stealth launch attack very soon, it is targeted at Europe. You will not have enough time to contact the European agency. Your only chance to stop this is to deactivate it yourself.'])
+           [' You realise that there wil be an stealth launch attack very soon, it is targeted at Europe. You will not have enough time to contact the European agency. Your only chance to stop this is to deactivate it yourself.'], term)
         input()
-        clear_term()
+        clear_term(term)
         print_box('Intro',
-           [' The system has a built in artificial intelligence built to stop intruders. It will work against you and try to stop you. You will need to hack this system and gain root access and shut down the nuclear launch so that you have enough time to warn the EA.'])
+           [' The system has a built in artificial intelligence built to stop intruders. It will work against you and try to stop you. You will need to hack this system and gain root access and shut down the nuclear launch so that you have enough time to warn the EA.'], term)
         input()
-        clear_term()
+        clear_term(term)
         print_box('Intro',
                 ['Booting OS drive...',
                  '',
                  '',
                  '',
-                 ''])
+                 ''], term)
         sleep(0.5)
-        clear_term()
+        clear_term(term)
         print_box('Intro',
                   ['Booting OS drive... COMPLETE',
                    'Securing connection...',
                    '',
                    '',
-                   ''])
+                   ''], term)
         sleep(0.5)
-        clear_term()
+        clear_term(term)
         print_box('Intro',
                   ['Booting OS drive... COMPLETE',
                    'Securing Connection...COMPLETE',
                    'Clearing Entry Logs...',
                    '',
-                   ''])
+                   ''], term)
         sleep(0.5)
-        clear_term()
+        clear_term(term)
         print_box('Intro',
                   ['Booting OS drive... COMPLETE',
                    'Securing Connection...COMPLETE',
                    'Clearing Entry Logs...COMPLETE',
                    'INITIALIZING ANTI-THREAT AI...',
-                   ''])
+                   ''], term)
         sleep(0.5)
-        clear_term()
+        clear_term(term)
         print_box('Intro',
                   ['Booting OS drive... COMPLETE',
                    'Securing Connection...COMPLETE',
                    'Clearing Entry Logs...COMPLETE',
                    'INITIALIZING ANTI-THREAT AI...COMPLETE',
-                   ''])
+                   ''], term)
         sleep(0.5)
-        clear_term()
+        clear_term(term)
         print_box('Intro',
                   ['Booting OS drive... COMPLETE',
                    'Securing Connection...COMPLETE',
                    'Clearing Entry Logs...COMPLETE',
                    'INITIALIZING ANTI-THREAT AI...COMPLETE',
-                   'Welcome operator. Press Enter to coninue'])
+                   'Welcome operator. Press Enter to coninue'], term)
         input()
-        clear_term()
+        clear_term(term)
         echo('This is the file tree, here, you can see every file in the operating system!')
         print_tree("System", fs, user)
         echo('First, type "help" in the console to see all of the commands you can use!')
@@ -131,12 +131,12 @@ def start(fs, user, term):
             firstgamefile.truncate()
             firstgamefile.write('1')
     else:
-        print_box('Welcome Back', ['', 'Your Game-State was loaded again! ', ''])
+        print_box('Welcome Back', ['', 'Your Game-State was loaded again! ', ''], term)
 
 
 def main():
     global fs
-    # start(fs, ROOT, term)
+    start(fs, ROOT, term)
     clear_term(term)
     user_input_cmd(copy(fs), login(Users, term), term)
 

@@ -639,7 +639,7 @@ def tutorial(user_input: Optional(int, None)):
                         "cd - will let you move into a new directorly",
                         "dir - will let you see a list of directories you can cd into",
                         "search (input) - lets you search the operating system for specific files."
-        ])
+        ], term)
     else:
         if user_input == 2:
             print_box("tutorial", [
@@ -652,7 +652,7 @@ def tutorial(user_input: Optional(int, None)):
             "touch (filename) - creates a new file",
             "mkdir (name) - makes a new directory in current path",
             "help - will list all commands",
-            "help (command name) - shows the inputs in the command and explains it"])
+            "help (command name) - shows the inputs in the command and explains it"], term)
         elif user_input == 3:
             print_box("tutorial", [
             "help 3: hacking (3/4)",
@@ -666,14 +666,14 @@ def tutorial(user_input: Optional(int, None)):
             "ipscan (ip)- scans a specific ip to find out more information",
             "portscan - lists open ports",
             "portscan (port id) - scans port to find out more information",
-            "morse (code) - translates morse code from 1 and 0 to english"])
+            "morse (code) - translates morse code from 1 and 0 to english"], term)
         else:
             print_box("tutorial", [
             "help 4: advanced (4/4)",
             "---------------------",
             "logs - lets you track actions performed on the operating system",
             "rm (name) - remove files or directories (warning: no way to revert)",
-            "cp - lets you copy a file"])
+            "cp - lets you copy a file"], term)
 
 
 
