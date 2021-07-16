@@ -315,7 +315,7 @@ def portscanner(port: Optional(int, None), fs, user):
             print_box("PortScanner", [f"Port {port} not found in network"], term)
 
     else:
-        print_loading("Scanning network for ports")
+        print_loading("Scanning network for ports", '2')
         print_this = ["Found Ports in network: "]
         for p in ports:
             print_this.append(f"{p}/TCP [State: open]")

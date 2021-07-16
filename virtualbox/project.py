@@ -11,11 +11,17 @@ from copy import copy
 from fs.fs_dir import Dir
 from playsound import playsound
 from blessed import Terminal
+import threading
 
-#Music: Mire. - Bury
-# while True:
-#     playsound('music.mp3', block=False)
-#     sleep(235.55)
+
+def playbgm():
+    playsound('music/bgm_part01.mp3', block=False)
+    sleep(40)
+    while True:
+        playsound('music/bgm_part02.mp3', block=False)
+        sleep(16)
+
+
 
 
 # file system imports
@@ -142,4 +148,12 @@ def main():
 
 
 if __name__ == "__main__":
+    t1 = threading.Thread(target=main)
+    t2 = threading.Thread(target=playbgm)
+    t1.start()
+    t2.start()
     main()
+
+
+
+
