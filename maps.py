@@ -1,7 +1,9 @@
 from typing import List
+
 from blessed import Terminal
 
 import physics2
+import sprites
 from sprites import Box, Platform, Player, Target, ThinkingBox
 
 PLAYER_W = 4
@@ -23,7 +25,7 @@ class Map:
         self.boxes_rect: List[physics2.Object] = []
         self.targets = []
         self.platforms = []
-        self.space = physics2.Space(100, 30, gravity=10, fps=60)
+        self.space = physics2.Space(100, 30, gravity=10)
 
     def create_level1(self):
         self.player = Player(10, 26, self.terminal)

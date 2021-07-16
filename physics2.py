@@ -29,11 +29,10 @@ class Space:
     platforms: List[Object] = []
     player_on_ground = False
 
-    def __init__(self, w: int, h: int, gravity: int, fps: int):
+    def __init__(self, w: int, h: int, gravity: int):
         self.w = w
         self.h = h
         self.gravity = gravity
-        self.fps = fps
 
     def check_collisions(self) -> List[Tuple[Object, Any, int]]:
         collisions = []
@@ -176,7 +175,7 @@ class Space:
         if key == "left":
             player.left += 1
 
-    def step(self):
+    def step(self, fps: int):
         self.player_on_ground = False
 
         collisions = self.check_collisions()
@@ -184,13 +183,13 @@ class Space:
 
         # applying gravity to dynamic objects
         for object in (self.players + self.boxes):
-            object.speed[1] += (self.gravity / self.fps)
+            object.speed[1] += (self.gravity / fps)
 
         # moving objects
         dynamic_objects = self.players + self.boxes
         for object in dynamic_objects:
-            new_x = object.topleft[0] + object.speed[0] * (1 / self.fps)
-            new_y = object.topleft[1] + object.speed[1] * (1 / self.fps)
+            new_x = object.topleft[0] + object.speed[0] * (1 / fps)
+            new_y = object.topleft[1] + object.speed[1] * (1 / fps)
             object.topleft = new_x, new_y
 
     def reset(self):
