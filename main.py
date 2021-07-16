@@ -30,17 +30,20 @@ with term.fullscreen(), term.cbreak(), term.hidden_cursor():
 
         if state.update_board:
             working_space_location = convert_to_space_location(state.user_select_space)
+            subgrid_number = str(state.user_select_subgrid)
+            subgrid = board.collect_subgrid(subgrid_number)
             if state.player_active == 1:
-                board.collect_subgrid(str(state.user_select_subgrid))[
-                    working_space_location[0], working_space_location[1]
-                ] = "X"
+                subgrid[working_space_location[0], working_space_location[1]] = "X"
             elif state.player_active == 2:
-                board.collect_subgrid(str(state.user_select_subgrid))[
-                    working_space_location[0], working_space_location[1]
-                ] = "O"
+                subgrid[working_space_location[0], working_space_location[1]] = "O"
 
             state.change_player()
-            board.draw_board(term)
+            if board.check_grid_victory(subgrid) == "X":
+                board.redraw_subgrid(term, subgrid, subgrid_number, term.green, "X")
+            elif board.check_grid_victory(subgrid) == "O":
+                board.redraw_subgrid(term, subgrid, subgrid_number, term.green, "O")
+            else:
+                board.redraw_subgrid(term, subgrid, subgrid_number, term.green, "None")
 
             state.update_board = False
             # TODO handle logic for next grid below is a placeholder *this may be good enough
