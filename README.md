@@ -12,11 +12,11 @@ Panthera's box can be installed and run using two different methods:
 
 1. Install with `pip`:
 
-    1.1a `pip install .` if the repository has been cloned to your system
+    1.1a `pip install .` (Local)
 
     or
 
-    1.1b `pip install git+https://github.com/Willd14469/cj8-patient-panthers`
+    1.1b `pip install git+https://github.com/Willd14469/cj8-patient-panthers` (Git)
 
 This will install the game as the package `pantheras_box`.
 
@@ -24,7 +24,9 @@ This will install the game as the package `pantheras_box`.
 
 ### Running without installing as a package
 
-1. `python main.py` in the root directory of the repository will also run the game.
+1. Install dependencies: `pip install -r dev-requirements_[win|unix].txt`
+
+2. Run the game: `python main.py`
 
 ## Game Guide
 
