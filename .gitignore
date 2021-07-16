@@ -32,3 +32,6 @@ build/
 .vscode/
 # MacOS
 .DS_Store
+
+#notes to self
+test/*
