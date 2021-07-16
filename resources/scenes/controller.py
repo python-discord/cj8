@@ -103,10 +103,11 @@ class Map(Effect):
                 self.player_y = i
                 self.map[i] = line.replace('@', str(game_level + 1))
 
-        self.vision = 10  # will have a way to change this later
+        self.vision = 7  # will have a way to change this later
+
         self.end_frame = float('inf')  # Game finishes after getting to this frame
         # The Screen class has a frame counter but it only
-        # updates when the screen changes so it wont work as a way
+        # updates when the screen changes so it won't work as a way
         # to finish the game
         self.cur_frame = 0
 
@@ -337,7 +338,6 @@ class GameController(Scene):
                 self.map.end_frame = self.map.cur_frame + 60
             elif check == GameController.WRONG_TAGS:
                 self.speak("Hmm... I don't think this is right.")
-                self.tagged_walls = {}
             else:
                 if speech is not None:
                     self.speak(speech)
