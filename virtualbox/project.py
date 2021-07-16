@@ -1,14 +1,16 @@
 from functions.command_functions import random_test, get_entry
-from functions.blessed_functions import print_tree, clear_term, printhelp_first, print_box, print_loading
+from functions.blessed_functions import print_tree, clear_term, echo, print_box, print_loading, request
 from random import randint
 from time import sleep
 from users.user import User, ROOT
 from users.uid import Uidspace
+from users.login import login 
 from exceptions import CannotFullFillFunction
 from config import START_PATH
 from copy import copy
 from fs.fs_dir import Dir
 from playsound import playsound
+from blessed import Terminal
 
 #Music: Mire. - Bury
 # while True:
@@ -24,6 +26,10 @@ users_uid_space = Uidspace(1)
 
 # User
 Users = User.loadUsers(ROOT, fs, users_uid_space)
+Users[ROOT.name] = ROOT
+
+# Term
+term = Terminal()
 
 
 def ProcessArgs(functionArgs, argsDicit):
@@ -34,9 +40,9 @@ def ProcessArgs(functionArgs, argsDicit):
 
 
 # COMMAND MANAGER
-def user_input_cmd(fs, user):
+def user_input_cmd(fs, user, term):
     while True:
-        user_input = input(">>>  ").strip().split()
+        user_input = request(">>>  ", term).strip().split()
         if len(user_input) == 0:
             continue
         try:
@@ -49,10 +55,12 @@ def user_input_cmd(fs, user):
             print(e)
 
 
-def start(fs, user):
+
+
+def start(fs, user, term):
     firstgamefile = open('first_game.txt', 'r')
     content = firstgamefile.readline()
-    print_loading('Loading Operating System ', '40')
+    print_loading('Loading Operating System 40', term)
     clear_term()
     if content[0] == '0':
         print_box('Intro',
@@ -115,11 +123,10 @@ def start(fs, user):
                    'Welcome operator. Press Enter to coninue'])
         input()
         clear_term()
-        printhelp_first('This is the file tree, here, you can see every file in the operating system')
+        echo('This is the file tree, here, you can see every file in the operating system!')
         print_tree("System", fs, user)
-        printhelp_first('First, type "help" in the console to see all of the commands you can use')
-        printhelp_first('If you would like a tutorial type "tutorial" or "t"')
-
+        echo('First, type "help" in the console to see all of the commands you can use!')
+        echo('If you would like a tutorial type "tutorial" or "t"')
         with open('first_game.txt', 'w') as firstgamefile:
             firstgamefile.truncate()
             firstgamefile.write('1')
@@ -127,11 +134,11 @@ def start(fs, user):
         print_box('Welcome Back', ['', 'Your Game-State was loaded again! ', ''])
 
 
-
 def main():
     global fs
-    start(fs, ROOT)
-    user_input_cmd(copy(fs), ROOT)
+    # start(fs, ROOT, term)
+    clear_term(term)
+    user_input_cmd(copy(fs), login(Users, term), term)
 
 
 if __name__ == "__main__":

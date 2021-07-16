@@ -1,4 +1,4 @@
-from .blessed_functions import print_tree, clear_term, print_box, print_loading
+from .blessed_functions import print_tree, clear_term, print_box, print_loading, echo, request
 from .generalfunctions import inAny
 from virtualbox.argssystem.functions import expand_args
 from virtualbox.argssystem.classes import Keyword, Optional, Flag
@@ -58,17 +58,17 @@ def get_command_doc(name):
 def add_failure(value):
     global failed_tasks
     failed_tasks += value
-    print(f"DEBUG: failues: {failed_tasks}")
+    echo(f"DEBUG: failues: {failed_tasks}")
     OSlog.append(f"SECURITY AI: became more aware of unknown user,")
 
 
-@add_function(("ls", "dir"), "fs", "user")
-def ls(fs, user):
+@add_function(("ls", "dir"), "fs", "user", "term")
+def ls(fs, user, term):
     """ls
     ls - list files and directories in current directory
     [EXTEND]
     """
-    print_box("ls", fs.stringList(user))
+    print_box("ls", fs.stringList(user), term)
 
 
 def random_test():
@@ -96,34 +96,34 @@ def random_test():
             """                       |:  ::::.       ::' """,
             """                       |:  ::::::    ,::' """
             ])
-    print("enter animal above...")
-    user_input = input(">>>  ")
+    echo("enter animal above...")
+    user_input = request(">>>  ")
     if user_input.lower() == "dog":
-        print("correct")
+        echo("correct")
         add_failure(5)
     else:
-        print("incorrect")
-    clear_term()
+        echo("incorrect")
+    clear_term(term)
 
 
-@add_function(("cd", ), 'user_input', "fs", "user")
+@add_function(("cd", ), 'user_input', "fs", "user", "term")
 @expand_args(0, "path")
-def cd(path: str, fs, user):
+def cd(path: str, fs, user, term):
     """cd [path:string]
     [EXTEND]
     cd - change directory to specified path
     """
     fs.copy(fs.getDir(user, path.split("/")))
-    print_box("getdir", fs.stringList(user))
+    print_box("getdir", fs.stringList(user), term)
 
 
-@add_function(("tree", ), 'fs', 'user')
-def dir_cat(fs, user):
+@add_function(("tree", ), 'fs', 'user', "term")
+def dir_cat(fs, user, term):
     """dir
     [EXTEND]
     dir = print file structure
     """
-    print_tree("dir", fs, user)
+    print_tree("dir", fs, user, term)
 
 
 @add_function(("mkdir", "makedirectory"), 'user_input', 'fs', 'user')
@@ -180,22 +180,22 @@ def mv(from_path: str, to_path: str, fs, user):
     fs.mv(user, from_path.split("/"), to_path.split("/"))
 
 
-@add_function(("help", "h"), "user_input")
-@expand_args(0, "name", "extend")
-def help_function(name: Optional(str, None), extend: Flag(True) = False):
-    """help [function:string] [extend if present print more detailed help]
+@add_function(("help", "h"), "user_input", "term")
+@expand_args(0, "name", "donotextend")
+def help_function(name: Optional(str, None), term, donotextend: Flag(False) = True):
+    """help [function:string] [donotextend if present print less detailed help]
      [EXTEND]
      help - hymmm i wonder what it does?
      """
     if name is None:
-        print_box("commands", user_commands.keys())
+        print_box("commands", user_commands.keys(), term)
         return
 
     to_print = get_command_doc(name).split("[EXTEND]")
-    print_box('helper', to_print[0].split("\n") )
+    print_box('helper', to_print[0].split("\n"), term)
 
-    if extend:
-        print_box('helper', to_print[1].strip())
+    if donotextend:
+        print_box('helper', to_print[1].strip().split('\n'), term)
 
 
 @add_function(("encrypt", "enc"), "user_input", "fs", "user")
@@ -208,14 +208,14 @@ def user_encrypt(file: str, password: encode, fs, user, mode: Keyword(int) = 2):
     fs.getFile(user, file.split("/")).encrypt(user, password, mode)
 
 
-@add_function(("encryptword", "encword"), "user_input")
+@add_function(("encryptword", "encword"), "user_input", 'term')
 @expand_args(0, "phrashe", "password", "mode")
-def encryptword(phrashe: encode, password: encode, mode: Keyword(int) = 2):
+def encryptword(phrashe: encode, password: encode, term, mode: Keyword(int) = 2):
     """encrypt [phrashe:string] [password:string or int(mode 3)] [mode:int default 2]
     [EXTEND]
     encryptword - encrypts phrahse using 1 of 4 encryption algoritms and prints it back to user
     """
-    print(encrypt(phrashe, password, mode=mode))
+    echo(encrypt(phrashe, password, mode=mode), term)
 
 
 @add_function(("decrypt", "dec"), "user_input", "fs", "user")
@@ -228,24 +228,24 @@ def decrypt(file: str, password: encode, fs, user, mode: Keyword(int) = 2):
     fs.getFile(user, file.split("/")).decrypt(user, password, mode)
 
 
-@add_function(("decryptread", "dread", "decread"), "user_input", "fs", "user")
+@add_function(("decryptread", "dread", "decread"), "user_input", "fs", "user", 'term')
 @expand_args(0, "file", "password", "mode")
-def decryptread(file: str, password: encode, fs, user, mode: Keyword(int) = 2):
+def decryptread(file: str, password: encode, fs, user, term, mode: Keyword(int) = 2):
     """decryptread [file:string] [password:string or int(mode 3)] [mode:int default 2]
     [EXTEND]
     decryptread - decrypts file using 1 of 4 decrytpion algorithms and prints result
     """
-    fs.getFile(user, file.split("/")).decrypt(user, password, mode)
+    print_box('decrypted', fs.getFile(user, file.split("/")).decrypt(user, password, mode), term)
 
 
-@add_function(("cat", "read"), "user_input", "fs", "user")
+@add_function(("cat", "read"), "user_input", "fs", "user", 'term')
 @expand_args(0, "file", "bin")
-def read(file: str, fs, user, bin: Flag(True) = False):
+def read(file: str, fs, user, term, bin: Flag(True) = False):
     """read [file:string] [mode:text]
     [EXTEND]
     read - reads file using binary(bin) or text(text) modes
     """
-    print_box("read", [fs.getFile(user, file.split("/")).read(user, bin)])
+    print_box("read", [fs.getFile(user, file.split("/")).read(user, bin)], term)
 
 @add_function(("write", ), "user_input", "fs", "user")
 @expand_args(0, "file", "content", "bin")
@@ -260,17 +260,17 @@ def search_back(what, walk, piervous):
     result = []
     for i in walk:
         if isinstance(i, tuple):
-            if inAny(what, i[0]):
+            if what in i[0]:
                 result.append(piervous + "/" + i[0])
             result += search_back(what, i[1], piervous + "/" + i[0])
-        elif inAny(what, i):
+        elif what in i:
             result.append(piervous + "/" + i)
     return result
 
 
-@add_function(("search", "find"), "user_input", "fs", "user")
+@add_function(("search", "find"), "user_input", "fs", "user", 'term')
 @expand_args(0, "what")
-def search(what: str, fs, user):
+def search(what: str, fs, user, term):
     """search [name:string]
     [EXTEND]
     search - searches for file that contains name in it's name
@@ -281,13 +281,14 @@ def search(what: str, fs, user):
     if len(result) == 0:
         raise NoSuchFileOrDirectory
 
-    print_box("search", result)
+    print_box("search", result, term)
 
 
-@add_function(("portscan", "nmap"), "user_input", "fs", "user")
+@add_function(("portscan", "nmap"), "user_input", "fs", "user", 'term')
 @expand_args(0, "port")
 def portscanner(port: Optional(int, None), fs, user):
-    """portscan (optional[port:int])
+    """
+    portscan (optional[port:int])
     [EXTEND]
     portscan - scans for port in network
     """
@@ -309,16 +310,16 @@ def portscanner(port: Optional(int, None), fs, user):
                 print_this = port_hint[port]
             else:
                 print_this = port_hint["no_hint"]
-            print_box("PortScanner", [f"Found port in network:", f"{port}/TCP [State: open]", print_this])
+            print_box("PortScanner", [f"Found port in network:", f"{port}/TCP [State: open]", print_this], term)
         else:
-            print_box("PortScanner", [f"Port {port} not found in network"])
+            print_box("PortScanner", [f"Port {port} not found in network"], term)
 
     else:
         print_loading("Scanning network for ports")
         print_this = ["Found Ports in network: "]
         for p in ports:
             print_this.append(f"{p}/TCP [State: open]")
-        print_box("PortScanner", print_this)
+        print_box("PortScanner", print_this, term)
 
 
 @add_function(("devresetintro", ))
@@ -344,9 +345,9 @@ def remove_vulnerabillity(vulnerability):
         pass
 
 
-@add_function(("morse", ), "user_input")
+@add_function(("morse", ), "user_input", 'term')
 @expand_args(0, "user_input")
-def morsescan(user_input: str):
+def morsescan(user_input: str, term):
     """morse [string of 0/1, separated by *]
         [EXTEND]
         morse - translates morse code
@@ -370,25 +371,25 @@ def morsescan(user_input: str):
             if new_msg[j] in morse_dict.keys():
                 dec_msg.append(morse_dict[new_msg[j]])
 
-        print_box("morsescan",["Decoded Message is: " + ''.join(dec_msg)])  # end the infinite while loop
+        print_box("morsescan",["Decoded Message is: " + ''.join(dec_msg)], term)  # end the infinite while loop
         OSlog.append(f"unknown user: Decoded Message is: " + ''.join(dec_msg) + ",")
         break
 
 
-@add_function(("vscan", ))
-def hint():
+@add_function(("vscan", ), 'term')
+def hint(term):
     """vscan
     vscan - scans for vulnerabilities in network
     [EXTEND]
     """
     global VULNERABILITIES
-    print_box("vscan",["Looking for vulnerabilities..."])
+    print_box("vscan",["Looking for vulnerabilities..."], term)
     time.sleep(3)
-    clear_term()
+    clear_term(term)
     #selects random vulnerability
     chosen_vulnerability = random.choice(VULNERABILITIES)
     #display our selected vulnerability.
-    print_box("vscan",[f"Vulnerability found: {chosen_vulnerability}"])
+    print_box("vscan",[f"Vulnerability found: {chosen_vulnerability}"], 'term')
     #removes vulnerability from the list.
     remove_vulnerabillity(chosen_vulnerability)
     #add 1 failure point.
@@ -417,7 +418,9 @@ def ipcypher(listl):
                 retstring += f'.{cyphernum}'
         lostl.append(retstring)
     return lostl
+
 # print(ipcypher(['ScanThirdIP']))
+
 
 
 def gethint():
@@ -425,12 +428,12 @@ def gethint():
     return random.choice(hints)
 
 
-@add_function(("ipsearch", ))
-def ipsearch():
+@add_function(("ipsearch", ), 'term')
+def ipsearch(term):
     """
     ipsearch
-    ipsearch - Search the system for attackable ips
     [EXTEND]
+    ipsearch - Search the system for attackable ips
     """
     hint = gethint()
     hintlist = hint.split()
@@ -439,28 +442,28 @@ def ipsearch():
         random_int = random.randint(1,2)
         for i in range(random_int):
             randip = str(f"{random.randint(100,99999)}.{random.randint(1000,9999)}.{random.randint(100,9999)}.{random.randint(1,999)}")
-            clear_term()
-            print_box('Found IP', ['Scanning:', randip, 'Not Attackable'])
+            clear_term(term)
+            print_box('Found IP', ['Scanning:', randip, 'Not Attackable'], term)
             time.sleep(0.5)
-        clear_term()
-        print_box('Found IP', ['Scanning:', item, 'Attackable'])
+        clear_term(term)
+        print_box('Found IP', ['Scanning:', item, 'Attackable'], term)
         time.sleep(0.5)
         if random_int == 1:
             randip = str(f"{random.randint(100,99999)}.{random.randint(1000,9999)}.{random.randint(100,9999)}.{random.randint(1,999)}")
-            clear_term()
-            print_box('Found IP', ['Scanning:', randip, 'Not Attackable'])
+            clear_term(term)
+            print_box('Found IP', ['Scanning:', randip, 'Not Attackable'], term)
             time.sleep(0.5)
     time.sleep(0.5)
     randip = str(f"{random.randint(100,99999)}.{random.randint(1000,9999)}.{random.randint(100,9999)}.{random.randint(1,999)}")
-    clear_term()
-    print_box('Found IP', ['Scanning:', randip, 'Not Attackable'])
+    clear_term(term)
+    print_box('Found IP', ['Scanning:', randip, 'Not Attackable'], term)
     time.sleep(1)
     printlist = []
     for item in hintlist:
         printlist.append(item)
-    clear_term()
+    clear_term(term)
     printlist.append('You can scan these IPs by using "ipscan [ip]!"')
-    print_box('Ips found:', printlist)
+    print_box('Ips found:', printlist, term)
     OSlog.append(f"unknown user: performed ip search,")
 
 
@@ -492,49 +495,134 @@ def ipscan(user_input: str):
     OSlog.append(f"unknown user: , The Ip: {ip} Can be decyphered to: {retstring},")
 
 
-@add_function(("logs", ))
-def logs():
+@add_function(("logs", ), 'term')
+def logs(term):
     """
         logs
-        logs - shows log history
         [EXTEND]
+        logs - shows log history
         """
-    print_box("LOGS", OSlog)
+    print_box("LOGS", OSlog, term)
 
 
-@add_function(("pwscan", "hashcat"))
+@add_function(("pwscan", "hashcat"), 'term')
 def passwordscan():
     """
            pwscan
+           [EXTEND}
            pwscan/hashcat - scans locally stored insecure passwords
-           [EXTEND]
     """
     pwlist = ['df23jsq', 'qsAtom5', 'LQR', "1234567", "54354fd32", "444hdFAaws", "guuf2321d"]
     all1 = list(string.ascii_letters + string.digits)
     this_will_be_stupid = []
     print_box('PasswordScanner', ['Getting Operating System...', 'Filtring FileSystem...', 'Scanning for Passwords...'])
     time.sleep(2)
-    clear_term()
+    clear_term(term)
     for item in pwlist:
         for i in range(5):
             choiceg = ''
             for _ in range(len(item)):
                 choiceg += random.choice(all1)
             for items in this_will_be_stupid:
-                print_box(items[0], items[1])
-            print_box('PasswordScanner', ['Found Password', choiceg, str('█'*i + '_'*int(5-i))])
+                print_box(items[0], items[1], term)
+            print_box('PasswordScanner', ['Found Password', choiceg, str('█'*i + '_'*int(5-i))], term)
             time.sleep(0.3)
-            clear_term()
+            clear_term(term)
         this_will_be_stupid.append(['PasswordScanner', ['Found Password', item]])
         # print_box('PasswordScanner', ['Found Password', item])
         for items in this_will_be_stupid:
-            print_box(items[0], items[1])
+            print_box(items[0], items[1], term)
         time.sleep(2)
-        clear_term()
+        clear_term(term)
     lollist = ['Found Passwords:']
     for item in pwlist:
         lollist.append(item)
-    print_box('PasswordScanner', lollist)
+    print_box('PasswordScanner', lollist, term)
+
+
+@add_function(('su', 'switchuser'), 'user_input', 'user', 'Users')
+@expand_args(0, 'user', 'password')
+def su(user: str, password: encode, me, users):
+    '''su [user:str] [password:str]
+    [EXPAND]
+    su - swtiches current user to provideduser
+    '''
+    if user in users and users[user].checkPassword(password):
+        me.copy(users[user])
+    else:
+        raise InvalidLoginOrPassword
+
+
+@add_function(('users', 'listusers'), 'Users', 'term')
+def listusers(users, term):
+    '''listusers
+    [EXPAND]
+    listusers - list system users
+    '''
+    print_box('users', users.keys(), term)
+
+
+@add_function(('chmod', 'changepermisions'), 'user_input', 'user', 'fs')
+@expand_args(0, 'path', 'up', 'op')
+def chmod(path: str, up: int, op: int, user, fs):
+    '''chadd [path: str] [userpermmisions: int] [otherspermisions: int]
+    [EXPAND]
+    chadd - sets permisions of diectory/files with specified path
+    4 = read
+    2 = write
+    1 = execute
+    '''
+    path = path.split('/')
+    fs.get(user, path).chmod(user, up, op)
+
+
+@add_function(('chadd', 'addpermisions'), 'user_input', 'user', 'fs')
+@expand_args(0, 'path', 'up', 'op')
+def chadd(path: str, up: int, op: int, user, fs):
+    '''chadd [path: str] [userpermmisions: int] [otherspermisions: int]
+    [EXPAND]
+    chadd - permorms binary or on permisions of diectory/files with specified path
+    4 = read
+    2 = write
+    1 = execute
+    '''
+    path = path.split('/')
+    fs.get(user, path).chadd(user, up, op)
+
+
+@add_function(('chmod', 'changeowner'), 'user_input', 'user', 'users', 'fs')
+@expand_args(0, 'path', 'name')
+def chown(path: str, name: str, user, users, fs):
+    '''chaown [path:str] [name:str]
+    [EXPAND]
+    chown - changes owner of file/directory to user of specified name
+    '''
+    path = path.split('/')
+    if name in users:
+        fs.get(user, path).chown(user, users[name])
+    else:
+        raise NoSuchUser(name)
+
+
+@add_function(('showp', 'shownpermisions'), 'user_input', 'fs', 'term')
+@expand_args(0, 'path')
+def showpermisions(path: str, fs, term):
+    '''showp [path:str]
+    [EXPAND]
+    showp - prints file/directory permisons
+    '''
+    path = path.split('/')
+    perms = fs.get(ROOT, path).perms()
+    echo('up: ' + str(perms[0]) + ' op: ' + str(perms[1]) + ' uid: ' + str(perms[2]), term)
+
+
+@add_function(('clear', 'cls'), 'term')
+def clear(term):
+    '''clear - clears screen
+    [EXPAND]
+    what do you expect here? thats it
+    '''
+    term_clear(term)
 
 
 @add_function(("tutorial", "t" ), "user_input")
@@ -586,6 +674,7 @@ def tutorial(user_input: Optional(int, None)):
             "logs - lets you track actions performed on the operating system",
             "rm (name) - remove files or directories (warning: no way to revert)",
             "cp - lets you copy a file"])
+
 
 
 

@@ -1,12 +1,24 @@
-from virtualbox.config import template
+from virtualbox.config import BLANK_LINES
 from time import sleep
 from random import random
-import os
-from blessed import Terminal
-term = Terminal()
-print(term.home + term.clear + term.move_y(term.height // 2))
 
-BLANK_LINES = 70
+
+def echo(args, term, **keywords):
+    print(term.green_on_black(args), **keywords, flush=True)
+
+
+def genl(term, args):
+    if len(args) != 0:
+        return args + term.move_left(len(args)) + term.move_down(1)
+    return term.move_down(1)
+
+
+def echol(term, args):
+    echo(genl(term, args), term)
+
+
+def request(args, term):
+    return input(term.green_on_black(args))
 
 
 def treat_subdir(rest, add):
@@ -24,51 +36,18 @@ def treat_subdir(rest, add):
     return result
 
 
-def printstart(arg):
-    clear_term()
-    print(term.green_on_black(arg))
+def termstart(arg, term):
+    clear_term(term)
+    echo(arg, term)
     sleep(0)  # len for each sentence
-    print(term.green_on_black("Press Enter to continue"))
-    c_input = input()
+    echo("Press Enter to continue", term)
+    request('', term)
     return
 
 
-def clear_term():
-    os.system('cls' if os.name=='nt' else 'clear')
-    # print(term.clear)
-
-
-def printhelp_first(arg):
-    print(term.green_on_black(arg))
-
-
-def print_tree(header, directory, user):
-    print_box(header, treat_subdir(directory.walk(user), ''))
+def print_tree(header, directory, user, term):
+    print_box(header, treat_subdir(directory.walk(user), ''), term)
     # "│", "─", " ┌", "┬", "┐", "├", "┼", "┤", "└", "┴", "┘"]
-
-
-def lc(char, index):
-    if len(char) <= index or len(char) == 0:
-        return "│"
-    if char[index] in ("─", "┬", "┐", "┼", "┤"  "┴", "┘"):
-        return "├"
-    return "│"
-
-
-def rc(char, index):
-    if len(char) <= index or len(char) == 0:
-        return "│"
-    if char[index] in ("─", "┌", "┬", "├", "┼", "└", "┴"):
-        return "├"
-    return "│"
-
-
-def uc(char, index):
-    if len(char) <= index or len(char) == 0:
-        return "─"
-    if char[index] in ("│", "├", "┼", "┤", "└", "┴", "┘"):
-        return "┬"
-    return "─"
 
 
 def dc(char, index):
@@ -79,23 +58,23 @@ def dc(char, index):
     return "─"
 
 
-def print_box(header, text):
+def print_box(header, text, term):
     '''
     header: string
     text: list of strings
-    To print a blank line, put a "" (empty string) or "   " (space only) in the list
+    To term a blank line, put a "" (empty string) or "   " (space only) in the list
     '''
-    print_this = str("┌─" + f" /{header}/ " + "─" * int(BLANK_LINES - 8 - len(header)) + "─┐" + "\n")
+    term_this = str("┌─" + f" /{header}/ " + "─" * int(BLANK_LINES - 8 - len(header)) + "─┐" + "\n")
     if text:
         for words in text:
             # if blank line
             if len(str.strip(words)) == 0:
-                print_this += str("│ " + " " * int(BLANK_LINES - 4) + " │" + "\n")
+                term_this += str("│ " + " " * int(BLANK_LINES - 4) + " │" + "\n")
             # if not blank line
             else:
                 # if fits in one row
                 if len(words) <= BLANK_LINES - 4:
-                    print_this += str("│ " + words + " " * int(BLANK_LINES - 4 - len(words)) + " │" + "\n")
+                    term_this += str("│ " + words + " " * int(BLANK_LINES - 4 - len(words)) + " │" + "\n")
                 # if longer than one row
                 else:
                     rows = len(words) // (BLANK_LINES - 4) + (len(words) % (BLANK_LINES - 4) != 0)
@@ -103,24 +82,27 @@ def print_box(header, text):
                     for row in range(rows):
                         # for first row of long line
                         if row == 0:
-                            print_this += str("│ " + words[startpos[row]:startpos[row + 1]] + " ┤" + "\n")
+                            term_this += str("│ " + words[startpos[row]:startpos[row + 1]] + " ┤" + "\n")
                         # for middle rows of long line
                         elif (row != 0) and (row != rows-1):
-                            print_this += str("├ " + words[startpos[row]:startpos[row + 1]] + " ┤" + "\n")
+                            term_this += str("├ " + words[startpos[row]:startpos[row + 1]] + " ┤" + "\n")
                         # for last row of long line
                         elif row == rows - 1:
-                            print_this += str("├ " + words[startpos[-2]:] + " " * int(BLANK_LINES - 4 - len(words[startpos[-2]:])) + " │" + "\n")
+                            term_this += str("├ " + words[startpos[-2]:] + " " * int(BLANK_LINES - 4 - len(words[startpos[-2]:])) + " │" + "\n")
 
-    print_this += str('└─' + f' /{header}/ ' + '─' * int(BLANK_LINES - 7 - len(header)) + '┘' + '\n')
-    print(term.green_on_black(print_this))
+    term_this += str('└─' + f' /{header}/ ' + '─' * int(BLANK_LINES - 7 - len(header)) + '┘' + '\n')
+    echo(term_this, term)
 
 
-# print_box from sirmerge
+def clear_term(term):
+    echo(term.clear, term)
 
-# def print_box(header, text):
+# term_box from sirmerge
+
+# def term_box(header, text):
 #     if len(text) == 0:
-#         print(template.format('┌', header, "", '┐'))
-#         print(template.format('└', header, "", '┘'))
+#         echo(template.format('┌', header, "", '┐'))
+#         echo(template.format('└', header, "", '┘'))
 #         return
 #
 #     max_len = max(map(len, text))
@@ -137,22 +119,20 @@ def print_box(header, text):
 #
 #     ftemplate = '{:<' + str(max_len) + '}'
 #
-#     print(template.format('┌', uc(text[0], 0), header, ushift, '┐'))
-#     print("\n".join(lc(i, 0) + ftemplate.format(i) + rc(i, -1) for i in text))
-#     print(template.format('└', dc(text[-1], 0), header, dshift, '┘'))
+#     echo(template.format('┌', uc(text[0], 0), header, ushift, '┐'))
+#     echo("\n".join(lc(i, 0) + ftemplate.format(i) + rc(i, -1) for i in text))
+#     echo(template.format('└', dc(text[-1], 0), header, dshift, '┘'))
 
 
-def print_loading(prompt, dividend):
+def print_loading(prompt, term):
     '''
     prompt: str
-    clears screen and prints a loading bar following the prompt
+    clears screen and terms a loading bar following the prompt
     symbol for loadng bar LOADING_BAR read from config
     used by portscanner in command_functions
     '''
-    print_this = prompt + " "
+    term_this = prompt + " "
     for i in range(BLANK_LINES - len(prompt)):
-        clear_term()
-        # print(term.home + term.clear + term.move_y(term.height // 2) + term.green_on_black(print_this))
-        print(term.green_on_black(print_this))
-        print_this += "█"
-        sleep(random()/int(dividend))
+        echo(term.home + term.clear + term.move_y(term.height // 2) + term.green_on_black(term_this), term)
+        # term_this += LOADING_BAR
+        sleep(random()/2)

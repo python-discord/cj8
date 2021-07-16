@@ -51,6 +51,12 @@ class User:
         uidspace.restoreUID(self.uid)
         fs.detDir(self, self.homePath + "/..").rm(self.name)
 
+    def copy(self, other):
+        self.name = other.name
+        self.homePath = other.homePath
+        self.uid = other.uid
+        self.password = other.password
+
     @passwordcheck
     def get(self, password):
         return self
@@ -65,4 +71,3 @@ class User:
 
 
 ROOT = User("root", 0, "/root", encode(""))
-
