@@ -1,7 +1,10 @@
 import math
 from typing import Any, List, Tuple
-
+import logging
 import pygame
+
+logging.basicConfig(filename="logging.txt", filemode="w", level=logging.INFO)
+debug = True
 
 COLLISION_TYPES = {"box_to_target": 0,
                    "object_to_platform": 1,
@@ -44,9 +47,13 @@ class Space:
                     item2 = rect_list[i]
                     collisions.append((item1, item2, COLLISION_TYPES[collision_type]))
 
+                    logging.info(f"{item1} collides with {item2} ({collision_type})")
+
         def check_borders(item: Object):
             if item.left < 0 or item.right > self.w or item.top < 0 or item.bottom > self.h:
                 collisions.append((item, "wall", COLLISION_TYPES["object_to_border"]))
+
+                logging.info(f"{item} collides with a border")
 
         def check_sametype(itemlist: List[Object], collision_type: str):
             for item1_i, item1 in enumerate(itemlist):
@@ -56,13 +63,23 @@ class Space:
                     if item1.colliderect(item2):
                         collisions.append((item1, item2, COLLISION_TYPES[collision_type]))
 
+                        logging.info(f"{item1}, array index: {item1_i},\
+                                      collides with a similar object ({collision_type})")
+
         for box in self.boxes:
+            if debug:
+                index = 0
+                logging.info(f"checking box{index}'s collisions")
+                index += 1
+
             check_list(box, self.targets_to_engage, "box_to_target")
             check_list(box, self.platforms, "object_to_platform")
             check_borders(box)
         check_sametype(self.boxes, "box_to_box")
 
         for player in self.players:
+            logging.info("checking player collisions")
+
             check_list(player, self.platforms, "object_to_platform")
             check_list(player, self.boxes, "player_to_box")
             check_borders(player)
@@ -85,6 +102,12 @@ class Space:
             item1 = collision[0]
             item2 = collision[1]
             collision_type = collision[2]
+
+            if debug:
+                index = 0
+                logging.info(f"resolving collision{index}, {collision}: \n"
+                             f"\t item1 stats: topleft: {item1.topleft}, speed: {item1.speed} \n"
+                             f"\t item2 stats: topleft: {item2.topleft}, speed: {item2.speed}")
 
             if collision_type == COLLISION_TYPES["box_to_target"]:
                 self.targets_to_engage.remove(item2)
@@ -163,17 +186,29 @@ class Space:
                     item1.speed[1] *= -1
                     item1.bottom = self.h
 
+            if debug:
+                logging.info(f"resolved collision{index}, {collision}: \n"
+                             f"\t item1 stats: topleft: {item1.topleft}, speed: {item1.speed} \n"
+                             f"\t item2 stats: topleft: {item2.topleft}, speed: {item2.speed}")
+                index += 1
+
     def move_player(self, player: Object, key: str):
         jump_height = 7
         jump_speed = self.gravity * math.sqrt((jump_height / self.gravity) * 2)
         if key == "up" and self.player_on_ground:
+            logging.info(f"moving player up: speed: {player.speed}")
             player.speed[1] = jump_speed * -1
+            logging.info(f"moved player up: speed: {player.speed}")
         if key == "down":
+            logging.info(f"moving player down: speed: {player.speed}")
             player.speed[1] += jump_speed
+            logging.info(f"moving player down: speed: {player.speed}")
         if key == "right":
             player.right += 1
+            logging.info(f"moved player right: topleft: {player.topleft}")
         if key == "left":
             player.left -= 1
+            logging.info(f"moved player left: topleft: {player.topleft}")
 
     def step(self, fps: int):
         self.player_on_ground = False
@@ -183,14 +218,28 @@ class Space:
 
         # applying gravity to dynamic objects
         for object in (self.players + self.boxes):
+            if debug:
+                index = 0
+                logging.info(f"applying gravity on object{index}: speed: {object.speed}")
             object.speed[1] += (self.gravity / fps)
+            if debug:
+                logging.info(f"applied gravity on object{index}: speed: {object.speed}")
+                index += 1
 
         # moving objects
         dynamic_objects = self.players + self.boxes
         for object in dynamic_objects:
+            if debug:
+                index = 0
+                logging.info(f"moving dynamic_object{index}: topleft: {object.topleft}")
+
             new_x = object.topleft[0] + object.speed[0] * (1 / fps)
             new_y = object.topleft[1] + object.speed[1] * (1 / fps)
             object.topleft = new_x, new_y
+
+            if debug:
+                logging.info(f"moved dynamic_object{index}: topleft: {object.topleft}")
+                index += 1
 
     def reset(self):
         self.targets_to_engage = []
