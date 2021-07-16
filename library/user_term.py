@@ -19,11 +19,7 @@ def convert_to_space_location(space_num: int) -> list[int]:
 
 
 def update_user_section(term: blessed.Terminal, updated_info: list[str]) -> None:
-    """To add your information to the terminal you have 3 lines with 31 spaces"""
-    for i in updated_info:
-        if len(i) > 31:
-            raise NameError("Terminal contents too big")
-
+    """To add your information to the terminal you have 4 lines with 31 spaces"""
     print(term.move_xy(0, 18))
 
     # theres a better way to do this im just too dumb to think of it atm
@@ -38,11 +34,11 @@ def update_user_section(term: blessed.Terminal, updated_info: list[str]) -> None
         updated_info += " "
 
     item: list[str] = [""] * 6
-    item[0] = "┌─term────────────────────────────┐"
+    item[0] = f"┌─{term.blue}term{term.normal}────────────────────────────┐"
     item += "\n│ " + "".join(updated_info[0]).ljust(31) + " │"
     item += "\n│ " + "".join(updated_info[1]).ljust(31) + " │"
     item += "\n│ " + "".join(updated_info[2]).ljust(31) + " │"
     item += "\n│ " + "".join(updated_info[3]).ljust(31) + " │"
-    item += "\n└(Enter to confirm)───('q' to esc)┘"
+    item += f"\n└{term.green}(Enter to confirm){term.normal}───{term.red}('q' to esc){term.normal}┘"
 
     print("".join(item))

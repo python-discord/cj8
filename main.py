@@ -28,7 +28,7 @@ with term.fullscreen(), term.cbreak(), term.hidden_cursor():
         else:
             state.user_input = str(val)
 
-        state.driver(term)
+        state.driver(term, board)
 
         if state.update_board:
             working_space_location = convert_to_space_location(state.user_select_space)

@@ -2,6 +2,9 @@ import time
 
 import blessed
 
+from library.user_term import convert_to_space_location
+
+from .board import Board
 from .user_term import update_user_section
 
 
@@ -24,14 +27,14 @@ class GameState:
         self.redraw_user_term(term)
         self.next: int = 10
 
-    def driver(self, term: blessed.Terminal) -> None:
+    def driver(self, term: blessed.Terminal, board: Board) -> None:
         """Main State Machine"""
         if self.next == 10:
             self.wait_for_ready(term)
         elif self.next == 20:
             self.update_subgrid_select(term)
         elif self.next == 30:
-            self.update_space_select(term)
+            self.update_space_select(term, board)
         else:
             pass
 
@@ -85,7 +88,7 @@ class GameState:
 
         self.redraw_user_term(term)
 
-    def update_space_select(self, term: blessed.Terminal) -> None:
+    def update_space_select(self, term: blessed.Terminal, board: Board) -> None:
         """Update the user selected space"""
         self.current = 30
 
@@ -96,12 +99,17 @@ class GameState:
                 f"| Space {self.user_select_space}"
             )
         elif self.user_input == "KEY_ENTER" and self.user_select_space != 0:
-            if self.confirm_good_move():
+            if self.confirm_good_move(board):
                 self.update_board = True  # good to place player token
+                self.confirm_entry(term)
             else:
-                pass  # TODO go to error handling and reset values
-
-            self.confirm_entry(term)
+                self.next = 30  # TODO go to error handling and reset values
+                self.term_info[
+                    1
+                ] = f"{term.red}*-That is an illegal move-*{term.normal}"
+                self.redraw_user_term(term)
+                time.sleep(1)
+                self.term_info[1] = "Select Space by entering 1-9"
 
         self.redraw_user_term(term)
 
@@ -134,13 +142,21 @@ class GameState:
         # circle back to top
         self.wait_for_ready(term)
 
-    def confirm_good_move(self) -> bool:
+    def confirm_good_move(self, board: Board) -> bool:
         """Handle the entry of a bad move"""
         # TODO need to finish this. maybe move to game logic?
         # guilty until proven innocent
         self.good_move = False
 
-        self.good_move = True
+        working_space_location = convert_to_space_location(self.user_select_space)
+        if (
+            board.collect_subgrid(str(self.user_select_subgrid - 1))[
+                working_space_location[0], working_space_location[1]
+            ]
+            == "·"
+        ):
+            self.good_move = True
+
         return self.good_move
 
     def change_player(self) -> None:
@@ -149,5 +165,3 @@ class GameState:
             self.player_active = 2
         else:
             self.player_active = 1
-
-        self.term_info[0] = f"Player {self.player_active} Active"
