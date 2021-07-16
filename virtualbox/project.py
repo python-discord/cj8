@@ -123,10 +123,10 @@ def start(fs, user, term):
                    'Welcome operator. Press Enter to coninue'], term)
         input()
         clear_term(term)
-        echo('This is the file tree, here, you can see every file in the operating system!')
+        echo('This is the file tree, here, you can see every file in the operating system!', term)
         print_tree("System", fs, user)
-        echo('First, type "help" in the console to see all of the commands you can use!')
-        echo('If you would like a tutorial type "tutorial" or "t"')
+        echo('First, type "help" in the console to see all of the commands you can use!', term)
+        echo('If you would like a tutorial type "tutorial" or "t"', term)
         with open('first_game.txt', 'w') as firstgamefile:
             firstgamefile.truncate()
             firstgamefile.write('1')
