@@ -1,16 +1,18 @@
 ![Panthera's Box Logo][logo]
 
-[logo]: img/PantherasBox.png "Logo Title Text 2"
+[logo]: img/PantherasBox.png "Panthera's Box"
 
-Panthera's Box is a Terminal based game about putting everything that has escaped the box back in.
+Panthera's Box is a terminal-based game about putting everything that has escaped the box back in.
 
 ## Installation & Running
 
-Pantheras box can be installed and run by 2 different methods.
+Panthera's box can be installed and run using two different methods:
 
-1. Installing as a package.
+### Installing as a package
 
-    1.1a `pip install .` if the reposity has been cloned to your system
+1. Install with `pip`:
+
+    1.1a `pip install .` if the repository has been cloned to your system
 
     or
 
@@ -18,10 +20,12 @@ Pantheras box can be installed and run by 2 different methods.
 
 This will install the game as the package `pantheras_box`.
 
-2. `pantheras_box` will run the game
+2. Run the game: `pantheras_box`
 
 ### Running without installing as a package
 
-1. `python main.py` in the root directory of the game will also run the game.
+1. `python main.py` in the root directory of the repository will also run the game.
 
 ## Game Guide
+
+The game consists of a ball and sets of redirector arrows. To complete each level, guide the ball towards the goal, by rotating the arrows. Hidden story tiles are scattered throughout the maps, requiring you to take different paths.
