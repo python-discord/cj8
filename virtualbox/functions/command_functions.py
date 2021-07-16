@@ -521,12 +521,12 @@ def passwordscan(term):
     print_box('PasswordScanner', lollist, term)
 
 
-@add_function(('su', 'switchuser'), 'user_input', 'user', 'Users')
+@add_function(('login', 'switchuser'), 'user_input', 'user', 'Users')
 @expand_args(0, 'user', 'password')
 def su(user: str, password: encode, me, users):
-    '''su [user:str] [password:str]
+    '''login [user:str] [password:str]
     [EXPAND]
-    su - swtiches current user to provideduser
+    login - swtiches current user to provideduser
     '''
     if user in users and users[user].checkPassword(password):
         me.copy(users[user])
@@ -546,12 +546,12 @@ def listusers(users, term):
 @add_function(('chmod', 'changepermisions'), 'user_input', 'user', 'fs')
 @expand_args(0, 'path', 'up', 'op')
 def chmod(path: str, up: int, op: int, user, fs):
-    '''chadd [path: str] [userpermmisions: int] [otherspermisions: int]
-    [EXPAND]
-    chadd - sets permisions of diectory/files with specified path
+    '''chmod [path: str] [userpermmisions: int] [otherspermisions: int]
+    chmod - Change the access permissions of a file or directory.
     4 = read
     2 = write
     1 = execute
+    [EXPAND]
     '''
     path = path.split('/')
     fs.get(user, path).chmod(user, up, op)
@@ -571,10 +571,10 @@ def chadd(path: str, up: int, op: int, user, fs):
     fs.get(user, path).chadd(user, up, op)
 
 
-@add_function(('chmod', 'changeowner'), 'user_input', 'user', 'users', 'fs')
+@add_function(('chown', 'changeowner'), 'user_input', 'user', 'users', 'fs')
 @expand_args(0, 'path', 'name')
 def chown(path: str, name: str, user, users, fs):
-    '''chaown [path:str] [name:str]
+    '''chown [path:str] [name:str]
     [EXPAND]
     chown - changes owner of file/directory to user of specified name
     '''
@@ -585,7 +585,7 @@ def chown(path: str, name: str, user, users, fs):
         raise NoSuchUser(name)
 
 
-@add_function(('showp', 'shownpermisions'), 'user_input', 'fs', 'term')
+@add_function(('showp', 'showpermissions'), 'user_input', 'fs', 'term')
 @expand_args(0, 'path')
 def showpermisions(path: str, fs, term):
     '''showp [path:str]

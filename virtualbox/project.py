@@ -128,8 +128,10 @@ def start(fs, user, term):
         with open('first_game.txt', 'w') as firstgamefile:
             firstgamefile.truncate()
             firstgamefile.write('1')
+            echo('SYSTEM HACKED username = user, password = 1234567', term)
     else:
         print_box('Welcome Back', ['', 'Your Game-State was loaded again! ', ''], term)
+        echo('SYSTEM HACKED username = user, password = 1234567', term)
 
 
 def main():
