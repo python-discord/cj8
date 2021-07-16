@@ -1,5 +1,5 @@
 def sxor(content, element):
-    return bytearray(map(lambda x: shift(x[1], element) ^ x[0], enumerate(content)))
+    return bytearray(map(lambda x: shift(x[1], element) ^ (x[0] % 256), enumerate(content)))
 
 
 def rsxor(content, element):

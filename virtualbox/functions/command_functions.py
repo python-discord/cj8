@@ -267,8 +267,8 @@ def portscanner(port: Optional(int, None), fs, user, term):
     ports = [2, 5, 7, 12, 15, 19, 20, 22, 26, 31,
              33, 55, 62, 73, 74, 80, 81, 89, 91, 93,
              164, 224, 353, 522, 529, 634, 698, 934, 988, 996]
-    port_hint = {22: 'Scannable Ip: 3861.7679.7174.6743.61.59.77.74.65.76.81.40.57.\
-        70.61.68.25.59.59.61.75.75.33.75.38.61.77.76.74.71.70.25.76.71.69.38.61.76',
+    port_hint = {22: 'Scannable Ip: 3861.7679.7174.6743.61.59.77.74.65.76.81.40.57.'+
+        '70.61.68.25.59.59.61.75.75.33.75.38.61.77.76.74.71.70.25.76.71.69.38.61.76',
                  164: "net config decryption code: app12ut",
                  "no_hint": 'missing data',
                  7: '444.',
@@ -277,9 +277,10 @@ def portscanner(port: Optional(int, None), fs, user, term):
                  988: '01*1*111*11*0110*01*000*000*011*111*010*100*1*0*11*0110',
                  529: '4359.5770.4464.6574.60.33.40',
                  80: 'shutdown.txt = ttqrsfll',
-                 91: "shutdown code = meeting transcript word (6+7+10+11)"}
+                 91: "shutdown code = meeting transcript word (6+7+10+11)",
+                 62: 'meetingdata decrypt: zwqrt23p'}
     if port is not None:
-        print_loading(f"Scanning network for port {port}", '2')
+        print_loading(f"Scanning network for port {port}", term)
         if port in ports:
             if port in port_hint.keys():
                 print_this = port_hint[port]
@@ -288,9 +289,8 @@ def portscanner(port: Optional(int, None), fs, user, term):
             print_box("PortScanner", [f"Found port in network: {port}/TCP [State: open]", print_this], term)
         else:
             print_box("PortScanner", [f"Port {port} not found in network"], term)
-
     else:
-        print_loading("Scanning network for ports", '2')
+        print_loading("Scanning network for ports",term)
         print_this = ["Found Ports in network: "]
         for p in ports:
             print_this.append(f"{p}/TCP [State: open]")
@@ -658,7 +658,8 @@ def tutorial(user_input: Optional(int, None), term):
 @add_function(("shutdown", ), "user_input", "term", 'user')
 @expand_args(0, "user_input")
 def shutdown(user_input: str, term, user):
-    if user_input == "AtomicProgramIranShutdown" and user.uid == 0:
+    print(user.uid)
+    if user_input == "CODEREDATOMNANO" and user.uid == 0:
         print_box("SHUTDOWN", ["PRESS ENTER TO INITIATE SHUTDOWN"], term)
         input()
         print_box("SHUTDOWN", ["SHUTDOWN CONFIRMED",
