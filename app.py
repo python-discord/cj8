@@ -95,7 +95,7 @@ def main() -> None:
 
     start_screen()
 
-    with Live(layout, refresh_per_second=10, screen=True):  # True prevents re-render
+    with Live(layout, refresh_per_second=10, screen=False):  # True prevents re-render
         while game_resources.player.playing:
             run_game(layout, game_resources, information)
         end_screen(layout)

@@ -1,6 +1,5 @@
 from random import randint
 
-from src.resources.entities.character import Character
 from src.resources.entities.level import Level
 
 from .Enemy import Enemy
@@ -26,16 +25,8 @@ class EnemyManager:
                 enemy = Enemy(aggro_radius=3, x=x, y=y, symbol='^')
                 self.enemy_list.append(enemy)
 
-    def collisions_with_player(self, player: Character) -> bool:
-        """Checks if player collided with enemy, returns losing object"""
-        for enemy in self.enemy_list:
-            if (enemy.x, enemy.y) == (player.x, player.y) and (enemy < player):
-                return enemy
-            elif (enemy.x, enemy.y) == (player.x, player.y) and ((enemy > player) or (player.color == "bold white")):
-                return player
-        return 'draw'
-
     def remove_enemy(self, enemy: type) -> None:
         """Replace enemy with symbol"""
         self.enemies_down += 1
-        self.enemy_list.pop(self.enemy_list.index(enemy))
+        self.enemy_list.remove(enemy)
+        self.level.board[enemy.y][enemy.x] = enemy.ground_symbol

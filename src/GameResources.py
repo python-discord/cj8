@@ -27,7 +27,7 @@ class GameResources:
         self.collected_items = []
 
         self.enemy_manager = EnemyManager(self.level)
-        self.enemy_manager.spawn_random_enemies(self.player.x, self.player.y, 0)
+        self.enemy_manager.spawn_random_enemies(self.player.x, self.player.y, 5)
         self.testing = testing
 
     def update(self, bless: bool) -> None:
@@ -53,6 +53,8 @@ class GameResources:
 
     def update_player(self, bless: bool) -> None:
         """Gets players position and updates location"""
+        if self.player.health <= 0:
+            self.player.playing = False
         if bless:
             self.player.update()
         else:
@@ -77,23 +79,35 @@ class GameResources:
         """
         for enemy in self.enemy_manager.enemy_list:
             if enemy.is_in_radius(self.player.x, self.player.y):
-                enemy.follow(self.testing)
+                if self.player.color == "bold white":
+                    enemy.follow(self.testing)
+                elif enemy > self.player:
+                    enemy.follow(self.testing)
+                elif enemy < self.player:
+                    enemy.flee(self.testing)
+                else:
+                    enemy.mill()
             else:
                 enemy.mill()
-            self.update_entity(enemy)
 
-        result = self.enemy_manager.collisions_with_player(self.player)
-        if isinstance(result, Character):
-            self.player.playing = False
-        else:
-            if str(result) != 'draw':
-                self.enemy_manager.remove_enemy(result)
+            if not self.is_adjacent(enemy, self.player):
+                self.update_entity(enemy)
+
+            if self.is_adjacent(self.player, enemy):
+                result = self.get_combat_result(self.player, enemy)
+                if result == "win":
+                    self.enemy_manager.remove_enemy(enemy)
+                elif result == "loose":
+                    self.player.health -= 10
+                else:
+                    pass
 
     def update_color_changer(self) -> None:
         """Checks all the color changers, if the player is on that spot change player color"""
         for color_changer in self.level.color_changers:
             overlapping = self.overlaps(color_changer, self.player)
             if overlapping:
+                self.player.color = color_changer.color
                 self.player.symbol.stylize(color_changer.color)
 
     def update_items(self) -> None:
@@ -153,6 +167,26 @@ class GameResources:
         """Draws a single entity onto the level"""
         self.level.board[entity.y][entity.x] = entity.symbol
 
+    def is_adjacent(self, first_entity: AbstractDungeonEntity, second_entity: AbstractDungeonEntity) -> bool:
+        """Returns true if player is next to enemy"""
+        if first_entity.x + 1 == second_entity.x and first_entity.y == second_entity.y:
+            return True
+        if first_entity.x - 1 == second_entity.x and first_entity.y == second_entity.y:
+            return True
+        if first_entity.y + 1 == second_entity.y and first_entity.x == second_entity.x:
+            return True
+        if first_entity.y - 1 == second_entity.y and first_entity.x == second_entity.x:
+            return True
+        return False
+
     def overlaps(self, first_entity: AbstractDungeonEntity, second_entity: AbstractDungeonEntity) -> bool:
         """Checks if two entities overlap"""
         return (first_entity.y, first_entity.x) == (second_entity.y, second_entity.x)
+
+    def get_combat_result(self, player: Character, enemy: AbstractDungeonEntity) -> str:
+        """Checks if player collided with enemy, returns losing object"""
+        if enemy < player:
+            return "win"
+        elif enemy > player or player.color == "bold white":
+            return "loose"
+        return 'draw'

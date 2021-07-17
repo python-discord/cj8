@@ -41,16 +41,30 @@ class Enemy(AbstractDungeonEntity):
                     move_y = 1
                 if self.y > y:
                     move_y = -1
-            else:
-                # like a pawn, this can strike diagonally if the x and y abs values are the same
+
+            # move in that direction
+            self.new_positions["x"] = move_x
+            self.new_positions["y"] = move_y
+
+    def flee(self, testing: bool = False) -> None:
+        """Enemy movement function to chase player"""
+        if not testing:
+            x = self.target['x']
+            y = self.target['y']
+            move_x = 0
+            move_y = 0
+
+            # find direction
+            if abs(x - self.x) > abs(y - self.y):
                 if self.x < x:
-                    move_x = 1
-                if self.x > x:
                     move_x = -1
+                if self.x > x:
+                    move_x = 1
+            elif abs(x - self.x) < abs(y - self.y):
                 if self.y < y:
-                    move_y = 1
-                if self.y > y:
                     move_y = -1
+                if self.y > y:
+                    move_y = 1
 
             # move in that direction
             self.new_positions["x"] = move_x
