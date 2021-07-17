@@ -25,29 +25,29 @@ from resources.sprites.maps import LEVELS
 # general approach.
 DIRECTIONAL_MANEUVER_MAPPINGS = [
     {
-        "movement_trigger_keys": (Screen.KEY_LEFT,),
-        "tag_trigger_keys": (ord("a"),),
+        "movement_trigger_keys": (Screen.KEY_LEFT, ord("a")),
+        "tag_trigger_keys": (ord("A"),),
         "wall": "l",
         "raycast_direction": (-1, 0),
         "map_movement": ("x", -1),
     },
     {
-        "movement_trigger_keys": (Screen.KEY_RIGHT,),
-        "tag_trigger_keys": (ord("d"),),
+        "movement_trigger_keys": (Screen.KEY_RIGHT, ord("d")),
+        "tag_trigger_keys": (ord("D"),),
         "wall": "r",
         "raycast_direction": (+1, 0),
         "map_movement": ("x", +1),
     },
     {
-        "movement_trigger_keys": (Screen.KEY_UP,),
-        "tag_trigger_keys": (ord("w"),),
+        "movement_trigger_keys": (Screen.KEY_UP, ord("w")),
+        "tag_trigger_keys": (ord("W"),),
         "wall": "u",
         "raycast_direction": (0, -1),
         "map_movement": ("y", -1),
     },
     {
-        "movement_trigger_keys": (Screen.KEY_DOWN,),
-        "tag_trigger_keys": (ord("s"),),
+        "movement_trigger_keys": (Screen.KEY_DOWN,), ord("s"),
+        "tag_trigger_keys": (ord("S"),),
         "wall": "d",
         "raycast_direction": (0, +1),
         "map_movement": ("y", +1),
@@ -245,10 +245,10 @@ class GameController(Scene):
     SPEECH = {
         # TODO: we can implement various different speeches
         # and pick one at random
-        ord('a'): "Is this the left wall?",
-        ord('d'): "Is this the right wall?",
-        ord('w'): "Is this the upper wall?",
-        ord('s'): "Is this the lower wall?",
+        ord('A'): "Is this the left wall?",
+        ord('D'): "Is this the right wall?",
+        ord('W'): "Is this the upper wall?",
+        ord('S'): "Is this the lower wall?",
     }
 
     def __init__(self, screen: Screen, level: int):
