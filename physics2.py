@@ -29,7 +29,8 @@ class Object(pygame.Rect):
 
 
 class Space:
-    targets_to_engage: List[Object] = []
+    targets: List[Object] = []
+    targets_engaged: int = 0
     players: List[Object] = []
     boxes: List[Object] = []
     platforms: List[Object] = []
@@ -45,7 +46,7 @@ class Space:
         item = Object(x*self.upscale, y*self.upscale, w*self.upscale, h*self.upscale, upscale=self.upscale)
 
         if type == "target":
-            self.targets_to_engage.append(item)
+            self.targets.append(item)
         if type == "player":
             self.players.append(item)
         if type == "box":
@@ -90,7 +91,7 @@ class Space:
                 logging.info(f"checking box{index}'s collisions")
                 index += 1
 
-            check_list(box, self.targets_to_engage, "box_to_target")
+            check_list(box, self.targets, "box_to_target")
             check_list(box, self.platforms, "object_to_platform")
             check_borders(box)
         check_sametype(self.boxes, "box_to_box")
@@ -106,7 +107,7 @@ class Space:
         return collisions
 
     def resolve_collisions(self, collisions: List[Tuple[Object, Any, int]]):
-        def whatside(collision: Tuple[Object, Object, int], tolerance: int = 21):
+        def whatside(collision: Tuple[Object, Object, int], tolerance: int = 31):
             if abs(collision[0].top - collision[1].bottom) < tolerance:
                 return "top"
             if abs(collision[0].bottom - collision[1].top) < tolerance:
@@ -132,7 +133,7 @@ class Space:
                                  f"\t item1 stats: topleft: {item1.topleft}, speed: {item1.speed}")
 
             if collision_type == COLLISION_TYPES["box_to_target"]:
-                self.targets_to_engage.remove(item2)
+                self.targets_engaged += 1
 
             if collision_type == COLLISION_TYPES["object_to_platform"]:
                 side = whatside(collision)
@@ -234,20 +235,22 @@ class Space:
             player.speed[1] += jump_speed
             logging.info(f"moving player down: speed: {player.speed}")
         if key == "right":
-            player.right += 20
+            player.right += 30
             logging.info(f"moved player right: topleft: {player.topleft}")
         if key == "left":
-            player.left -= 20
+            player.left -= 30
             logging.info(f"moved player left: topleft: {player.topleft}")
 
     def step(self, fps: int):
         self.player_on_ground = False
+        self.targets_engaged = 0
 
         collisions = self.check_collisions()
         self.resolve_collisions(collisions)
 
+        dynamic_objects = self.players + self.boxes
         # applying gravity to dynamic objects
-        for object in (self.players + self.boxes):
+        for object in dynamic_objects:
             if debug:
                 index = 0
                 logging.info(f"applying gravity on object{index}: speed: {object.speed}")
@@ -257,7 +260,6 @@ class Space:
                 index += 1
 
         # moving objects
-        dynamic_objects = self.players + self.boxes
         for object in dynamic_objects:
             if debug:
                 index = 0
@@ -272,7 +274,7 @@ class Space:
                 index += 1
 
     def reset(self):
-        self.targets_to_engage = []
+        self.targets = []
         self.players = []
         self.boxes = []
         self.platforms = []

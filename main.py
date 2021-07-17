@@ -20,7 +20,7 @@ def main():
     with terminal.cbreak(), terminal.hidden_cursor(), terminal.fullscreen():
         val: blessed.keyboard.Keystroke = terminal.inkey(timeout=1/fps)
         while val != 'q':
-            if map.space.targets_to_engage:
+            if map.space.targets_engaged != len(map.space.targets):
                 if val.name == "KEY_UP" or val.name == "KEY_w":
                     map.space.move_player(map.player_rect, key="up")
                 if val.name == "KEY_DOWN" or val.name == "KEY_s":

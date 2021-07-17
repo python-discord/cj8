@@ -25,7 +25,7 @@ class Map:
         self.boxes_rect: List[physics2.Object] = []
         self.targets = []
         self.platforms = []
-        self.space = physics2.Space(100, 30, gravity=10, upscale=100)
+        self.space = physics2.Space(100, 30, gravity=20, upscale=100)
 
     def create_level1(self):
         self.player = Player(10, 26, self.terminal)

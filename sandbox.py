@@ -12,7 +12,8 @@ clock = pygame.time.Clock()
 space = physics2.Space(1200, 800, 100, upscale=10)
 player = space.add_object(50, 600, 100, 100, type="player")
 box = space.add_object(200, 700, 50, 50, type="box")
-platform = space.add_object(20, 750, 300, 20, type="platform")
+platform1 = space.add_object(20, 750, 300, 20, type="platform")
+platform2 = space.add_object(20, 630, 300, 20, type="platform")
 
 running = True
 while running:
@@ -36,8 +37,10 @@ while running:
     pygame.draw.rect(screen, (0, 0, 255), player_rect)
     box_rect = pygame.Rect(*box.get_position(), 50, 50)
     pygame.draw.rect(screen, (0, 0, 255), box_rect)
-    platform_rect = pygame.Rect(*platform.get_position(), 300, 20)
-    pygame.draw.rect(screen, (255, 0, 0), platform_rect)
+    platform1_rect = pygame.Rect(*platform1.get_position(), 300, 20)
+    pygame.draw.rect(screen, (255, 0, 0), platform1_rect)
+    platform2_rect = pygame.Rect(*platform2.get_position(), 300, 20)
+    pygame.draw.rect(screen, (255, 0, 0), platform2_rect)
 
     pygame.display.flip()
     space.step(60)
