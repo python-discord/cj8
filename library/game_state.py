@@ -32,7 +32,7 @@ class GameState:
         if self.next == 10:
             self.wait_for_ready(term)
         elif self.next == 20:
-            self.update_subgrid_select(term)
+            self.update_subgrid_select(term, board)
         elif self.next == 30:
             self.update_space_select(term, board)
         else:
@@ -72,7 +72,7 @@ class GameState:
 
         self.redraw_user_term(term)
 
-    def update_subgrid_select(self, term: blessed.Terminal) -> None:
+    def update_subgrid_select(self, term: blessed.Terminal, board: Board) -> None:
         """Update the user selected subgrid"""
         self.current = 20
 
@@ -81,9 +81,18 @@ class GameState:
             self.term_info[2] = f"Current: SubGrid {self.user_select_subgrid} "
 
         elif self.user_input == "KEY_ENTER" and self.user_select_subgrid != 0:
-            self.term_info[1] = "Select Space by entering 1-9"
-            self.confirm_entry(term)
-            self.next = 30
+            if self.confirm_good_subgrid(board):
+                self.term_info[1] = "Select Space by entering 1-9"
+                self.confirm_entry(term)
+                self.next = 30
+            else:
+                self.next = 20
+                self.term_info[
+                    1
+                ] = f"{term.red}{term.bold}*-That is an illegal move-*{term.normal}"
+                self.redraw_user_term(term)
+                time.sleep(1)
+                self.term_info[1] = "Select Subgrid by entering 1-9"
 
         self.redraw_user_term(term)
 
@@ -113,8 +122,8 @@ class GameState:
         self.redraw_user_term(term)
 
         if self.update_board:
-            time.sleep(1)
-            self.end_of_turn(term)
+            time.sleep(2)
+            self.end_of_turn(term, board)
 
     def confirm_entry(self, term: blessed.Terminal) -> None:
         """Confirm user pressed enter"""
@@ -131,15 +140,49 @@ class GameState:
 
         self.redraw_user_term(term)
 
-    def end_of_turn(self, term: blessed.Terminal) -> None:
+    def end_of_turn(self, term: blessed.Terminal, board: Board) -> None:
         """End of Turn"""
         self.current = 40
 
-        # update board
-        self.update_board = True
+        # Handle end of turn
+        working_space_location = convert_to_space_location(self.user_select_space)
+        subgrid_number = str(self.user_select_subgrid)
+        subgrid = board.collect_subgrid(subgrid_number)
+        if self.player_active == 1:
+            subgrid[working_space_location[0], working_space_location[1]] = "X"
+        elif self.player_active == 2:
+            subgrid[working_space_location[0], working_space_location[1]] = "O"
 
-        # circle back to top
-        self.wait_for_ready(term)
+        self.change_player()
+        if board.check_grid_victory(subgrid) == "X":
+            board.redraw_subgrid(term, subgrid, subgrid_number, term.green, "X")
+        elif board.check_grid_victory(subgrid) == "O":
+            board.redraw_subgrid(term, subgrid, subgrid_number, term.green, "O")
+        else:
+            board.redraw_subgrid(term, subgrid, subgrid_number, term.green, "None")
+
+        # handle logic for next grid
+
+        if board.check_subboard_victory((str(self.user_select_space))) not in (
+            "X",
+            "O",
+        ):
+            self.user_select_subgrid = self.user_select_space
+            self.user_select_space = 0
+            self.term_info[2] = (
+                f"Current: SubGrid {self.user_select_subgrid} "
+                f"| Space {self.user_select_space}"
+            )
+        else:
+            self.user_select_subgrid = 0
+        self.redraw_user_term(term)
+        self.update_board = False
+
+        # circle back to top or end the game
+        if board.check_board_victory() not in ("X", "O"):
+            self.wait_for_ready(term)
+        else:
+            self.game_over(term)
 
     def confirm_good_move(self, board: Board) -> bool:
         """Handle the entry of a bad move"""
@@ -155,9 +198,25 @@ class GameState:
 
         return self.good_move
 
+    def confirm_good_subgrid(self, board: Board) -> bool:
+        """Handle the entry of a bad subgrid choice"""
+        # TODO need to finish this. maybe move to game logic?
+        # guilty until proven innocent
+        self.good_move = False
+
+        working_subgrid = board.collect_subgrid(str(self.user_select_subgrid))
+        if board.check_grid_victory(working_subgrid) not in ("X", "O"):
+            self.good_move = True
+
+        return self.good_move
+
     def change_player(self) -> None:
         """Change Player"""
         if self.player_active == 1:
             self.player_active = 2
         else:
             self.player_active = 1
+
+    def game_over(self, term: blessed.Terminal) -> None:
+        """Placeholder game over function"""
+        print("Game over!")

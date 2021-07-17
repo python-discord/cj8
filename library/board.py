@@ -21,11 +21,24 @@ class Board:
 
     def check_board_victory(self) -> typing.Optional[str]:
         """Determine if the entire board has been won, and by who."""
-        grid_states = np.array(
-            (self.check_subboard_victory(i) for i in "789456123"), dtype=np.str_
-        )
-        # This might have off ordering, TODO on testing it
-        grid_states.reshape((3, 3))
+        grid_states = np.full((3, 3), "·")
+        grid_map = {
+            1: [2, 0],
+            2: [2, 1],
+            3: [2, 2],
+            4: [1, 0],
+            5: [1, 1],
+            6: [1, 2],
+            7: [0, 0],
+            8: [0, 1],
+            9: [0, 2],
+        }
+        for i in range(1, 10):
+            working_space_location = grid_map[i]
+            grid_states[
+                working_space_location[0], working_space_location[1]
+            ] = self.check_subboard_victory(str(i))
+
         return self.check_grid_victory(grid_states)
 
     def check_subboard_victory(self, number: str) -> typing.Optional[str]:
@@ -172,7 +185,7 @@ class Board:
             )
             print(
                 term.move_x(x + 5)
-                + f"{term.on_color_rgb(0, 0, 200)}{subgrid[0, 0]} {term.normal}"
+                + f"{term.on_color_rgb(0, 0, 200)}{subgrid[1, 1]} {term.normal}"
             )
             print(
                 term.move_x(x + 3)
