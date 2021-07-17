@@ -652,17 +652,17 @@ if __name__ == "__main__":
 
                     rubik_cube = [
                         *rubik_cube[:6],
-                        rubik_cube[23],
-                        rubik_cube[14],
-                        rubik_cube[6],
-                        *rubik_cube[9:14],
-                        rubik_cube[24],
-                        rubik_cube[15],
-                        rubik_cube[7],
-                        *rubik_cube[17:23],
-                        rubik_cube[25],
-                        rubik_cube[16],
                         rubik_cube[8],
+                        rubik_cube[16],
+                        rubik_cube[25],
+                        *rubik_cube[9:14],
+                        rubik_cube[7],
+                        rubik_cube[15],
+                        rubik_cube[24],
+                        *rubik_cube[17:23],
+                        rubik_cube[6],
+                        rubik_cube[14],
+                        rubik_cube[23],
                     ]
                 elif key == KeyboardCommand.rotate_bottom_cw:
                     for i in [6, 7, 8, 14, 15, 16, 23, 24, 25]:
@@ -670,17 +670,17 @@ if __name__ == "__main__":
 
                     rubik_cube = [
                         *rubik_cube[:6],
-                        rubik_cube[8],
-                        rubik_cube[16],
-                        rubik_cube[25],
-                        *rubik_cube[9:14],
-                        rubik_cube[7],
-                        rubik_cube[15],
-                        rubik_cube[24],
-                        *rubik_cube[17:23],
-                        rubik_cube[6],
-                        rubik_cube[14],
                         rubik_cube[23],
+                        rubik_cube[14],
+                        rubik_cube[6],
+                        *rubik_cube[9:14],
+                        rubik_cube[24],
+                        rubik_cube[15],
+                        rubik_cube[7],
+                        *rubik_cube[17:23],
+                        rubik_cube[25],
+                        rubik_cube[16],
+                        rubik_cube[8],
                     ]
                 elif key == KeyboardCommand.rotate_left_ccw:
                     for i in [0, 3, 6, 9, 12, 14, 17, 20, 23]:
