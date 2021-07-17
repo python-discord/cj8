@@ -13,7 +13,6 @@ class GameState:
 
     def __init__(self, term: blessed.Terminal):
         self.current: int = 0
-        self.good_move = False
         self.save_subgrid: bool = False
         self.update_board: bool = False
         self.player_active: int = 0
@@ -84,6 +83,13 @@ class GameState:
             if self.confirm_good_subgrid(board):
                 self.term_info[1] = "Select Space by entering 1-9"
                 self.confirm_entry(term)
+                board.redraw_subgrid(
+                    term,
+                    board.collect_subgrid(str(self.user_select_subgrid)),
+                    str(self.user_select_subgrid),
+                    term.yellow,
+                    None,
+                )
                 self.next = 30
             else:
                 self.next = 20
@@ -122,7 +128,7 @@ class GameState:
         self.redraw_user_term(term)
 
         if self.update_board:
-            time.sleep(2)
+            time.sleep(1)
             self.end_of_turn(term, board)
 
     def confirm_entry(self, term: blessed.Terminal) -> None:
@@ -180,6 +186,13 @@ class GameState:
                 f"Current: SubGrid {self.user_select_subgrid} "
                 f"| Space {self.user_select_space}"
             )
+            board.redraw_subgrid(
+                term,
+                board.collect_subgrid(str(self.user_select_subgrid)),
+                str(self.user_select_subgrid),
+                term.yellow,
+                None,
+            )
         else:
             # change the subgrid to 0 to let the next player choose the subgrid
             self.user_select_subgrid = 0
@@ -196,15 +209,15 @@ class GameState:
         """Handle the entry of a bad move"""
         # TODO need to finish this. maybe move to game logic?
         # guilty until proven innocent
-        self.good_move = False
+        good_move = False
 
         working_space_location = convert_to_space_location(self.user_select_space)
         if board.collect_subgrid(str(self.user_select_subgrid))[
             working_space_location[0], working_space_location[1]
         ] not in ("X", "O"):
-            self.good_move = True
+            good_move = True
 
-        return self.good_move
+        return good_move
 
     def confirm_good_subgrid(self, board: Board) -> bool:
         """Handle the entry of a bad subgrid choice"""
