@@ -5,27 +5,27 @@ class NoSuchFileOrDirectory(Exception):
 
 class FileOrDirectoryAlreadyExist(Exception):
     def __init__(self):
-        super().__init__("file or directory already exist")
+        super().__init__("file or directory already exists")
 
 
 class NotAnDirectory(Exception):
     def __init__(self):
-        super().__init__("not an directory")
+        super().__init__("not a directory")
 
 
 class NotAnFile(Exception):
     def __init__(self):
-        super().__init__("not an file")
+        super().__init__("not a file")
 
 
 class NotAnIntiger(Exception):
     def __init__(self):
-        super().__init__("not an intiger")
+        super().__init__("not an integer")
 
 
 class PermisionDenied(Exception):
     def __init__(self):
-        super().__init__("permision denied")
+        super().__init__("permission denied")
 
 
 class NoSuchIndex(Exception):
@@ -35,27 +35,27 @@ class NoSuchIndex(Exception):
 
 class UIDAlreadyExist(Exception):
     def __init__(self):
-        super().__init__("uid already exist")
+        super().__init__("uid already exists")
 
 
 class CannotFullFillFunction(Exception):
     def __init__(self):
-        super().__init__("function argument request cannot be fullfiled!")
+        super().__init__("function argument request cannot be fullfiled")
 
 
 class CannotReadFileInTextMode(Exception):
     def __init__(self):
-        super().__init__("file content cannot be red in text mode. try binary mode insted")
+        super().__init__("file content cannot be read in text mode. try binary mode instead")
 
 
 class CommandNotFound(Exception):
     def __init__(self):
-        super().__init__("command not found!")
+        super().__init__("command not found")
 
 
 class WrongAmmountOfArguments(Exception):
     def __init__(self, reqLen, Len):
-        super().__init__("minimum required argument count is {} supplied count is {}".format(reqLen, Len))
+        super().__init__("minimum required argument count is {}. supplied count is {}".format(reqLen, Len))
 
 
 class NoSuchFlagOrOption(Exception):
@@ -75,12 +75,12 @@ class ConversionErrorMulti(Exception):
 
 class WrongKeywordUsage(Exception):
     def __init__(self, name):
-        super().__init__("bad keyword syntax! peroper keyword syntax is {}:value".format(name))
+        super().__init__("bad keyword syntax. proper keyword syntax is {}:value".format(name))
 
 
 class InvalidLoginOrPassword(Exception):
     def __init__(self):
-        super().__init__("invalid login or password! try again")
+        super().__init__("invalid login or password")
 
 
 class NoSuchUser(Exception):

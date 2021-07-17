@@ -102,7 +102,7 @@ def cd(path: str, fs, user, term, rootfs):
         fs.copy(rootfs.getDir(user, path[1:].split("/")))
     else:
         fs.copy(fs.getDir(user, path.split("/")))
-    print_box("Change Directory", fs.stringList(user), term)
+    print_box("Files", fs.stringList(user), term)
 
 
 
