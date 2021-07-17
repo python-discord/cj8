@@ -25,6 +25,8 @@ def run_game():
             map.clear_level()
             map.create_level3()
         while val != 'q':
+            val = terminal.inkey(timeout=1 / fps)
+            clock.tick(fps)
             if map.space.targets_engaged != len(map.space.targets):
                 if val.name == "KEY_UP" or val.name == "KEY_w":
                     map.space.move_player(map.player_rect, key="up")
@@ -35,22 +37,21 @@ def run_game():
                 if val.name == "KEY_RIGHT" or val.name == "KEY_d":
                     map.space.move_player(map.player_rect, key="right")
                     map.space.step(fps)
-
                 if not map.space.player_in_thinkingbox:
                     map.delete()
                     map.sync_coords()
                     map.draw()
                     map.time_left -= 1 / fps
-                clock.tick(fps)
-                val = terminal.inkey(timeout=1 / fps)
             else:
                 print(terminal.white_on_firebrick3('Well done! Level completed.'))
-                wait(3000)
+                wait(300)
                 level += 1
                 break
 
 def run_tutorial():
-    pass
+    val = terminal.inkey(timeout=1 / fps)
+    while val != 'q':
+        print(terminal.home + terminal.lightcyan_on_darkslategray + terminal.clear)
 
 def menu():
     with terminal.cbreak(), terminal.hidden_cursor(), terminal.fullscreen():
