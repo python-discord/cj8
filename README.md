@@ -5,7 +5,7 @@
 * Theme: Thinking Inside the Box
 
 "StopTheBox" is a Escape Room/Puzzle Game
-* In this game you are a network security architect working for the USA, your job is to hack into a Iranian Network and eliminate a bomb threat.
+* In this game you are a network security architect working for the USA, your job is to hack into an Iranian Network and eliminate a bomb threat.
 
 ## Theme (Thinking Inside the Box)
 This game is set in a "virtual box" a fake operating system.
