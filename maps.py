@@ -61,7 +61,7 @@ class Map:
         self.targets.append(target1)
         self.targets.append(target2)
 
-        self.time_left = 120
+        self.time_left = 70
 
     def create_level2(self):
         self.player = Player(35, 4, self.terminal)
