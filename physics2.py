@@ -106,7 +106,7 @@ class Space:
         return collisions
 
     def resolve_collisions(self, collisions: List[Tuple[Object, Any, int]]):
-        def whatside(collision: Tuple[Object, Object, int], tolerance: int = 11):
+        def whatside(collision: Tuple[Object, Object, int], tolerance: int = 21):
             if abs(collision[0].top - collision[1].bottom) < tolerance:
                 return "top"
             if abs(collision[0].bottom - collision[1].top) < tolerance:
@@ -144,7 +144,7 @@ class Space:
                     item1.speed[0] = 0
                     item1.right = item2.left
                 if side == "top":
-                    item1.speed *= -1
+                    item1.speed = [item1.speed[0], item1.speed[1]*-1]
                     item1.top = item2.bottom
                 if side == "bottom":
                     item1.speed = [0, 0]
@@ -234,10 +234,10 @@ class Space:
             player.speed[1] += jump_speed
             logging.info(f"moving player down: speed: {player.speed}")
         if key == "right":
-            player.right += 10
+            player.right += 20
             logging.info(f"moved player right: topleft: {player.topleft}")
         if key == "left":
-            player.left -= 10
+            player.left -= 20
             logging.info(f"moved player left: topleft: {player.topleft}")
 
     def step(self, fps: int):
