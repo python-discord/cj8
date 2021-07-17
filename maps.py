@@ -13,6 +13,8 @@ BOX_H = 2
 TARGET_W = 2
 TARGET_H = 2
 PLATFORM_H = 1
+THINKINGBOX_W = 8
+THINKINGBOX_H = 3
 
 
 class Map:
@@ -33,6 +35,7 @@ class Map:
         self.player_rect = player_rect
 
         self.thinking_box = ThinkingBox(15, 26, self.terminal)
+        self.space.add_object(15, 26, THINKINGBOX_W, THINKINGBOX_H, type="thinkingbox")
 
         box1 = Box(54, 21, self.terminal)
         box1_rect = self.space.add_object(54, 21, BOX_W, BOX_H, type="box")
@@ -57,17 +60,13 @@ class Map:
         self.targets.append(target1)
         self.targets.append(target2)
 
-    def sync_coords(self):
-        self.player.x, self.player.y = self.player_rect.get_position()
-        for i, box in enumerate(self.boxes):
-            box.x, box.y = self.boxes_rect[i].get_position()
-
     def create_level2(self):
         self.player = Player(35, 4, self.terminal)
         player_rect = self.space.add_object(35, 4, PLAYER_W, PLAYER_H, type="player")
         self.player_rect = player_rect
 
         self.thinking_box = ThinkingBox(20, 4, self.terminal)
+        self.space.add_object(20, 4, THINKINGBOX_W, THINKINGBOX_H, type="thinkingbox")
 
         box1 = Box(6, 5, self.terminal)
         box1_rect = self.space.add_object(6, 5, BOX_W, BOX_H, type="box")
@@ -116,6 +115,7 @@ class Map:
         self.player_rect = player_rect
 
         self.thinking_box = ThinkingBox(15, 4, self.terminal)
+        self.space.add_object(15, 4, THINKINGBOX_W, THINKINGBOX_H, type="thinkingbox")
         
         border1 = Platform(0, 29, 100, True, self.terminal)
         self.space.add_object(0, 29, 100, PLATFORM_H, type="platform")
@@ -173,10 +173,13 @@ class Map:
         self.space.add_object(90, 27, TARGET_W, TARGET_H, type="target")
         self.targets.append(target4)
 
-
-
     def delete(self):
         print(self.terminal.home + self.terminal.on_midnightblue + self.terminal.clear(), flush=True)
+
+    def sync_coords(self):
+        self.player.x, self.player.y = self.player_rect.get_position()
+        for i, box in enumerate(self.boxes):
+            box.x, box.y = self.boxes_rect[i].get_position()
 
     def draw(self):
         string = ""

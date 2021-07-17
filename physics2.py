@@ -111,7 +111,8 @@ class Space:
             check_list(player, self.platforms, "object_to_platform")
             check_list(player, self.boxes, "player_to_box")
             check_borders(player)
-            check_playerinthinking(player)
+            if self.thinkingbox:
+                check_playerinthinking(player)
         check_sametype(self.players, "player_to_player")
 
         return collisions
