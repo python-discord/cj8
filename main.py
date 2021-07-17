@@ -3,6 +3,7 @@ from os import system
 import blessed.keyboard
 from blessed import Terminal
 from pygame.time import Clock, wait
+from math import ceil
 
 from maps import Map
 
@@ -47,12 +48,15 @@ def run_game():
                         map.sync_coords()
                         map.draw()
                         map.time_left -= 1 / fps
+                        time_left = terminal.move_xy(48, 2) + terminal.lightcyan(terminal.on_midnightblue(str(int(map.time_left / 60)) + ":" + str(int(map.time_left % 60))))
+                        print(time_left)
                     else:
                         print(terminal.home + terminal.on_gray20 + terminal.clear)
+                        time_left = terminal.move_xy(48, 2) + terminal.lightcyan(terminal.on_gray20(str(int(map.time_left / 60)) + ":" + str(int(map.time_left % 60))))
                         info = terminal.move_xy(10, 10) +  terminal.lightcyan(terminal.on_gray20('You are inside the thinking box. The time has stopped'))
                         map.thinking_box.draw_inside_box()
                         map.player.draw_inside_box()
-                        print(info)
+                        print(info + time_left)
 
                     clock.tick(fps)
                     val = terminal.inkey(timeout=1 / fps)
