@@ -162,7 +162,9 @@ class GameState:
             board.redraw_subgrid(term, subgrid, subgrid_number, term.green, None)
 
         # handle logic for next grid
+        # collect the subgrid based on the space just played
         working_subgrid = board.collect_subgrid(str(self.user_select_space))
+        # check that the subgrid hasn't been won and isn't full
         if (
             board.check_subboard_victory(str(self.user_select_space))
             not in (
@@ -171,6 +173,7 @@ class GameState:
             )
             and "·" in working_subgrid
         ):
+            # change the selected subgrid to that space number
             self.user_select_subgrid = self.user_select_space
             self.user_select_space = 0
             self.term_info[2] = (
@@ -178,6 +181,7 @@ class GameState:
                 f"| Space {self.user_select_space}"
             )
         else:
+            # change the subgrid to 0 to let the next player choose the subgrid
             self.user_select_subgrid = 0
         self.redraw_user_term(term)
         self.update_board = False
@@ -207,8 +211,9 @@ class GameState:
         # TODO need to finish this. maybe move to game logic?
         # guilty until proven innocent
         good_grid = False
-
+        # pull subgrid just chosen by player
         working_subgrid = board.collect_subgrid(str(self.user_select_subgrid))
+        # check that that subgrid hasn't been won and isn't full
         if (
             board.check_grid_victory(working_subgrid) not in ("X", "O")
             and "·" in working_subgrid
