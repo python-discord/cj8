@@ -417,10 +417,10 @@ if __name__ == "__main__":
                     #     *rubik_cube[9:],
                     # ]
 
-                elif key == ord("m"):
+                elif key == ord("m"):  # rotate middle disk counter-clockwise
                     for cube in rubik_cube[9:17]:
                         cube.rotate_z(
-                            -np.pi / 2
+                            np.pi / 2
                         )
                     rubik_cube = [
                         *rubik_cube[:9],
@@ -437,7 +437,7 @@ if __name__ == "__main__":
                 elif key == ord("M"):
                     for cube in rubik_cube[9:17]:
                         cube.rotate_z(
-                            np.pi / 2
+                            -np.pi / 2
                         )
                     rubik_cube = [
                         *rubik_cube[:9],
@@ -450,6 +450,41 @@ if __name__ == "__main__":
                         rubik_cube[13],
                         rubik_cube[11],
                         *rubik_cube[17:],
+                    ]
+                elif key == ord("b"):  # rotate back disk counter-clockwise
+                    for cube in rubik_cube[17:26]:
+                        cube.rotate_z(
+                            np.pi / 2
+                        )
+                    rubik_cube = [
+                        *rubik_cube[:17],
+                        rubik_cube[19],
+                        rubik_cube[22],
+                        rubik_cube[25],
+                        rubik_cube[18],
+                        rubik_cube[21],
+                        rubik_cube[24],
+                        rubik_cube[17],
+                        rubik_cube[20],
+                        rubik_cube[23],
+                    ]
+
+                elif key == ord("B"):  # rotate back disk clockwise
+                    for cube in rubik_cube[17:26]:
+                        cube.rotate_z(
+                            -np.pi / 2
+                        )
+                    rubik_cube = [
+                        *rubik_cube[:17],
+                        rubik_cube[23],
+                        rubik_cube[20],
+                        rubik_cube[17],
+                        rubik_cube[24],
+                        rubik_cube[21],
+                        rubik_cube[18],
+                        rubik_cube[25],
+                        rubik_cube[22],
+                        rubik_cube[19],
                     ]
 
             elif isinstance(ev, MouseEvent):
@@ -502,7 +537,7 @@ t/T for the top disc, drag the mouse for rotation of the cube.""",
 
             # draw each individual cube, start with those furthest away from the camera:
             for cube in sorted(
-                [rubik_cube[0], rubik_cube[-1]], key=cube_camera_distance, reverse=True
+                rubik_cube, key=cube_camera_distance, reverse=True
             ):
                 cube.draw_block_faces(artist)
                 # cube.draw_cage(artist)
