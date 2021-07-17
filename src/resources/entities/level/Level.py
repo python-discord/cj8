@@ -137,10 +137,11 @@ class Level:
             x = randint(2, self.width-2)
 
             if str(self.board[y][x]) == "'":
-                item = Item(symbol="k", x=x, y=y, color="bold white")
+                item = Item(symbol=chr(0xA2), x=x, y=y, color="bold #afa208")
                 self.items.append(item)
                 count += 1
 
     def remove_item(self, item: type) -> None:
         """Replace enemy with symbol"""
         self.items.pop(self.items.index(item))
+        self.board[item.y][item.x] = item.ground_symbol

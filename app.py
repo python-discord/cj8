@@ -67,11 +67,11 @@ def run_game(layout: Layout, game_resources: GameResources, information: Informa
             Panel("You have reached the bottom")
         )
 
-    inventory = Text("\n".join(game_resources.collected_items))
+    inventory = Text("\n".join("{} X {}".format(k, v)for k, v in game_resources.collected_items.items()))
     layout["inventory"].update(Panel(inventory))
     layout["player_health"].update(information.get_player_health())
     layout['info'].update(Panel("", title='info'))
-    sleep(0.1)
+    sleep(0.2)
 
 
 def main() -> None:

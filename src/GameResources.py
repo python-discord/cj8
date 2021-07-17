@@ -24,7 +24,7 @@ class GameResources:
 
         self.test_color_changer = ColorChanger(x=2, y=2, symbol="@")
         self.test_item = Item(symbol='k', x=self.level.width // 2+1, y=self.level.height // 2+1)
-        self.collected_items = []
+        self.collected_items = {}
 
         self.enemy_manager = EnemyManager(self.level)
         self.enemy_manager.spawn_random_enemies(self.player.x, self.player.y, 5)
@@ -114,7 +114,12 @@ class GameResources:
         """Iterates through items and check if the player is on that spot. If so collects them."""
         for item in self.level.items:
             if item.collisions_with_player(self.player.x, self.player.y):
-                self.collected_items.append(item.symbol._text[0])
+                symbol = item.symbol._text[0]
+                if symbol in self.collected_items:
+                    self.collected_items[item.symbol._text[0]] += 1
+                else:
+                    self.collected_items[item.symbol._text[0]] = 1
+
                 self.level.remove_item(item)
 
     def draw_enemies(self) -> None:
@@ -137,7 +142,7 @@ class GameResources:
         x = entity.new_positions["x"]
         y = entity.new_positions["y"]
         try:
-            if str(self.level.board[entity.y + y][entity.x + x]) in ("'", "$", "@") or \
+            if str(self.level.board[entity.y + y][entity.x + x]) in ("'", "$", "@", chr(0xA2)) or \
                     (entity.__class__.__name__ != 'Enemy' and str(
                         self.level.board[entity.y + y][entity.x + x]) == '#'):
                 self.level.board[entity.y][entity.x] = entity.ground_symbol
@@ -154,7 +159,7 @@ class GameResources:
 
                 entity.ground_symbol = self.level.board[entity.y][entity.x]
                 entity.new_positions = {"x": 0, "y": 0}
-            if str(self.level.board[entity.y + y][entity.x + x]) in ("k"):
+            if str(self.level.board[entity.y + y][entity.x + x]) in (chr(0xA2)):
                 self.level.board[entity.y][entity.x] = entity.ground_symbol
                 entity.x += x
                 entity.y += y
