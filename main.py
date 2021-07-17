@@ -51,7 +51,8 @@ def run_game():
 def run_tutorial():
     val = terminal.inkey(timeout=1 / fps)
     while val != 'q':
-        print(terminal.home + terminal.lightcyan_on_darkslategray + terminal.clear)
+        pass
+        
 
 def menu():
     with terminal.cbreak(), terminal.hidden_cursor(), terminal.fullscreen():
