@@ -162,7 +162,6 @@ def main():
 
     # start game
     start(fs, ROOT, term)
-    clear_term(term)
     user_input_cmd(copy(fs), login(Users, term), fs, term)
 
 
