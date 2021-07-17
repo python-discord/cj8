@@ -48,5 +48,5 @@ The game works and has been tested on both **Windows** and **Linux (Arch)**
 
 In theory the game should work on **MacOS** but this has not been tested.
 
-For best results: 
+For best results:
    - Use **Powershell** within **Windows Terminal** on Windows
