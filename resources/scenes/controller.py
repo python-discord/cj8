@@ -342,10 +342,6 @@ class GameController(Scene):
             speech = None
             recognised = False  # Flag for if the key code is recognised
 
-            if key_code == ord("|"):  # debug skip
-                self.tagged_walls = {}
-                raise exceptions.EnterLevel(self.level + 1)
-
             # Iterate over the mappings, check to see if the key_code is
             # a movement or tag trigger key, then perform actions accordingly.
             for dm_mapping in DIRECTIONAL_MANEUVER_MAPPINGS:
