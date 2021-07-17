@@ -49,5 +49,9 @@ class Credits(GameTransition):
     """Raised when user goes to credits"""
 
 
+class HowToPlay(GameTransition):
+    """Raised when user chooses 'How to Play'"""
+
+
 class ExitGame(Exception):
     """Raised to exit the game"""
