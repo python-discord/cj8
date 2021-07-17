@@ -69,7 +69,7 @@ def run_game(layout: Layout, game_resources: GameResources, information: Informa
     inventory = Text("\n".join("{} X {}".format(k, v)for k, v in game_resources.collected_items.items()))
     layout["inventory"].update(Panel(inventory))
     layout["player_health"].update(information.get_player_health())
-    layout['info'].update(Panel("", title='info'))
+    layout['info'].update(information.display_enemy_panel())
 
 
 def main() -> None:
@@ -87,7 +87,7 @@ def main() -> None:
         Panel(game_resources.node.display_node(), title="Current Location")
     )
     layout['inventory'].update(Panel('inventory'))
-    layout['info'].update(Panel("", title='info'))
+    layout['info'].update(information.display_enemy_panel())
     layout["player_health"].update(
         (Panel(Text('♥'*10 + "   |   You have: 100HP", style="bold red"), title='Your Health')))
 

@@ -6,11 +6,13 @@ from .AbstractDungeonEntity import AbstractDungeonEntity
 class Enemy(AbstractDungeonEntity):
     """Enemy entity and hostile to players"""
 
-    def __init__(self, aggro_radius: int, *args, **kwargs):
+    def __init__(self, aggro_radius: int, file: str, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.aggro_radius = aggro_radius
         self.entity_type = "enemy"
         self.target: dict = {}
+        self.player_detected = False
+        self.file = file
 
     def mill(self) -> None:
         """Random enemy movement"""
@@ -107,7 +109,9 @@ class Enemy(AbstractDungeonEntity):
                 (x - radius <= self.x <= x + radius):
             self.symbol.stylize("bold " + self.symbol.style)
             self.target = {'x': x, 'y': y}
+            self.player_detected = True
             return True
         else:
             self.symbol.stylize(self.symbol.style)
+            self.player_detected = False
             return False

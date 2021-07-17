@@ -137,8 +137,9 @@ class Level:
                 self.items.update(item_entry)
                 num -= 1
 
-    def spawn_random_enemies(self, num: int) -> None:
+    def spawn_random_enemies(self, files: list) -> None:
         """Spawns a new enemies randomly"""
+        num = len(files)
         left = math.floor(self.width * .33)
         right = self.width - left
         bottom = math.floor(self.height * .33)
@@ -148,7 +149,7 @@ class Level:
             x = randint(left, right)
             if str(self.board[y][x]) == TILE:
                 num -= 1
-                enemy = Enemy(aggro_radius=3, x=x, y=y, symbol='^')
+                enemy = Enemy(aggro_radius=3, x=x, y=y, symbol='^', file=files[num-1])
                 enemy_entry = {id(enemy): enemy}
                 self.enemies.update(enemy_entry)
 
