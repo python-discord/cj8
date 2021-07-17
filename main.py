@@ -59,7 +59,8 @@ def run_tutorial():
         tutorial = terminal.move_xy(40, 5) +  terminal.lightcyan(terminal.on_darkslategray4('TUTORIAL'))
         info1 = terminal.move_xy(20, 10) +  terminal.lightcyan(terminal.on_darkslategray('The purpose of the game is to push the boxes until all targets have a box inside. Make sure to finish it in time. If you want to think about the level, enter the gray thinking box and the timer will stop.'))
         info2 = terminal.move_xy(20, 17) +  terminal.lightcyan(terminal.on_darkslategray('MOVEMENT: use A and D or left and right arrow keys to move. Use W and up arrow to jump and S and down arrow to cancel the jump'))
-        print(tutorial + info2 + info1, flush=True)
+        exit = terminal.move_xy(20, 20) + terminal.lightcyan(terminal.on_darkslategray('Press q to exit. You can use q to quit the main game and the menu too.'))
+        print(tutorial + info2 + info1 + exit, flush=True)
         
 
 def menu():
