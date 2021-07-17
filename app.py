@@ -7,6 +7,7 @@ from rich.panel import Panel
 from rich.text import Text
 
 from src.GameResources import GameResources
+from src.resources.informationpanel import Information
 from src.resources.PanelLayout import PanelLayout
 from src.resources.startscreen import StartScreen
 
@@ -44,7 +45,7 @@ def end_screen(layout: Layout) -> None:
         sleep(3)
 
 
-def run_game(layout: Layout, game_resources: GameResources) -> Panel:
+def run_game(layout: Layout, game_resources: GameResources, information: Information) -> Panel:
     """
     This function in in charge of running the game. It will call update and draw for each game object.
 
@@ -69,12 +70,15 @@ def run_game(layout: Layout, game_resources: GameResources) -> Panel:
     inventory = Text("\n".join(game_resources.collected_items))
     print(inventory)
     layout["inventory"].update(Panel(inventory))
+    layout["player_health"].update(information.get_player_health())
+    layout['info'].update(Panel("", title='info'))
     sleep(0.1)
 
 
 def main() -> None:
     """Main function that sets up game and runs main game loop"""
     game_resources = GameResources(testing, bless)
+    information = Information(game_resources)
     game_resources.draw()
 
     game_panel = Panel(game_resources.level.to_string())
@@ -86,12 +90,15 @@ def main() -> None:
         Panel(game_resources.node.display_node(), title="Current Location")
     )
     layout['inventory'].update(Panel('inventory'))
+    layout['info'].update(Panel("", title='info'))
+    layout["player_health"].update(
+        (Panel(Text('♥'*10 + "   |   You have: 100HP", style="bold red"), title='Your Health')))
 
     start_screen()
 
     with Live(layout, refresh_per_second=10, screen=True):  # True prevents re-render
         while game_resources.player.playing:
-            run_game(layout, game_resources)
+            run_game(layout, game_resources, information)
         end_screen(layout)
 
 

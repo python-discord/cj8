@@ -17,6 +17,7 @@ class Character(AbstractDungeonEntity):
         self.entity_type = "character"
         self.playing = True
         self.commands = deque()
+        self.health = 100
 
     def press(self, key: Key) -> None:
         """Reads keyboard input"""
