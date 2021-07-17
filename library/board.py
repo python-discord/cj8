@@ -126,7 +126,7 @@ class Board:
         print()
         for i in range(1, 10):
             subgrid = self.collect_subgrid(str(i))
-            self.redraw_subgrid(term, subgrid, str(i), term.green, "None")
+            self.redraw_subgrid(term, subgrid, str(i), term.green, None)
 
     def redraw_gamestate(
         self,
@@ -240,7 +240,7 @@ class Board:
         subgrid: npt.NDArray[np.str_],
         number: str,
         color: str,
-        winner: typing.Optional[typing.Literal["X", "O", "None"]],
+        winner: typing.Optional[typing.Literal["X", "O"]],
     ) -> None:
         """Takes the subgrid number 1-9 and redraws that grid based on the subgrid"""
         # Set Start Coordinates based on subgrid number

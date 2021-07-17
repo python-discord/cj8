@@ -159,7 +159,7 @@ class GameState:
         elif board.check_grid_victory(subgrid) == "O":
             board.redraw_subgrid(term, subgrid, subgrid_number, term.green, "O")
         else:
-            board.redraw_subgrid(term, subgrid, subgrid_number, term.green, "None")
+            board.redraw_subgrid(term, subgrid, subgrid_number, term.green, None)
 
         # handle logic for next grid
         working_subgrid = board.collect_subgrid(str(self.user_select_space))
