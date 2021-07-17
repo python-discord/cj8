@@ -1,11 +1,3 @@
-from asciimatics.event import Event
-
-
-class LevelCompletion(Event):
-    """Event for when the player finishes the level"""
-
-    def __init__(self):
-        super().__init__()
 
 
 class GameTransition(Exception):
@@ -35,10 +27,6 @@ class LevelSelector(GameTransition):
 
 class Title(GameTransition):
     """Raised when user goes to the title screen"""
-
-    def __init__(self, level: int = 0, *args: object):
-        self.level = level
-        super().__init__(*args)
 
 
 class Settings(GameTransition):
