@@ -1,4 +1,5 @@
 from functools import wraps
+from typing import Any, Callable
 
 from virtualbox.exceptions import (
     NoSuchFlagOrOption, WrongAmmountOfArguments, WrongKeywordUsage
@@ -8,8 +9,9 @@ from virtualbox.functions.generalfunctions import fill
 from .classes import Flag, Optional
 
 
-def expand_args(argpos, *names, start=1):
-    def wrapper(func):
+def expand_args(argpos: int, *names: str, start: int = 1) -> Callable[[...], Any]:
+    """Expands function arguments"""
+    def wrapper(func: Callable[[...], Any]) -> Callable[[...], Any]:
         arguments = []
         keys = {}
         rlen = 0
@@ -24,7 +26,7 @@ def expand_args(argpos, *names, start=1):
                     rlen += 1
 
         @wraps(func)
-        def process(*args):
+        def process(*args: Any) -> Any:
             pargs = []
             pkeys = []
             for i in args[argpos][start:]:

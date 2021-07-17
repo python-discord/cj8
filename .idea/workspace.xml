@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+<<<<<<< Updated upstream
+    <list default="true" id="7d1af81c-a44b-48c5-96bb-f853bacb74b5" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/virtualbox/OS/os/local/root/documents/target_location/acl.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/virtualbox/OS/os/local/root/documents/target_location/nigeria.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/virtualbox/OS/os/local/root/secure/datastorage2/acl.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/virtualbox/OS/os/local/root/secure/datastorage2/data.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/virtualbox/OS/os/local/root/secure/network_loc5/acl.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/virtualbox/OS/os/local/root/secure/network_loc5/network.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/virtualbox/OS/os/local/root/secure/network_loc5/victim.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/virtualbox/OS/os/local/root/secure/possible_co-ordinates8/acl.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/virtualbox/OS/os/local/root/secure/possible_co-ordinates8/geo_coords.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/virtualbox/OS/os/local/user/desktop" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/virtualbox/OS/os/local/user/documents" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/virtualbox/OS/os/local/acl.xml" beforeDir="false" afterPath="$PROJECT_DIR$/virtualbox/OS/os/local/acl.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/virtualbox/OS/os/local/root/desktop/acl.xml" beforeDir="false" afterPath="$PROJECT_DIR$/virtualbox/OS/os/local/root/desktop/acl.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/virtualbox/OS/os/local/root/documents/acl.xml" beforeDir="false" afterPath="$PROJECT_DIR$/virtualbox/OS/os/local/root/documents/acl.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/virtualbox/OS/os/local/root/secure/acl.xml" beforeDir="false" afterPath="$PROJECT_DIR$/virtualbox/OS/os/local/root/secure/acl.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/virtualbox/OS/os/local/user/acl.xml" beforeDir="false" afterPath="$PROJECT_DIR$/virtualbox/OS/os/local/user/acl.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/virtualbox/functions/blessed_functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/virtualbox/functions/blessed_functions.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/virtualbox/project.py" beforeDir="false" afterPath="$PROJECT_DIR$/virtualbox/project.py" afterDir="false" />
+    </list>
+=======
+    <list default="true" id="7d1af81c-a44b-48c5-96bb-f853bacb74b5" name="Default Changelist" comment="" />
+>>>>>>> Stashed changes
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1vAxp1lsLbI2tYx7JIbaE2Bok1J" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/virtualbox" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Github\project\virtualbox" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="project" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="project" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="C:\Users\fergu\AppData\Local\Programs\Python\Python39\python.exe" />
+      <option name="WORKING_DIRECTORY" value="$USER_HOME$/OneDrive/Documents/project-4ff3cb32b97286e0b294145fd3d787edb1f08baa/project-4ff3cb32b97286e0b294145fd3d787edb1f08baa/virtualbox" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/virtualbox/project.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.project" />
+        <item itemvalue="Python.project" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="7d1af81c-a44b-48c5-96bb-f853bacb74b5" name="Default Changelist" comment="" />
+      <created>1626018874043</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1626018874043</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/virtualbox/project.py</url>
+          <line>1</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>

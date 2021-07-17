@@ -5,8 +5,8 @@ from typing import Any, Callable, Union
 
 from virtualbox.config import sep
 from virtualbox.exceptions import (
-    FileOrDirectoryAlreadyExist, NoSuchFileOrDirectory, NotAnDirectory,
-    NotAnFile, PermisionDenied
+    CannotChangePermisionsForFather, FileOrDirectoryAlreadyExist,
+    NoSuchFileOrDirectory, NotAnDirectory, NotAnFile, PermisionDenied
 )
 from virtualbox.users.user import User
 
@@ -154,6 +154,46 @@ class Dir(AC):
         except PermisionDenied:
             return []
 
+    # change permisons
+
+    @AC.owncheck
+    @doesnotexist
+    @update
+    def chown(self, user: User, name: str, chuser: User) -> None:
+        """Changes owner"""
+        if name == '..':
+            raise CannotChangePermisionsForFather()
+        obj = self.sub[name]
+        obj.uid = chuser.uid
+
+        self.acl.add(name, obj.perms)
+
+    @AC.owncheck
+    @doesnotexist
+    @update
+    def chmod(self, user: User, name: str, up: int, op: int) -> None:
+        """Changes permissions"""
+        if name == '..':
+            raise CannotChangePermisionsForFather()
+        obj = self.sub[name]
+        obj.up = up
+        obj.op = op
+
+        self.acl.add(name, obj.perms)
+
+    @AC.owncheck
+    @doesnotexist
+    @update
+    def chadd(self, user: User, name: str, up: int, op: int) -> None:
+        """Executes or on permissions"""
+        if name == '..':
+            raise CannotChangePermisionsForFather()
+        obj = self.sub[name]
+        obj.up |= up
+        obj.op |= op
+
+        self.acl.add(name, obj.perms)
+
     # change directory
     @doesnotexist
     @AC.readcheck
@@ -166,6 +206,7 @@ class Dir(AC):
         return self.sub[name]
 
     def get(self, user: User, path: str) -> Union['Dir', 'File']:
+        """Gets subfile or subdirectory"""
         result = self
         for i in path:
             if len(i) == 0:
@@ -173,7 +214,8 @@ class Dir(AC):
             result = result.shallowget(user, i)
         return result
 
-    def getType(self, user, path, Type, exception):
+    def getType(self, user: User, path: str, Type: type, exception: Exception) -> Any:
+        """Gets subobject of provided type"""
         result = self
         for i in path:
             if len(i) == 0:
@@ -184,27 +226,33 @@ class Dir(AC):
 
         return result
 
-    def getDir(self, user, path):
+    def getDir(self, user: User, path: str) -> 'Dir':
+        """Gets directory"""
         return self.getType(user, path, Dir, NotAnDirectory)
 
-    def getFile(self, user, path):
+    def getFile(self, user: User, path: str) -> File:
+        """Gets file"""
         return self.getType(user, path, File, NotAnFile)
 
-    "self managment"
-    def delete(self):
+    # self managment
+    def delete(self) -> None:
+        """Deletes dir form host fs"""
         shutil.rmtree(self.path)
 
-    def create(self):
+    def create(self) -> None:
+        """Creates dir on host fs"""
         os.mkdir(self.path)
         self.aclsave()
 
     @AC.execcheck
-    def mvSelf(self, user, to):
+    def mvSelf(self, user: User, to: str) -> None:
+        """Moves self to other path"""
         shutil.move(self.path, to)
         self.path = to
 
     @AC.execcheck
-    def cpSelf(self, user, to):
+    def cpSelf(self, user: User, to: str) -> 'Dir':
+        """Copies self to other path"""
         shutil.copy(self.path, to)
         result = copy.copy(self)
         result.path = to
@@ -212,29 +260,34 @@ class Dir(AC):
 
     # properties"
     @property
-    def aclpath(self):
+    def aclpath(self) -> str:
+        """Returns Acces control list paht"""
         return self.path + sep + "acl.xml"
 
     # save acl"
-    def aclsave(self):
+    def aclsave(self) -> None:
+        """Saves acces control list"""
         self.acl.save(self.aclpath)
 
     # dicit like
     @AC.readcheck
-    def getDicit(self, user, key):
+    def getDicit(self, user: User, key: str) -> tuple:
+        """Returns tuple of sub and acl results"""
         if key in self.acl.dicit:
             return self.sub[key], self.acl[key]
         raise NoSuchFileOrDirectory()
 
     @AC.writecheck
     @update
-    def set(self, user, key, value):
+    def set(self, user: User, key: str, value: tuple) -> None:
+        """Sets sub and acl"""
         self.sub[key] = value[0]
         self.acl[key] = value[1]
 
     @AC.writecheck
     @update
-    def pop(self, user, key):
+    def pop(self, user: User, key: str) -> None:
+        """Hymmmmm i wonder what pop does?"""
         tmp = self.getDicit(user, key)
 
         del self.sub[key]
