@@ -4,6 +4,7 @@
 * Framework: [Blessed](https://github.com/chjj/blessed)
 * Theme: Thinking Inside the Box
 
+-StopTheBox
 Escape Room/Puzzle Game
 In this game you are a network security architect working for the USA, your job is to hack into a Iranian Network and eliminate a bomb threat.
 
