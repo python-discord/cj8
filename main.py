@@ -18,7 +18,7 @@ Scenes = Union[Callable, List[Scene]]
 
 def play_scenes(screen: Screen, scenes: Scenes, ih: Callable) -> Tuple[Scenes, Callable]:
     """Play scenes until screen resizes, then return current scene + ih."""
-
+    screen.clear()
     # Loop to manage scene transitions and screen resizes
     while True:
         # If "scenes" is a function, return that original function on resize

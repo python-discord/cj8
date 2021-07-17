@@ -1,7 +1,7 @@
 from __future__ import division
 
 from copy import deepcopy
-from math import ceil
+from math import ceil  # , cos, sqrt
 from pathlib import Path
 from random import choice
 from threading import Thread
@@ -62,6 +62,9 @@ SFX = {
 }
 ps_threads = {k: None for k in SFX.keys()}
 
+
+_palette_256 = [(i, Screen.A_NORMAL if i < 14 else Screen.A_BOLD) for i in range(232, 256)]
+
 # texturing = r_distribution([' ', '.', ','], [80, 10, 10], 1000)
 
 
@@ -109,27 +112,74 @@ class Map(Effect):
         # updates when the screen changes so it won't work as a way
         # to finish the game
         self.cur_frame = 0
+        self.ligh_effect_enabled = screen.colours >= 255
+        self.background = _palette_256[0][0] if self.ligh_effect_enabled else Screen.COLOUR_BLACK
+
+    def light_intensity(self, x1: int, y1: int, n: int) -> float:
+        """Intensity of the light at point x1, y1"""
+        # x = sqrt((x1 - (self.screen.width//2)) ** 2
+        #          + ((y1 - (self.screen.height//2)) ** 2)) * pi / n
+        # x = ((x1 - (self.screen.width//2)) ** 2
+        #      + ((y1 - (self.screen.height//2)) ** 2))**(0.2)
+        # x = int(x)
+        # return n if x == 0 else (n+3)/x
+        # n = n*1.2
+        # Last minute code lel
+        intens = ((x1 - (self.screen.width//2)) ** 2
+                  + ((y1 - (self.screen.height//2)) ** 2))**0.5
+        intens = (abs(n-intens)/n)**(2.4)
+        return min(0.99, intens)
+
+        # dist = ((x1 - (self.screen.width//2)) ** 2
+        #            + ((y1 - (self.screen.height//2)) ** 2))
+        # return
+
+        # intens = cos(sqrt((x1 - (self.screen.width/2)) ** 2
+        #                   + ((y1 - (self.screen.height/2)) ** 2)) * 3.14/(n+11))
+        # return max(intens, 0)
 
     def _update(self, frame_no: int) -> None:
         """
         This function is called every frame, here we draw the player centered at the screen
         and the map surrounding it.
         """
-
+        # self.ligh_effect_enabled = False
         offset_x = (self.screen.width // 2 - self.player_x, ceil(self.screen.width / 2) + self.player_x)
         offset_y = self.screen.height // 2 - self.player_y
 
         for i in range(offset_y):
-            self.screen.print_at(" " * self.screen.width, 0, i)
+            self.screen.print_at(" " * self.screen.width, 0, i, bg=self.background)
 
         for i, line in enumerate(raycast(self.map, self.player_x, self.player_y, self.vision, '#', ' ')):
-            line = ' ' * offset_x[0] + line + ' ' * offset_x[1]
-            self.screen.print_at(line, 0, offset_y + i)
+            subline = ' ' * offset_x[0]  # + line + 'X' * offset_x[1]
+
+            self.screen.print_at(subline, 0, offset_y + i, bg=self.background)
+
+            k = 0
+            for j, char in enumerate(line):
+                k += 1
+                if self.ligh_effect_enabled:
+                    intensity = self.light_intensity(len(subline)+j, offset_y + i, self.vision)
+                else:
+                    intensity = 0.7
+
+                intensity = int(intensity*len(_palette_256))
+                # everything is white
+                colour, attr = _palette_256[intensity]
+
+                self.screen.print_at(char, len(subline)+j, offset_y + i,
+                                     colour=colour,
+                                     attr=attr,
+                                     bg=self.background
+                                     )
+
+            subline2 = ' ' * offset_x[1]
+            self.screen.print_at(subline2, len(subline)+k, offset_y + i, bg=self.background)
 
         for i in range(offset_y + len(self.map), self.screen.height):
-            self.screen.print_at(" " * self.screen.width, 0, i)
+            self.screen.print_at(" " * self.screen.width, 0, i, bg=self.background)
 
-        self.screen.print_at("@", self.screen.width // 2, self.screen.height // 2)
+        self.screen.print_at("@", self.screen.width // 2, self.screen.height // 2, bg=self.background)
 
         self.cur_frame = frame_no
         if self.cur_frame >= self.end_frame:
@@ -142,11 +192,9 @@ class Map(Effect):
                     SpeechBubble(text),
                     int(self.screen.height * 0.1),
                     x=(self.screen.width - len(text))//2,
+                    bg=self.background
                 ),
             )
-            # self.screen.print_at(text,
-            #                      (self.screen.width - len(text))//2,
-            #                      int(self.screen.height * 0.2))
 
     @ property
     def frame_update_count(self) -> int:
@@ -254,6 +302,7 @@ class GameController(Scene):
                 transparent=False,
                 clear=True,
                 delete_count=duration,
+                bg=self.map.background
             ),
         )
 
@@ -336,6 +385,7 @@ class GameController(Scene):
                 self.input_enabled = False
                 self.map.end_frame = self.map.cur_frame + 60
             elif check == GameController.WRONG_TAGS:
+                self.tagged_walls = {}
                 self.speak("Hmm... I don't think this is right.")
             else:
                 if speech is not None:
