@@ -43,7 +43,12 @@ def run_game():
                         map.draw()
                         map.time_left -= 1 / fps
                     else:
-                        pass
+                        print(terminal.home + terminal.on_gray20 + terminal.clear)
+                        info = terminal.move_xy(10, 10) +  terminal.lightcyan(terminal.on_gray20('You are inside the thinking box. The time has stopped'))
+                        map.thinking_box.draw_inside_box()
+                        map.player.draw_inside_box()
+                        print(info)
+
                     clock.tick(fps)
                     val = terminal.inkey(timeout=1 / fps)
                 else:

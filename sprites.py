@@ -55,8 +55,14 @@ class Player(Drawable):
     def draw(self):
         self.create_body()
         return super().draw()
-
-
+    
+    def draw_inside_box(self):
+        string = ""
+        eye1 = self.terminal.move_xy(self.x + 1, self.y + 1) + self.terminal.white(self.terminal.on_gray15('▘'))
+        string += eye1
+        eye2 = self.terminal.move_xy(self.x + 2, self.y + 1) + self.terminal.white(self.terminal.on_gray15('▝'))
+        string += eye2
+        print(string, flush=True)
 
 class Box(Drawable):
     def __init__(self, x, y, terminal):
@@ -172,3 +178,9 @@ class ThinkingBox(Drawable):
             self.parts.append(down2)
         down3 = self.terminal.move_xy(self.x + 7, self.y + 2) + self.terminal.gray37(self.terminal.on_gray15('▕'))
         self.parts.append(down3)
+    
+    def draw_inside_box(self):
+        string = ""
+        for i in self.parts:
+            string += i
+        print(string, flush=True)
