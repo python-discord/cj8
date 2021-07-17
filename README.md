@@ -1,20 +1,9 @@
 # Python Summer Code Jam 2021
+## Code Jam
+* Theme: TUI
+* Framework: [Blessed](https://github.com/chjj/blessed)
 
 
-
-
-## Framework
-
-* Uses Blessed framework
-
-    - Installing dependencies with `poetry`
-    - Automatic formatting with `isort` and `black`
-    - Static analysis with `pylint`
-    - Type checking with `mypy`
-    - Docstring styling with `pydocstyle`
-    - Running tests with `pytest`
-    - Building documentation with `mkdocs`
-    - Publishing to PyPI using `poetry`
 * Tooling to launch an IPython session with automatic reloading enabled
 
 If you are instead looking for a [Python application](https://caremad.io/posts/2013/07/setup-vs-requirement/) template, check out one of the sibling projects:
