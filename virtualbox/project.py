@@ -58,7 +58,7 @@ def user_input_cmd(fs, user, rootfs, term):
         try:
             clear_term(term)
             entry = get_entry(user_input[0])
-            entry[0](*ProcessArgs(entry[1], locals()))
+            entry[0](*ProcessArgs(entry[1], {**locals(), **globals()}))
         except Exception as e:
             echo(e, term)
 
