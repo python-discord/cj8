@@ -15,9 +15,8 @@ In this game you are a network security architect working for the USA, your job 
 * [PlaySound](https://github.com/TaylorSMarks/playsound)
 
 ## Credits
-### Team Leader
-* [Quickmotions](https://github.com/Quickmotions) - Discord: Fungus#9550
 ### Team
+* [Quickmotions](https://github.com/Quickmotions) - Discord: Fungus#9550
 * [WelllDK](https://github.com/WellIDKRealy) - Discord: Sir Arthur Wellesley#5851
 * [Coder400](https://github.com/Coder4OO) - Discord: Coder400#0400
 * [Vinyzu](https://github.com/orgs/cj8-cheerful-cheetahs/people/Vinyzu) - Discord: Vinyzu#7479
