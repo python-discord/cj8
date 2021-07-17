@@ -4,7 +4,7 @@ import logging
 import pygame
 
 logging.basicConfig(filename="logging.txt", filemode="w", level=logging.INFO)
-debug = True
+debug = False
 
 COLLISION_TYPES = {"box_to_target": 0,
                    "object_to_platform": 1,
@@ -70,13 +70,15 @@ class Space:
                     item2 = rect_list[i]
                     collisions.append((item1, item2, COLLISION_TYPES[collision_type]))
 
-                    logging.info(f"{item1} collides with {item2} ({collision_type})")
+                    if debug:
+                        logging.info(f"{item1} collides with {item2} ({collision_type})")
 
         def check_borders(item: Object):
             if item.left < 0 or item.right > self.w or item.top < 0 or item.bottom > self.h:
                 collisions.append((item, "wall", COLLISION_TYPES["object_to_border"]))
 
-                logging.info(f"{item} collides with a border")
+                if debug:
+                    logging.info(f"{item} collides with a border")
 
         def check_sametype(itemlist: List[Object], collision_type: str):
             for item1_i, item1 in enumerate(itemlist):
@@ -86,12 +88,13 @@ class Space:
                     if item1.colliderect(item2):
                         collisions.append((item1, item2, COLLISION_TYPES[collision_type]))
 
-                        logging.info(f"{item1}, array index: {item1_i},\
+                        if debug:
+                            logging.info(f"{item1}, array index: {item1_i},\
                                       collides with a similar object ({collision_type})")
 
         def check_playerinthinking(p: Object):
             if (player.left > self.thinkingbox.left and player.right < self.thinkingbox.right and
-                player.bottom >= self.thinkingbox.bottom and player.top <= self.thinkingbox.top):
+                abs(player.bottom - self.thinkingbox.bottom) < 2 and abs(player.top - self.thinkingbox.top) < 2):
                 self.player_in_thinkingbox = True
 
         for box in self.boxes:
@@ -106,7 +109,8 @@ class Space:
         check_sametype(self.boxes, "box_to_box")
 
         for player in self.players:
-            logging.info("checking player collisions")
+            if debug:
+                logging.info("checking player collisions")
 
             check_list(player, self.platforms, "object_to_platform")
             check_list(player, self.boxes, "player_to_box")
@@ -148,7 +152,8 @@ class Space:
 
             if collision_type == COLLISION_TYPES["object_to_platform"]:
                 side = whatside(collision)
-                logging.info(f"collision happened at item1's {side} side")
+                if debug:
+                    logging.info(f"collision happened at item1's {side} side")
                 if side == "left":
                     item1.speed[0] = 0
                     item1.left = item2.right
@@ -166,7 +171,8 @@ class Space:
 
             if collision_type == COLLISION_TYPES["player_to_box"]:
                 side = whatside(collision)
-                logging.info(f"collision happened at item1's {side} side")
+                if debug:
+                    logging.info(f"collision happened at item1's {side} side")
                 if side == "top":
                     item2.speed = [0, 0]
                     item2.bottom = item1.top
@@ -189,7 +195,8 @@ class Space:
                     alpha_box = item2
 
                 side = whatside(collision)
-                logging.info(f"collision happened at item1's {side} side")
+                if debug:
+                    logging.info(f"collision happened at item1's {side} side")
                 if side == "top":
                     item2.speed = [0, 0]
                     item2.bottom = item1.top
