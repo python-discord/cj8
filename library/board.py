@@ -20,7 +20,16 @@ class Board:
         self.turn_one = True
 
     def check_board_victory(self) -> typing.Optional[str]:
-        """Determine if the entire board has been won, and by who."""
+        """
+        Determine if the entire board has been won, and by who.
+
+        This function creates a 3 x 3 array with the current winner of each subgrid.
+        The 3 x 3 is arranged like this:
+
+        7 8 9
+        4 5 6
+        1 2 3
+        """
         grid_states = np.full((3, 3), "·")
         grid_map = {
             1: [2, 0],
@@ -34,10 +43,8 @@ class Board:
             9: [0, 2],
         }
         for i in range(1, 10):
-            working_space_location = grid_map[i]
-            grid_states[
-                working_space_location[0], working_space_location[1]
-            ] = self.check_subboard_victory(str(i))
+            y, x = grid_map[i]
+            grid_states[y, x] = self.check_subboard_victory(str(i))
 
         return self.check_grid_victory(grid_states)
 
@@ -65,7 +72,7 @@ class Board:
             # .diagonal() gets us a single diagonal list,
             # so these two rows are just True/False whether a diagonal is won
             diagonal_r = ticks.diagonal().sum() == 3
-            diagonal_l = np.fliplr(ticks).diagonal().sum() == 3  # type: ignore
+            diagonal_l = np.fliplr(ticks).diagonal().sum() == 3  # type: ignore [no-untyped-call]
             if diagonal_l or diagonal_r:
                 return player
 
@@ -164,7 +171,7 @@ class Board:
         term: blessed.Terminal,
         subgrid: npt.NDArray[np.str_],
         start_coords: typing.Tuple[int, int],
-        winner: str,
+        winner: typing.Optional[typing.Literal["X", "O", "None"]],
     ) -> None:
         """Takes the subgrid and draws a victory symbol over that grid"""
         x, y = start_coords
@@ -233,7 +240,7 @@ class Board:
         subgrid: npt.NDArray[np.str_],
         number: str,
         color: str,
-        winner: str,
+        winner: typing.Optional[typing.Literal["X", "O", "None"]],
     ) -> None:
         """Takes the subgrid number 1-9 and redraws that grid based on the subgrid"""
         # Set Start Coordinates based on subgrid number

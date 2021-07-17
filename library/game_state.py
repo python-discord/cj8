@@ -162,10 +162,14 @@ class GameState:
             board.redraw_subgrid(term, subgrid, subgrid_number, term.green, "None")
 
         # handle logic for next grid
-
-        if board.check_subboard_victory((str(self.user_select_space))) not in (
-            "X",
-            "O",
+        working_subgrid = board.collect_subgrid(str(self.user_select_space))
+        if (
+            board.check_subboard_victory(str(self.user_select_space))
+            not in (
+                "X",
+                "O",
+            )
+            and "·" in working_subgrid
         ):
             self.user_select_subgrid = self.user_select_space
             self.user_select_space = 0
@@ -202,13 +206,16 @@ class GameState:
         """Handle the entry of a bad subgrid choice"""
         # TODO need to finish this. maybe move to game logic?
         # guilty until proven innocent
-        self.good_move = False
+        good_grid = False
 
         working_subgrid = board.collect_subgrid(str(self.user_select_subgrid))
-        if board.check_grid_victory(working_subgrid) not in ("X", "O"):
-            self.good_move = True
+        if (
+            board.check_grid_victory(working_subgrid) not in ("X", "O")
+            and "·" in working_subgrid
+        ):
+            good_grid = True
 
-        return self.good_move
+        return good_grid
 
     def change_player(self) -> None:
         """Change Player"""
@@ -219,4 +226,5 @@ class GameState:
 
     def game_over(self, term: blessed.Terminal) -> None:
         """Placeholder game over function"""
-        print("Game over!")
+        self.term_info[1] = "Game over!"
+        self.redraw_user_term(term)
