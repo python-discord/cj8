@@ -13,7 +13,7 @@ The player will have to think to overcome many puzzles and escape the box they a
 
 ## Features
 * This game features a text based command line operating system. 
-* Full of hints and puzzles. 
+* Tons of hints and puzzles. 
 * Custom made Hacking tools that let you hack into ports, ips and passwords.
 
 
