@@ -39,33 +39,37 @@ class Node:
     def display_node(self) -> None:
         """Displays current location in directory"""
         if not isinstance(self.path, str):
-            path = self.path.name
+            path = self.path.name + " <--"
         else:
-            path = self.path
+            path = self.path + " <--"
 
         if self.parent is not None:
             if not isinstance(self.parent.path, str):
                 parent_path = self.parent.path.name
             else:
                 parent_path = self.parent.path
-            tree = Tree(parent_path, style="bold yellow")
+            tree = Tree(parent_path)
         else:
-            tree = Tree(Text(path, style="bold yellow"))
+            tree = Tree(Text(path, style="green"))
+            for child in self.children:
+                tree.add(Text(child.path.name))
+            for file in self.files:
+                tree.add(Text(file.name, style="yellow"))
+            return tree
 
         # checks if the path is not a string and rather an os.DirEntry
 
         if self.parent is not None:
             for child in self.parent.children:
                 if child.path is not self.path:
-                    tree.add(Text(child.path.name, style="bold yellow"))
+                    tree.add(Text(child.path.name))
 
-        branch = Tree(path)
+        branch = Tree(Text(path, style="green"))
+        tree.add(branch)
         for child in self.children:
-            branch.add(Text(child.path.name, style="bold green"))
+            branch.add(Text(child.path.name))
 
         for file in self.files:
-            tree.add(Text(file.name, style="bold red"))
-
-        tree.add(branch)
+            branch.add(Text(file.name, style="yellow"))
 
         return tree
