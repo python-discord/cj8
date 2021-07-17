@@ -1,5 +1,5 @@
 USER LEVEL
-- desktop/info change numbers to letters (1-a,26-z ect) hint in hint.txt to get password atomic
+-desktop/info change numbers to letters (1-a,26-z ect) hint in hint.txt to get password atomic
 -decrypt hosting/hostdoc with atomic, scan the ip then translate the morse code for network user password, NeutronAtomNet
 -decrypt original_key with atomic. compare both keys for later to translate stuff.
 
@@ -29,5 +29,5 @@ ROOT LEVEL
 -add these words together to form AtomicProgramIranShutdown,
 -this password decrypts password.txt which is morse code,
 -translate that morse code to get CODEREDATOMNANO
-- use this password (CODEREDATOMNANO) to shutdown the operating system with: (must also be logged into root)
+-use this password (CODEREDATOMNANO) to shutdown the operating system with: (must also be logged into root)
 -shutdown (password)

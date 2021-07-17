@@ -7,7 +7,7 @@ from virtualbox.functions.generalfunctions import (
 )
 from virtualbox.unicode import decode, encode
 
-"encrytption functions"
+"encryption functions"
 
 
 def customChiperEncrypt(content, password):

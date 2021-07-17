@@ -4,15 +4,17 @@
 * Framework: [Blessed](https://github.com/chjj/blessed)
 * Theme: Thinking Inside the Box
 
-Escape Room/Puzzle Game
-In this game you are a network security architect working for the USA, your job is to hack into a Iranian Network and eliminate a bomb threat.
+"StopTheBox" is a Escape Room/Puzzle Game
+* In this game you are a network security architect working for the USA, your job is to hack into an Iranian Network and eliminate a bomb threat.
 
 ## Theme (Thinking Inside the Box)
 This game is set in a "virtual box" a fake operating system.
 The player will have to think to overcome many puzzles and escape the box they are trapped in.
 
 ## Features
-* This game features a text based command line operating system, full of hints and puzzles you let you hack it.
+* This game features a text based command line operating system. 
+* Tons of hints and puzzles. 
+* Custom made Hacking tools that let you hack into ports, ips and passwords.
 
 
 
