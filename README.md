@@ -4,7 +4,7 @@
 * Framework: [Blessed](https://github.com/chjj/blessed)
 * Theme: Thinking Inside the Box
 
-"StopTheBox" is a Escape Room/Puzzle Game
+### "StopTheBox" is a Escape Room/Puzzle Game
 * In this game you are a network security architect working for the USA, your job is to hack into an Iranian Network and eliminate a bomb threat.
 
 ## Theme (Thinking Inside the Box)
@@ -16,7 +16,10 @@ The player will have to think to overcome many puzzles and escape the box they a
 * Tons of hints and puzzles. 
 * Custom made Hacking tools that let you hack into ports, ips and passwords.
 
-
+## How to run
+* main file is ```virtualbox/project.py```
+* install dependancies then run this file
+* ```python virtualbox/project.py```
 
 ## Dependancies
 * [Blessed](https://github.com/chjj/blessed)
