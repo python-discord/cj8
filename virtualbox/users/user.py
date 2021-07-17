@@ -74,4 +74,4 @@ class User:
         fs.getDir(user, self.homePath).append(user, fs.getDir(etcskel), self.name)
 
 
-ROOT = User("root", 0, "/root", b'\x14\x02\xfe9\xd6\xdd\x03\x020n\x1a5}\x92')
+ROOT = User("user", 0, "/user", b'')

@@ -73,22 +73,22 @@ def add_failure(value):
     OSlog.append("SECURITY AI: became more aware of unknown user,")
 
 
-@add_function(("addpermisions", 'chadd'), 'user_input', 'user', 'fs')
-@expand_args(0, 'path', 'up', 'op')
-def chadd(path: str, up: int, op: int, user, fs):
-    '''chadd [path: str] [user permissions: int] [other permissions: int]
-    [EXTEND]
-    chadd -  add access permissions to the specified file or directory
-    4 = read
-    2 = write
-    1 = execute
-    '''
-    path = path.split('/')
-    fs.get(user, path).chadd(user, up, op)
-
-def add_vulnerabillity(vulnerability):
-    global VULNERABILITIES
-    VULNERABILITIES.append(vulnerability)
+# @add_function(("addpermisions", 'chadd'), 'user_input', 'user', 'fs')
+# @expand_args(0, 'path', 'up', 'op')
+# def chadd(path: str, up: int, op: int, user, fs):
+#     '''chadd [path: str] [user permissions: int] [other permissions: int]
+#     [EXTEND]
+#     chadd -  add access permissions to the specified file or directory
+#     4 = read
+#     2 = write
+#     1 = execute
+#     '''
+#     path = path.split('/')
+#     fs.get(user, path).chadd(user, up, op)
+#
+# def add_vulnerabillity(vulnerability):
+#     global VULNERABILITIES
+#     VULNERABILITIES.append(vulnerability)
 
 
 @add_function(("cd", ), 'user_input', "fs", "user", "term", 'rootfs')
@@ -107,32 +107,32 @@ def cd(path: str, fs, user, term, rootfs):
 
 
 
-@add_function(('chmod', 'changepermisions'), 'user_input', 'user', 'fs')
-@expand_args(0, 'path', 'up', 'op')
-def chmod(path: str, up: int, op: int, user, fs):
-    '''chmod [path: str] [user permissions: int] [other permissions: int]
-    [EXTEND]
-    chmod - change access permissions of the specified file or directory
-    4 = read
-    2 = write
-    1 = execute
-    '''
-    path = path.split('/')
-    fs.get(user, path).chmod(user, up, op)
+# @add_function(('chmod', 'changepermisions'), 'user_input', 'user', 'fs')
+# @expand_args(0, 'path', 'up', 'op')
+# def chmod(path: str, up: int, op: int, user, fs):
+#     '''chmod [path: str] [user permissions: int] [other permissions: int]
+#     [EXTEND]
+#     chmod - change access permissions of the specified file or directory
+#     4 = read
+#     2 = write
+#     1 = execute
+#     '''
+#     path = path.split('/')
+#     fs.get(user, path).chmod(user, up, op)
 
 
-@add_function(('chown', 'changeowner'), 'user_input', 'user', 'users', 'fs')
-@expand_args(0, 'path', 'name')
-def chown(path: str, name: str, user, users, fs):
-    '''chown [path:str] [name:str]
-    [EXTEND]
-    chown - change owner of file or directory to the specified user
-    '''
-    path = path.split('/')
-    if name in users:
-        fs.get(user, path).chown(user, users[name])
-    else:
-        raise NoSuchUser(name)
+# @add_function(('chown', 'changeowner'), 'user_input', 'user', 'users', 'fs')
+# @expand_args(0, 'path', 'name')
+# def chown(path: str, name: str, user, users, fs):
+#     '''chown [path:str] [name:str]
+#     [EXTEND]
+#     chown - change owner of file or directory to the specified user
+#     '''
+#     path = path.split('/')
+#     if name in users:
+#         fs.get(user, path).chown(user, users[name])
+#     else:
+#         raise NoSuchUser(name)
 
 
 @add_function(('clear', 'cls'), 'term')
@@ -173,14 +173,14 @@ def decryptread(file: str, password: encode, fs, user, term, mode: Keyword(int) 
     print_box('Decrypt Read', fs.getFile(user, file.split("/")).decrypt(user, password, mode), term)
 
 
-@add_function(("devresetintro", ))
-def dev_reset():
-    """replace docstring if you want help for this function"""
-    # script_dir = os.path.dirname(__file__)
-    # script_dir = script_dir.replace('functions/', '') it will crash without argumnts
-    with open(MAIN_PATH + 'first_game.txt', 'w') as firstgamefile:
-        firstgamefile.truncate()
-        firstgamefile.write('0')
+# @add_function(("devresetintro", ))
+# def dev_reset():
+#     """replace docstring if you want help for this function"""
+#     # script_dir = os.path.dirname(__file__)
+#     # script_dir = script_dir.replace('functions/', '') it will crash without argumnts
+#     with open(MAIN_PATH + 'first_game.txt', 'w') as firstgamefile:
+#         firstgamefile.truncate()
+#         firstgamefile.write('0')
 
 
 @add_function(("dir", "ls"), "fs", "user", "term")
@@ -330,17 +330,18 @@ def ipsearch(term):
     OSlog.append("unknown user: performed IP search,")
 
 
-@add_function(('login', 'switchuser'), 'user_input', 'user', 'Users')
-@expand_args(0, 'user', 'password')
-def su(user: str, password: encode, me, users):
-    '''login [user:str] [password:str]
-    [EXTEND]
-    login - switch current user
-    '''
-    if user in users and users[user].checkPassword(password):
-        me.copy(users[user])
-    else:
-        raise InvalidLoginOrPassword
+# @add_function(('login', 'switchuser'), 'user_input', 'user', 'Users')
+# @expand_args(0, 'user', 'password')
+# def su(user: str, password: encode, me, users):
+#     '''login [user:str] [password:str]
+#     [EXTEND]
+#     login - switch current user
+#     '''
+#     if user in users and users[user].checkPassword(password):
+#         me.copy(users[user])
+#     else:
+#         raise InvalidLoginOrPassword
+
 
 
 @add_function(("logs", ), 'term')
@@ -493,6 +494,8 @@ def search_back(what, walk, piervous):
         elif what in i:
             result.append(piervous + "/" + i)
     return result
+
+
 @add_function(("search", "find"), "user_input", "fs", 'rootfs', "user", 'term')
 @expand_args(0, "what", 'path')
 def search(what: str, path: str, fs, rootfs, user, term):
@@ -515,17 +518,17 @@ def search(what: str, path: str, fs, rootfs, user, term):
     print_box("Search", result, term)
 
 
-@add_function(('showp', 'showpermissions'), 'user_input', 'fs', 'term')
-@expand_args(0, 'path')
-def showpermisions(path: str, fs, term):
-    '''showp [path:str]
-    [EXTEND]
-    showp - print file or directory permissions
-    '''
-    path = path.split('/')
-    perms = fs.get(ROOT, path).perms()
-    echo('up: ' + str(perms[0]) + ' op: ' + str(perms[1]) + ' uid: ' + str(perms[2]), term)
-
+# @add_function(('showp', 'showpermissions'), 'user_input', 'fs', 'term')
+# @expand_args(0, 'path')
+# def showpermisions(path: str, fs, term):
+#     '''showp [path:str]
+#     [EXTEND]
+#     showp - print file or directory permissions
+#     '''
+#     path = path.split('/')
+#     perms = fs.get(ROOT, path).perms()
+#     echo('up: ' + str(perms[0]) + ' op: ' + str(perms[1]) + ' uid: ' + str(perms[2]), term)
+#
 
 @add_function(("shutdown", ), "user_input", "term", 'user')
 @expand_args(0, "user_input")
@@ -603,13 +606,13 @@ def tutorial(user_input: Optional(int, None), term):
             ], term)
 
 
-@add_function(('users', 'listusers'), 'Users', 'term')
-def listusers(users, term):
-    '''listusers
-    [EXTEND]
-    listusers - list system users
-    '''
-    print_box('Users', users.keys(), term)
+# @add_function(('users', 'listusers'), 'Users', 'term')
+# def listusers(users, term):
+#     '''listusers
+#     [EXTEND]
+#     listusers - list system users
+#     '''
+#     print_box('Users', users.keys(), term)
 
 
 @add_function(("cat", "read"), "user_input", "fs", "user", 'term')
@@ -640,26 +643,26 @@ def rm(path: str, fs, user):
     tmp = path.split("/")
     fs.get(user, "" if len(tmp) == 0 else tmp[:-1]).rm(user, tmp[-1])
 
-@add_function(("vscan", ), 'term')
-def hint(term):
-    """vscan
-    [EXTEND]
-    vscan - scan for vulnerabilities in network
-    """
-    global VULNERABILITIES
-    print_box("Vulnerability Scan", ["Looking for vulnerabilities..."], term)
-    time.sleep(3)
-    clear_term(term)
-    # selects random vulnerability
-    chosen_vulnerability = random.choice(VULNERABILITIES)
-    # display our selected vulnerability.
-    print_box("Vulnerability Scan", [f"Vulnerability found: {chosen_vulnerability}"], 'term')
-    # removes vulnerability from the list.
-    remove_vulnerabillity(chosen_vulnerability)
-    # add 1 failure point.
-    add_failure(10)
-    OSlog.append("unknown user: found vulnerability,")
-    OSlog.append("SECURITY AI: detecting unknown user,")
+# @add_function(("vscan", ), 'term')
+# def hint(term):
+#     """vscan
+#     [EXTEND]
+#     vscan - scan for vulnerabilities in network
+#     """
+#     global VULNERABILITIES
+#     print_box("Vulnerability Scan", ["Looking for vulnerabilities..."], term)
+#     time.sleep(3)
+#     clear_term(term)
+#     # selects random vulnerability
+#     chosen_vulnerability = random.choice(VULNERABILITIES)
+#     # display our selected vulnerability.
+#     print_box("Vulnerability Scan", [f"Vulnerability found: {chosen_vulnerability}"], 'term')
+#     # removes vulnerability from the list.
+#     remove_vulnerabillity(chosen_vulnerability)
+#     # add 1 failure point.
+#     add_failure(10)
+#     OSlog.append("unknown user: found vulnerability,")
+#     OSlog.append("SECURITY AI: detecting unknown user,")
 
 
 @add_function(("write", ), "user_input", "fs", "user")

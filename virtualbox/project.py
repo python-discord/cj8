@@ -145,20 +145,20 @@ def start(fs, user, term):
         with open('first_game.txt', 'w') as firstgamefile:
             firstgamefile.truncate()
             firstgamefile.write('1')
-            echo('SYSTEM HACKED username = user, password = 1234567', term)
+            echo('SYSTEM HACKED username = user, password = None', term)
     else:
         print_box('Welcome Back', ['', 'Your game state is reloaded.', ''], term)
-        echo('SYSTEM HACKED username = user, password = 1234567', term)
+        echo('SYSTEM HACKED username = user, password = None', term)
 
 
 def main():
     global fs
     # resets os directory to initial
-    current_dir = getcwd()
-    src = current_dir + '/default-files'
-    dest = current_dir + '/OS'
-    rmtree(dest)
-    copytree(src, dest)
+    # current_dir = getcwd()
+    # src = current_dir + '/default-files'
+    # dest = current_dir + '/OS'
+    # rmtree(dest)
+    # copytree(src, dest)
 
     # start game
     start(fs, ROOT, term)
