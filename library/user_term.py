@@ -26,9 +26,9 @@ def update_user_section(term: blessed.Terminal, updated_info: list[str]) -> None
 
     item = "\n".join(
         [
-            "┌─term────────────────────────────┐",
+            f"┌─{term.blue}term{term.normal}────────────────────────────┐",
             *("│ " + "".join(i).ljust(31) + " │" for i in updated_info),
-            "└(Enter to confirm)───('q' to esc)┘",
+            f"└{term.green}(Enter to confirm){term.normal}───{term.red}('q' to esc){term.normal}┘",
         ]
     )
 

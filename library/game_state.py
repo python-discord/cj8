@@ -366,8 +366,13 @@ class GameState:
 
     def game_over(self, term: blessed.Terminal) -> None:
         """Placeholder game over function"""
-        self.term_info[1] = "Game over!"
+        self.term_info[0] = ""
+        self.term_info[1] = f"Player {self.player_active} WINS!"
+        self.term_info[2] = ""
         self.redraw_user_term(term)
+
+        print("Game over!")
+        self.next = 40
 
     def draw_starting_user_term(self, term: blessed.Terminal) -> None:
         """Put the initial text for the user terminal and draw it"""
