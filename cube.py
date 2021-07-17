@@ -222,8 +222,8 @@ class BaseCube:
                     [
                         self.front[0],
                         self.back[0],
-                        self.back[2],
-                        self.front[2],
+                        self.back[3],
+                        self.front[3],
                     ]
                 ],
                 self.colours["left"],
@@ -234,8 +234,8 @@ class BaseCube:
                 [
                     [
                         self.front[1],
-                        self.front[3],
-                        self.back[3],
+                        self.front[2],
+                        self.back[2],
                         self.back[1],
                     ]
                 ],
@@ -415,7 +415,10 @@ if __name__ == "__main__":
                     artist.camera_z = camera_z
 
             current_time = time.time_ns()
-            frames_per_second = 1e9 / (current_time - last_time)
+            if not current_time == last_time:
+                frames_per_second = 1e9 / (current_time - last_time)
+            else:
+                frames_per_second = 0
             last_time = current_time
 
             screen.clear_buffer(0, 0, 0)
