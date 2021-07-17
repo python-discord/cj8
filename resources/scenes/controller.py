@@ -381,9 +381,12 @@ class GameController(Scene):
             check = self.check_level_completion()
             if check == GameController.CORRECT_TAGS:
                 self.speak("I knew it!\nI was in a box all along!")
-                self.tagged_walls = {}
-                self.input_enabled = False
-                self.map.end_frame = self.map.cur_frame + 60
+                if self.level == len(LEVELS) - 1:
+                    raise exceptions.WinGame
+                else:
+                    self.tagged_walls = {}
+                    self.input_enabled = False
+                    self.map.end_frame = self.map.cur_frame + 60
             elif check == GameController.WRONG_TAGS:
                 self.tagged_walls = {}
                 self.speak("Hmm... I don't think this is right.")

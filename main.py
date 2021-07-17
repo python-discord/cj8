@@ -52,6 +52,9 @@ def play_scenes(screen: Screen, scenes: Scenes, ih: Callable) -> Tuple[Scenes, C
             elif isinstance(e, exceptions.LevelSelector):
                 scenes = [mp.LevelSelector(screen)]
                 ih = mp.default_IH
+            elif isinstance(e, exceptions.WinGame):
+                scenes = [mp.EndScene(screen)]
+                ih = mp.default_IH
             elif isinstance(e, exceptions.Settings):
                 scenes = [mp.Settings(screen)]
                 ih = mp.default_IH
