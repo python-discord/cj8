@@ -1,3 +1,4 @@
+from itertools import chain
 from typing import Optional
 
 from asciimatics.effects import Print, Sprite
@@ -9,6 +10,18 @@ from asciimatics.screen import Screen
 
 import resources.exceptions as exceptions
 from resources.sprites.characters import character_box, character_box_pushing
+from ..asciimatics_better import Mirage2
+
+# todo
+#  add credits
+#  incorporate sound settings
+#  add stars render as a bg for title or credits or smth
+#  add exit_scene when exiting a scene
+
+
+back_button = lambda screen: Print(screen, StaticRenderer(["<-- Back (Esc)"]), 0, 1)
+def exit_scene(screen: Screen) -> Scene:
+    return Mirage2(screen, StaticRenderer([(" " * screen.width + "\n") * screen.height]), False, 0, 0, 0.35, stop_frame=60)
 
 
 class Title(Scene):
@@ -21,7 +34,7 @@ class Title(Scene):
         # Opening character with box on his head
         char_sprite = Sprite(
             screen, path=char_path, renderer_dict={
-                "default": StaticRenderer(images=[character_box]*8 + [character_box_pushing]*10)
+                "default": StaticRenderer(images=[character_box] * 8 + [character_box_pushing] * 10)
             }
         )
 
@@ -133,22 +146,30 @@ class Credits(Scene):
         """Credits input handler"""
         if isinstance(event, KeyboardEvent):
             key = event.key_code
-
         return event
 
 
 class LevelSelector(Scene):
     def __init__(self, screen: Screen):
         """Level selector screen"""
-        super().__init__([])
+        box_width = screen.width // 5
+        box_height = 7
+        super().__init__(list(chain.from_iterable((
+            Mirage2(screen, Box(box_width, box_height, False), True,
+                    y := i // 3 * int(box_height * 1.5) + box_height, x := (i % 3 + 1) * (screen.width // 4), 0.25),
+            Print(screen, StaticRenderer([f"${{{c}}}{i + 1}" for c in [1, 3, 2, 4, 6, 5]]), y-1, x))
+            for i in range(exceptions.EnterLevel.max_level + 1))), -1)
 
     def process_event(self, event: Event) -> Event:
         """Level selector input handler"""
         if isinstance(event, KeyboardEvent):
             key = event.key_code
-            if (lvl := int(chr(key))) in range(10):
-                if lvl <= exceptions.EnterLevel.max_level + 1:
-                    raise exceptions.EnterLevel(lvl)
+            try:
+                if (lvl := int(chr(key))) in range(10):
+                    if lvl <= exceptions.EnterLevel.max_level:
+                        raise exceptions.EnterLevel(lvl - 1)
+            except ValueError:
+                pass
         return event
 
 
