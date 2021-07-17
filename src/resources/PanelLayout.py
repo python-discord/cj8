@@ -19,6 +19,10 @@ class PanelLayout:
                 Layout(name='main_game', ratio=7),
                 Layout(name='footer', ratio=2)
             )
+            layout['footer'].split_row(
+                Layout(name='Other_info', ratio=7),
+                Layout(name='inventory', ratio=3)
+            )
         else:
             layout = Layout(name="start")
 

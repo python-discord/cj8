@@ -57,10 +57,12 @@ def run_game(layout: Layout, game_resources: GameResources) -> Panel:
 
     # Panels to update
     layout["main_game"].update(panel)
-    layout["footer"].update(Panel('footer'))
     layout["tree"].update(
         Panel(game_resources.node.display_node(), title="Current Location")
     )
+    inventory = Text("\n".join(game_resources.collected_items))
+    print(inventory)
+    layout["inventory"].update(Panel(inventory))
     sleep(0.1)
 
 
@@ -74,10 +76,10 @@ def main() -> None:
     layout["main_game"].update(game_panel)
 
     # Panels to update
-    layout["footer"].update(Panel('footer'))
     layout["tree"].update(
         Panel(game_resources.node.display_node(), title="Current Location")
     )
+    layout['inventory'].update(Panel('inventory'))
 
     start_screen()
 
