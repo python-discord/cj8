@@ -268,6 +268,16 @@ class BaseCube:
                 self.colours["bottom"],
             )
 
+    def get_face_colour(self, face_normal: np.array) -> int:
+        """Determine the colour of a particular face."""
+        # list of faces and how well they align with the given face_normal:
+        face_list = [
+            (face, np.inner(face_normal, normal))
+            for face, normal in self.normal_vectors.items()
+        ]
+        # sort the list by alignment, pick the largest, return the corresponding face colour
+        return self.colours[sorted(face_list, key=lambda x: x[1], reverse=True)[0][0]]
+
 
 class TranslatedCube(BaseCube):
     """A base cube that is shifted into a new location."""
@@ -442,6 +452,68 @@ if __name__ == "__main__":
             for cube in sorted(rubik_cube, key=cube_camera_distance, reverse=True):
                 cube.draw_block_faces(artist)
                 # cube.draw_cage(artist)
+
+            # these are the cubes in the top layer:
+            top_layer = [rubik_cube[i] for i in [17, 18, 19, 9, 10, 11, 0, 1, 2]]
+            top_colours = [
+                cube.get_face_colour(np.array([0, 1, 0])) for cube in top_layer
+            ]  # [0,1,0] is the direction pointing up
+            # screen.print_at(f"{top_colours=}",0,5)
+            for i, c in enumerate(top_colours):
+                screen.print_at(
+                    "X", screen.width - 6 + (i % 3), screen.height - 12 + (i // 3), c
+                )
+            # these are the cubes in the front layer:
+            front_layer = rubik_cube[:9]
+            front_colours = [
+                cube.get_face_colour(np.array([0, 0, 1])) for cube in front_layer
+            ]
+            # screen.print_at(f"{front_colours=}",0,6)
+            for i, c in enumerate(front_colours):
+                screen.print_at(
+                    "X", screen.width - 6 + (i % 3), screen.height - 9 + (i // 3), c
+                )
+            # these are the cubes in the bottom layer:
+            bottom_layer = [rubik_cube[i] for i in [6, 7, 8, 14, 15, 16, 23, 24, 25]]
+            bottom_colours = [
+                cube.get_face_colour(np.array([0, -1, 0])) for cube in bottom_layer
+            ]
+            # screen.print_at(f"{bottom_colours=}",0,6)
+            for i, c in enumerate(bottom_colours):
+                screen.print_at(
+                    "X", screen.width - 6 + (i % 3), screen.height - 6 + (i // 3), c
+                )
+            # these are the cubes in the bottom layer:
+            rear_layer = [rubik_cube[i] for i in [23, 24, 25, 20, 21, 22, 17, 18, 19]]
+            rear_colours = [
+                cube.get_face_colour(np.array([0, 0, -1])) for cube in rear_layer
+            ]
+            # screen.print_at(f"{rear_colours=}",0,6)
+            for i, c in enumerate(rear_colours):
+                screen.print_at(
+                    "X", screen.width - 6 + (i % 3), screen.height - 3 + (i // 3), c
+                )
+
+            # these are the cubes in the left layer:
+            left_layer = [rubik_cube[i] for i in [17, 9, 0, 20, 12, 3, 23, 14, 6]]
+            left_colours = [
+                cube.get_face_colour(np.array([-1, 0, 0])) for cube in left_layer
+            ]
+            # screen.print_at(f"{left_colours=}",0,6)
+            for i, c in enumerate(left_colours):
+                screen.print_at(
+                    "X", screen.width - 9 + (i % 3), screen.height - 9 + (i // 3), c
+                )
+            # these are the cubes in the right layer:
+            right_layer = [rubik_cube[i] for i in [2, 11, 19, 5, 13, 22, 8, 16, 25]]
+            right_colours = [
+                cube.get_face_colour(np.array([1, 0, 0])) for cube in right_layer
+            ]
+            # screen.print_at(f"{right_colours=}",0,6)
+            for i, c in enumerate(right_colours):
+                screen.print_at(
+                    "X", screen.width - 3 + (i % 3), screen.height - 9 + (i // 3), c
+                )
 
             screen.refresh()
 
