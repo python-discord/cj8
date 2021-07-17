@@ -178,8 +178,8 @@ class LevelSelector(Scene):
         if isinstance(event, KeyboardEvent):
             key = event.key_code
             try:
-                if (lvl := int(chr(key))) in range(10):
-                    if lvl <= exceptions.EnterLevel.max_level:
+                if (lvl := int(chr(key))) in range(1, 10):
+                    if lvl <= exceptions.EnterLevel.max_level + 1:
                         raise exceptions.EnterLevel(lvl - 1)
             except ValueError:
                 pass
