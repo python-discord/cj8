@@ -59,7 +59,7 @@ def run_game(layout: Layout, game_resources: GameResources, information: Informa
     # Panels to update
     layout["main_game"].update(panel)
     layout["tree"].update(
-        Panel(game_resources.node.display_node(), title="Current Location")
+        Panel(game_resources.node.display_node(), title="Map")
     )
 
     if game_resources.won_game:
@@ -68,7 +68,7 @@ def run_game(layout: Layout, game_resources: GameResources, information: Informa
         )
 
     inventory = Text("\n".join("{} X {}".format(k, v)for k, v in game_resources.collected_items.items()))
-    layout["inventory"].update(Panel(inventory))
+    layout["inventory"].update(Panel(inventory, title="Inventory"))
     layout["player_health"].update(information.get_player_health())
     layout['info'].update(information.display_enemy_panel())
 
@@ -92,12 +92,12 @@ def main() -> None:
 
     # Panels to update
     layout["tree"].update(
-        Panel(game_resources.node.display_node(), title="Current Location")
+        Panel(game_resources.node.display_node(), title="Map")
     )
-    layout['inventory'].update(Panel('inventory'))
+    layout['inventory'].update(Panel('', title="Inventory"))
     layout['info'].update(information.display_enemy_panel())
     layout["player_health"].update(
-        (Panel(Text('♥'*10 + "   |   You have: 100HP", style="bold red"), title='Your Health')))
+        (Panel(Text('♥'*10 + "   |   You have: 100HP", style="bold red"), title='Health')))
 
     start_screen()
 

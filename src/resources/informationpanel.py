@@ -17,7 +17,7 @@ class Information:
         """Sets panel for player health"""
         health = self.player.health
         hearts = Text(f"{'♥' * (health // 10) if health >= 10 else '♥'}   |   You have: {health}HP", style="bold red")
-        health_panel = Panel(hearts, title="Your Health")
+        health_panel = Panel(hearts, title="Health")
         return health_panel
 
     def display_enemy_panel(self) -> Panel:
