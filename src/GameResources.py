@@ -16,6 +16,7 @@ class GameResources:
         self.level_selector = LevelSelector(self.tree)
 
         self.level = self.level_selector.create_level()
+        self.won_game = False
         self.player = Character(symbol="$", x=self.level.width // 2, y=self.level.height // 2, color="bold white")
 
         if bless:
@@ -33,6 +34,8 @@ class GameResources:
         """Updates all game objects"""
         self.update_player(bless)
         self.enter_door_check()
+        self.won_game = self.level.cur_node.depth == self.tree.depth
+
         self.update_enemies()
         self.update_color_changer()
         self.update_items()
