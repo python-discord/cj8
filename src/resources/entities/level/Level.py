@@ -1,9 +1,11 @@
+import math
 from random import choice, randint, shuffle
 
+from rich.console import Console
 from rich.text import Text
 
 from src.fstree.Node import Node
-from src.resources.constants import COLOR_CHANGER_CHOICES
+from src.resources.constants import COLOR_CHANGER_CHOICES, TILE
 from src.resources.entities.ColorChanger import ColorChanger
 from src.resources.entities.Item import Item
 
@@ -17,11 +19,12 @@ class Level:
     """Generates and contains a level"""
 
     def __init__(self, width: int, height: int, cur_node: Node) -> None:
+        self.console = Console()
         self.entrance = (0, 0)
         self.parent_door = (0, 0)
         self.board = []
-        self.width = width
-        self.height = height
+        self.width = math.floor(self.console.width * .4)
+        self.height = math.floor(self.console.height * .6)
         self.cur_node = cur_node
         self.doors = {}
         self.color_changers = []
@@ -46,7 +49,7 @@ class Level:
         for j in range(self.height):
             row = []
             for i in range(self.width):
-                tile = Tile(text="'", style="bold magenta")
+                tile = Tile(text=TILE, style="bold grey39")
                 row.append(tile)
             self.board.append(row)
         self.set_border()
@@ -107,15 +110,6 @@ class Level:
         self.board[0][self.width - 1] = Wall(text="╗", style="bold white")
         self.board[self.height - 1][self.width - 1] = Wall(text="╝", style="bold white")
 
-    def to_string(self) -> Text:
-        """Convert map to string"""
-        string_map = Text()
-        for row in self.board:
-            for col in row:
-                string_map += col
-            string_map += "\n"
-        return string_map
-
     def spawn_random_changers(self, num: int = 3) -> None:
         """Spawns color changers randomly"""
         shuffle(COLOR_CHANGER_CHOICES)
@@ -124,7 +118,7 @@ class Level:
             y = randint(2, self.height-2)
             x = randint(2, self.width-2)
 
-            if str(self.board[y][x]) == "'":
+            if str(self.board[y][x]) == TILE:
                 num -= 1
                 color = choice(new_list)
                 new_list.pop(new_list.index(color))
@@ -137,7 +131,7 @@ class Level:
             y = randint(2, self.height-2)
             x = randint(2, self.width-2)
 
-            if str(self.board[y][x]) == "'":
+            if str(self.board[y][x]) == TILE:
                 item = Item(symbol=chr(0xA2), x=x, y=y, color="bold #afa208")
                 item_entry = {id(item): item}
                 self.items.update(item_entry)
@@ -150,7 +144,7 @@ class Level:
             x = randint(2, self.width - 2)
             disallowed_spaces = {'x': (self.entrance[1] - 1, self.entrance[1] + 1),
                                  'y': (self.entrance[0] - 1, self.entrance[0] + 1)}
-            if str(self.board[y][x]) == "'" and \
+            if str(self.board[y][x]) == TILE and \
                     x not in disallowed_spaces['x'] and y not in disallowed_spaces['y']:
                 num -= 1
                 enemy = Enemy(aggro_radius=3, x=x, y=y, symbol='^')
@@ -158,7 +152,7 @@ class Level:
                 self.enemies.update(enemy_entry)
 
     def remove_enemy(self, enemy: Enemy) -> None:
-        """Removes an enemy and replaces level symbol"""
+        """Rfemoves an enemy and replaces level symbol"""
         enemy_id = id(enemy)
         if enemy_id in self.enemies.keys():
             self.enemies.pop(enemy_id)
@@ -170,3 +164,17 @@ class Level:
         if item_id in self.items.keys():
             self.items.pop(item_id)
         self.board[item.y][item.x] = item.ground_symbol
+
+    def to_string(self) -> Text:
+        """Convert map to string"""
+        top_buffer = Console().height // 10
+        top_buffer = " \n" * top_buffer
+        left_buffer = Console().width // 2 - self.width
+        left_buffer = " " * left_buffer
+        string_map = Text(left_buffer)
+        for row in self.board:
+            for col in row:
+                string_map += col
+            string_map += "\n" + left_buffer
+
+        return Text(top_buffer) + string_map

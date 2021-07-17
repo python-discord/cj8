@@ -55,7 +55,6 @@ def run_game(layout: Layout, game_resources: GameResources, information: Informa
     game_resources.draw()
 
     panel = Panel(game_resources.level.to_string())
-
     # Panels to update
     layout["main_game"].update(panel)
     layout["tree"].update(
@@ -71,7 +70,6 @@ def run_game(layout: Layout, game_resources: GameResources, information: Informa
     layout["inventory"].update(Panel(inventory))
     layout["player_health"].update(information.get_player_health())
     layout['info'].update(Panel("", title='info'))
-    sleep(0.2)
 
 
 def main() -> None:

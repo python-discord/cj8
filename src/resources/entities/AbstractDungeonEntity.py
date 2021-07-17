@@ -2,7 +2,9 @@ import random
 
 from rich.text import Text
 
-from src.resources.constants import COLOR_CHANGER_CHOICES, PLAYER_COLOR_CHOICES
+from src.resources.constants import (
+    COLOR_CHANGER_CHOICES, PLAYER_COLOR_CHOICES, TILE
+)
 
 from .level.LevelResources import LevelResources
 from .level.Tile import Tile
@@ -13,7 +15,7 @@ class AbstractDungeonEntity:
 
     def __init__(
         self,
-        ground_symbol: str = "'",
+        ground_symbol: str = TILE,
         y: int = 0,
         x: int = 0,
         symbol: str = "$",
@@ -23,7 +25,7 @@ class AbstractDungeonEntity:
         self.x = x
         self.y = y
         self.symbol = Text(symbol)
-        self.ground_symbol: LevelResources = Tile(text=ground_symbol, style="bold magenta")
+        self.ground_symbol: LevelResources = Tile(text=ground_symbol, style="bold grey39")
 
         self.new_positions: dict = {"x": 0, "y": 0}
         self.color = self.set_color(color)
