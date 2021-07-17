@@ -46,7 +46,7 @@ DIRECTIONAL_MANEUVER_MAPPINGS = [
         "map_movement": ("y", -1),
     },
     {
-        "movement_trigger_keys": (Screen.KEY_DOWN,)ord("s"),
+        "movement_trigger_keys": (Screen.KEY_DOWN,), ord("s"),
         "tag_trigger_keys": (ord("S"),),
         "wall": "d",
         "raycast_direction": (0, +1),
