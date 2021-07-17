@@ -334,7 +334,7 @@ if __name__ == "__main__":
         # the Rubik cube is made up of 26 individual cubes
         rubik_cube = [
             GenericCube(np.array([x, y, z]))
-            # Generate cubes from fron to back, top to bottom, left to
+            # Generate cubes from front to back, top to bottom, left to
             # right. The first one is front top left corner.
             for z in [1, 0, -1]
             for y in [1, 0, -1]
@@ -399,6 +399,41 @@ if __name__ == "__main__":
                         rubik_cube[5],
                         rubik_cube[2],
                         *rubik_cube[9:],
+                    ]
+
+                elif key == ord("m"):
+                    for cube in rubik_cube[9:17]:
+                        cube.rotate_z(
+                            -np.pi / 2
+                        )
+                    rubik_cube = [
+                        *rubik_cube[:9],
+                        rubik_cube[11],
+                        rubik_cube[13],
+                        rubik_cube[16],
+                        rubik_cube[10],
+                        rubik_cube[15],
+                        rubik_cube[9],
+                        rubik_cube[12],
+                        rubik_cube[14],
+                        *rubik_cube[17:],
+                    ]
+                elif key == ord("M"):
+                    for cube in rubik_cube[9:17]:
+                        cube.rotate_z(
+                            np.pi / 2
+                        )
+                    rubik_cube = [
+                        *rubik_cube[:9],
+                        rubik_cube[14],
+                        rubik_cube[12],
+                        rubik_cube[9],
+                        rubik_cube[15],
+                        rubik_cube[10],
+                        rubik_cube[16],
+                        rubik_cube[13],
+                        rubik_cube[11],
+                        *rubik_cube[17:],
                     ]
 
             elif isinstance(ev, MouseEvent):
