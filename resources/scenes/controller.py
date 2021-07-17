@@ -88,7 +88,6 @@ class Map(Effect):
 
     def __init__(self, screen: Screen, game_level: int):
         super(Map, self).__init__(screen)
-
         # self.map = [''.join([choice(texturing) if char == ' ' else char for char in line]) for line in game_map]
         self.level = game_level
         self.map: List[str] = "".join(

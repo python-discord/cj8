@@ -58,6 +58,9 @@ def play_scenes(screen: Screen, scenes: Scenes, ih: Callable) -> Tuple[Scenes, C
             elif isinstance(e, exceptions.Credits):
                 scenes = [mp.Credits(screen)]
                 ih = mp.default_IH
+            elif isinstance(e, exceptions.HowToPlay):
+                scenes = [mp.HowToPlay(screen)]
+                ih = mp.default_IH
             else:
                 sys.exit('wtf')
             # etc
