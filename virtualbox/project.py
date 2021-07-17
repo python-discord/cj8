@@ -133,7 +133,7 @@ def start(fs, user, term):
                    'Clearing Entry Logs...COMPLETE',
                    'Initializing Anti-threat AI...COMPLETE',
                    '',
-                   'Welcome, operator. Press Enter to coninue'], term)
+                   'Welcome, operator. Press Enter to continue'], term)
         input()
         clear_term(term)
         echo('This is the file tree. Here, you can see every file in the operating system.', term)
