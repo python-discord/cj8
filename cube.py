@@ -6,6 +6,7 @@ from typing import Dict, List
 
 import numpy as np
 from asciimatics.event import KeyboardEvent, MouseEvent
+from asciimatics.exceptions import StopApplication
 from asciimatics.screen import ManagedScreen, Screen
 
 
@@ -360,7 +361,7 @@ if __name__ == "__main__":
                 key = ev.key_code
                 # Stop on ctrl+q or ctrl+x, or simply on q/Q
                 if key in (17, 24, ord("Q"), ord("q")):
-                    # raise StopApplication("User terminated app")
+                    raise StopApplication("User terminated app")
                     return
                 elif key == ord("f"):  # rotate front disc counter-clockwise
                     # the "front" are the first 9 cubes in the list
@@ -618,7 +619,7 @@ if __name__ == "__main__":
                     ]
                 elif key == ord("R"):
                     for i in [2, 5, 8, 11, 13, 16, 19, 22, 25]:
-                        rubik_cube[i].rotate_x(np.pi / 2)
+                        rubik_cube[i].rotate_x(-np.pi / 2)
 
                     rubik_cube = [
                         *rubik_cube[0:2],
