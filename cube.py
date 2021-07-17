@@ -486,6 +486,42 @@ if __name__ == "__main__":
                         rubik_cube[22],
                         rubik_cube[19],
                     ]
+                elif key == ord("d"):
+                    for i in [6, 7, 8, 14, 15, 16, 23, 24, 25]:
+                        rubik_cube[i].rotate_y(np.pi / 2)
+
+                    rubik_cube = [
+                        *rubik_cube[:6],
+                        rubik_cube[23],
+                        rubik_cube[14],
+                        rubik_cube[6],
+                        *rubik_cube[9:14],
+                        rubik_cube[24],
+                        rubik_cube[15],
+                        rubik_cube[7],
+                        *rubik_cube[17:23],
+                        rubik_cube[25],
+                        rubik_cube[16],
+                        rubik_cube[8],
+                    ]
+                elif key == ord("D"):
+                    for i in [6, 7, 8, 14, 15, 16, 23, 24, 25]:
+                        rubik_cube[i].rotate_y(-np.pi / 2)
+
+                    rubik_cube = [
+                        *rubik_cube[:6],
+                        rubik_cube[8],
+                        rubik_cube[16],
+                        rubik_cube[25],
+                        *rubik_cube[9:14],
+                        rubik_cube[7],
+                        rubik_cube[15],
+                        rubik_cube[24],
+                        *rubik_cube[17:23],
+                        rubik_cube[6],
+                        rubik_cube[14],
+                        rubik_cube[23],
+                    ]
 
             elif isinstance(ev, MouseEvent):
                 mouse_x, mouse_y, mouse_buttons = ev.x, ev.y, ev.buttons
@@ -526,7 +562,9 @@ if __name__ == "__main__":
             )
             screen.print_at(
                 """Press q/Q to quit, f/F to rotate front disc,
-t/T for the top disc, drag the mouse for rotation of the cube.""",
+ m/M to rotate middle disk
+ , b/B for rotate back disc, t/T for the top disc, d/D to rotate bottom disk,
+ drag the mouse for rotation of the cube.""",
                 0,
                 3,
             )
