@@ -165,18 +165,20 @@ class Space:
                         self.player_on_ground = True
 
             if collision_type == COLLISION_TYPES["player_to_box"]:
-                item2.speed = [0, 0]
                 side = whatside(collision)
                 logging.info(f"collision happened at item1's {side} side")
                 if side == "top":
+                    item2.speed = [0, 0]
                     item2.bottom = item1.top
                 if side == "bottom":
                     item1.speed = [0, 0]
                     item1.bottom = item2.top
                     self.player_on_ground = True
                 if side == "left":
+                    item2.speed = [0, item2.speed[1]]
                     item2.right = item1.left
                 if side == "right":
+                    item2.speed = [0, item2.speed[1]]
                     item2.left = item1.right
 
             if collision_type == COLLISION_TYPES["box_to_box"]:
