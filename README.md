@@ -16,7 +16,9 @@ The player will have to think to overcome many puzzles and escape the box they a
 * Tons of hints and puzzles. 
 * Custom made Hacking tools that let you hack into ports, ips and passwords.
 
-
+## How to run
+* main file is ```virtualbox/project.py```
+* install dependancies then run this file
 
 ## Dependancies
 * [Blessed](https://github.com/chjj/blessed)
