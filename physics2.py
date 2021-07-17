@@ -255,9 +255,9 @@ class Space:
 
     def step(self, fps: int):
         self.player_in_thinkingbox = False
-        self.targets_engaged = 0
 
         for i in range(len(self.boxes)):
+            self.targets_engaged = 0
             collisions = self.check_collisions()
             self.resolve_collisions(collisions)
 
