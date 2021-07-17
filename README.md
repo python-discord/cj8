@@ -5,10 +5,8 @@
 
 In this game you are a network security architect working for the USA, your job is to hack into a Iranian Network and eliminate a bomb threat.
 
-
-
-* [jacebrowning/template-django](https://github.com/jacebrowning/template-django)
-* [jacebrowning/template-flask](https://github.com/jacebrowning/template-flask)
+## Features
+* This game features a text based command line operating system, full of hints and puzzles you let you hack it.
 
 ## Examples
 
