@@ -16,7 +16,7 @@ class GameResources:
 
         self.level = self.level_selector.create_level()
         self.won_game = False
-        self.player = Character(symbol="$", x=self.level.width // 2, y=self.level.height // 2, color="bold white")
+        self.player = Character(symbol="$", x=self.level.width // 2, y=1, color="bold white")
         self.collected_items = {}
         if bless:
             self.player.start()

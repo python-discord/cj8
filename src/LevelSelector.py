@@ -31,7 +31,7 @@ class LevelSelector:
         level.create_doors(door)
         level.spawn_random_changers()
         level.spawn_dungeon_items(num=2)
-        level.spawn_random_enemies(num=1)
+        level.spawn_random_enemies(num=5)
 
         self.levels.update({id(self.cur): level})
 

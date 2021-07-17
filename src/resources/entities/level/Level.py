@@ -139,20 +139,21 @@ class Level:
 
     def spawn_random_enemies(self, num: int) -> None:
         """Spawns a new enemies randomly"""
+        left = math.floor(self.width * .33)
+        right = self.width - left
+        bottom = math.floor(self.height * .33)
+        top = self.height - bottom
         while num > 0:
-            y = randint(2, self.height - 2)
-            x = randint(2, self.width - 2)
-            disallowed_spaces = {'x': (self.entrance[1] - 1, self.entrance[1] + 1),
-                                 'y': (self.entrance[0] - 1, self.entrance[0] + 1)}
-            if str(self.board[y][x]) == TILE and \
-                    x not in disallowed_spaces['x'] and y not in disallowed_spaces['y']:
+            y = randint(bottom, top)
+            x = randint(left, right)
+            if str(self.board[y][x]) == TILE:
                 num -= 1
                 enemy = Enemy(aggro_radius=3, x=x, y=y, symbol='^')
                 enemy_entry = {id(enemy): enemy}
                 self.enemies.update(enemy_entry)
 
     def remove_enemy(self, enemy: Enemy) -> None:
-        """Rfemoves an enemy and replaces level symbol"""
+        """Removes an enemy and replaces level symbol"""
         enemy_id = id(enemy)
         if enemy_id in self.enemies.keys():
             self.enemies.pop(enemy_id)
