@@ -14,3 +14,11 @@ In this game you are a network security architect working for the USA, your job 
 * [Blessed](https://github.com/chjj/blessed)
 * [PlaySound](https://github.com/TaylorSMarks/playsound)
 
+## Credits
+### Team Leader
+*https://github.com/Quickmotions
+*Discord: Fungus#9550
+### Team
+*[WelllDK](https://github.com/WellIDKRealy)
+*Discord: Sir Arthur Wellesley#5851
+*[
