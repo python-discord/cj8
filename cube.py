@@ -540,6 +540,102 @@ if __name__ == "__main__":
                         rubik_cube[14],
                         rubik_cube[23],
                     ]
+                elif key == ord("l"):
+                    for i in [0, 3, 6, 9, 12, 14, 17, 20, 23]:
+                        rubik_cube[i].rotate_x(np.pi / 2)
+
+                    rubik_cube = [
+                        rubik_cube[6],
+                        *rubik_cube[1:3],
+                        rubik_cube[14],
+                        *rubik_cube[4:6],
+                        rubik_cube[23],
+                        *rubik_cube[7:9],
+                        rubik_cube[3],
+                        *rubik_cube[10:12],
+                        rubik_cube[12],
+                        rubik_cube[13],
+                        rubik_cube[20],
+                        *rubik_cube[15:17],
+                        rubik_cube[0],
+                        *rubik_cube[18:20],
+                        rubik_cube[9],
+                        *rubik_cube[21:23],
+                        rubik_cube[17],
+                        *rubik_cube[24:],
+                    ]
+                elif key == ord("L"):
+                    for i in [0, 3, 6, 9, 12, 14, 17, 20, 23]:
+                        rubik_cube[i].rotate_x(-np.pi / 2)
+
+                    rubik_cube = [
+                        rubik_cube[17],
+                        *rubik_cube[1:3],
+                        rubik_cube[9],
+                        *rubik_cube[4:6],
+                        rubik_cube[0],
+                        *rubik_cube[7:9],
+                        rubik_cube[20],
+                        *rubik_cube[10:12],
+                        rubik_cube[12],
+                        rubik_cube[13],
+                        rubik_cube[3],
+                        *rubik_cube[15:17],
+                        rubik_cube[23],
+                        *rubik_cube[18:20],
+                        rubik_cube[14],
+                        *rubik_cube[21:23],
+                        rubik_cube[6],
+                        *rubik_cube[24:],
+                    ]
+                elif key == ord("r"):
+                    for i in [2, 5, 8, 11, 13, 16, 19, 22, 25]:
+                        rubik_cube[i].rotate_x(np.pi / 2)
+
+                    rubik_cube = [
+                        *rubik_cube[0:2],
+                        rubik_cube[8],
+                        *rubik_cube[3:5],
+                        rubik_cube[16],
+                        *rubik_cube[6:8],
+                        rubik_cube[25],
+                        *rubik_cube[9:11],
+                        rubik_cube[5],
+                        rubik_cube[12],
+                        rubik_cube[13],
+                        *rubik_cube[14:16],
+                        rubik_cube[22],
+                        *rubik_cube[17:19],
+                        rubik_cube[2],
+                        *rubik_cube[20:22],
+                        rubik_cube[11],
+                        *rubik_cube[23:25],
+                        rubik_cube[19],
+                    ]
+                elif key == ord("R"):
+                    for i in [2, 5, 8, 11, 13, 16, 19, 22, 25]:
+                        rubik_cube[i].rotate_x(np.pi / 2)
+
+                    rubik_cube = [
+                        *rubik_cube[0:2],
+                        rubik_cube[19],
+                        *rubik_cube[3:5],
+                        rubik_cube[11],
+                        *rubik_cube[6:8],
+                        rubik_cube[2],
+                        *rubik_cube[9:11],
+                        rubik_cube[22],
+                        rubik_cube[12],
+                        rubik_cube[13],
+                        *rubik_cube[14:16],
+                        rubik_cube[5],
+                        *rubik_cube[17:19],
+                        rubik_cube[25],
+                        *rubik_cube[20:22],
+                        rubik_cube[16],
+                        *rubik_cube[23:25],
+                        rubik_cube[8],
+                    ]
 
             elif isinstance(ev, MouseEvent):
                 mouse_x, mouse_y, mouse_buttons = ev.x, ev.y, ev.buttons
