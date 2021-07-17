@@ -5,3 +5,4 @@ You're confined in what seems like gigantic, labyrinthine boxes, and you have to
 Below is a list of incompatibilities discovered so far that depends on your operating system/terminal.
 
 * Windows - Windows Shell, PowerShell, `cmd.exe`: `asciimatics` won't give support for the 256 color-palette, and so a fallback is used with only black and white (no gray-gradient lighting D:).
+* Linux - `playsound` seems to bug out on Linux, where you'll have to manually install the `gi` module. It could also just not work at all, in which case, check out our sound-less fallback branch.
