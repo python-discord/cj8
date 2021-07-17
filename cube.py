@@ -1,12 +1,80 @@
 #!/usr/bin/env python
 # coding: utf-8
 
+import logging
 import time
-from typing import Dict, List
+from enum import IntEnum
+from typing import List
 
 import numpy as np
 from asciimatics.event import KeyboardEvent, MouseEvent
 from asciimatics.screen import ManagedScreen, Screen
+
+logging.basicConfig(level=logging.INFO, filename="cube.log")
+log = logging.getLogger()
+
+QUIT_COMMANDS = (17, 24, ord("Q"), ord("q"))
+HELP_TEXT = """
+COMMANDS
+--------
+For the following, lowercase means "counter-clockwise" or "anticlockwise", and uppercase means clockwise.
+
+Rotate Front: f/F
+    Press f or F to rotate the front disc.
+Rotate Middle: m/M
+    Press m or M to rotate the middle disc.
+Rotate Back: b/B
+    Press b or B to rotate the back disc.
+Rotate Top: t/T
+    Press t or T to rotate the top disc.
+Rotate Bottom: d/D
+    Press d or D to rotate the bottom disc.
+
+Other Commands
+~~~~~~~~~~~~~~
+Reset View: r
+    Press r to return to the starting view
+Quit: q/Q/Ctr+q/Ctr+x
+    Press q, Q, Ctr+Q or Ctr+X to exit the cube.
+Mouse Click:
+    Click the mouse to toggle free rotation of the cube with the mouse. This only applies if your terminal supports it.
+Mouse Drag / Move:
+    Rotate the cube.
+
+"""
+
+BRIEF_HELP_TEXT = """
+ Rotate Front: f/F;
+ Rotate Middle: m/M;
+ Rotate Back: b/B;
+ Rotate Top: t/T;
+ Rotate Bottom: d/D;
+ Reset View: r;
+ Quit: q/Q;
+ Mouse Click: Enable/disable free rotation of the cube;
+ Mouse Drag: Rotate the cube;
+"""
+
+
+class KeyboardCommand(IntEnum):
+    """Enum detailing Keyboard Commands to do operations on the Cube view."""
+
+    rotate_front_ccw = ord("f")
+    rotate_front_cw = ord("F")
+
+    rotate_top_ccw = ord("t")
+    rotate_top_cw = ord("T")
+
+    rotate_middle_ccw = ord("m")
+    rotate_middle_cw = ord("M")
+
+    rotate_back_ccw = ord("b")
+    rotate_back_cw = ord("B")
+
+    rotate_bottom_ccw = ord("d")
+    rotate_bottom_cw = ord("D")
+
+    reset_view = ord("r")
 
 
 # define rotation matrices
@@ -79,6 +147,8 @@ def project3d(
 class Artist:
     """A dummy class providing a 3D drawing interface."""
 
+    __slots__ = ("screen", "h", "w", "cx", "cy", "camera_position", "camera_x", "camera_y", "camera_z")
+
     def __init__(
         self,
         screen: Screen,
@@ -146,17 +216,9 @@ class Artist:
 class BaseCube:
     """A 1x1 cube centred at the origin. It has coloured faces but doesn't do much otherwise."""
 
-    def __init__(
-        self,
-        colours: Dict[str, int] = {
-            "front": Screen.COLOUR_MAGENTA,
-            "back": Screen.COLOUR_RED,
-            "left": Screen.COLOUR_BLUE,
-            "right": Screen.COLOUR_GREEN,
-            "top": Screen.COLOUR_CYAN,
-            "bottom": Screen.COLOUR_YELLOW,
-        },
-    ):
+    __slots__ = ("front", "back", "normal_vectors", "colours", "position")
+
+    def __init__(self):
         # define corner points of front face and back face, starting in top left, going clockwise
         front = [
             np.array(
@@ -184,16 +246,24 @@ class BaseCube:
             "top": [0, 1, 0],
             "bottom": [0, -1, 0],
         }
-        self.colours = colours
+        self.colours = {
+            "front": Screen.COLOUR_MAGENTA,
+            "back": Screen.COLOUR_RED,
+            "left": Screen.COLOUR_BLUE,
+            "right": Screen.COLOUR_GREEN,
+            "top": Screen.COLOUR_CYAN,
+            "bottom": Screen.COLOUR_YELLOW,
+        }
 
     def draw_cage(self, artist: Artist) -> None:
         """Draw self as wireframe using artist."""
-        for pt1, pt2 in zip(self.front, [*self.front[1:], self.front[0]]):
-            artist.line(pt1, pt2)
-        for pt1, pt2 in zip(self.back, [*self.back[1:], self.back[0]]):
-            artist.line(pt1, pt2)
-        for pt1, pt2 in zip(self.front, self.back):
-            artist.line(pt1, pt2)
+        if artist.camera_position[0] == 0:
+            for pt1, pt2 in zip(self.front, [*self.front[1:], self.front[0]]):
+                artist.line(pt1, pt2)
+            for pt1, pt2 in zip(self.back, [*self.back[1:], self.back[0]]):
+                artist.line(pt1, pt2)
+            for pt1, pt2 in zip(self.front, self.back):
+                artist.line(pt1, pt2)
 
     def draw_block_faces(self, artist: Artist) -> None:
         """Draw self with solid colored faces using artist."""
@@ -342,7 +412,7 @@ if __name__ == "__main__":
             if x or y or z
         ]
 
-        ### DEBUG: restrict to 2 cubes for easier troubleshooting:
+        # DEBUG: restrict to 2 cubes for easier troubleshooting:
         # rubik_cube = [rubik_cube[0], rubik_cube[-1]]
 
         last_time = time.time_ns()
@@ -350,15 +420,17 @@ if __name__ == "__main__":
         distance = 0
         camera_2d = np.array([0, 0])
         start_pos = np.array([0, 0])
+        auto_mouse = True
+
         while True:
             ev = screen.get_event()
             if isinstance(ev, KeyboardEvent):
                 key = ev.key_code
                 # Stop on ctrl+q or ctrl+x, or simply on q/Q
-                if key in (17, 24, ord("Q"), ord("q")):
+                if key in QUIT_COMMANDS:
                     # raise StopApplication("User terminated app")
                     return
-                elif key == ord("f"):  # rotate front disc counter-clockwise
+                elif key == KeyboardCommand.rotate_front_ccw:  # rotate front disc counter-clockwise
                     # the "front" are the first 9 cubes in the list
                     for cube in rubik_cube[:9]:
                         cube.rotate_z(
@@ -379,7 +451,7 @@ if __name__ == "__main__":
                         rubik_cube[6],
                         *rubik_cube[9:],
                     ]
-                elif key == ord("F"):  # rotate front disc clockwise
+                elif key == KeyboardCommand.rotate_front_cw:  # rotate front disc clockwise
                     # the "front" are the first 9 cubes in the list
                     for cube in rubik_cube[:9]:
                         cube.rotate_z(
@@ -400,7 +472,7 @@ if __name__ == "__main__":
                         rubik_cube[2],
                         *rubik_cube[9:],
                     ]
-                elif key == ord("t"):  # rotate top disc counter-clockwise
+                elif key == KeyboardCommand.rotate_top_cw:  # rotate top disc counter-clockwise
                     for i in [0, 1, 2, 9, 10, 11, 17, 18, 19]:
                         rubik_cube[i].rotate_y(np.pi / 2)
                     rubik_cube = [
@@ -417,7 +489,7 @@ if __name__ == "__main__":
                         rubik_cube[0],
                         *rubik_cube[20:],
                     ]
-                elif key == ord("T"):  # rotate top disc counter-clockwise
+                elif key == KeyboardCommand.rotate_top_ccw:  # rotate top disc counter-clockwise
                     for i in [0, 1, 2, 9, 10, 11, 17, 18, 19]:
                         rubik_cube[i].rotate_y(-np.pi / 2)
                     rubik_cube = [
@@ -435,7 +507,7 @@ if __name__ == "__main__":
                         *rubik_cube[20:],
                     ]
 
-                elif key == ord("m"):  # rotate middle disk counter-clockwise
+                elif key == KeyboardCommand.rotate_middle_ccw:  # rotate middle disk counter-clockwise
                     for cube in rubik_cube[9:17]:
                         cube.rotate_z(
                             np.pi / 2
@@ -452,7 +524,7 @@ if __name__ == "__main__":
                         rubik_cube[14],
                         *rubik_cube[17:],
                     ]
-                elif key == ord("M"):
+                elif key == KeyboardCommand.rotate_middle_cw:
                     for cube in rubik_cube[9:17]:
                         cube.rotate_z(
                             -np.pi / 2
@@ -469,7 +541,7 @@ if __name__ == "__main__":
                         rubik_cube[11],
                         *rubik_cube[17:],
                     ]
-                elif key == ord("b"):  # rotate back disk counter-clockwise
+                elif key == KeyboardCommand.rotate_back_ccw:  # rotate back disk counter-clockwise
                     for cube in rubik_cube[17:26]:
                         cube.rotate_z(
                             np.pi / 2
@@ -487,7 +559,7 @@ if __name__ == "__main__":
                         rubik_cube[23],
                     ]
 
-                elif key == ord("B"):  # rotate back disk clockwise
+                elif key == KeyboardCommand.rotate_back_cw:  # rotate back disk clockwise
                     for cube in rubik_cube[17:26]:
                         cube.rotate_z(
                             -np.pi / 2
@@ -504,7 +576,7 @@ if __name__ == "__main__":
                         rubik_cube[22],
                         rubik_cube[19],
                     ]
-                elif key == ord("d"):
+                elif key == KeyboardCommand.rotate_bottom_ccw:
                     for i in [6, 7, 8, 14, 15, 16, 23, 24, 25]:
                         rubik_cube[i].rotate_y(np.pi / 2)
 
@@ -522,7 +594,7 @@ if __name__ == "__main__":
                         rubik_cube[16],
                         rubik_cube[8],
                     ]
-                elif key == ord("D"):
+                elif key == KeyboardCommand.rotate_bottom_cw:
                     for i in [6, 7, 8, 14, 15, 16, 23, 24, 25]:
                         rubik_cube[i].rotate_y(-np.pi / 2)
 
@@ -540,12 +612,20 @@ if __name__ == "__main__":
                         rubik_cube[14],
                         rubik_cube[23],
                     ]
+                elif key == KeyboardCommand.reset_view:
+                    artist.camera_position = np.array([0, 0, distance_to_camera])
+                    artist.camera_x = np.array([1, 0, 0])
+                    artist.camera_y = np.array([0, 1, 0])
+                    artist.camera_z = np.array([0, 0, -1])
 
             elif isinstance(ev, MouseEvent):
                 mouse_x, mouse_y, mouse_buttons = ev.x, ev.y, ev.buttons
                 if mouse_buttons:
+                    auto_mouse = not auto_mouse
+                    log.info("setting mouse to %s, mouse event is %s", auto_mouse, ev)
                     start_pos = np.array([mouse_x, mouse_y])
-                else:
+
+                elif auto_mouse:
                     end_pos = np.array([mouse_x, mouse_y])
 
                     camera_2d += end_pos - start_pos
@@ -564,6 +644,9 @@ if __name__ == "__main__":
                     artist.camera_y = camera_y
                     artist.camera_z = camera_z
 
+                else:
+                    log.info("not registering mouse movement because auto-mouse has been disabled.")
+
             current_time = time.time_ns()
             if not current_time == last_time:
                 frames_per_second = 1e9 / (current_time - last_time)
@@ -574,18 +657,11 @@ if __name__ == "__main__":
             screen.clear_buffer(0, 0, 0)
             screen.print_at(
                 f"""{screen.width=}, {screen.height=}, {len(rubik_cube)=}
-{frames_per_second=:5.1f} {key=:4d} {mouse_x=:4d}, {mouse_y=:4d} {mouse_buttons=} {distance=:5.1f}""",
+{frames_per_second=:5.1f} {key=:4d} {mouse_x=:4d}, {mouse_y=:4d} {mouse_buttons=} {distance=:5.1f} {auto_mouse=}""",
                 0,
                 0,
             )
-            screen.print_at(
-                """Press q/Q to quit, f/F to rotate front disc,
- m/M to rotate middle disk
- , b/B for rotate back disc, t/T for the top disc, d/D to rotate bottom disk,
- drag the mouse for rotation of the cube.""",
-                0,
-                3,
-            )
+            screen.print_at(BRIEF_HELP_TEXT, 0, 3)
 
             def cube_camera_distance(cube: TranslatedCube) -> np.float32:
                 """Return distance of cube centre point to the camera."""
@@ -596,7 +672,7 @@ if __name__ == "__main__":
                 rubik_cube, key=cube_camera_distance, reverse=True
             ):
                 cube.draw_block_faces(artist)
-                # cube.draw_cage(artist)
+                cube.draw_cage(artist)
 
             # these are the cubes in the top layer:
             top_layer = [rubik_cube[i] for i in [17, 18, 19, 9, 10, 11, 0, 1, 2]]
