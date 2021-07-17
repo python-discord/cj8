@@ -356,8 +356,5 @@ def game_IH(event: Event) -> Optional[Event]:
     if isinstance(event, KeyboardEvent):
         key = event.key_code
         if key in [ord("q"), ord("Q"), Screen.KEY_ESCAPE]:
-            raise exceptions.Title()
-        else:
-            return event
-    else:
-        return event
+            raise exceptions.LevelSelector()
+    return event
