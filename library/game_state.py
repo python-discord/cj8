@@ -1,3 +1,4 @@
+import enum
 import time
 import typing
 
@@ -6,6 +7,19 @@ import blessed
 from .board import Board
 from .connection import QUEUE, Tags, create_connection
 from .user_term import convert_to_space_location, update_user_section
+
+
+class States(enum.IntEnum):
+    """The states used in the game state machine"""
+
+    GAME_START = 10
+    SUBGRID_SELECT = 20
+    SPACE_SELECT = 30
+    GAME_OVER = 40
+    NETWORK_PROMPT = 80
+    LOBBY_PROMPT = 90
+    WEBSOCKET_PROMPTER = 100
+    LOBBY_CODE_PROMPTER = 110
 
 
 class GameState:
@@ -34,26 +48,26 @@ class GameState:
         self.term_info[1] = "shall we play a game?"
         self.term_info[2] = "(y/n?)"
         self.redraw_user_term(term)
-        self.next: int = 10
+        self.next: States = States.GAME_START
 
     def driver(self, term: blessed.Terminal, board: Board) -> None:
         """Main State Machine"""
-        if self.next == 10:
+        if self.next == States.GAME_START:
             self.wait_for_ready(term)
-        elif self.next == 20:
+        elif self.next == States.SUBGRID_SELECT:
             self.update_subgrid_select(term, board)
-        elif self.next == 30:
+        elif self.next == States.SPACE_SELECT:
             self.update_space_select(term, board)
-        elif self.next == 40:
+        elif self.next == States.GAME_OVER:
             # game over!
             return
-        elif self.next == 80:
+        elif self.next == States.NETWORK_PROMPT:
             self.network_prompt(term)
-        elif self.next == 90:
+        elif self.next == States.LOBBY_PROMPT:
             self.lobby_creation_prompt(term)
-        elif self.next == 100:
+        elif self.next == States.WEBSOCKET_PROMPTER:
             self.websocket_url_prompter(term)
-        elif self.next == 110:
+        elif self.next == States.LOBBY_CODE_PROMPTER:
             self.lobby_code_prompter(term, board)
         else:
             # TODO error state catch all
@@ -70,11 +84,11 @@ class GameState:
         self.player_active = 1
 
         if self.user_input == "y" or self.user_input == "KEY_ENTER":
-            self.next = 80
+            self.next = States.NETWORK_PROMPT
             self.term_info[1] = "do you wish to be WIRED?"
             self.term_info[2] = "(y/n?)"
         else:
-            self.next = 10
+            self.next = States.GAME_START
 
         self.redraw_user_term(term)
 
@@ -84,7 +98,7 @@ class GameState:
             self.networked = True
             print(f"{term.move_xy(0, 26)}websocket url: ", end="", flush=True)
 
-            self.next = 100
+            self.next = States.WEBSOCKET_PROMPTER
         elif self.user_input == "n":
             self.draw_starting_user_term(term)
             self.networked = False
@@ -98,7 +112,7 @@ class GameState:
             self.term_info[2] = "(y/n?)"
             self.redraw_user_term(term)
             print(f"{term.move_xy(0, 26)}{term.clear_eol}", end="", flush=True)
-            self.next = 90
+            self.next = States.LOBBY_PROMPT
 
         elif self.user_input in ("KEY_BACKSPACE", "KEY_DELETE") and self.ws_url != "":
             self.ws_url = self.ws_url[:-1]
@@ -132,7 +146,7 @@ class GameState:
         elif self.user_input == "n":
             self.networked_player = 2
             print(f"{term.move_xy(0, 26)}lobby code: ", end="", flush=True)
-            self.next = 110
+            self.next = States.LOBBY_CODE_PROMPTER
         else:
             return
 
@@ -187,9 +201,9 @@ class GameState:
                     term.yellow,
                     None,
                 )
-                self.next = 30
+                self.next = States.SPACE_SELECT
             else:
-                self.next = 20
+                self.next = States.SUBGRID_SELECT
                 self.term_info[
                     1
                 ] = f"{term.red}{term.bold}*-That is an illegal move-*{term.normal}"
@@ -214,7 +228,9 @@ class GameState:
                 self.update_board = True  # good to place player token
                 self.confirm_entry(term)
             else:
-                self.next = 30  # TODO go to error handling and reset values
+                self.next = (
+                    States.SPACE_SELECT
+                )  # TODO go to error handling and reset values
                 self.term_info[
                     1
                 ] = f"{term.red}{term.bold}*-That is an illegal move-*{term.normal}"
@@ -311,10 +327,10 @@ class GameState:
 
             if not self.networked or self.networked_player == self.player_active:
                 if self.user_select_subgrid != 0:
-                    self.next = 30  # skip to space select
+                    self.next = States.SPACE_SELECT  # skip to space select
                     self.term_info[1] = "Select Space by entering 1-9"
                 else:
-                    self.next = 20  # go to subgrid select
+                    self.next = States.SUBGRID_SELECT  # go to subgrid select
                     self.term_info[1] = "Select SubGrid by entering 1-9"
 
                 self.term_info[2] = (
@@ -372,11 +388,11 @@ class GameState:
         self.redraw_user_term(term)
 
         print("Game over!")
-        self.next = 40
+        self.next = States.GAME_OVER
 
     def draw_starting_user_term(self, term: blessed.Terminal) -> None:
         """Put the initial text for the user terminal and draw it"""
-        self.next = 20
+        self.next = States.SUBGRID_SELECT
         self.term_info[0] = "Player 1 Active"
         self.term_info[1] = "Select SubGrid by entering 1-9"
         self.term_info[2] = f"Current: SubGrid {self.user_select_subgrid}"
@@ -400,7 +416,7 @@ class GameState:
             self.term_info[1] = "your opponent left"
             self.term_info[2] = "(find someone with more spine next time)"
             self.term_info[3] = ""
-            self.next = 40
+            self.next = States.GAME_OVER
 
         elif output_msg[0] == Tags.PLACE_SQUARE:
             self.user_select_space = output_msg[1]

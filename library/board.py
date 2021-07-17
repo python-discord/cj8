@@ -146,7 +146,7 @@ class Board:
                     entry = f"{term.blue}{entry}{term.normal}"
                 else:
                     entry = "·"
-                
+
                 print(term.move_xy(x, y) + f"{entry}")
                 x += 4
                 if x > start_coords[0] + 12:
