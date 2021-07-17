@@ -14,7 +14,7 @@ from src.resources.startscreen import StartScreen
 
 
 def start_screen() -> None:
-    """Start screen"""
+    """Start screen of the game, has a guide of how to play"""
     screen = StartScreen()
     layout_screen = screen.layout
     layout_screen.update(
@@ -73,6 +73,13 @@ def run_game(layout: Layout, game_resources: GameResources, information: Informa
     layout['info'].update(information.display_enemy_panel())
 
 
+def win_screen(layout: Layout) -> None:
+    """Win screen when the player wins"""
+    with open('winscreen.txt', 'r') as file:
+        panel = Panel(Text(''.join(file.readlines()), style="bold green", justify='full'))
+        layout.update(panel)
+
+
 def main() -> None:
     """Main function that sets up game and runs main game loop"""
     game_resources = GameResources(testing, bless, path)
@@ -97,7 +104,16 @@ def main() -> None:
     with Live(layout, refresh_per_second=10, screen=False):  # True prevents re-render
         while game_resources.player.playing:
             run_game(layout, game_resources, information)
-        end_screen(layout)
+            if game_resources.won_game:
+                game_resources.player.playing = False
+
+        if not game_resources.won_game:
+            end_screen(layout)
+
+    if game_resources.won_game:
+        layout = Layout(name="win")
+        with Live(layout, refresh_per_second=1, screen=False):
+            win_screen(layout)
 
 
 testing = False
