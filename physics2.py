@@ -34,7 +34,9 @@ class Space:
     players: List[Object] = []
     boxes: List[Object] = []
     platforms: List[Object] = []
+    thinkingbox: Object = None
     player_on_ground = False
+    player_in_thinkingbox = False
 
     def __init__(self, w: int, h: int, gravity: int, upscale: int = 100):
         self.w = w * upscale
@@ -53,6 +55,8 @@ class Space:
             self.boxes.append(item)
         if type == "platform":
             self.platforms.append(item)
+        if type == "thinkingbox":
+            self.thinkingbox = item
 
         return item
 
@@ -85,6 +89,11 @@ class Space:
                         logging.info(f"{item1}, array index: {item1_i},\
                                       collides with a similar object ({collision_type})")
 
+        def check_playerinthinking(p: Object):
+            if (player.left > self.thinkingbox.left and player.right < self.thinkingbox.right and
+                player.bottom >= self.thinkingbox.bottom and player.top <= self.thinkingbox.top):
+                self.player_in_thinkingbox = True
+
         for box in self.boxes:
             if debug:
                 index = 0
@@ -102,6 +111,7 @@ class Space:
             check_list(player, self.platforms, "object_to_platform")
             check_list(player, self.boxes, "player_to_box")
             check_borders(player)
+            check_playerinthinking(player)
         check_sametype(self.players, "player_to_player")
 
         return collisions
@@ -229,6 +239,7 @@ class Space:
         if key == "up" and self.player_on_ground:
             logging.info(f"moving player up: speed: {player.speed}")
             player.speed[1] = jump_speed * -1
+            self.player_on_ground = False
             logging.info(f"moved player up: speed: {player.speed}")
         if key == "down":
             logging.info(f"moving player down: speed: {player.speed}")
@@ -242,11 +253,12 @@ class Space:
             logging.info(f"moved player left: topleft: {player.topleft}")
 
     def step(self, fps: int):
-        self.player_on_ground = False
+        self.player_in_thinkingbox = False
         self.targets_engaged = 0
 
-        collisions = self.check_collisions()
-        self.resolve_collisions(collisions)
+        for i in range(len(self.boxes)):
+            collisions = self.check_collisions()
+            self.resolve_collisions(collisions)
 
         dynamic_objects = self.players + self.boxes
         # applying gravity to dynamic objects

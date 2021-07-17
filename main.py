@@ -32,8 +32,11 @@ def main():
 
                 map.space.step(fps)
                 map.delete()
-                map.sync_coords()
-                map.draw()
+                if not map.space.player_in_thinkingbox:
+                    map.sync_coords()
+                    map.draw()
+                else:
+                    pass
                 clock.tick(fps)
                 val = terminal.inkey(timeout=1/fps)
             else:
