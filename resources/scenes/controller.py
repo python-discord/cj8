@@ -160,12 +160,12 @@ class Map(Effect):
                 k += 1
                 if self.ligh_effect_enabled:
                     intensity = self.light_intensity(len(subline)+j, offset_y + i, self.vision)
+                    intensity = int(intensity*len(_palette_256))
+                    colour, attr = _palette_256[intensity]
                 else:
-                    intensity = 0.7
-
-                intensity = int(intensity*len(_palette_256))
-                # everything is white
-                colour, attr = _palette_256[intensity]
+                    # everything is white
+                    colour = Screen.COLOUR_WHITE
+                    attr = Screen.A_NORMAL
 
                 self.screen.print_at(char, len(subline)+j, offset_y + i,
                                      colour=colour,

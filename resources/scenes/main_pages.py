@@ -1,20 +1,24 @@
 from itertools import chain
+from random import choice, randint
 from time import time
 from typing import Optional
-from random import randint, choice
 
 from asciimatics.effects import Effect, Print, Sprite, Stars
 from asciimatics.event import Event, KeyboardEvent
-from asciimatics.particles import RingFirework, SerpentFirework, StarFirework, PalmFirework
+from asciimatics.particles import (
+    PalmFirework, RingFirework, SerpentFirework, StarFirework
+)
 from asciimatics.paths import Path
-from asciimatics.renderers import Box, FigletText, StaticRenderer, Rainbow
+from asciimatics.renderers import Box, FigletText, Rainbow, StaticRenderer
 from asciimatics.scene import Scene
 from asciimatics.screen import Screen
 
 import resources.exceptions as exceptions
-from resources.sprites.characters import character_box, character_box_pushing, character_box_pushing2
-from ..asciimatics_better import Mirage2
+from resources.sprites.characters import (
+    character_box, character_box_pushing, character_box_pushing2
+)
 
+from ..asciimatics_better import Mirage2
 
 # todo
 #  incorporate sound settings
