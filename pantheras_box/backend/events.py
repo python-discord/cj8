@@ -131,7 +131,12 @@ class LevelLoadedEvent(BaseEvent):
 
 
 class EventsMixin:
-    """Class handling the events the backend generates"""
+    """
+    Class handling the events the backend generates
+
+    Serves as a communication pattern to pass events between each module so each module
+    can react to each event without the backend module needing any context.
+    """
 
     def __init__(self):
         self._registered_hooks: Set[Callable] = set()

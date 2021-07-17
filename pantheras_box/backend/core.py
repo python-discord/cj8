@@ -23,10 +23,6 @@ from pantheras_box.backend.tiles import (
 )
 
 
-class DebugMixin:
-    """Debugging mixin methods for the backend module"""
-
-
 @dataclass
 class ControlHandler:
     """Store function and description to run on key."""
@@ -36,7 +32,7 @@ class ControlHandler:
     description: str
 
 
-class CoreBackend(DebugMixin, EventsMixin):
+class CoreBackend(EventsMixin):
     """
     Backend Module
 
