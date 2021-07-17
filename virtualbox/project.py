@@ -160,7 +160,9 @@ def main():
 
     # start game
     start(fs, ROOT, term)
+    echo('The only Unencrypted file is in "local/user/desktop", Start there!', term)
     user_input_cmd(copy(fs), login(Users, term), fs, term)
+
 
 
 if __name__ == "__main__":
