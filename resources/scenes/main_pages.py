@@ -1,7 +1,8 @@
 from itertools import chain
 from typing import Optional
+from time import time
 
-from asciimatics.effects import Print, Sprite
+from asciimatics.effects import Effect, Print, Sprite, Stars
 from asciimatics.event import Event, KeyboardEvent
 from asciimatics.paths import Path
 from asciimatics.renderers import Box, FigletText, StaticRenderer
@@ -13,15 +14,17 @@ from resources.sprites.characters import character_box, character_box_pushing
 from ..asciimatics_better import Mirage2
 
 # todo
-#  add credits
 #  incorporate sound settings
-#  add stars render as a bg for title or credits or smth
 #  add exit_scene when exiting a scene
+#  make stars in credits flash slower
 
 
-back_button = lambda screen: Print(screen, StaticRenderer(["<-- Back (Esc)"]), 0, 1)
-def exit_scene(screen: Screen) -> Scene:
-    return Mirage2(screen, StaticRenderer([(" " * screen.width + "\n") * screen.height]), False, 0, 0, 0.35, stop_frame=60)
+def back_button(screen) -> Effect: return Print(screen, StaticRenderer(["<-- Back (Esc)"]), 0, 1)
+
+
+def exit_scene(screen: Screen, speed: float) -> Effect:
+    return Mirage2(screen, StaticRenderer([(" " * screen.width + "\n") * screen.height]), False, 0, 0, speed,
+                   stop_frame=60)
 
 
 class Title(Scene):
@@ -93,8 +96,7 @@ class Title(Scene):
 class Settings(Scene):
     # each item in settings is [name: str, val: Any]
     settings = [
-        ['', 5],
-        ['', True]
+        ['volume', 5],
     ]
 
     def __init__(self, screen: Screen):
@@ -138,9 +140,18 @@ class Settings(Scene):
 
 
 class Credits(Scene):
-    def __init__(self, sceen: Screen):
+    names = "\n".join(["DEVELOPED BY:", "Objectivitix#9891", "nop#6157", "Lognarius#1483", "JLW#1242", "stg-tel#7084"])
+    nicks = "\n".join(["DEVELOPED BY:", "object           ", "nop     ", "Lognarius     ", "JLW     ", "snuffles    "])
+
+    def __init__(self, screen: Screen):
         """Credits screen"""
-        super().__init__([])
+        won = exceptions.WinGame.won
+        effects = [Stars(screen, round(screen.height * screen.width / 30)),
+                   Print(screen, StaticRenderer([Credits.names, Credits.nicks], lambda: 0 if time() % 8 < 4 else 1),
+                         screen.height // 2 + (5 if won else -3), clear=True, transparent=False)]
+        if won:
+            effects.append(Print(screen, FigletText("THANK YOU FOR PLAYING!", width=screen.width), screen.height // 3))
+        super().__init__(effects)
 
     def process_event(self, event: Event) -> Event:
         """Credits input handler"""
@@ -154,11 +165,13 @@ class LevelSelector(Scene):
         """Level selector screen"""
         box_width = screen.width // 5
         box_height = 7
-        super().__init__(list(chain.from_iterable((
-            Mirage2(screen, Box(box_width, box_height, False), True,
-                    y := i // 3 * int(box_height * 1.5) + box_height, x := (i % 3 + 1) * (screen.width // 4), 0.25),
-            Print(screen, StaticRenderer([f"${{{c}}}{i + 1}" for c in [1, 3, 2, 4, 6, 5]]), y-1, x))
-            for i in range(exceptions.EnterLevel.max_level + 1))), -1)
+        super().__init__(list(
+            chain.from_iterable((Mirage2(screen, Box(box_width, box_height, False), True,
+                                         y := i // 3 * int(box_height * 1.5) + box_height,
+                                         x := (i % 3 + 1) * (screen.width // 4), 0.25),
+                                 Print(screen, StaticRenderer(
+                                     [f"${{{c}}}{i + 1}" for c in [1, 3, 2, 4, 6, 5]]), y - 1, x))
+                                for i in range(exceptions.EnterLevel.max_level + 1))), -1)
 
     def process_event(self, event: Event) -> Event:
         """Level selector input handler"""

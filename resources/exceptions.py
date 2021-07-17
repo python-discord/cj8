@@ -13,6 +13,14 @@ class EnterLevel(GameTransition):
         EnterLevel.max_level = max(self.level, EnterLevel.max_level)
 
 
+class WinGame(GameTransition):
+    """Raised when user beats the game"""
+    won = False
+
+    def __init__(self):
+        WinGame.won = True
+
+
 class LevelSelector(GameTransition):
     """Raised when user goes to the level selector"""
 
