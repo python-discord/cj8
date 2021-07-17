@@ -103,7 +103,7 @@ class CoreMutators(BaseMutator):
             state = event.state
         except KeyError as key_error:
             logger.warning(
-                f"[Sounds] No matching mutator method for event {event} "
+                f"[Mutators] No matching mutator method for event {event} "
                 f"- {key_error.args}"
             )
         else:

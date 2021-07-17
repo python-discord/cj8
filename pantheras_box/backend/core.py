@@ -218,6 +218,7 @@ class CoreBackend(EventsMixin):
             for tile in row
             if isinstance(tile, RedirectorTile)
         ]
+
         for tile in redirectors:
             if tile.color in self._controls.values():
                 continue
@@ -225,6 +226,10 @@ class CoreBackend(EventsMixin):
                 if not v:
                     self._controls[k] = tile.color
                     break
+
+        for tile in redirectors:
+            if tile.color not in self._controls.values():
+                tile.ensure_facing_path()
 
     def key_press(self, key: str) -> None:
         """
