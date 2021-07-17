@@ -24,6 +24,6 @@ fitMedia(HOUSE_SFX_WHOOSH_001, 13, 8, 9)
 setEffect(12,VOLUME,GAIN,10,1,10,9)
 setEffect(13,VOLUME,GAIN,0,1,0,9)
 setEffect(11,VOLUME,GAIN,5,1,5,9)
-setEffect(MIX_TRACK,VOLUME,GAIN,-45,1,-45,9)
+setEffect(MIX_TRACK,VOLUME,GAIN,-25,1,-25,9)
 
 finish()
