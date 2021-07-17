@@ -8,7 +8,7 @@ class Information:
     """Information panel class"""
 
     def __init__(self, game_resources: GameResources) -> None:
-        self.enemy_manager = game_resources.enemy_manager
+        self.enemy_list = game_resources.level.enemies.values()
         self.player = game_resources.player
         self.enemy_default_panel = Panel(Text("No enemies have detected you yet.", style="bold green"))
 

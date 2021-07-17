@@ -2,9 +2,6 @@ from .fstree.FileStructureTree import FileStructureTree
 from .LevelSelector import LevelSelector
 from .resources.entities.AbstractDungeonEntity import AbstractDungeonEntity
 from .resources.entities.character import Character
-from .resources.entities.ColorChanger import ColorChanger
-from .resources.entities.EnemyManager import EnemyManager
-from .resources.entities.Item import Item
 
 
 class GameResources:
@@ -18,16 +15,10 @@ class GameResources:
         self.level = self.level_selector.create_level()
         self.won_game = False
         self.player = Character(symbol="$", x=self.level.width // 2, y=self.level.height // 2, color="bold white")
-
+        self.collected_items = {}
         if bless:
             self.player.start()
 
-        self.test_color_changer = ColorChanger(x=2, y=2, symbol="@")
-        self.test_item = Item(symbol='k', x=self.level.width // 2+1, y=self.level.height // 2+1)
-        self.collected_items = {}
-
-        self.enemy_manager = EnemyManager(self.level)
-        self.enemy_manager.spawn_random_enemies(self.player.x, self.player.y, 5)
         self.testing = testing
 
     def update(self, bless: bool) -> None:
@@ -77,7 +68,8 @@ class GameResources:
 
         Checks if enemies collide with player end game.
         """
-        for enemy in self.enemy_manager.enemy_list:
+        enemies_to_remove = []
+        for enemy in self.level.enemies.values():
             if enemy.is_in_radius(self.player.x, self.player.y):
                 if self.player.color == "bold white":
                     enemy.follow(self.testing)
@@ -96,11 +88,14 @@ class GameResources:
             if self.is_adjacent(self.player, enemy):
                 result = self.get_combat_result(self.player, enemy)
                 if result == "win":
-                    self.enemy_manager.remove_enemy(enemy)
+                    enemies_to_remove.append(enemy)
                 elif result == "loose":
                     self.player.health -= 10
                 else:
                     pass
+        while len(enemies_to_remove) > 0:
+            enemy = enemies_to_remove.pop()
+            self.level.remove_enemy(enemy)
 
     def update_color_changer(self) -> None:
         """Checks all the color changers, if the player is on that spot change player color"""
@@ -112,19 +107,23 @@ class GameResources:
 
     def update_items(self) -> None:
         """Iterates through items and check if the player is on that spot. If so collects them."""
-        for item in self.level.items:
-            if item.collisions_with_player(self.player.x, self.player.y):
-                symbol = item.symbol._text[0]
-                if symbol in self.collected_items:
-                    self.collected_items[item.symbol._text[0]] += 1
-                else:
-                    self.collected_items[item.symbol._text[0]] = 1
+        items_to_remove = []
+        for item in self.level.items.values():
+            if self.overlaps(item, self.player):
+                items_to_remove.append(item)
+        while len(items_to_remove) > 0:
+            item = items_to_remove.pop()
+            self.level.remove_item(item)
 
-                self.level.remove_item(item)
+            symbol = item.symbol._text[0]
+            if symbol in self.collected_items:
+                self.collected_items[item.symbol._text[0]] += 1
+            else:
+                self.collected_items[item.symbol._text[0]] = 1
 
     def draw_enemies(self) -> None:
         """Iterates through enemies and draws them"""
-        for enemy in self.enemy_manager.enemy_list:
+        for enemy in self.level.enemies.values():
             self.draw_entity(enemy)
 
     def draw_color_changers(self) -> None:
@@ -134,7 +133,7 @@ class GameResources:
 
     def draw_items(self) -> None:
         """Iterates through items and draws them"""
-        for item in self.level.items:
+        for item in self.level.items.values():
             self.draw_entity(item)
 
     def update_entity(self, entity: AbstractDungeonEntity) -> None:

@@ -7,6 +7,7 @@ from src.resources.constants import COLOR_CHANGER_CHOICES
 from src.resources.entities.ColorChanger import ColorChanger
 from src.resources.entities.Item import Item
 
+from ..Enemy import Enemy
 from .Door import Door
 from .Tile import Tile
 from .Wall import Wall
@@ -24,7 +25,8 @@ class Level:
         self.cur_node = cur_node
         self.doors = {}
         self.color_changers = []
-        self.items = []
+        self.items = {}
+        self.enemies = {}
 
     def create_doors(self, entrance: (int, int)) -> None:
         """Creates a door given an entrance or generates a random door on the first iteration"""
@@ -131,17 +133,40 @@ class Level:
 
     def spawn_dungeon_items(self, num: int) -> None:
         """Creates Dungeon items in random locations"""
-        count = 0
-        while count < num:
+        while num > 0:
             y = randint(2, self.height-2)
             x = randint(2, self.width-2)
 
             if str(self.board[y][x]) == "'":
                 item = Item(symbol=chr(0xA2), x=x, y=y, color="bold #afa208")
-                self.items.append(item)
-                count += 1
+                item_entry = {id(item): item}
+                self.items.update(item_entry)
+                num -= 1
 
-    def remove_item(self, item: type) -> None:
-        """Replace enemy with symbol"""
-        self.items.pop(self.items.index(item))
+    def spawn_random_enemies(self, num: int) -> None:
+        """Spawns a new enemies randomly"""
+        while num > 0:
+            y = randint(2, self.height - 2)
+            x = randint(2, self.width - 2)
+            disallowed_spaces = {'x': (self.entrance[1] - 1, self.entrance[1] + 1),
+                                 'y': (self.entrance[0] - 1, self.entrance[0] + 1)}
+            if str(self.board[y][x]) == "'" and \
+                    x not in disallowed_spaces['x'] and y not in disallowed_spaces['y']:
+                num -= 1
+                enemy = Enemy(aggro_radius=3, x=x, y=y, symbol='^')
+                enemy_entry = {id(enemy): enemy}
+                self.enemies.update(enemy_entry)
+
+    def remove_enemy(self, enemy: Enemy) -> None:
+        """Removes an enemy and replaces level symbol"""
+        enemy_id = id(enemy)
+        if enemy_id in self.enemies.keys():
+            self.enemies.pop(enemy_id)
+        self.board[enemy.y][enemy.x] = enemy.ground_symbol
+
+    def remove_item(self, item: Item) -> None:
+        """Removes item and replaces level symbol"""
+        item_id = id(item)
+        if item_id in self.items.keys():
+            self.items.pop(item_id)
         self.board[item.y][item.x] = item.ground_symbol
