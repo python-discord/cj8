@@ -1,4 +1,7 @@
-> *This is a work-in-progress, the description can change at any time. This will replace README.md when the coding period of the code jam is finished.*
+# Are You in a Box?
+You're confined in what seems like gigantic, labyrinthine boxes, and you have to escape. However, the only way to get out of each box is to tag its four outer walls... and deception can be around every corner. Can you successfully complete the 7 levels?
 
-# BOXED
-A person is confined in what seems like endless boxes, and you have to help him escape.
+## OS/Terminal-specific Incompatibilities & Extra Dependencies
+Below is a list of incompatibilities discovered so far that depends on your operating system/terminal.
+
+* Windows - Windows Shell, PowerShell, `cmd.exe`: `asciimatics` won't give support for 256 colors, and so a fallback is used with basic lighting (no gray-gradient D:).
