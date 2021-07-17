@@ -22,7 +22,9 @@ with term.fullscreen(), term.cbreak(), term.hidden_cursor():
 
         if val.is_sequence:
             state.user_input = str(val.name)
+            state.is_sequence = True
         else:
             state.user_input = str(val)
+            state.is_sequence = False
 
         state.driver(term, board)
