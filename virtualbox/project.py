@@ -152,11 +152,11 @@ def start(fs, user, term):
 def main():
     global fs
     # resets os directory to initial
-    # current_dir = getcwd()
-    # src = current_dir + '/default-files'
-    # dest = current_dir + '/OS'
-    # rmtree(dest)
-    # copytree(src, dest)
+    current_dir = getcwd()
+    src = current_dir + '/default-files'
+    dest = current_dir + '/OS'
+    rmtree(dest)
+    copytree(src, dest)
 
     # start game
     start(fs, ROOT, term)
