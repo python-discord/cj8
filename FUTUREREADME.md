@@ -4,4 +4,4 @@ You're confined in what seems like gigantic, labyrinthine boxes, and you have to
 ## OS/Terminal-specific Incompatibilities & Extra Dependencies
 Below is a list of incompatibilities discovered so far that depends on your operating system/terminal.
 
-* Windows - Windows Shell, PowerShell, `cmd.exe`: `asciimatics` won't give support for 256 colors, and so a fallback is used with basic lighting (no gray-gradient D:).
+* Windows - Windows Shell, PowerShell, `cmd.exe`: `asciimatics` won't give support for the 256 color-palette, and so a fallback is used with only black and white (no gray-gradient lighting D:).
