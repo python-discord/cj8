@@ -140,6 +140,13 @@ class Board:
         # initial_position
         for row in subgrid:
             for entry in row:
+                if entry == "X":
+                    entry = f"{term.red}{entry}{term.normal}"
+                elif entry == "O":
+                    entry = f"{term.blue}{entry}{term.normal}"
+                else:
+                    entry = "·"
+                
                 print(term.move_xy(x, y) + f"{entry}")
                 x += 4
                 if x > start_coords[0] + 12:
