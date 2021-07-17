@@ -400,6 +400,22 @@ if __name__ == "__main__":
                         rubik_cube[2],
                         *rubik_cube[9:],
                     ]
+                elif key == ord("t"):  # rotate top disc counter-clockwise
+                    for i in [0, 1, 2, 9, 10, 11, 17, 18, 19]:
+                        rubik_cube[i].rotate_y(np.pi / 2)
+                    # re-arrange the cubes, so that the meaning of the interval positions remains the same
+                    # rubik_cube = [
+                    #     rubik_cube[6],
+                    #     rubik_cube[3],
+                    #     rubik_cube[0],
+                    #     rubik_cube[7],
+                    #     rubik_cube[4],
+                    #     rubik_cube[1],
+                    #     rubik_cube[8],
+                    #     rubik_cube[5],
+                    #     rubik_cube[2],
+                    #     *rubik_cube[9:],
+                    # ]
 
             elif isinstance(ev, MouseEvent):
                 mouse_x, mouse_y, mouse_buttons = ev.x, ev.y, ev.buttons
@@ -439,7 +455,8 @@ if __name__ == "__main__":
                 0,
             )
             screen.print_at(
-                "Press q/Q to quit, f/F to rotate front disc, drag the mouse for rotation of the cube.",
+                """Press q/Q to quit, f/F to rotate front disc,
+t/T for the top disc, drag the mouse for rotation of the cube.""",
                 0,
                 3,
             )
@@ -461,7 +478,10 @@ if __name__ == "__main__":
             # screen.print_at(f"{top_colours=}",0,5)
             for i, c in enumerate(top_colours):
                 screen.print_at(
-                    "X", screen.width - 6 + (i % 3), screen.height - 12 + (i // 3), c
+                    chr(ord("A") + c),
+                    screen.width - 6 + (i % 3),
+                    screen.height - 12 + (i // 3),
+                    c,
                 )
             # these are the cubes in the front layer:
             front_layer = rubik_cube[:9]
@@ -471,7 +491,10 @@ if __name__ == "__main__":
             # screen.print_at(f"{front_colours=}",0,6)
             for i, c in enumerate(front_colours):
                 screen.print_at(
-                    "X", screen.width - 6 + (i % 3), screen.height - 9 + (i // 3), c
+                    chr(ord("A") + c),
+                    screen.width - 6 + (i % 3),
+                    screen.height - 9 + (i // 3),
+                    c,
                 )
             # these are the cubes in the bottom layer:
             bottom_layer = [rubik_cube[i] for i in [6, 7, 8, 14, 15, 16, 23, 24, 25]]
@@ -481,7 +504,10 @@ if __name__ == "__main__":
             # screen.print_at(f"{bottom_colours=}",0,6)
             for i, c in enumerate(bottom_colours):
                 screen.print_at(
-                    "X", screen.width - 6 + (i % 3), screen.height - 6 + (i // 3), c
+                    chr(ord("A") + c),
+                    screen.width - 6 + (i % 3),
+                    screen.height - 6 + (i // 3),
+                    c,
                 )
             # these are the cubes in the bottom layer:
             rear_layer = [rubik_cube[i] for i in [23, 24, 25, 20, 21, 22, 17, 18, 19]]
@@ -491,7 +517,10 @@ if __name__ == "__main__":
             # screen.print_at(f"{rear_colours=}",0,6)
             for i, c in enumerate(rear_colours):
                 screen.print_at(
-                    "X", screen.width - 6 + (i % 3), screen.height - 3 + (i // 3), c
+                    chr(ord("A") + c),
+                    screen.width - 6 + (i % 3),
+                    screen.height - 3 + (i // 3),
+                    c,
                 )
 
             # these are the cubes in the left layer:
@@ -502,7 +531,10 @@ if __name__ == "__main__":
             # screen.print_at(f"{left_colours=}",0,6)
             for i, c in enumerate(left_colours):
                 screen.print_at(
-                    "X", screen.width - 9 + (i % 3), screen.height - 9 + (i // 3), c
+                    chr(ord("A") + c),
+                    screen.width - 9 + (i % 3),
+                    screen.height - 9 + (i // 3),
+                    c,
                 )
             # these are the cubes in the right layer:
             right_layer = [rubik_cube[i] for i in [2, 11, 19, 5, 13, 22, 8, 16, 25]]
@@ -512,7 +544,10 @@ if __name__ == "__main__":
             # screen.print_at(f"{right_colours=}",0,6)
             for i, c in enumerate(right_colours):
                 screen.print_at(
-                    "X", screen.width - 3 + (i % 3), screen.height - 9 + (i // 3), c
+                    chr(ord("A") + c),
+                    screen.width - 3 + (i % 3),
+                    screen.height - 9 + (i // 3),
+                    c,
                 )
 
             screen.refresh()
