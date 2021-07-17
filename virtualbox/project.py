@@ -140,6 +140,8 @@ def start(fs, user, term):
         print_tree("System", fs, user, term)
         echo('Type "h" or "help" to see all commands available.', term)
         echo('Type "t" or "tutorial" to see a tutorial. ', term)
+        echo('Type "h" or "help" to see all commands available.', term)
+        echo('Type "t" or "tutorial" to see a tutorial, ', term)
         with open('first_game.txt', 'w') as firstgamefile:
             firstgamefile.truncate()
             firstgamefile.write('1')
@@ -160,7 +162,7 @@ def main():
 
     # start game
     start(fs, ROOT, term)
-
+    clear_term(term)
     user_input_cmd(copy(fs), login(Users, term), fs, term)
 
 
