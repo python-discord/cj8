@@ -50,12 +50,11 @@ BRIEF_HELP_TEXT = """
  Rotate Left: l/L;
  Rotate Right: r/R;
  Reset View: z;
+ Show HELP: h;
  Quit: q/Q;
  Mouse Click: Enable/disable free rotation of the cube;
  Mouse Drag: Rotate the cube;
 """
-
-QUIT_COMMANDS = (17, 24, ord("Q"), ord("q"))
 
 
 class KeyboardCommand(IntEnum):
@@ -83,6 +82,8 @@ class KeyboardCommand(IntEnum):
     rotate_right_cw = ord("R")
 
     reset_view = ord("z")
+    help = ord("h")
+    quit = ord("q")
 
 
 # define rotation matrices
@@ -497,7 +498,7 @@ if __name__ == "__main__":
             if isinstance(ev, KeyboardEvent):
                 key = ev.key_code
                 # Stop on ctrl+q or ctrl+x, or simply on q/Q
-                if key in (17, 24, ord("Q"), ord("q")):
+                if key == KeyboardCommand.quit:
                     # raise StopApplication("User terminated app")
                     return
                 elif key == KeyboardCommand.rotate_front_ccw:  # rotate front disc counter-clockwise
@@ -782,11 +783,10 @@ if __name__ == "__main__":
                 elif key == KeyboardCommand.reset_view:
                     artist.set_initial_camera()
 
-                elif key in {ord("?"), ord("h"), ord("H")}:
+                elif key == KeyboardCommand.help:
                     # could show a widget here that explains usage and
                     # keys, then waits for key press
                     show_help(screen)
-                    pass
 
             elif isinstance(ev, MouseEvent):
                 mouse_x, mouse_y, mouse_buttons = ev.x, ev.y, ev.buttons

@@ -19,5 +19,7 @@ Rotate Right: r/R
 **Other Commands**
 Reset View: z
     Press r to return to the starting view
+Help: h
+    Shows this menu
 Quit: q/Q/Ctr+q/Ctr+x
     Press q, Q, Ctr+Q or Ctr+X to exit the cube.
