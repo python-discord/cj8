@@ -12,7 +12,3 @@ class Item(AbstractDungeonEntity):
     def collisions_with_player(self, x: int, y: int) -> bool:
         """Checks if player collided with enemy"""
         return (self.x, self.y) == (x, y)
-
-    def collect_item(self) -> None:
-        """Set the status of the item to collected"""
-        self.collected = True

@@ -5,6 +5,7 @@ from rich.text import Text
 from src.fstree.Node import Node
 from src.resources.constants import COLOR_CHANGER_CHOICES
 from src.resources.entities.ColorChanger import ColorChanger
+from src.resources.entities.Item import Item
 
 from .Door import Door
 from .Tile import Tile
@@ -23,6 +24,7 @@ class Level:
         self.cur_node = cur_node
         self.doors = {}
         self.color_changers = []
+        self.items = []
 
     def create_doors(self, entrance: (int, int)) -> None:
         """Creates a door given an entrance or generates a random door on the first iteration"""
@@ -122,8 +124,23 @@ class Level:
 
             if str(self.board[y][x]) == "'":
                 num -= 1
-
                 color = choice(new_list)
                 new_list.pop(new_list.index(color))
                 color_changer = ColorChanger(x=x, y=y, symbol='@', color=color)
                 self.color_changers.append(color_changer)
+
+    def spawn_dungeon_items(self, num: int) -> None:
+        """Creates Dungeon items in random locations"""
+        count = 0
+        while count < num:
+            y = randint(2, self.height-2)
+            x = randint(2, self.width-2)
+
+            if str(self.board[y][x]) == "'":
+                item = Item(symbol="k", x=x, y=y, color="bold white")
+                self.items.append(item)
+                count += 1
+
+    def remove_item(self, item: type) -> None:
+        """Replace enemy with symbol"""
+        self.items.pop(self.items.index(item))

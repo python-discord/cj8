@@ -98,10 +98,10 @@ class GameResources:
 
     def update_items(self) -> None:
         """Iterates through items and check if the player is on that spot. If so collects them."""
-        if self.test_item.collected is False:
-            if self.test_item.collisions_with_player(self.player.x, self.player.y):
-                self.test_item.collect_item()
-                self.collected_items.append(self.test_item.symbol._text[0])
+        for item in self.level.items:
+            if item.collisions_with_player(self.player.x, self.player.y):
+                self.collected_items.append(item.symbol._text[0])
+                self.level.remove_item(item)
 
     def draw_enemies(self) -> None:
         """Iterates through enemies and draws them"""
@@ -115,8 +115,8 @@ class GameResources:
 
     def draw_items(self) -> None:
         """Iterates through items and draws them"""
-        if self.test_item.collected:
-            self.draw_entity(self.test_item)
+        for item in self.level.items:
+            self.draw_entity(item)
 
     def update_entity(self, entity: AbstractDungeonEntity) -> None:
         """Updates the position of a single entity"""

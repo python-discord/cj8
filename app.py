@@ -68,7 +68,6 @@ def run_game(layout: Layout, game_resources: GameResources, information: Informa
         )
 
     inventory = Text("\n".join(game_resources.collected_items))
-    print(inventory)
     layout["inventory"].update(Panel(inventory))
     layout["player_health"].update(information.get_player_health())
     layout['info'].update(Panel("", title='info'))
