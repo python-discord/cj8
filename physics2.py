@@ -17,11 +17,14 @@ COLLISION_TYPES = {"box_to_target": 0,
 class Object(pygame.Rect):
     speed: List[float] = [0, 0]
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(self, x, y, w, h, upscale: int = 1):
+        super().__init__(x, y, w, h)
+        self.upscale = upscale
 
     def get_position(self):
         x, y = self.topleft
+        x /= self.upscale
+        y /= self.upscale
         return round(x), round(y)
 
 
@@ -32,10 +35,25 @@ class Space:
     platforms: List[Object] = []
     player_on_ground = False
 
-    def __init__(self, w: int, h: int, gravity: int):
-        self.w = w
-        self.h = h
-        self.gravity = gravity
+    def __init__(self, w: int, h: int, gravity: int, upscale: int = 100):
+        self.w = w * upscale
+        self.h = h * upscale
+        self.gravity = gravity * upscale
+        self.upscale = upscale
+
+    def add_object(self, x: int, y: int, w: int, h: int, type: str):
+        item = Object(x*self.upscale, y*self.upscale, w*self.upscale, h*self.upscale, upscale=self.upscale)
+
+        if type == "target":
+            self.targets_to_engage.append(item)
+        if type == "player":
+            self.players.append(item)
+        if type == "box":
+            self.boxes.append(item)
+        if type == "platform":
+            self.platforms.append(item)
+
+        return item
 
     def check_collisions(self) -> List[Tuple[Object, Any, int]]:
         collisions = []
@@ -88,7 +106,7 @@ class Space:
         return collisions
 
     def resolve_collisions(self, collisions: List[Tuple[Object, Any, int]]):
-        def whatside(collision: Tuple[Object, Object, int], tolerance: float = 0.2):
+        def whatside(collision: Tuple[Object, Object, int], tolerance: int = 10):
             if abs(collision[0].top - collision[1].bottom) < tolerance:
                 return "top"
             if abs(collision[0].bottom - collision[1].top) < tolerance:
@@ -136,7 +154,7 @@ class Space:
 
             if collision_type == COLLISION_TYPES["player_to_box"]:
                 item2.speed = [0, 0]
-                side = whatside(collision, tolerance=1)
+                side = whatside(collision)
                 logging.info(f"collision happened at item1's {side} side")
                 if side == "top":
                     item2.bottom = item1.top
@@ -153,7 +171,7 @@ class Space:
                 if item2.collidelistall(self.players):
                     alpha_box = item2
 
-                side = whatside(collision, tolerance=1)
+                side = whatside(collision)
                 logging.info(f"collision happened at item1's {side} side")
                 if side == "top":
                     item2.speed = [0, 0]
@@ -190,7 +208,7 @@ class Space:
                     item1.speed[1] *= -1
                     item1.top = 0
                 if item1.bottom > self.h:
-                    item1.speed[1] *= -1
+                    item1.speed[1] *= 0
                     item1.bottom = self.h
 
             if debug:
@@ -204,7 +222,7 @@ class Space:
                 index += 1
 
     def move_player(self, player: Object, key: str):
-        jump_height = 7
+        jump_height = 7 * self.upscale
         jump_speed = self.gravity * math.sqrt((jump_height / self.gravity) * 2)
         if key == "up" and self.player_on_ground:
             logging.info(f"moving player up: speed: {player.speed}")
@@ -244,8 +262,8 @@ class Space:
                 index = 0
                 logging.info(f"moving dynamic_object{index}: topleft: {object.topleft}")
 
-            new_x = object.topleft[0] + object.speed[0] * (1 / fps)
-            new_y = object.topleft[1] + object.speed[1] * (1 / fps)
+            new_x = round(object.topleft[0] + object.speed[0] * (1 / fps))
+            new_y = round(object.topleft[1] + object.speed[1] * (1 / fps))
             object.topleft = new_x, new_y
 
             if debug:
