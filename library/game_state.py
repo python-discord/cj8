@@ -180,6 +180,13 @@ class GameState:
             if self.confirm_good_subgrid(board):
                 self.term_info[1] = "Select Space by entering 1-9"
                 self.confirm_entry(term)
+                board.redraw_subgrid(
+                    term,
+                    board.collect_subgrid(str(self.user_select_subgrid)),
+                    str(self.user_select_subgrid),
+                    term.yellow,
+                    None,
+                )
                 self.next = 30
             else:
                 self.next = 20
@@ -218,7 +225,7 @@ class GameState:
         self.redraw_user_term(term)
 
         if self.update_board:
-            time.sleep(2)
+            time.sleep(1)
             self.end_of_turn(term, board)
 
     def confirm_entry(self, term: blessed.Terminal) -> None:
@@ -284,6 +291,13 @@ class GameState:
             self.term_info[2] = (
                 f"Current: SubGrid {self.user_select_subgrid} "
                 f"| Space {self.user_select_space}"
+            )
+            board.redraw_subgrid(
+                term,
+                board.collect_subgrid(str(self.user_select_subgrid)),
+                str(self.user_select_subgrid),
+                term.yellow,
+                None,
             )
         else:
             # change the subgrid to 0 to let the next player choose the subgrid
