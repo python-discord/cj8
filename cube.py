@@ -111,7 +111,7 @@ class Artist:
             camera_z=self.camera_z,
         )
         x = self.cx * (1 + x)
-        y = self.cy * (1 + y)
+        y = self.cy * (1 - y)
         self.screen.move(x, y)
         x, y = project3d(
             pt2,
@@ -121,7 +121,7 @@ class Artist:
             camera_z=self.camera_z,
         )
         x = self.cx * (1 + x)
-        y = self.cy * (1 + y)
+        y = self.cy * (1 - y)
         self.screen.draw(x, y)
 
     def fill_polygon(self, polygons: List[List[np.array]], colour: int) -> None:
@@ -136,7 +136,7 @@ class Artist:
                 camera_y=self.camera_y,
                 camera_z=self.camera_z,
             )
-            return np.array([self.cx * (1 + x), self.cy * (1 + y)])
+            return np.array([self.cx * (1 + x), self.cy * (1 - y)])
 
         self.screen.fill_polygon(
             [[proj(pt) for pt in poly] for poly in polygons], colour
@@ -466,7 +466,9 @@ t/T for the top disc, drag the mouse for rotation of the cube.""",
                 return np.linalg.norm(artist.camera_position - cube.position)
 
             # draw each individual cube, start with those furthest away from the camera:
-            for cube in sorted(rubik_cube, key=cube_camera_distance, reverse=True):
+            for cube in sorted(
+                [rubik_cube[0], rubik_cube[-1]], key=cube_camera_distance, reverse=True
+            ):
                 cube.draw_block_faces(artist)
                 # cube.draw_cage(artist)
 
