@@ -20,14 +20,15 @@ THINKINGBOX_H = 3
 class Map:
     def __init__(self, terminal: Terminal):
         self.terminal = terminal
-        self.player = 0
+        self.player = None
         self.player_rect: physics2.Object
-        self.thinking_box = 0
+        self.thinking_box = None
         self.boxes = []
         self.boxes_rect: List[physics2.Object] = []
         self.targets = []
         self.platforms = []
         self.space = physics2.Space(100, 30, gravity=10, upscale=100)
+        self.time_left = 0  # you should always use the ceil() of this variable to get the integer number of seconds left
 
     def create_level1(self):
         self.player = Player(10, 26, self.terminal)
@@ -56,9 +57,11 @@ class Map:
         target1 = Target(70, 21, self.terminal)
         self.space.add_object(70, 21, TARGET_W, TARGET_H, type="target")
         target2 = Target(90, 27, self.terminal)
-        self.space.add_object(90, 27, TARGET_W, TARGET_H,type="target")
+        self.space.add_object(90, 27, TARGET_W, TARGET_H, type="target")
         self.targets.append(target1)
         self.targets.append(target2)
+
+        self.time_left = 120
 
     def create_level2(self):
         self.player = Player(35, 4, self.terminal)
@@ -108,6 +111,8 @@ class Map:
         target1 = Target(0, 24, self.terminal)
         self.space.add_object(70, 21, TARGET_W, TARGET_H, type="target")
         self.targets.append(target1)
+
+        self.time_left = 120
 
     def create_level3(self):
         self.player = Player(25, 4, self.terminal)
@@ -173,6 +178,8 @@ class Map:
         self.space.add_object(90, 27, TARGET_W, TARGET_H, type="target")
         self.targets.append(target4)
 
+        self.time_left = 120
+
     def delete(self):
         print(self.terminal.home + self.terminal.on_midnightblue + self.terminal.clear(), flush=True)
 
@@ -194,7 +201,11 @@ class Map:
         print(string, flush=True)
 
     def clear_level(self):
+        self.player = 0
+        self.player_rect = None
         self.targets = []
+        self.thinking_box = None
         self.boxes = []
+        self.boxes_rect = []
         self.platforms = []
         self.space.reset()

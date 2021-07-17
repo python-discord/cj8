@@ -288,7 +288,10 @@ class Space:
 
     def reset(self):
         self.targets = []
+        self.targets_engaged = 0
         self.players = []
         self.boxes = []
         self.platforms = []
+        self.thinkingbox = None
         self.player_on_ground = False
+        self.player_in_thinkingbox = False
