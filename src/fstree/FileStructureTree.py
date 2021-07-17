@@ -24,7 +24,10 @@ class FileStructureTree:
                 if entry.name.startswith('.') or entry.name.startswith('__'):
                     continue
                 if entry.is_dir():
-                    node.children.append(Node(node, entry))
+                    if len(node.children) > 50:
+                        pass
+                    else:
+                        node.children.append(Node(node, entry))
                 else:
                     node.files.append(entry)
         for child in node.children:
