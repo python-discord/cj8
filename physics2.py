@@ -180,8 +180,10 @@ class Space:
                     item2.left = item1.right
 
             if collision_type == COLLISION_TYPES["box_to_box"]:
+                item1_dist = abs(self.players[0].topleft[0] - item1.topleft[0])
+                item2_dist = abs(self.players[0].topleft[0] - item2.topleft[0])
                 alpha_box = item1
-                if item2.collidelistall(self.players):
+                if item1_dist > item2_dist:
                     alpha_box = item2
 
                 side = whatside(collision)
