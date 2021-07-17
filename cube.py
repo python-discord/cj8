@@ -403,19 +403,37 @@ if __name__ == "__main__":
                 elif key == ord("t"):  # rotate top disc counter-clockwise
                     for i in [0, 1, 2, 9, 10, 11, 17, 18, 19]:
                         rubik_cube[i].rotate_y(np.pi / 2)
-                    # re-arrange the cubes, so that the meaning of the interval positions remains the same
-                    # rubik_cube = [
-                    #     rubik_cube[6],
-                    #     rubik_cube[3],
-                    #     rubik_cube[0],
-                    #     rubik_cube[7],
-                    #     rubik_cube[4],
-                    #     rubik_cube[1],
-                    #     rubik_cube[8],
-                    #     rubik_cube[5],
-                    #     rubik_cube[2],
-                    #     *rubik_cube[9:],
-                    # ]
+                    rubik_cube = [
+                        rubik_cube[19],
+                        rubik_cube[11],
+                        rubik_cube[2],
+                        *rubik_cube[3:9],
+                        rubik_cube[18],
+                        rubik_cube[10],
+                        rubik_cube[1],
+                        *rubik_cube[12:17],
+                        rubik_cube[17],
+                        rubik_cube[9],
+                        rubik_cube[0],
+                        *rubik_cube[20:],
+                    ]
+                elif key == ord("T"):  # rotate top disc counter-clockwise
+                    for i in [0, 1, 2, 9, 10, 11, 17, 18, 19]:
+                        rubik_cube[i].rotate_y(-np.pi / 2)
+                    rubik_cube = [
+                        rubik_cube[0],
+                        rubik_cube[9],
+                        rubik_cube[17],
+                        *rubik_cube[3:9],
+                        rubik_cube[1],
+                        rubik_cube[10],
+                        rubik_cube[18],
+                        *rubik_cube[12:17],
+                        rubik_cube[2],
+                        rubik_cube[11],
+                        rubik_cube[19],
+                        *rubik_cube[20:],
+                    ]
 
                 elif key == ord("m"):  # rotate middle disk counter-clockwise
                     for cube in rubik_cube[9:17]:
