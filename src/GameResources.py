@@ -29,6 +29,92 @@ class GameResources:
         self.enemy_manager.spawn_random_enemies(self.player.x, self.player.y, 0)
         self.testing = testing
 
+    def update(self, bless: bool) -> None:
+        """Updates all game objects"""
+        self.update_player(bless)
+        self.enter_door_check()
+        self.update_enemies()
+        self.update_color_changer()
+        self.update_items()
+
+    def draw(self) -> bool:
+        """
+        Function to draw entities in game resources class.
+
+        The last drawn entities will appear on top of ones before it.
+        """
+        self.draw_enemies()
+        self.draw_color_changers()
+        self.draw_items()
+        self.draw_entity(self.player)
+
+    def update_player(self, bless: bool) -> None:
+        """Gets players position and updates location"""
+        if bless:
+            self.player.update()
+        else:
+            self.player.keyboard_input()
+        self.update_entity(self.player)
+
+    def enter_door_check(self) -> None:
+        """If player walks on door generate new level or return existing level"""
+        if str(self.level.board[self.player.y][self.player.x]) == "#":
+            self.level = self.level_selector.create_level((self.player.y, self.player.x))
+            # self.level_selector.cur is used for storing the current node,
+            # which would be the current level that the game is working off of
+            self.node = self.level_selector.cur
+            self.player.x = self.level.entrance[1]
+            self.player.y = self.level.entrance[0]
+
+    def update_enemies(self) -> None:
+        """
+        Iterates through all the enemies and calls their updates and changes their position
+
+        Checks if enemies collide with player end game.
+        """
+        for enemy in self.enemy_manager.enemy_list:
+            if enemy.is_in_radius(self.player.x, self.player.y):
+                enemy.follow(self.testing)
+            else:
+                enemy.mill()
+            self.update_entity(enemy)
+
+        result = self.enemy_manager.collisions_with_player(self.player)
+        if isinstance(result, Character):
+            self.player.playing = False
+        else:
+            if str(result) != 'draw':
+                self.enemy_manager.remove_enemy(result)
+
+    def update_color_changer(self) -> None:
+        """Checks all the color changers, if the player is on that spot change player color"""
+        for color_changer in self.level.color_changers:
+            overlapping = self.overlaps(color_changer, self.player)
+            if overlapping:
+                self.player.symbol.stylize(color_changer.color)
+
+    def update_items(self) -> None:
+        """Iterates through items and check if the player is on that spot. If so collects them."""
+        if self.test_item.collected is False:
+            if self.test_item.collisions_with_player(self.player.x, self.player.y):
+                self.test_item.collect_item()
+                self.collected_items.append(self.test_item.symbol._text[0])
+
+    def draw_enemies(self) -> None:
+        """Iterates through enemies and draws them"""
+        for enemy in self.enemy_manager.enemy_list:
+            self.draw_entity(enemy)
+
+    def draw_color_changers(self) -> None:
+        """Iterates through color changers and draws them"""
+        for color_changer in self.level.color_changers:
+            self.draw_entity(color_changer)
+
+    def draw_items(self) -> None:
+        """Iterates through items and draws them"""
+        if self.test_item.collected:
+            self.draw_entity(self.test_item)
+
     def update_entity(self, entity: AbstractDungeonEntity) -> None:
         """Updates the position of a single entity"""
         x = entity.new_positions["x"]
@@ -63,68 +149,6 @@ class GameResources:
     def draw_entity(self, entity: AbstractDungeonEntity) -> None:
         """Draws a single entity onto the level"""
         self.level.board[entity.y][entity.x] = entity.symbol
-
-    def update(self, bless: bool) -> None:
-        """Updates all game objects"""
-        if bless:
-            self.player.update()
-        else:
-            self.player.keyboard_input()
-        self.update_entity(self.player)
-
-        # if player walks on door generate new level
-        if str(self.level.board[self.player.y][self.player.x]) == "#":
-            self.level = self.level_selector.create_level((self.player.y, self.player.x))
-            # self.level_selector.cur is used for storing the current node,
-            # which would be the current level that the game is working off of
-            self.node = self.level_selector.cur
-            self.player.x = self.level.entrance[1]
-            self.player.y = self.level.entrance[0]
-
-        for enemy in self.enemy_manager.enemy_list:
-            if enemy.is_in_radius(self.player.x, self.player.y):
-                enemy.follow(self.testing)
-            else:
-                enemy.mill()
-
-            self.update_entity(enemy)
-
-        for color_changer in self.level.color_changers:
-            overlapping = self.overlaps(color_changer, self.player)
-            if overlapping:
-                self.player.symbol.stylize(color_changer.color)
-
-        if self.test_item.collected is False:
-            if self.test_item.collisions_with_player(self.player.x, self.player.y):
-                self.test_item.collect_item()
-                self.collected_items.append(self.test_item.symbol._text[0])
-
-    def draw(self) -> bool:
-        """
-        Function to draw entities in game resources class.
-
-        The last drawn entities will appear on top of ones before it.
-        """
-        self.draw_entity(self.player)
-
-        result = self.enemy_manager.collisions_with_player(self.player)
-        if isinstance(result, Character):
-            self.player.playing = False
-            return False
-
-        else:
-            if str(result) != 'draw':
-                self.enemy_manager.remove_enemy(result)
-            for enemy in self.enemy_manager.enemy_list:
-                self.draw_entity(enemy)
-
-            for color_changer in self.level.color_changers:
-                self.draw_entity(color_changer)
-
-            if self.test_item.collected:
-                self.draw_entity(self.test_item)
-
-        self.draw_entity(self.player)
 
     def overlaps(self, first_entity: AbstractDungeonEntity, second_entity: AbstractDungeonEntity) -> bool:
         """Checks if two entities overlap"""
