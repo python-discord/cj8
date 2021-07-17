@@ -326,9 +326,13 @@ if __name__ == "__main__":
     def main_event_loop(screen: Screen = None) -> None:
         """The main event loop that redraws the screen and takes user input."""
         # create an artist to draw the individual cubes
+        R = Ry(30/180*np.pi) @ Rx(30/180*np.pi)
         artist = Artist(
             screen,
-            camera_position=np.array([0, 0, distance_to_camera]),
+            camera_position=(R @ np.array([0, 0, distance_to_camera])).getA1(),
+            camera_x=(R @ np.array([1, 0, 0])).getA1(),
+            camera_y=(R @ np.array([0, 1, 0])).getA1(),
+            camera_z=-(R @ np.array([0, 0, 1])).getA1(),
         )
 
         # the Rubik cube is made up of 26 individual cubes
