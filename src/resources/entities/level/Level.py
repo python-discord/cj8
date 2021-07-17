@@ -23,8 +23,8 @@ class Level:
         self.entrance = (0, 0)
         self.parent_door = (0, 0)
         self.board = []
-        self.width = math.floor(self.console.width * .4)
-        self.height = math.floor(self.console.height * .6)
+        self.width = 50
+        self.height = 20
         self.cur_node = cur_node
         self.doors = {}
         self.color_changers = []
@@ -167,9 +167,9 @@ class Level:
 
     def to_string(self) -> Text:
         """Convert map to string"""
-        top_buffer = Console().height // 10
+        top_buffer = (math.floor(self.console.height * .66) - self.height) // 2
         top_buffer = " \n" * top_buffer
-        left_buffer = Console().width // 2 - self.width
+        left_buffer = (math.floor(self.console.width * .66) - self.width) // 2
         left_buffer = " " * left_buffer
         string_map = Text(left_buffer)
         for row in self.board:
