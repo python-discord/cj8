@@ -33,7 +33,7 @@ def play_scenes(screen: Screen, scenes: Scenes, ih: Callable) -> Tuple[Scenes, C
                 for effect in scene.effects:
                     if hasattr(effect, "screen"):
                         effect._screen = screen
-                if isinstance(scene, mp.Title):
+                if not isinstance(scene, mp.Title):
                     scene.add_effect(mp.back_button(screen))
 
             # Play the prepared scenes

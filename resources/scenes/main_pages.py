@@ -1,23 +1,20 @@
 from itertools import chain
 from typing import Optional
 from time import time
+from random import randint, choice
 
 from asciimatics.effects import Effect, Print, Sprite, Stars
 from asciimatics.event import Event, KeyboardEvent
+from asciimatics.particles import RingFirework, SerpentFirework, StarFirework, PalmFirework
 from asciimatics.paths import Path
-from asciimatics.renderers import Box, FigletText, StaticRenderer
+from asciimatics.renderers import Box, FigletText, StaticRenderer, Rainbow
 from asciimatics.scene import Scene
 from asciimatics.screen import Screen
 
 import resources.exceptions as exceptions
-
-from resources.sprites.characters import (
-    character_box, character_box_pushing, character_box_pushing2
-)
-
-
-from resources.sprites.characters import character_box, character_box_pushing
+from resources.sprites.characters import character_box, character_box_pushing, character_box_pushing2
 from ..asciimatics_better import Mirage2
+
 
 # todo
 #  incorporate sound settings
@@ -42,9 +39,9 @@ class Title(Scene):
         # Opening character with box on his head
         char_sprite = Sprite(
             screen, path=char_path, renderer_dict={
-                "default": StaticRenderer(images=[character_box]*8
-                                          + [character_box_pushing]*10
-                                          + [character_box_pushing2]*10)
+                "default": StaticRenderer(images=[character_box] * 8
+                                                 + [character_box_pushing] * 10
+                                                 + [character_box_pushing2] * 10)
             }
         )
 
@@ -206,9 +203,53 @@ class LevelSelector(Scene):
         return event
 
 
+class EndScene(Scene):
+    def __init__(self, screen: Screen):
+        self._screen = screen
+        self.current_fireworks = []
+        self.firework_choices = [
+            (PalmFirework, 25, 30),
+            (PalmFirework, 30, 40),
+            (StarFirework, 25, 35),
+            (StarFirework, 30, 45),
+            (StarFirework, 25, 50),
+            (RingFirework, 20, 40),
+            (SerpentFirework, 25, 40),
+        ]
+        runtime = 5000
+        self.add_fireworks(1000, runtime)
+        effects = [Stars(screen, screen.width), *self.current_fireworks,
+                   Print(screen,
+                         Rainbow(screen, FigletText("CONGRATULATIONS")),
+                         screen.height // 2 - 6,
+                         speed=0,
+                         start_frame=0, stop_frame=runtime),
+                   Print(screen,
+                         Rainbow(screen, FigletText("YOU ESCAPED THE BOXES!")),
+                         screen.height // 2 + 1,
+                         speed=0,
+                         start_frame=0, stop_frame=runtime)]
+        super().__init__(effects)
+
+    def add_fireworks(self, amount: int, stop_frame: int):
+        for _ in range(amount):
+            firework, start, stop = choice(self.firework_choices)
+            self.current_fireworks.append(
+                firework(self._screen,
+                         randint(0, self._screen.width),
+                         randint(self._screen.height // 8, self._screen.height * 3 // 7),
+                         randint(start, stop),
+                         start_frame=randint(0, stop_frame)))
+
+    def process_event(self, event):
+        pass
+
+
 def default_IH(event: Event) -> Event:
     if isinstance(event, KeyboardEvent):
         key = event.key_code
         if key in [Screen.KEY_ESCAPE]:
             raise exceptions.Title()
+        if key in [ord("e"), ord("E")]:
+            raise exceptions.WinGame()
     return event
