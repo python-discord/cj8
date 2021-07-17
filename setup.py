@@ -1,6 +1,6 @@
 import setuptools
 
-import virtualbox  # for version number
+import project  # for version number
 
 # To run: py setup.py sdist bdist_wheel
 # To upload: py -m twine upload --sign --skip-existing dist/*
@@ -12,8 +12,8 @@ with open('README.md', encoding='utf-8') as readme_file:
 
 setuptools.setup(
     # TODO: change name
-    name='virutal box',
-    version=virtualbox.__version__,
+    name='project',
+    version=project.__version__,
     author='Team Cheerful Cheetahs',
     author_email='',
     license='MIT',
@@ -24,7 +24,7 @@ setuptools.setup(
     packages=setuptools.find_packages(),
     entry_points={
         'console_scripts': [
-            'project=virtualbox.project:main'
+            'project=project:main'
         ]
     },
     classifiers=[
@@ -36,7 +36,6 @@ setuptools.setup(
     ],
     python_requires='>=3',
     install_requires=[
-        'playsound',
-	'blessed'
+        '',
     ]
 )

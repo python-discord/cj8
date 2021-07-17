@@ -1,19 +1,11 @@
-from typing import Any
-
 from virtualbox.exceptions import ConversionError, ConversionErrorMulti
 
 
 class MultiType:
-    """Type that ties to converts varable to specifeied types with specified order.
-
-    if it succeds it returns it if not it raises ConversionErrorMulti
-    """
-
     def __init__(self, *types):
         self.types = types
 
-    def __call__(self, var: Any) -> Any:
-        """HYMMMMMMM"""
+    def __call__(self, var):
         for i in self.types:
             try:
                 return i(var)
@@ -23,14 +15,11 @@ class MultiType:
 
 
 class Optional:
-    """Optional argument class"""
-
-    def __init__(self, type: type, default: int):
+    def __init__(self, type, default):
         self.type = type
         self.default = default
 
-    def __call__(self, var: any):
-        """HYMMMMM"""
+    def __call__(self, var):
         if var is None:
             return self.default
         try:
@@ -40,20 +29,15 @@ class Optional:
 
 
 class Flag:
-    """Allows for flag creation"""
-
-    def __init__(self, value: Any):
+    def __init__(self, value):
         self.value = value
 
 
 class Keyword(Flag):
-    """Childeren of Flag allows for keywords(name + separator + value) creation"""
-
-    def __init__(self, type: type):
+    def __init__(self, type):
         self.type = type
 
-    def __call__(self, var: Any):
-        """HYMMMM"""
+    def __call__(self, var):
         try:
             return self.type(var)
         except TypeError:

@@ -3,14 +3,13 @@ from copy import copy
 from time import sleep
 
 from blessed import Terminal
-
 from virtualbox.config import START_PATH
 from virtualbox.exceptions import CannotFullFillFunction
 from virtualbox.fs.fs_dir import Dir
 from virtualbox.functions.blessed_functions import (
     clear_term, echo, print_box, print_loading, print_tree, request
 )
-from functions.command_functions import get_entry
+from virtualbox.functions.command_functions import get_entry
 from playsound import playsound
 
 from blessed import Terminal
@@ -18,12 +17,9 @@ import threading
 from shutil import copytree, rmtree
 from os import getcwd
 
-
-from virtualbox.functions.command_functions import get_entry
 from virtualbox.users.login import login
 from virtualbox.users.uid import Uidspace
 from virtualbox.users.user import ROOT, User
-
 
 
 
@@ -36,7 +32,7 @@ def playbgm():
 
 
 # file system imports
-fs = Dir.FromPath(START_PATH, None, 7, 5, 0)
+fs = Dir.FromPath(START_PATH, None, 7, 0, 0)
 # Users uid space
 users_uid_space = Uidspace(1)
 # User
@@ -46,8 +42,7 @@ Users[ROOT.name] = ROOT
 term = Terminal()
 
 
-def ProcessArgs(functionArgs: tuple, argsDicit: dict) -> list:
-    """Procceses functions argumens to allow 'imports'"""
+def ProcessArgs(functionArgs, argsDicit):
     try:
         return [argsDicit[i] for i in functionArgs]
     except KeyError:
@@ -55,8 +50,7 @@ def ProcessArgs(functionArgs: tuple, argsDicit: dict) -> list:
 
 
 # COMMAND MANAGER
-def user_input_cmd(fs: Dir, user: User, rootfs: Dir, term: Terminal) -> None:
-    """Shell"""
+def user_input_cmd(fs, user, rootfs, term):
     while True:
         user_input = request(">>>  ", term).strip().split()
         if len(user_input) == 0:
@@ -69,9 +63,7 @@ def user_input_cmd(fs: Dir, user: User, rootfs: Dir, term: Terminal) -> None:
             echo(e, term)
 
 
-
-def start(fs: Dir, user: User, term: Terminal) -> None:
-    """Prints game intro or welcome message"""
+def start(fs, user, term):
     firstgamefile = open('first_game.txt', 'r')
     content = firstgamefile.readline()
     print_loading('Loading Operating System:', term)
@@ -148,33 +140,31 @@ def start(fs: Dir, user: User, term: Terminal) -> None:
         print_tree("System", fs, user, term)
         echo('Type "h" or "help" to see all commands available.', term)
         echo('Type "t" or "tutorial" to see a tutorial. ', term)
-        echo('Type "h" or "help" to see all commands available.', term)
-        echo('Type "t" or "tutorial" to see a tutorial. ', term)
         with open('first_game.txt', 'w') as firstgamefile:
             firstgamefile.truncate()
             firstgamefile.write('1')
-            echo('SYSTEM HACKED username = user, password = 1234567', term)
+            echo('SYSTEM HACKED username = user, password = None', term)
     else:
         print_box('Welcome Back', ['', 'Your game state is reloaded.', ''], term)
-        echo('SYSTEM HACKED username = user, password = 1234567', term)
+        echo('SYSTEM HACKED username = user, password = None', term)
 
 
-def main() -> None:
-    """Main function"""
+def main():
     global fs
     # resets os directory to initial
-    # current_dir = getcwd()
-    # src = current_dir + '/default-files'
-    # dest = current_dir + '/OS'
-    # rmtree(dest)
-    # copytree(src, dest)
+    current_dir = getcwd()
+    src = current_dir + '/default-files'
+    dest = current_dir + '/OS'
+    rmtree(dest)
+    copytree(src, dest)
 
     # start game
     start(fs, ROOT, term)
+    echo('SYSTEM HACKED username = user, password = None', term)
     user_input_cmd(copy(fs), login(Users, term), fs, term)
 
 
-if __name__ == "__main__":
+def startgame():
     t1 = threading.Thread(target=main)
     t2 = threading.Thread(target=playbgm)
     t1.start()
