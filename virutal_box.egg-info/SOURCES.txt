@@ -24,4 +24,5 @@ virutal_box.egg-info/PKG-INFO
 virutal_box.egg-info/SOURCES.txt
 virutal_box.egg-info/dependency_links.txt
 virutal_box.egg-info/entry_points.txt
+virutal_box.egg-info/requires.txt
 virutal_box.egg-info/top_level.txt
