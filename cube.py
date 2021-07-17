@@ -147,15 +147,17 @@ class Artist:
 class BaseCube:
     """A 1x1 cube centred at the origin. It has coloured faces but doesn't do much otherwise."""
 
+    # taking colours from here:
+    # https://en.wikipedia.org/wiki/Rubik%27s_Cube#/media/File:Rubik's_cube_colors.svg
     def __init__(
         self,
         colours: Dict[str, int] = {
-            "front": Screen.COLOUR_MAGENTA,
-            "back": Screen.COLOUR_RED,
-            "left": Screen.COLOUR_BLUE,
-            "right": Screen.COLOUR_GREEN,
-            "top": Screen.COLOUR_CYAN,
-            "bottom": Screen.COLOUR_YELLOW,
+            "front": Screen.COLOUR_RED,
+            "back": Screen.COLOUR_MAGENTA,  # there's no orange, unfortunately
+            "left": Screen.COLOUR_YELLOW,
+            "right": Screen.COLOUR_WHITE,
+            "top": Screen.COLOUR_GREEN,
+            "bottom": Screen.COLOUR_BLUE,
         },
     ):
         # define corner points of front face and back face, starting in top left, going clockwise
