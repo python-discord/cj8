@@ -1,14 +1,12 @@
-# Jace's Python Template
+# Python Summer Code Jam 2021
 
-This is a  template for a typical Python library following modern packaging conventions. It utilizes popular libraries alongside Make and Graphviz to fully automate all development and deployment tasks. Check out the live demo: [jacebrowning/template-python-demo](https://github.com/jacebrowning/template-python-demo)
 
-[![Build Status](![AppVeyor](https://img.shields.io/appveyor/build/Quickmotions/https://github.com/cj8-cheerful-cheetahs))](![AppVeyor](https://img.shields.io/appveyor/build/Quickmotions/https://github.com/cj8-cheerful-cheetahs))
 
-## Features
 
-* Preconfigured setup for CI, coverage, and analysis services
-* `pyproject.toml` for managing dependencies and package metadata
-* `Makefile` for automating common [development tasks](https://github.com/jacebrowning/template-python/blob/main/%7B%7Bcookiecutter.project_name%7D%7D/CONTRIBUTING.md):
+## Framework
+
+* Uses Blessed framework
+
     - Installing dependencies with `poetry`
     - Automatic formatting with `isort` and `black`
     - Static analysis with `pylint`
