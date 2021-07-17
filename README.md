@@ -19,6 +19,7 @@ The player will have to think to overcome many puzzles and escape the box they a
 ## How to run
 * main file is ```virtualbox/project.py```
 * install dependancies then run this file
+* ```python virtualbox/project.py```
 
 ## Dependancies
 * [Blessed](https://github.com/chjj/blessed)
