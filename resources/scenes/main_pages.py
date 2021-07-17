@@ -117,6 +117,8 @@ class Title(Scene):
             if key in [Screen.KEY_ESCAPE, ord("q"), ord("Q")]:
                 raise exceptions.ExitGame()
             elif key in [ord(" "), ord("\n"), ord("\r"), ord("s"), ord("S")]:
+                if not exceptions.HowToPlay.hasSeen:
+                    raise exceptions.HowToPlay()
                 raise exceptions.LevelSelector()
             # We had to scratch settings
             # elif key in [ord("s"), ord("S")]:
@@ -223,8 +225,8 @@ class Credits(Scene):
 
     def process_event(self, event: Event) -> Event:
         """Credits input handler"""
-        if isinstance(event, KeyboardEvent):
-            key = event.key_code
+        # if isinstance(event, KeyboardEvent):
+        #     key = event.key_code
         return event
 
 
@@ -254,8 +256,8 @@ class HowToPlay(Scene):
 
     def process_event(self, event: Event) -> Event:
         """Credits input handler"""
-        if isinstance(event, KeyboardEvent):
-            key = event.key_code
+        # if isinstance(event, KeyboardEvent):
+        #     key = event.key_code
         return event
 
 
@@ -302,7 +304,9 @@ class LevelSelector(Scene):
 
 
 class EndScene(Scene):
+    """The Scene displayed when the user has beaten the game"""
     def __init__(self, screen: Screen):
+        """Start the firework displays"""
         self._screen = screen
         self.current_fireworks = []
         self.firework_choices = [
@@ -329,7 +333,8 @@ class EndScene(Scene):
                          start_frame=0, stop_frame=runtime)]
         super().__init__(effects)
 
-    def add_fireworks(self, amount: int, stop_frame: int):
+    def add_fireworks(self, amount: int, stop_frame: int) -> None:
+        """Adds some firework effects over a certain duration"""
         for _ in range(amount):
             firework, start, stop = choice(self.firework_choices)
             self.current_fireworks.append(
@@ -341,7 +346,8 @@ class EndScene(Scene):
                          )
             )
 
-    def process_event(self, event):
+    def process_event(self, event: Event) -> None:
+        """Sends to the credits after ending scene"""
         raise exceptions.Credits()
 
 
