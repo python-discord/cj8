@@ -2,7 +2,7 @@
 
 This is a  template for a typical Python library following modern packaging conventions. It utilizes popular libraries alongside Make and Graphviz to fully automate all development and deployment tasks. Check out the live demo: [jacebrowning/template-python-demo](https://github.com/jacebrowning/template-python-demo)
 
-[![Build Status](https://img.shields.io/appveyor/build/user/https://github.com/cj8-cheerful-cheetahs/project)](https://img.shields.io/appveyor/build/user/https://github.com/cj8-cheerful-cheetahs/project)
+[![Build Status](![AppVeyor](https://img.shields.io/appveyor/build/Quickmotions/https://github.com/cj8-cheerful-cheetahs))](![AppVeyor](https://img.shields.io/appveyor/build/Quickmotions/https://github.com/cj8-cheerful-cheetahs))
 
 ## Features
 
