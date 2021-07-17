@@ -3,10 +3,9 @@
 * Theme: TUI
 * Framework: [Blessed](https://github.com/chjj/blessed)
 
+In this game you are a network security architect working for the USA, your job is to hack into a Iranian Network and eliminate a bomb threat.
 
-* Tooling to launch an IPython session with automatic reloading enabled
 
-If you are instead looking for a [Python application](https://caremad.io/posts/2013/07/setup-vs-requirement/) template, check out one of the sibling projects:
 
 * [jacebrowning/template-django](https://github.com/jacebrowning/template-django)
 * [jacebrowning/template-flask](https://github.com/jacebrowning/template-flask)
