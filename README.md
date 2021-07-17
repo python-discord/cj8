@@ -37,3 +37,12 @@ Panthera's box can be installed and run using two different methods:
 ## Game Guide
 
 The game consists of a ball and sets of redirector arrows. To complete each level, guide the ball towards the goal, by rotating the arrows. Hidden story tiles are scattered throughout the maps, requiring you to take different paths.
+
+## Platform Compatibility
+
+The game works and has been tested on both **Windows** and **Linux (Arch)**
+
+In theory the game should work on **MacOS** but this has not been tested.
+
+For best results: 
+   - Use **Powershell** within **Windows Terminal** on Windows
