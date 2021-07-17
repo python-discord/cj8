@@ -9,8 +9,8 @@ from .resources.entities.character import Character
 class GameResources:
     """Holds objects that are used for during game runtime"""
 
-    def __init__(self, testing: bool, bless: bool):
-        self.tree = FileStructureTree('.')
+    def __init__(self, testing: bool, bless: bool, path: str):
+        self.tree = FileStructureTree(path)
         self.node = self.tree.root
         self.level_selector = LevelSelector(self.tree)
 

@@ -1,4 +1,5 @@
 import sys
+from os import path as ospath
 from time import sleep
 
 from rich.layout import Layout
@@ -74,7 +75,7 @@ def run_game(layout: Layout, game_resources: GameResources, information: Informa
 
 def main() -> None:
     """Main function that sets up game and runs main game loop"""
-    game_resources = GameResources(testing, bless)
+    game_resources = GameResources(testing, bless, path)
     information = Information(game_resources)
     game_resources.draw()
 
@@ -101,9 +102,18 @@ def main() -> None:
 
 testing = False
 bless = False
+path = "."
 if __name__ == "__main__":
-    if sys.argv[-1] == "--test":
-        testing = True
-    elif sys.argv[-1] == "--bless":
-        bless = True
+    testing = "--test" in sys.argv
+    bless = "--bless" in sys.argv
+
+    try:
+        for i, arg in enumerate(sys.argv):
+            if "--path" in arg:
+                target = sys.argv[i + 1]
+                path = target if ospath.isdir(target) else "."
+                break
+    except Exception:
+        path = "."
+
     main()
