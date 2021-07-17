@@ -640,6 +640,10 @@ if __name__ == "__main__":
                         *rubik_cube[23:25],
                         rubik_cube[8],
                     ]
+                elif key in {ord("?"), ord("h"), ord("H")}:
+                    # could show a widget here that explains usage and
+                    # keys, then waits for key press
+                    pass
 
             elif isinstance(ev, MouseEvent):
                 mouse_x, mouse_y, mouse_buttons = ev.x, ev.y, ev.buttons
