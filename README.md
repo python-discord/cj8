@@ -29,3 +29,6 @@ The player will have to think to overcome many puzzles and escape the box they a
 * [Coder400](https://github.com/Coder4OO) - Discord: Coder400#0400
 * [Vinyzu](https://github.com/Vinyzu) - Discord: Vinyzu#7479
 * [ShirleyYueZou](https://github.com/ShirleyYueZou) - Discord: チョコビ🍫#8328
+
+
+- `LICENSE`: [The MIT License](https://opensource.org/licenses/MIT), an OSS approved license which grants rights to everyone to use and modify your projects and limits your liability. We highly recommend you to read the license.
