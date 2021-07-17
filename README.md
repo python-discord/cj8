@@ -34,6 +34,10 @@ Panthera's box can be installed and run using two different methods:
 
 `--flush-score` - Will delete the high-scores file
 
+### Notes
+
+Turn down the channel that is running the terminal as the game sounds can be fairly loud.
+
 ## Game Guide
 
 The game consists of a ball and sets of redirector arrows. To complete each level, guide the ball towards the goal, by rotating the arrows. Hidden story tiles are scattered throughout the maps, requiring you to take different paths.
