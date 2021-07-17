@@ -1,6 +1,6 @@
 from itertools import chain
-from typing import Optional
 from time import time
+from typing import Optional
 from random import randint, choice
 
 from asciimatics.effects import Effect, Print, Sprite, Stars
@@ -21,15 +21,23 @@ from ..asciimatics_better import Mirage2
 #  add exit_scene when exiting a scene
 
 
-def back_button(screen) -> Effect: return Print(screen, StaticRenderer(["<-- Back (Esc)"]), 0, 1)
+def back_button(screen: Screen) -> Effect:
+    """Generate the back button effect."""
+    return Print(screen, StaticRenderer(["<-- Back (Esc)"]), 0, 1)
 
 
 def exit_scene(screen: Screen, speed: float) -> Effect:
-    return Mirage2(screen, StaticRenderer([(" " * screen.width + "\n") * screen.height]), False, 0, 0, speed,
-                   stop_frame=60)
+    """Mirage animation for exit a scene."""
+    return Mirage2(
+        screen,
+        StaticRenderer([(" " * screen.width + "\n") * screen.height]),
+        False, 0, 0, speed, stop_frame=60,
+    )
 
 
 class Title(Scene):
+    """Class for title screens."""
+
     def __init__(self, screen: Screen):
         """Title screen"""
         char_path, bubble_path = Path(), Path()
@@ -39,9 +47,13 @@ class Title(Scene):
         # Opening character with box on his head
         char_sprite = Sprite(
             screen, path=char_path, renderer_dict={
-                "default": StaticRenderer(images=[character_box] * 8
-                                                 + [character_box_pushing] * 10
-                                                 + [character_box_pushing2] * 10)
+                "default": StaticRenderer(
+                    images=(
+                        [character_box] * 8
+                        + [character_box_pushing] * 10
+                        + [character_box_pushing2] * 10
+                    )
+                )
             }
         )
 
@@ -68,25 +80,25 @@ class Title(Scene):
             ),
             Print(
                 screen,
-                StaticRenderer(images=["Start (Space)"]),
+                StaticRenderer(images=["(S)tart"]),
                 screen.height // 2 + 4,
                 start_frame=0,
             ),
             Print(
                 screen,
-                StaticRenderer(images=["Quit (Esc)"]),
-                screen.height // 2 + 5,
+                StaticRenderer(images=["(H)ow to Play"]),
+                screen.height // 2 + 6,
                 start_frame=0,
             ),
             Print(
                 screen,
-                StaticRenderer(images=["Settings (S)"]),
+                StaticRenderer(images=["(C)redits"]),
                 screen.height // 2 + 7,
                 start_frame=0,
             ),
             Print(
                 screen,
-                StaticRenderer(images=["Credits (C)"]),
+                StaticRenderer(images=["(Q)uit"]),
                 screen.height // 2 + 8,
                 start_frame=0,
             ),
@@ -100,16 +112,21 @@ class Title(Scene):
             key = event.key_code
             if key in [Screen.KEY_ESCAPE, ord("q"), ord("Q")]:
                 raise exceptions.ExitGame()
-            elif key in [ord(" "), ord("\n"), ord("\r")]:
+            elif key in [ord(" "), ord("\n"), ord("\r"), ord("s"), ord("S")]:
                 raise exceptions.LevelSelector()
-            elif key in [ord("s"), ord("S")]:
-                raise exceptions.Settings()
+            # We had to scratch settings
+            # elif key in [ord("s"), ord("S")]:
+            #     raise exceptions.Settings()
             elif key in [ord("c"), ord("C")]:
                 raise exceptions.Credits()
+            elif key in [ord("h"), ord("H")]:
+                raise exceptions.HowToPlay()
         return event
 
 
 class Settings(Scene):
+    """Class for settings screens."""
+
     # each item in settings is [name: str, val: Any]
     settings = [
         ['volume', 5],
@@ -156,19 +173,79 @@ class Settings(Scene):
 
 
 class Credits(Scene):
+    """Class for credits screens."""
+
     names = "\n".join(["DEVELOPED BY:", "Objectivitix#9891", "nop#6157", "Lognarius#1483", "JLW#1242", "stg-tel#7084"])
     nicks = "\n".join(["DEVELOPED BY:", "object           ", "nop     ", "Lognarius     ", "JLW     ", "snuffles    "])
 
     def __init__(self, screen: Screen):
         """Credits screen"""
         won = exceptions.WinGame.won
-        effects = [Stars(screen, round(screen.height * screen.width / 30),
-                         "........+++.......   .......xx......     .......**......     ......,,,,......               "
-                         "              ..............                               "),
-                   Print(screen, StaticRenderer([Credits.names, Credits.nicks], lambda: 0 if time() % 8 < 4 else 1),
-                         screen.height // 2 + (5 if won else -3), clear=True, transparent=False)]
+
+        effects = [
+            Stars(
+                screen,
+                round(screen.height * screen.width / 30),
+                (
+                    "........+++.......   "
+                    ".......xx......     "
+                    ".......**......     "
+                    "......,,,,......                             "
+                    "..............                               "
+                ),
+            ),
+            Print(
+                screen,
+                StaticRenderer(
+                    [Credits.names, Credits.nicks],
+                    lambda: 0 if time() % 8 < 4 else 1,
+                ),
+                screen.height // 2 + (5 if won else -3),
+                clear=True,
+                transparent=False,
+            ),
+        ]
+
         if won:
-            effects.append(Print(screen, FigletText("THANK YOU FOR PLAYING!", width=screen.width), screen.height // 3))
+            effects.append(
+                Print(
+                    screen,
+                    FigletText("THANK YOU FOR PLAYING!", width=screen.width),
+                    screen.height // 3,
+                ),
+            )
+
+        super().__init__(effects)
+
+    def process_event(self, event: Event) -> Event:
+        """Credits input handler"""
+        if isinstance(event, KeyboardEvent):
+            key = event.key_code
+        return event
+
+
+class HowToPlay(Scene):
+    """Screen with instructions on how to play"""
+
+    def __init__(self, screen: Screen):
+        """How to Play screen"""
+        effects = [Stars(screen, round(screen.height * screen.width / 30)),
+                   Print(screen,
+                         FigletText("HOW TO PLAY", width=screen.width), 0,
+                         clear=True, transparent=False),
+                   Print(screen,
+                         StaticRenderer(["Use arrowkeys or WASD to move"], ),
+                         y=int(screen.height * 0.35), clear=True, transparent=False),
+                   Print(screen,
+                         StaticRenderer(["Try to find the box that surrounds you (the outermost walls)"], ),
+                         y=int(screen.height * 0.35+2), clear=True, transparent=False),
+                   Print(screen,
+                         StaticRenderer(["If you think you found one, use SHIFT + WASD to tag that wall"], ),
+                         y=int(screen.height * 0.35 + 4), clear=True, transparent=False),
+                   Print(screen,
+                         StaticRenderer(["If you find the four walls (up, down, left and right) you win! :D"], ),
+                         y=int(screen.height * 0.35 + 6), clear=True, transparent=False),
+                   ]
         super().__init__(effects)
 
     def process_event(self, event: Event) -> Event:
@@ -179,16 +256,33 @@ class Credits(Scene):
 
 
 class LevelSelector(Scene):
+    """Class for level selector screens."""
+
     def __init__(self, screen: Screen):
         """Level selector screen"""
         box_width = screen.width // 5
         box_height = 7
-        super().__init__(list(
-            chain.from_iterable((Mirage2(screen, Box(box_width, box_height, False), True,
-                                         y := i // 3 * int(box_height * 1.5) + box_height,
-                                         x := (i % 3 + 1) * (screen.width // 4), 0.25),
-                                 Print(screen, StaticRenderer([f"{i + 1}"]), y - 1, x))
-                                for i in range(exceptions.EnterLevel.max_level + 1))), -1)
+
+        effect_list = list(
+            chain.from_iterable(
+                (
+                    Mirage2(
+                        screen,
+                        Box(box_width, box_height, False),
+                        True,
+                        y := i // 3 * int(box_height * 1.5) + box_height,
+                        x := (i % 3 + 1) * (screen.width // 4),
+                        0.25,
+                    ),
+                    Print(screen, StaticRenderer([f"{i + 1}"]), y - 1, x),
+                )
+                for i in range(exceptions.EnterLevel.max_level + 1)
+            )
+        )
+        effect_list = [Print(screen, StaticRenderer(["Type the level number you want to play"]),
+                             y=1)] + effect_list
+
+        super().__init__(effect_list, -1,)
 
     def process_event(self, event: Event) -> Event:
         """Level selector input handler"""
@@ -239,17 +333,18 @@ class EndScene(Scene):
                          randint(0, self._screen.width),
                          randint(self._screen.height // 8, self._screen.height * 3 // 7),
                          randint(start, stop),
-                         start_frame=randint(0, stop_frame)))
+                         start_frame=randint(0, stop_frame)
+                         )
+            )
 
     def process_event(self, event):
-        pass
+        raise exceptions.Credits()
 
 
 def default_IH(event: Event) -> Event:
+    """Default input handler."""
     if isinstance(event, KeyboardEvent):
         key = event.key_code
-        if key in [Screen.KEY_ESCAPE]:
+        if key in [Screen.KEY_ESCAPE, ord("q"), ord("Q")]:
             raise exceptions.Title()
-        if key in [ord("e"), ord("E")]:
-            raise exceptions.WinGame()
     return event
