@@ -2,6 +2,7 @@
 # coding: utf-8
 
 import time
+from typing import Dict, List
 
 import numpy as np
 from asciimatics.event import KeyboardEvent, MouseEvent
@@ -123,11 +124,39 @@ class Artist:
         y = self.cy * (1 + y)
         self.screen.draw(x, y)
 
+    def fill_polygon(self, polygons: List[List[np.array]], colour: int) -> None:
+        """Draw a filled polygon of the given colour. Coordinates are 3D."""
+
+        def proj(pt: np.array) -> np.array:
+            """Convert 3D coordinates to 2D screen coordinates."""
+            x, y = project3d(
+                pt,
+                camera_position=self.camera_position,
+                camera_x=self.camera_x,
+                camera_y=self.camera_y,
+                camera_z=self.camera_z,
+            )
+            return np.array([self.cx * (1 + x), self.cy * (1 + y)])
+
+        self.screen.fill_polygon(
+            [[proj(pt) for pt in poly] for poly in polygons], colour
+        )
+
 
 class BaseCube:
-    """A 1x1 cube centred at the origin."""
+    """A 1x1 cube centred at the origin. It has coloured faces but doesn't do much otherwise."""
 
-    def __init__(self):
+    def __init__(
+        self,
+        colours: Dict[str, int] = {
+            "front": Screen.COLOUR_MAGENTA,
+            "back": Screen.COLOUR_RED,
+            "left": Screen.COLOUR_BLUE,
+            "right": Screen.COLOUR_GREEN,
+            "top": Screen.COLOUR_CYAN,
+            "bottom": Screen.COLOUR_YELLOW,
+        },
+    ):
         # define corner points of front face and back face, starting in top left, going clockwise
         front = [
             np.array(
@@ -147,9 +176,18 @@ class BaseCube:
         back = [pt / 2 for pt in back]
         self.front = front
         self.back = back
+        self.normal_vectors = {
+            "front": [0, 0, 1],
+            "back": [0, 0, -1],
+            "left": [-1, 0, 0],
+            "right": [1, 0, 0],
+            "top": [0, 1, 0],
+            "bottom": [0, -1, 0],
+        }
+        self.colours = colours
 
     def draw_cage(self, artist: Artist) -> None:
-        """Draw self using artist."""
+        """Draw self as wireframe using artist."""
         for pt1, pt2 in zip(self.front, [*self.front[1:], self.front[0]]):
             artist.line(pt1, pt2)
         for pt1, pt2 in zip(self.back, [*self.back[1:], self.back[0]]):
@@ -157,14 +195,87 @@ class BaseCube:
         for pt1, pt2 in zip(self.front, self.back):
             artist.line(pt1, pt2)
 
+    def draw_block_faces(self, artist: Artist) -> None:
+        """Draw self with solid colored faces using artist."""
+        camera_direction = artist.camera_position
+
+        # front
+        if np.inner(camera_direction, self.normal_vectors["front"]) > 0:
+            artist.fill_polygon(
+                [
+                    self.front,
+                ],
+                self.colours["front"],
+            )
+        # back
+        if np.inner(camera_direction, self.normal_vectors["back"]) > 0:
+            artist.fill_polygon(
+                [
+                    self.back[::-1],
+                ],
+                self.colours["back"],
+            )
+        # left
+        if np.inner(camera_direction, self.normal_vectors["left"]) > 0:
+            artist.fill_polygon(
+                [
+                    [
+                        self.front[0],
+                        self.back[0],
+                        self.back[2],
+                        self.front[2],
+                    ]
+                ],
+                self.colours["left"],
+            )
+        # right
+        if np.inner(camera_direction, self.normal_vectors["right"]) > 0:
+            artist.fill_polygon(
+                [
+                    [
+                        self.front[1],
+                        self.front[3],
+                        self.back[3],
+                        self.back[1],
+                    ]
+                ],
+                self.colours["right"],
+            )
+        # top
+        if np.inner(camera_direction, self.normal_vectors["top"]) > 0:
+            artist.fill_polygon(
+                [
+                    [
+                        self.front[0],
+                        self.front[1],
+                        self.back[1],
+                        self.back[0],
+                    ]
+                ],
+                self.colours["top"],
+            )
+        # bottom
+        if np.inner(camera_direction, self.normal_vectors["bottom"]) > 0:
+            artist.fill_polygon(
+                [
+                    [
+                        self.front[2],
+                        self.front[3],
+                        self.back[3],
+                        self.back[2],
+                    ]
+                ],
+                self.colours["bottom"],
+            )
+
 
 class TranslatedCube(BaseCube):
     """A base cube that is shifted into a new location."""
 
-    def __init__(self, position: np.array):
+    def __init__(self, position: np.array = np.array([0, 0, 0])):
         """Initialise translated cube."""
         super().__init__()
-        # self.position = position
+        self.position = position
         self.front = [pt + position for pt in self.front]
         self.back = [pt + position for pt in self.back]
 
@@ -172,18 +283,14 @@ class TranslatedCube(BaseCube):
 class GenericCube(TranslatedCube):
     """A translated cube that can subsequently be rotated around the x, y, or z axis."""
 
-    # def __init__(self, position; np.array):
-    #     super().__init__(position)
-    #     # this is an alternative: keep record of the orientation of
-    #     # the entire cube and change that rather than updating each
-    #     # individual corner point:
-    #     self.orientation_x = np.array([1,0,0])
-    #     self.orientation_y = np.array([0,1,0])
-    #     self.orientation_z = self.orientation_x.cross(self.orientation_y)
     def __rotation_update__(self, R: np.matrix) -> None:
         """Multiply each point in this object by rotation matrix R."""
         self.front = [R.dot(pt).getA1() for pt in self.front]
         self.back = [R.dot(pt).getA1() for pt in self.back]
+        self.position = R.dot(self.position).getA1()
+        self.normal_vectors = {
+            face: R.dot(normal).getA1() for face, normal in self.normal_vectors.items()
+        }
 
     def rotate_x(self, theta: np.float32) -> None:
         """Rotate entire object around x axis by angle theta [radians]."""
@@ -203,7 +310,7 @@ class GenericCube(TranslatedCube):
 
 if __name__ == "__main__":
 
-    distance_to_camera = 7
+    distance_to_camera = 6
 
     @ManagedScreen
     def main_event_loop(screen: Screen = None) -> None:
@@ -212,7 +319,6 @@ if __name__ == "__main__":
         artist = Artist(
             screen,
             camera_position=np.array([0, 0, distance_to_camera]),
-            # camera_position=np.array([0.2, 0.4, 7]),
         )
 
         # the Rubik cube is made up of 26 individual cubes
@@ -221,9 +327,11 @@ if __name__ == "__main__":
             for x in [-1, 0, 1]
             for y in [-1, 0, 1]
             for z in [-1, 0, 1]
-            # if np.linalg.norm([x, y, z]) > 1e-5  # exclude the center cube
             if x or y or z
         ]
+
+        ### DEBUG: restrict to 2 cubes for easier troubleshooting:
+        rubik_cube = [rubik_cube[0], rubik_cube[-1]]
 
         last_time = time.time_ns()
         key, mouse_x, mouse_y, mouse_buttons = 0, 0, 0, 0
@@ -272,10 +380,18 @@ if __name__ == "__main__":
                 0,
                 0,
             )
+            screen.print_at(
+                "Press Q to quit, drag the mouse for rotation of the cube.", 0, 3
+            )
 
-            # draw each individual cube:
-            for cube in rubik_cube:
-                cube.draw_cage(artist)
+            def cube_camera_distance(cube: TranslatedCube) -> np.float32:
+                """Return distance of cube centre point to the camera."""
+                return np.linalg.norm(artist.camera_position - cube.position)
+
+            # draw each individual cube, start with those furthest away from the camera:
+            for cube in sorted(rubik_cube, key=cube_camera_distance, reverse=True):
+                cube.draw_block_faces(artist)
+                # cube.draw_cage(artist)
 
             screen.refresh()
 
