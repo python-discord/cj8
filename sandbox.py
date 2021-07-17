@@ -11,6 +11,7 @@ clock = pygame.time.Clock()
 
 space = physics2.Space(1200, 800, 100, upscale=10)
 player = space.add_object(50, 600, 100, 100, type="player")
+box = space.add_object(200, 700, 50, 50, type="box")
 platform = space.add_object(20, 750, 300, 20, type="platform")
 
 running = True
@@ -19,11 +20,22 @@ while running:
         if event.type == pygame.QUIT:
             running = False
             pygame.quit()
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_LEFT:
+                space.move_player(player, "left")
+            if event.key == pygame.K_RIGHT:
+                space.move_player(player, "right")
+            if event.key == pygame.K_UP:
+                space.move_player(player, "up")
+            if event.key == pygame.K_DOWN:
+                space.move_player(player, "down")
 
     screen.fill((255, 255, 255))
 
     player_rect = pygame.Rect(*player.get_position(), 100, 100)
     pygame.draw.rect(screen, (0, 0, 255), player_rect)
+    box_rect = pygame.Rect(*box.get_position(), 50, 50)
+    pygame.draw.rect(screen, (0, 0, 255), box_rect)
     platform_rect = pygame.Rect(*platform.get_position(), 300, 20)
     pygame.draw.rect(screen, (255, 0, 0), platform_rect)
 
