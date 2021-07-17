@@ -4,48 +4,42 @@
 import logging
 import time
 from enum import IntEnum
-from typing import List
+from pathlib import Path
+from typing import Callable, List
 
 import numpy as np
 from asciimatics.event import KeyboardEvent, MouseEvent
+from asciimatics.exceptions import StopApplication
+from asciimatics.scene import Scene
 from asciimatics.screen import ManagedScreen, Screen
+from asciimatics.widgets import Button, Divider, Frame, Layout, TextBox
 
 logging.basicConfig(level=logging.INFO, filename="cube.log")
 log = logging.getLogger()
 
-QUIT_COMMANDS = (17, 24, ord("Q"), ord("q"))
-HELP_TEXT = """
-COMMANDS
---------
-For the following, lowercase means "counter-clockwise" or "anticlockwise", and uppercase means clockwise.
 
-Rotate Front: f/F
-    Press f or F to rotate the front disc.
-Rotate Middle: m/M
-    Press m or M to rotate the middle disc.
-Rotate Back: b/B
-    Press b or B to rotate the back disc.
-Rotate Top: t/T
-    Press t or T to rotate the top disc.
-Rotate Bottom: d/D
-    Press d or D to rotate the bottom disc.
-Rotate Left: l/L
-    Press l or L to rotate the left disc.
-Rotate Right: r/R
-    Press r or R to rotate the right disc.
+class HelpEntry:
+    """Helper class to hold help information and extract help from markdown files."""
 
-Other Commands
-~~~~~~~~~~~~~~
-Reset View: z
-    Press r to return to the starting view
-Quit: q/Q/Ctr+q/Ctr+x
-    Press q, Q, Ctr+Q or Ctr+X to exit the cube.
-Mouse Click:
-    Click the mouse to toggle free rotation of the cube with the mouse. This only applies if your terminal supports it.
-Mouse Drag / Move:
-    Rotate the cube.
+    __slots__ = ("name", "description")
 
-"""
+    def __init__(self, name: str, path: Path):
+        self.name = name
+
+        with open(path, encoding="utf-8") as fp:
+            self.description = fp.read()
+
+    def __str__(self):
+        return self.name
+
+
+HELP = [
+    HelpEntry("Overview", Path("docs/overview.md")),
+    HelpEntry("Mouse Movements", Path("docs/mouse_movements.md")),
+    HelpEntry("Keyboard Commands", Path("docs/keyboard_commands.md")),
+    HelpEntry("More Info", Path("docs/more_info.md")),
+]
+
 
 BRIEF_HELP_TEXT = """
  Rotate Front: f/F;
@@ -60,6 +54,8 @@ BRIEF_HELP_TEXT = """
  Mouse Click: Enable/disable free rotation of the cube;
  Mouse Drag: Rotate the cube;
 """
+
+QUIT_COMMANDS = (17, 24, ord("Q"), ord("q"))
 
 
 class KeyboardCommand(IntEnum):
@@ -400,6 +396,71 @@ class GenericCube(TranslatedCube):
         self.__rotation_update__(R)
 
 
+class HelpMenu(Frame):
+    """The HelpMenu class to render and display a dynamic help menu."""
+
+    def __init__(self, screen: Screen):
+        super().__init__(
+            screen,
+            screen.height * 2 // 3,
+            screen.width * 2 // 3,
+            hover_focus=True,
+            can_scroll=False,
+            title="Robust Reindeers - Rubik's Cube Help"
+        )
+        self.palette["layout"] = (0, 0, 0)
+
+        self._long_help_box = TextBox(
+            screen.height * 2 // 3 - 10,
+            as_string=True,
+            line_wrap=True,
+            readonly=True,
+        )
+        self._long_help_box.custom_colour = "title"
+        self._long_help_box.value = HELP[0].description
+
+        layout = Layout([100], fill_frame=True)
+        self.add_layout(layout)
+        layout.add_widget(Divider())
+
+        for index, entry in enumerate(HELP):
+            button = Button(entry.name, self._button_wrapper(index))
+            layout.add_widget(button)
+
+        layout.add_widget(Divider())
+        layout.add_widget(self._long_help_box)
+
+        layout.add_widget(Divider())
+        layout.add_widget(Button("Return to Game", self._quit))
+
+        self.should_quit = False
+        self.fix()
+
+    def _button_wrapper(self, index: int) -> Callable[..., None]:
+        """Return a wrapper that will update the extended help menu when a button of this index is pressed."""
+        def wrapper() -> None:
+            help = HELP[index]
+            self._long_help_box.value = f"{help.name}::\n{help.description}"
+
+        return wrapper
+
+    def _quit(self) -> None:
+        """Quit the help session."""
+        raise StopApplication("user quit")
+
+
+def show_help(screen: Screen) -> None:
+    """Show the help session, respond to user input and return to the cube once the user clicks the Quit button."""
+    screen.clear_buffer(0, 0, 0)
+    screen.refresh()
+
+    screen.play([Scene([HelpMenu(screen)], -1, name="Help Menu")])
+
+    log.info("got to the end")
+    screen.clear_buffer(0, 0, 0)
+    screen.refresh()
+
+
 if __name__ == "__main__":
 
     distance_to_camera = 6
@@ -724,6 +785,7 @@ if __name__ == "__main__":
                 elif key in {ord("?"), ord("h"), ord("H")}:
                     # could show a widget here that explains usage and
                     # keys, then waits for key press
+                    show_help(screen)
                     pass
 
             elif isinstance(ev, MouseEvent):
