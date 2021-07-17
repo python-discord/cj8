@@ -324,14 +324,16 @@ if __name__ == "__main__":
         # the Rubik cube is made up of 26 individual cubes
         rubik_cube = [
             GenericCube(np.array([x, y, z]))
+            # Generate cubes from fron to back, top to bottom, left to
+            # right. The first one is front top left corner.
+            for z in [1, 0, -1]
+            for y in [1, 0, -1]
             for x in [-1, 0, 1]
-            for y in [-1, 0, 1]
-            for z in [-1, 0, 1]
             if x or y or z
         ]
 
         ### DEBUG: restrict to 2 cubes for easier troubleshooting:
-        rubik_cube = [rubik_cube[0], rubik_cube[-1]]
+        # rubik_cube = [rubik_cube[0], rubik_cube[-1]]
 
         last_time = time.time_ns()
         key, mouse_x, mouse_y, mouse_buttons = 0, 0, 0, 0
@@ -346,6 +348,49 @@ if __name__ == "__main__":
                 if key in (17, 24, ord("Q"), ord("q")):
                     # raise StopApplication("User terminated app")
                     return
+                elif key == ord("f"):  # rotate front disc counter-clockwise
+                    # the "front" are the first 9 cubes in the list
+                    for cube in rubik_cube[:9]:
+                        cube.rotate_z(
+                            np.pi / 2
+                        )  # rotate the cube by 90 degrees to the left
+                        # (counter-clockwise), this should be animated and the
+                        # animation non-interruptable; omit animation for now
+                    # re-arrange the cubes, so that the meaning of the interval positions remains the same
+                    rubik_cube = [
+                        rubik_cube[2],
+                        rubik_cube[5],
+                        rubik_cube[8],
+                        rubik_cube[1],
+                        rubik_cube[4],
+                        rubik_cube[7],
+                        rubik_cube[0],
+                        rubik_cube[3],
+                        rubik_cube[6],
+                        *rubik_cube[9:],
+                    ]
+                elif key == ord("F"):  # rotate front disc clockwise
+                    # the "front" are the first 9 cubes in the list
+                    for cube in rubik_cube[:9]:
+                        cube.rotate_z(
+                            -np.pi / 2
+                        )  # rotate the cube by -90 degrees to the left (=90 to the right)
+                        # (clockwise), this should be animated and the
+                        # animation non-interruptable; omit animation for now
+                    # re-arrange the cubes, so that the meaning of the interval positions remains the same
+                    rubik_cube = [
+                        rubik_cube[6],
+                        rubik_cube[3],
+                        rubik_cube[0],
+                        rubik_cube[7],
+                        rubik_cube[4],
+                        rubik_cube[1],
+                        rubik_cube[8],
+                        rubik_cube[5],
+                        rubik_cube[2],
+                        *rubik_cube[9:],
+                    ]
+
             elif isinstance(ev, MouseEvent):
                 mouse_x, mouse_y, mouse_buttons = ev.x, ev.y, ev.buttons
                 if mouse_buttons:
@@ -381,7 +426,9 @@ if __name__ == "__main__":
                 0,
             )
             screen.print_at(
-                "Press Q to quit, drag the mouse for rotation of the cube.", 0, 3
+                "Press q/Q to quit, f/F to rotate front disc, drag the mouse for rotation of the cube.",
+                0,
+                3,
             )
 
             def cube_camera_distance(cube: TranslatedCube) -> np.float32:
