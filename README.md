@@ -19,5 +19,5 @@ In this game you are a network security architect working for the USA, your job 
 * [Quickmotions](https://github.com/Quickmotions) - Discord: Fungus#9550
 * [WelllDK](https://github.com/WellIDKRealy) - Discord: Sir Arthur Wellesley#5851
 * [Coder400](https://github.com/Coder4OO) - Discord: Coder400#0400
-* [Vinyzu](https://github.com/orgs/cj8-cheerful-cheetahs/people/Vinyzu) - Discord: Vinyzu#7479
+* [Vinyzu](https://github.com/Vinyzu) - Discord: Vinyzu#7479
 * [ShirleyYueZou](https://github.com/ShirleyYueZou) - Discord: チョコビ🍫#8328
