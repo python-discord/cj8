@@ -266,25 +266,27 @@ class LevelSelector(Scene):
         """Level selector screen"""
         box_width = screen.width // 5
         box_height = 7
-        super().__init__(
-            list(
-                chain.from_iterable(
-                    (
-                        Mirage2(
-                            screen,
-                            Box(box_width, box_height, False),
-                            True,
-                            y := i // 3 * int(box_height * 1.5) + box_height,
-                            x := (i % 3 + 1) * (screen.width // 4),
-                            0.25,
-                        ),
-                        Print(screen, StaticRenderer([f"{i + 1}"]), y - 1, x),
-                    )
-                    for i in range(exceptions.EnterLevel.max_level + 1)
+
+        effect_list = list(
+            chain.from_iterable(
+                (
+                    Mirage2(
+                        screen,
+                        Box(box_width, box_height, False),
+                        True,
+                        y := i // 3 * int(box_height * 1.5) + box_height,
+                        x := (i % 3 + 1) * (screen.width // 4),
+                        0.25,
+                    ),
+                    Print(screen, StaticRenderer([f"{i + 1}"]), y - 1, x),
                 )
-            ),
-            -1,
+                for i in range(exceptions.EnterLevel.max_level + 1)
+            )
         )
+        effect_list = [Print(screen, StaticRenderer(["Type the level number you want to play"]),
+                             y=1)] + effect_list
+
+        super().__init__(effect_list, -1,)
 
     def process_event(self, event: Event) -> Event:
         """Level selector input handler"""
