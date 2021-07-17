@@ -29,10 +29,14 @@ Rotate Top: t/T
     Press t or T to rotate the top disc.
 Rotate Bottom: d/D
     Press d or D to rotate the bottom disc.
+Rotate Left: l/L
+    Press l or L to rotate the left disc.
+Rotate Right: r/R
+    Press r or R to rotate the right disc.
 
 Other Commands
 ~~~~~~~~~~~~~~
-Reset View: r
+Reset View: z
     Press r to return to the starting view
 Quit: q/Q/Ctr+q/Ctr+x
     Press q, Q, Ctr+Q or Ctr+X to exit the cube.
@@ -49,7 +53,9 @@ BRIEF_HELP_TEXT = """
  Rotate Back: b/B;
  Rotate Top: t/T;
  Rotate Bottom: d/D;
- Reset View: r;
+ Rotate Left: l/L;
+ Rotate Right: r/R;
+ Reset View: z;
  Quit: q/Q;
  Mouse Click: Enable/disable free rotation of the cube;
  Mouse Drag: Rotate the cube;
@@ -74,7 +80,13 @@ class KeyboardCommand(IntEnum):
     rotate_bottom_ccw = ord("d")
     rotate_bottom_cw = ord("D")
 
-    reset_view = ord("r")
+    rotate_left_ccw = ord("l")
+    rotate_left_cw = ord("L")
+
+    rotate_right_ccw = ord("r")
+    rotate_right_cw = ord("R")
+
+    reset_view = ord("z")
 
 
 # define rotation matrices
@@ -149,16 +161,7 @@ class Artist:
 
     __slots__ = ("screen", "h", "w", "cx", "cy", "camera_position", "camera_x", "camera_y", "camera_z")
 
-    def __init__(
-        self,
-        screen: Screen,
-        camera_position: np.array = np.array([0, 0, 5]),
-        camera_x: np.array = np.array([1, 0, 0]),  # "what is right"
-        camera_y: np.array = np.array([0, 1, 0]),  # "what is up"
-        camera_z: np.array = np.array(
-            [0, 0, -1]
-        ),  # must be negative cross product of camera_x and camera_
-    ):
+    def __init__(self, screen: Screen):
         """Initialise the screen drawing artist."""
         self.screen = screen
         self.h = screen.height
@@ -166,10 +169,16 @@ class Artist:
         self.cx = self.w / 2
         self.cy = self.h / 2
 
-        self.camera_position = camera_position
-        self.camera_x = camera_x
-        self.camera_y = camera_y
-        self.camera_z = camera_z
+        self.set_initial_camera()
+
+    def set_initial_camera(self) -> None:
+        """Set or reset the artist camera to the initial phase, at the diagonal above cube."""
+        R = Ry(30/180*np.pi) @ Rx(30/180*np.pi)
+
+        self.camera_position = (R @ np.array([0, 0, distance_to_camera])).getA1()
+        self.camera_x = (R @ np.array([1, 0, 0])).getA1()   # "what is right"
+        self.camera_y = (R @ np.array([0, 1, 0])).getA1()  # "what is up"
+        self.camera_z = -(R @ np.array([0, 0, 1])).getA1()
 
     def line(self, pt1: np.array, pt2: np.array) -> None:
         """Draw a line from pt1 to pt2."""
@@ -246,18 +255,21 @@ class BaseCube:
             "top": [0, 1, 0],
             "bottom": [0, -1, 0],
         }
+
+        # taking colours from here:
+        # https://en.wikipedia.org/wiki/Rubik%27s_Cube#/media/File:Rubik's_cube_colors.svg
         self.colours = {
-            "front": Screen.COLOUR_MAGENTA,
-            "back": Screen.COLOUR_RED,
-            "left": Screen.COLOUR_BLUE,
-            "right": Screen.COLOUR_GREEN,
-            "top": Screen.COLOUR_CYAN,
-            "bottom": Screen.COLOUR_YELLOW,
+            "front": Screen.COLOUR_RED,
+            "back": Screen.COLOUR_MAGENTA,  # there's no orange, unfortunately
+            "left": Screen.COLOUR_YELLOW,
+            "right": Screen.COLOUR_WHITE,
+            "top": Screen.COLOUR_GREEN,
+            "bottom": Screen.COLOUR_BLUE,
         }
 
     def draw_cage(self, artist: Artist) -> None:
         """Draw self as wireframe using artist."""
-        if artist.camera_position[0] == 0:
+        if artist.camera_position[0] == 0:  # only draw for the initial face
             for pt1, pt2 in zip(self.front, [*self.front[1:], self.front[0]]):
                 artist.line(pt1, pt2)
             for pt1, pt2 in zip(self.back, [*self.back[1:], self.back[0]]):
@@ -396,10 +408,7 @@ if __name__ == "__main__":
     def main_event_loop(screen: Screen = None) -> None:
         """The main event loop that redraws the screen and takes user input."""
         # create an artist to draw the individual cubes
-        artist = Artist(
-            screen,
-            camera_position=np.array([0, 0, distance_to_camera]),
-        )
+        artist = Artist(screen)
 
         # the Rubik cube is made up of 26 individual cubes
         rubik_cube = [
@@ -427,7 +436,7 @@ if __name__ == "__main__":
             if isinstance(ev, KeyboardEvent):
                 key = ev.key_code
                 # Stop on ctrl+q or ctrl+x, or simply on q/Q
-                if key in QUIT_COMMANDS:
+                if key in (17, 24, ord("Q"), ord("q")):
                     # raise StopApplication("User terminated app")
                     return
                 elif key == KeyboardCommand.rotate_front_ccw:  # rotate front disc counter-clockwise
@@ -612,11 +621,110 @@ if __name__ == "__main__":
                         rubik_cube[14],
                         rubik_cube[23],
                     ]
+                elif key == KeyboardCommand.rotate_left_ccw:
+                    for i in [0, 3, 6, 9, 12, 14, 17, 20, 23]:
+                        rubik_cube[i].rotate_x(np.pi / 2)
+
+                    rubik_cube = [
+                        rubik_cube[6],
+                        *rubik_cube[1:3],
+                        rubik_cube[14],
+                        *rubik_cube[4:6],
+                        rubik_cube[23],
+                        *rubik_cube[7:9],
+                        rubik_cube[3],
+                        *rubik_cube[10:12],
+                        rubik_cube[12],
+                        rubik_cube[13],
+                        rubik_cube[20],
+                        *rubik_cube[15:17],
+                        rubik_cube[0],
+                        *rubik_cube[18:20],
+                        rubik_cube[9],
+                        *rubik_cube[21:23],
+                        rubik_cube[17],
+                        *rubik_cube[24:],
+                    ]
+                elif key == KeyboardCommand.rotate_left_cw:
+                    for i in [0, 3, 6, 9, 12, 14, 17, 20, 23]:
+                        rubik_cube[i].rotate_x(-np.pi / 2)
+
+                    rubik_cube = [
+                        rubik_cube[17],
+                        *rubik_cube[1:3],
+                        rubik_cube[9],
+                        *rubik_cube[4:6],
+                        rubik_cube[0],
+                        *rubik_cube[7:9],
+                        rubik_cube[20],
+                        *rubik_cube[10:12],
+                        rubik_cube[12],
+                        rubik_cube[13],
+                        rubik_cube[3],
+                        *rubik_cube[15:17],
+                        rubik_cube[23],
+                        *rubik_cube[18:20],
+                        rubik_cube[14],
+                        *rubik_cube[21:23],
+                        rubik_cube[6],
+                        *rubik_cube[24:],
+                    ]
+                elif key == KeyboardCommand.rotate_right_ccw:
+                    for i in [2, 5, 8, 11, 13, 16, 19, 22, 25]:
+                        rubik_cube[i].rotate_x(np.pi / 2)
+
+                    rubik_cube = [
+                        *rubik_cube[0:2],
+                        rubik_cube[8],
+                        *rubik_cube[3:5],
+                        rubik_cube[16],
+                        *rubik_cube[6:8],
+                        rubik_cube[25],
+                        *rubik_cube[9:11],
+                        rubik_cube[5],
+                        rubik_cube[12],
+                        rubik_cube[13],
+                        *rubik_cube[14:16],
+                        rubik_cube[22],
+                        *rubik_cube[17:19],
+                        rubik_cube[2],
+                        *rubik_cube[20:22],
+                        rubik_cube[11],
+                        *rubik_cube[23:25],
+                        rubik_cube[19],
+                    ]
+                elif key == KeyboardCommand.rotate_right_cw:
+                    for i in [2, 5, 8, 11, 13, 16, 19, 22, 25]:
+                        rubik_cube[i].rotate_x(-np.pi / 2)
+
+                    rubik_cube = [
+                        *rubik_cube[0:2],
+                        rubik_cube[19],
+                        *rubik_cube[3:5],
+                        rubik_cube[11],
+                        *rubik_cube[6:8],
+                        rubik_cube[2],
+                        *rubik_cube[9:11],
+                        rubik_cube[22],
+                        rubik_cube[12],
+                        rubik_cube[13],
+                        *rubik_cube[14:16],
+                        rubik_cube[5],
+                        *rubik_cube[17:19],
+                        rubik_cube[25],
+                        *rubik_cube[20:22],
+                        rubik_cube[16],
+                        *rubik_cube[23:25],
+                        rubik_cube[8],
+                    ]
+
                 elif key == KeyboardCommand.reset_view:
-                    artist.camera_position = np.array([0, 0, distance_to_camera])
-                    artist.camera_x = np.array([1, 0, 0])
-                    artist.camera_y = np.array([0, 1, 0])
-                    artist.camera_z = np.array([0, 0, -1])
+                    artist.set_initial_camera()
+
+                elif key in {ord("?"), ord("h"), ord("H")}:
+                    # could show a widget here that explains usage and
+                    # keys, then waits for key press
+                    pass
 
             elif isinstance(ev, MouseEvent):
                 mouse_x, mouse_y, mouse_buttons = ev.x, ev.y, ev.buttons
