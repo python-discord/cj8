@@ -28,6 +28,12 @@ Panthera's box can be installed and run using two different methods:
 
 2. Run the game: `python main.py`
 
+### Arguments
+
+`--flush-log` - Will truncate the log file
+
+`--flush-score` - Will delete the high-scores file
+
 ## Game Guide
 
 The game consists of a ball and sets of redirector arrows. To complete each level, guide the ball towards the goal, by rotating the arrows. Hidden story tiles are scattered throughout the maps, requiring you to take different paths.
