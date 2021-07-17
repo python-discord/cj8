@@ -1,10 +1,15 @@
 from copy import copy
 
+from blessed import Terminal
+
 from virtualbox.exceptions import InvalidLoginOrPassword
 from virtualbox.functions.blessed_functions import echo, request
 
+from .user import User
 
-def login(Users, term):
+
+def login(Users: User, term: Terminal) -> None:
+    """Logs user"""
     while True:
         login = request("login: ", term)
         password = request("password: ", term)

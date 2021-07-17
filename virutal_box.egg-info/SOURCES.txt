@@ -12,7 +12,6 @@ virtualbox/fs/fs_ac.py
 virtualbox/fs/fs_acl.py
 virtualbox/fs/fs_dir.py
 virtualbox/fs/fs_file.py
-virtualbox/fs/fs_filesystemusageexample.py
 virtualbox/fs/fs_parser.py
 virtualbox/functions/__init__.py
 virtualbox/functions/blessed_functions.py
@@ -24,4 +23,5 @@ virutal_box.egg-info/PKG-INFO
 virutal_box.egg-info/SOURCES.txt
 virutal_box.egg-info/dependency_links.txt
 virutal_box.egg-info/entry_points.txt
+virutal_box.egg-info/requires.txt
 virutal_box.egg-info/top_level.txt

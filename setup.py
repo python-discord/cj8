@@ -11,10 +11,11 @@ with open('README.md', encoding='utf-8') as readme_file:
     long_description = readme_file.read()
 
 setuptools.setup(
+    # TODO: change name
     name='virutal box',
     version=virtualbox.__version__,
     author='Team Cheerful Cheetahs',
-    author_email='contact@fergusdev.com',
+    author_email='',
     license='MIT',
     description='Pending',
     long_description=long_description,
@@ -23,7 +24,7 @@ setuptools.setup(
     packages=setuptools.find_packages(),
     entry_points={
         'console_scripts': [
-            'project=project:main'
+            'project=virtualbox.project:main'
         ]
     },
     classifiers=[
@@ -35,7 +36,7 @@ setuptools.setup(
     ],
     python_requires='>=3',
     install_requires=[
-        'blessed',
-        'playsound'
+        'playsound',
+	'blessed'
     ]
 )
