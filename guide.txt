@@ -1,13 +1,16 @@
-|  | /~~\ |  |  |  ~~|~~/~~\   |~~\|    /\\   /
-|--||    ||  |  |    | |    |  |__/|   /__\\ /
-|  | \__/  \/ \/     |  \__/   |   |__/    \|
+ ___  ___   ________   ________    ________   ________   ________   ________   ___  __
+|\  \|\  \ |\   __  \ |\   ___  \ |\   ___ \ |\   __  \ |\   __  \ |\   __  \ |\  \|\  \
+\ \  \\\  \\ \  \|\  \\ \  \\ \  \\ \  \_|\ \\ \  \|\ /_\ \  \|\  \\ \  \|\  \\ \  \/  /|_
+ \ \   __  \\ \   __  \\ \  \\ \  \\ \  \ \\ \\ \   __  \\ \  \\\  \\ \  \\\  \\ \   ___  \
+  \ \  \ \  \\ \  \ \  \\ \  \\ \  \\ \  \_\\ \\ \  \|\  \\ \  \\\  \\ \  \\\  \\ \  \\ \  \
+   \ \__\ \__\\ \__\ \__\\ \__\\ \__\\ \_______\\ \_______\\ \_______\\ \_______\\ \__\\ \__\
+    \|__|\|__| \|__|\|__| \|__| \|__| \|_______| \|_______| \|_______| \|_______| \|__| \|__|
 
-Welcome to Venturing Virus!
+
+Welcome to Dungeons and Directories!
 -------------------------
-A virus has made its way into your directory (disclaimer that the virus is nonexistent and fictional)!
-You are trying to dig down in the directory all the way to the bottom, where it is said that the virus has installed itself.
-As you make your way through the directory, dangers will arise such as the enemies roaming your directory, where each enemy comes from a corrupted file.
-However, the further down you go, the closer you are to finding the roots of the virus, and saving your directory.
+Do you have what it takes to make it to the bottom of your file system? Dungeons and Directories is a rogue-like that takes your file structure
+and builds a dungeon. Explore, fight, monsters, and collect loot as you make your way to the deepest, darkest branch of your directories.
 
 Press w, a, s, and d to move forward, left, backward, and right respectively.
 The green '#' symbol you see are the doors, which lead down to the children directories, and the further down you venture through these doors,
