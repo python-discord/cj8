@@ -256,8 +256,11 @@ class HowToPlay(Scene):
 
     def process_event(self, event: Event) -> Event:
         """Credits input handler"""
-        # if isinstance(event, KeyboardEvent):
-        #     key = event.key_code
+        if isinstance(event, KeyboardEvent):
+            key = event.key_code
+            if key in (ord("S"), ord("s"), ord(" "), ord("\n")):
+                raise exceptions.LevelSelector()
+
         return event
 
 
@@ -305,6 +308,7 @@ class LevelSelector(Scene):
 
 class EndScene(Scene):
     """The Scene displayed when the user has beaten the game"""
+
     def __init__(self, screen: Screen):
         """Start the firework displays"""
         self._screen = screen
