@@ -3,7 +3,7 @@ import os
 import time
 from pathlib import Path
 from shutil import get_terminal_size
-from typing import Dict, List, NoReturn, Optional
+from typing import List, NoReturn, Optional
 
 from rich.align import Align
 from rich.color import Color
@@ -43,8 +43,10 @@ class CoreFrontend:
     MIN_WIDTH = 75
     MIN_HEIGHT = 40
 
-    def __init__(self, cli_args: Dict):
-        self.backend: CoreBackend = CoreBackend(cli_args)
+    def __init__(
+        self,
+    ):
+        self.backend: CoreBackend = CoreBackend()
         self.story: CoreStory = CoreStory(self.backend)
         self.sound: CoreSounds = CoreSounds(self.backend)
         self.scoring: CoreScoring = CoreScoring(self.backend)

@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import Callable, Dict, List, Optional, Tuple
+from typing import Callable, List, Optional, Tuple
 
 from pantheras_box.backend.events import (
     BallMovementEvent,
@@ -60,9 +60,8 @@ class CoreBackend(EventsMixin):
 
     TICKS_PER_MOVE = 5
 
-    def __init__(self, cli_args: Dict) -> None:
+    def __init__(self) -> None:
         super().__init__()
-        self._cli_args = cli_args
         self._board: Optional[BoardCollection] = None
         self._controls = {}
         self._controls_aux = {
@@ -84,11 +83,7 @@ class CoreBackend(EventsMixin):
         self.emit_event(MutatorEvent(state=False))
         self.emit_event(StoryEvent())
         if not level_name:
-
-            if self._cli_args["testing"]:
-                self._board = CoreLevelLoader.load("Envy.png")
-            else:
-                self._board = CoreLevelLoader.random_level()
+            self._board = CoreLevelLoader.random_level()
         else:
             self._board = CoreLevelLoader.load(level_name)
         self._gen_controls()
