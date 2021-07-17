@@ -4,18 +4,30 @@ customizability on its own.
 """
 from random import random
 
-from asciimatics.screen import Screen
 from asciimatics.effects import Mirage
+from asciimatics.renderers import Renderer
+from asciimatics.screen import Screen
 
 
 class Mirage2(Mirage):
-    def __init__(self, screen, renderer, centered: bool, y, x, rate, colour=Screen.COLOUR_WHITE, **kwargs):
+    """Better Mirage class."""
+
+    def __init__(
+            self,
+            screen: Screen,
+            renderer: Renderer,
+            centered: bool,
+            y: int, x: int,
+            rate: float,
+            colour: int = Screen.COLOUR_WHITE,
+            **kwargs,
+    ):
         super().__init__(screen, renderer, y, colour, **kwargs)
         self._centered = centered
         self._x = x
         self._rate = rate
 
-    def _update(self, frame_no):
+    def _update(self, frame_no: int) -> None:
         if frame_no % 2 != 0:
             return
 
@@ -28,11 +40,12 @@ class Mirage2(Mirage):
                 for j, c in enumerate(line):
                     if c != " " and random() < self._rate:
                         if colours[i][j][0] is not None:
-                            self._screen.print_at(c, x, y,
-                                                  colours[i][j][0],
-                                                  colours[i][j][1])
+                            self._screen.print_at(
+                                c, x, y,
+                                colours[i][j][0],
+                                colours[i][j][1],
+                            )
                         else:
                             self._screen.print_at(c, x, y, self._colour)
                     x += 1
             y += 1
-
