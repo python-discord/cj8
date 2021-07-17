@@ -1,7 +1,7 @@
 from rich.panel import Panel
 from rich.text import Text
 
-from src.GameResources import GameResources
+from src.gameresources import GameResources
 
 
 class Information:
@@ -11,7 +11,7 @@ class Information:
         self._game_resources = game_resources
         self.enemy_list = game_resources.level.enemies.values()
         self.player = game_resources.player
-        self.enemy_default_panel = Panel(Text("No enemies have detected you yet.", style="bold green"))
+        self.ENEMY_DEFAULT_PANEL = Panel(Text("No enemies have detected you yet.", style="bold green"))
 
     def get_player_health(self) -> Panel:
         """Sets panel for player health"""

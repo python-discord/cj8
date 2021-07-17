@@ -1,4 +1,4 @@
-from .AbstractDungeonEntity import AbstractDungeonEntity
+from .abstractdungeonentity import AbstractDungeonEntity
 
 
 class Item(AbstractDungeonEntity):
@@ -7,7 +7,7 @@ class Item(AbstractDungeonEntity):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.collected = False
-        self.entity_type = "item"
+        self.ENTITY_TYPE = "item"
 
     def collisions_with_player(self, x: int, y: int) -> bool:
         """Checks if player collided with enemy"""

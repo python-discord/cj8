@@ -4,7 +4,7 @@ from threading import Thread
 from blessed import Terminal
 from pynput.keyboard import Key, Listener
 
-from .AbstractDungeonEntity import AbstractDungeonEntity
+from .abstractdungeonentity import AbstractDungeonEntity
 
 term = Terminal()
 
@@ -14,7 +14,7 @@ class Character(AbstractDungeonEntity):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.entity_type = "character"
+        self.ENTITY_TYPE = "character"
         self.playing = True
         self.commands = deque()
         self.health = 100

@@ -4,15 +4,15 @@ from random import choice, randint, shuffle
 from rich.console import Console
 from rich.text import Text
 
-from src.fstree.Node import Node
+from src.fstree.node import Node
 from src.resources.constants import COLOR_CHANGER_CHOICES, TILE
-from src.resources.entities.ColorChanger import ColorChanger
-from src.resources.entities.Item import Item
+from src.resources.entities.colorchanger import ColorChanger
+from src.resources.entities.item import Item
 
-from ..Enemy import Enemy
-from .Door import Door
-from .Tile import Tile
-from .Wall import Wall
+from ..enemy import Enemy
+from .door import Door
+from .tile import Tile
+from .wall import Wall
 
 
 class Level:
@@ -23,8 +23,8 @@ class Level:
         self.entrance = (0, 0)
         self.parent_door = (0, 0)
         self.board = []
-        self.width = 50
-        self.height = 20
+        self.width = width
+        self.height = height
         self.cur_node = cur_node
         self.doors = {}
         self.color_changers = []
@@ -145,11 +145,17 @@ class Level:
         bottom = math.floor(self.height * .33)
         top = self.height - bottom
         while num > 0:
+            enemy_type = randint(0, 10)
+            enemy_symbol = "^"
+            agro = 3
+            if enemy_type > 7:
+                enemy_symbol = "!"
+                agro = 5
             y = randint(bottom, top)
             x = randint(left, right)
             if str(self.board[y][x]) == TILE:
                 num -= 1
-                enemy = Enemy(aggro_radius=3, x=x, y=y, symbol='^', file=files[num-1])
+                enemy = Enemy(aggro_radius=agro, x=x, y=y, symbol=enemy_symbol, file=files[num-1])
                 enemy_entry = {id(enemy): enemy}
                 self.enemies.update(enemy_entry)
 

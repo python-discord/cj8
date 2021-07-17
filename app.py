@@ -7,9 +7,9 @@ from rich.live import Live
 from rich.panel import Panel
 from rich.text import Text
 
-from src.GameResources import GameResources
+from src.gameresources import GameResources
 from src.resources.informationpanel import Information
-from src.resources.PanelLayout import PanelLayout
+from src.resources.panellayout import PanelLayout
 from src.resources.startscreen import StartScreen
 
 

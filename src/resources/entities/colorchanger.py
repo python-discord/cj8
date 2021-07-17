@@ -1,4 +1,4 @@
-from .AbstractDungeonEntity import AbstractDungeonEntity
+from .abstractdungeonentity import AbstractDungeonEntity
 
 
 class ColorChanger(AbstractDungeonEntity):

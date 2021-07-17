@@ -1,6 +1,6 @@
 from random import choice
 
-from .AbstractDungeonEntity import AbstractDungeonEntity
+from .abstractdungeonentity import AbstractDungeonEntity
 
 
 class Enemy(AbstractDungeonEntity):
@@ -8,8 +8,8 @@ class Enemy(AbstractDungeonEntity):
 
     def __init__(self, aggro_radius: int, file: str, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.aggro_radius = aggro_radius
-        self.entity_type = "enemy"
+        self.AGGRO_RADIUS = aggro_radius
+        self.ENTITY_TYPE = "enemy"
         self.target: dict = {}
         self.player_detected = False
         self.file = file
@@ -18,10 +18,13 @@ class Enemy(AbstractDungeonEntity):
         """Random enemy movement"""
         movement_axis = choice(['x', 'y'])
         direction_axis = (1, -1)
-        movement = choice(direction_axis)  # up or down (1, -1), left or right (1, -1)
-        if movement_axis == 'x':  # movement will be on the x axis
+        # up or down (1, -1), left or right (1, -1)
+        movement = choice(direction_axis)
+        # movement will be on the x axis
+        if movement_axis == 'x':
             self.new_positions["x"] += movement
-        if movement_axis == 'y':  # movement will be on the y axis
+        # movement will be on the y axis
+        if movement_axis == 'y':
             self.new_positions["y"] += movement
 
     def follow(self, testing: bool = False) -> None:
@@ -104,7 +107,7 @@ class Enemy(AbstractDungeonEntity):
 
     def is_in_radius(self, x: int, y: int) -> bool:
         """Check if player is in 'aggro' radius"""
-        radius = self.aggro_radius
+        radius = self.AGGRO_RADIUS
         if (y - radius <= self.y <= y + radius) and \
                 (x - radius <= self.x <= x + radius):
             self.symbol.stylize("bold " + self.symbol.style)

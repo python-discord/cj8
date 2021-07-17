@@ -1,4 +1,4 @@
-from .LevelResources import LevelResources
+from .levelresources import LevelResources
 
 
 class Door(LevelResources):

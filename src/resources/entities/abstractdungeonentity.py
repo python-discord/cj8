@@ -6,8 +6,8 @@ from src.resources.constants import (
     COLOR_CHANGER_CHOICES, PLAYER_COLOR_CHOICES, TILE
 )
 
-from .level.LevelResources import LevelResources
-from .level.Tile import Tile
+from .level.levelresources import LevelResources
+from .level.tile import Tile
 
 
 class AbstractDungeonEntity:

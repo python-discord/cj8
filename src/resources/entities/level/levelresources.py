@@ -1,4 +1,4 @@
-from ..Entity import Entity
+from ..entity import Entity
 
 
 class LevelResources(Entity):
@@ -6,4 +6,4 @@ class LevelResources(Entity):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.entity_type = ""
+        self.ENTITY_TYPE = ""

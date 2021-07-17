@@ -5,7 +5,7 @@ from rich.panel import Panel
 from rich.progress import Progress
 from rich.text import Text
 
-from .PanelLayout import PanelLayout
+from .panellayout import PanelLayout
 
 
 class StartScreen:

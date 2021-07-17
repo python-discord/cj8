@@ -1,5 +1,5 @@
-from .fstree.FileStructureTree import FileStructureTree
-from .resources.entities.level.Level import Level
+from .fstree.filestructuretree import FileStructureTree
+from .resources.entities.level.level import Level
 
 
 class LevelSelector:
@@ -26,7 +26,7 @@ class LevelSelector:
                 level.entrance = exit
                 return level
 
-        level = Level(30, 40, self.cur)
+        level = Level(50, 20, self.cur)
         level.generate_level()
         level.create_doors(door)
         level.spawn_random_changers()

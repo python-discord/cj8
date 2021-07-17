@@ -1,9 +1,8 @@
 from os import scandir
 
-from rich import print as rprint
 from rich.tree import Tree
 
-from src.fstree.Node import Node
+from src.fstree.node import Node
 
 
 class FileStructureTree:
@@ -13,7 +12,7 @@ class FileStructureTree:
         """An FileSystemTree instance is created by passing the path which will be the root of the dungeon."""
         self.root = Node(
             None, path
-        )  # root node which holds references to all the other nodes in the tree
+        )
         self.depth = 0
         self.add_node(self.root)
 
@@ -43,4 +42,3 @@ class FileStructureTree:
         """Creates the tree visualization of the folder structure."""
         tree = Tree(self.root.path)
         self.root.walk_dir(tree)
-        rprint(tree)
