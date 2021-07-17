@@ -12,7 +12,9 @@ This game is set in a "virtual box" a fake operating system.
 The player will have to think to overcome many puzzles and escape the box they are trapped in.
 
 ## Features
-* This game features a text based command line operating system, full of hints and puzzles and hacking tools that let you hack in.
+* This game features a text based command line operating system. 
+* Full of hints and puzzles. 
+* Custom made Hacking tools that let you hack into ports, ips and passwords.
 
 
 
