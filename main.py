@@ -24,34 +24,42 @@ def run_game():
         if level == 3:
             map.clear_level()
             map.create_level3()
-        while val != 'q':
-            val = terminal.inkey(timeout=1 / fps)
-            clock.tick(fps)
-            if map.space.targets_engaged != len(map.space.targets):
-                if val.name == "KEY_UP" or val.name == "KEY_w":
-                    map.space.move_player(map.player_rect, key="up")
-                if val.name == "KEY_DOWN" or val.name == "KEY_s":
-                    map.space.move_player(map.player_rect, key="down")
-                if val.name == "KEY_LEFT" or val.name == "KEY_a":
-                    map.space.move_player(map.player_rect, key="left")
-                if val.name == "KEY_RIGHT" or val.name == "KEY_d":
-                    map.space.move_player(map.player_rect, key="right")
+        with terminal.cbreak(), terminal.hidden_cursor(), terminal.fullscreen():
+            val: blessed.keyboard.Keystroke = terminal.inkey(timeout=1 / fps)
+            while val != 'q':
+                if map.space.targets_engaged != len(map.space.targets):
+                    if val.name == "KEY_UP" or val.name == "KEY_w":
+                        map.space.move_player(map.player_rect, key="up")
+                    if val.name == "KEY_DOWN" or val.name == "KEY_s":
+                        map.space.move_player(map.player_rect, key="down")
+                    if val.name == "KEY_LEFT" or val.name == "KEY_a":
+                        map.space.move_player(map.player_rect, key="left")
+                    if val.name == "KEY_RIGHT" or val.name == "KEY_d":
+                        map.space.move_player(map.player_rect, key="right")
                     map.space.step(fps)
-                if not map.space.player_in_thinkingbox:
                     map.delete()
-                    map.sync_coords()
-                    map.draw()
-                    map.time_left -= 1 / fps
-            else:
-                print(terminal.white_on_firebrick3('Well done! Level completed.'))
-                wait(300)
-                level += 1
-                break
+                    if not map.space.player_in_thinkingbox:
+                        map.sync_coords()
+                        map.draw()
+                        map.time_left -= 1 / fps
+                    else:
+                        pass
+                    clock.tick(fps)
+                    val = terminal.inkey(timeout=1 / fps)
+                else:
+                    print(terminal.move_xy(40, 15), terminal.white_on_firebrick3('Well done! Level completed.'))
+                    wait(3000)
+                    level += 1
+                    break
 
 def run_tutorial():
     val = terminal.inkey(timeout=1 / fps)
     while val != 'q':
-        pass
+        val = terminal.inkey(timeout=1/fps)
+        tutorial = terminal.move_xy(40, 5) +  terminal.lightcyan(terminal.on_darkslategray4('TUTORIAL'))
+        info1 = terminal.move_xy(20, 10) +  terminal.lightcyan(terminal.on_darkslategray('The purpose of the game is to push the boxes until all targets have a box inside. Make sure to finish it in time. If you want to think about the level, enter the gray thinking box and the timer will stop.'))
+        info2 = terminal.move_xy(20, 17) +  terminal.lightcyan(terminal.on_darkslategray('MOVEMENT: use A and D or left and right arrow keys to move. Use W and up arrow to jump and S and down arrow to cancel the jump'))
+        print(tutorial + info2 + info1, flush=True)
         
 
 def menu():
@@ -74,6 +82,7 @@ def menu():
                     run_game()
                     print(terminal.home + terminal.lightcyan_on_darkslategray + terminal.clear)
                 if index == 2:
+                    print(terminal.home + terminal.lightcyan_on_darkslategray + terminal.clear)
                     run_tutorial()
                     print(terminal.home + terminal.lightcyan_on_darkslategray + terminal.clear)
                 if index == 3:
