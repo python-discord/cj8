@@ -1,22 +1,29 @@
 # Ultimate Tic-Tac-Toe in the terminal
 
+<img src="https://upload.wikimedia.org/wikipedia/commons/d/d1/Incomplete_Ultimate_Tic-Tac-Toe_Board.png" alt="drawing" width="200"/>
+
 TODO Summary
 
+This document will contain the following information:
+1. [How to play](#how-to-play)
+2. [How do I launch it?](#how-do-i-launch-it)
+3. [Terminology](#terminology)
+
 # How to play
-Each small 3 × 3 tic-tac-toe board is referred to as a local board, and the larger 3 × 3 board is referred to as the global board.
+Each small 3 × 3 tic-tac-toe board is referred to as a Sub-Grid, and the larger 3 × 3 board is referred to as the global board.
 
-The game starts with X playing wherever they want in any of the 81 empty spots. This move "sends" their opponent to its relative location. For example, if X played in the top right square of their local board, then O needs to play next in the local board at the top right of the global board. O can then play in any one of the nine available spots in that local board, each move sending X to a different local board.
+The game starts with player X placing a token wherever they want.
 
-If a move is played so that it is to win a local board by the rules of normal tic-tac-toe, then the entire local board is marked as a victory for the player in the global board.
+This move will "send" their opponent to the sub-grid based on the space in the sub-grid player X placed their token. For example, if X placed thier token in the top right square in the bottom left sub-grid, then player O needs to play next in the sub-grid at the top right of the global board. Player O can then play in any one of the nine available spots in that sub-grid.
+
+If a move is played so that it is to win a sub-grid by the rules of normal tic-tac-toe, then the entire sub-grid is marked as a victory for the player in the global board.
 
 Once a local board is won by a player or it is filled completely, no more moves may be played in that board. If a player is sent to such a board, then that player may play in any other board.
 
-Another version for the game allows players to continue playing in already won boxes if there are still empty spaces. This allows the game to last longer and involves further strategic moves. This is up to the players on which rule to follow. It was shown in 2020 that this set of rules for the game admits a winning strategy for the first player to move, meaning that the first player to move can always win assuming perfect play.
+Game play ends when either a player wins the global board or there are no legal moves remaining.
 
-Game play ends when either a player wins the global board or there are no legal moves remaining, in which case the game is a draw.
-
-# How to launch
-## Using the Default Pip Setup
+# How do I launch it
+### Using the Default Pip Setup
 
 Our default setup includes a bare requirement file to be used with a [virtual environment](https://docs.python.org/3/library/venv.html).
 
@@ -61,3 +68,5 @@ Interestingly enough, it is the same for every platform
 ```shell
 $ deactivate
 ```
+
+# Terminology
