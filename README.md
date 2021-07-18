@@ -8,6 +8,8 @@ Thinking inside a box, that is inside a box, that is inside yet another box.
 This document will contain the following information:
 1. [How to play](#how-to-play)
 2. [How do I launch it?](#how-do-i-launch-it)
+    1. [Building the environment](#building-the-environment)
+    2. [Starting the Game](#starting-the-game)
 3. [Terminology](#terminology)
 
 # How to play
@@ -15,15 +17,16 @@ This document will contain the following information:
 
 - `Game Start` The game starts with player X placing a token wherever they want.
 
-- `Taking a Turn` This move will "send" their opponent to the sub-grid based on the space in the sub-grid player X placed their token. For example, if X placed thier token in the top right square in the bottom left sub-grid, then player O needs to play next in the sub-grid at the top right of the global board. Player O can then play in any one of the nine available spots in that sub-grid.
+- `Taking a Turn` This move will "send" their opponent to the sub-grid based on the space in the sub-grid player X placed their token. For example, if X placed their token in the top right square in the bottom left sub-grid, then player O needs to play next in the sub-grid at the top right of the global board. Player O can then play in any one of the nine available spots in that sub-grid.
 
 - `Winning a Sub-Grid` If a move is played so that it is to win a sub-grid by the rules of normal tic-tac-toe, then the entire sub-grid is marked as a victory for the player in the global board.
 
-- `Wildcard Selection` Once a local board is won by a player or it is filled completely, no more moves may be played in that board. If a player is sent to such a board, then that player may play in any other board.
+- `Wildcard Selection` Once a sub-grid is won by a player or it is filled completely, no more moves may be played in that board. If a player is sent to such a board, then that player may play in any other board.
 
 - `Victory Conditions` Game play ends when either a player wins the global board or there are no legal moves remaining.
 
 # How do I launch it
+## Building the environment
 ### Using the Default Pip Setup
 Our default setup includes a bare requirement file to be used with a [virtual environment](https://docs.python.org/3/library/venv.html).
 
@@ -68,6 +71,35 @@ Interestingly enough, it is the same for every platform
 ```shell
 $ deactivate
 ```
+## Starting the Game
+
+### Single Terminal
+Be in the root directory
+From your terminal enter the following commands:
+```shell
+$ python main.py
+```
+
+### Two Terminals
+Be in the root directory
+From two terminals enter the following commands:
+```shell
+$ python main.py
+```
+From a third terminal enter the following command:
+```shell
+$ uvicorn server:app
+```
+
+From terminal 1 be sure to select 'y' to the following prompt:
+<img src="https://github.com/A5rocks/code-jam-8/blob/main/docs/wired_prompt.png?raw=true" alt="drawing" width="600"/>
+
+When asked for the websocket be sure to type in the IP address and port number of the machine running the webserver. 
+<img src="https://github.com/A5rocks/code-jam-8/blob/main/docs/websocket_entry.png?raw=true" alt="drawing" width="600"/>
+
+After which be sure to create a lobby when asked. This will give you a lobby code. Follow a similar procedure as above on the second terminal but when it prompts the user if they want to create a lobby say no. It will then ask the user the lobby code of terminal 1. 
+<img src="https://github.com/A5rocks/code-jam-8/blob/main/docs/lobby_code.png?raw=true" alt="drawing" width="600"/>
+
 
 # Terminology
 <img src="https://github.com/A5rocks/code-jam-8/blob/main/docs/terminology.png?raw=true" alt="drawing" width="600"/>
