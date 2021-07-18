@@ -10,7 +10,7 @@ Panthera's Box is a terminal-based game about putting everything that has escape
 
 ## Installation & Running
 
-Panthera's box can be installed and run using two different methods:
+Panthera's Box can be installed and run using two different methods:
 
 ### Installing as a package
 
@@ -57,6 +57,15 @@ Scores are determined by the number of moves and time taken during a level. The 
 Levels are stored in `pantheras_box/backend/levels/`.
 
 In short, levels are images that define the layout of the initial board. After parsing colour and co-ordinates, they are translated into a two-dimensional list of tiles.
+
+## Libraries
+
+- [rich](https://pypi.org/project/rich/) - front-end graphical library
+- [Pillow](https://pypi.org/project/Pillow/) - parse level images
+- [boombox](https://pypi.org/project/boombox/) - cross-platform audio player
+- [PyYAML](https://pypi.org/project/PyYAML/) - configuration file format
+- [keyboard](https://pypi.org/project/keyboard/) - keyboard handler (Windows)
+- [pynput](https://pypi.org/project/pynput/) - keyboard handler (Unix)
 
 ## Platform Compatibility
 
