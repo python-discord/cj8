@@ -1,4 +1,5 @@
-**COMMANDS**
+## COMMANDS##
+
 For the following, lowercase means "counter-clockwise" or "anticlockwise", and uppercase means clockwise.
 
 Rotate Front: f/F
@@ -16,7 +17,8 @@ Rotate Left: l/L
 Rotate Right: r/R
     Press r or R to rotate the right disc.
 
-**Other Commands**
+## Other Commands ##
+
 Reset View: z
     Press r to return to the starting view
 Help: h
