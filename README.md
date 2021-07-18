@@ -92,14 +92,14 @@ $ uvicorn server:app
 ```
 
 From terminal 1 be sure to select 'y' to the following prompt:
-<img src="https://github.com/A5rocks/code-jam-8/blob/main/docs/wired_prompt.png?raw=true" alt="drawing" width="600"/>
+<img src="https://raw.githubusercontent.com/A5rocks/code-jam-8/main/docs/wired_prompt.PNG" alt="drawing" width="300"/>
 
 When asked for the websocket be sure to type in the IP address and port number of the machine running the webserver. 
-<img src="https://github.com/A5rocks/code-jam-8/blob/main/docs/websocket_entry.png?raw=true" alt="drawing" width="600"/>
+
+<img src="https://raw.githubusercontent.com/A5rocks/code-jam-8/main/docs/websocket_entry.PNG" alt="drawing" width="300"/>
 
 After which be sure to create a lobby when asked. This will give you a lobby code. Follow a similar procedure as above on the second terminal but when it prompts the user if they want to create a lobby say no. It will then ask the user the lobby code of terminal 1. 
-<img src="https://github.com/A5rocks/code-jam-8/blob/main/docs/lobby_code.png?raw=true" alt="drawing" width="600"/>
-
+<img src="https://raw.githubusercontent.com/A5rocks/code-jam-8/main/docs/lobby_code.PNG" alt="drawing" width="600"/>
 
 # Terminology
 <img src="https://github.com/A5rocks/code-jam-8/blob/main/docs/terminology.png?raw=true" alt="drawing" width="600"/>
