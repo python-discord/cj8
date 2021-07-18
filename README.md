@@ -1,10 +1,33 @@
 # Are You in a Box?
 You're confined in what seems like gigantic, labyrinthine boxes, and you have to escape. However, the only way to get out of each box is to tag its four outer walls... and deception can be around every corner. Can you successfully complete the 7 levels?
 
-Instructions are in the game. Sound effects credits at [`sfxcredits.md`](https://github.com/mirandazellnik/code-jam-2021/blob/main/sfxcredits.md).
+Use arrow keys or WASD to move around, and whenever you're sure that you've found an outer wall of the box, use Shift + WASD to tag the upper, left, lower, and right walls respectively. Instructions are also in the game.
+
+Sound effects credits at [`sfxcredits.md`](https://github.com/mirandazellnik/code-jam-2021/blob/main/sfxcredits.md).
+
+## Installation
+1. Download [the VCS *Git*](https://git-scm.com/downloads). In your terminal, change to your desired directory that the code will be in (`cd` command), and run `git clone https://github.com/mirandazellnik/code-jam-2021`.
+2. `cd` into the code jam folder (by default its name is `code-jam-2021`), and open up a virtual environment with the `python -m venv .venv` command.
+3. Activate the venv. This will depend on your OS and terminal, so here's a list of commands below.  
+```shell
+# Linux, Bash
+$ source .venv/bin/activate
+# Linux, Fish
+$ source .venv/bin/activate.fish
+# Linux, Csh
+$ source .venv/bin/activate.csh
+# Linux, PowerShell Core
+$ .venv/bin/Activate.ps1
+# Windows, cmd.exe
+> .venv\Scripts\activate.bat
+# Windows, PowerShell
+> .venv\Scripts\Activate.ps1
+```
+4. Install the dependencies by running `pip install -r dev-requirements.txt`. This might take a while.
+5. Finally, run `python main.py` to start the program. Enjoy!
 
 ## OS/Terminal-specific Incompatibilities & Extra Dependencies
 Below is a list of incompatibilities discovered so far that depends on your operating system/terminal.
 
 * Windows - Windows Shell, PowerShell, `cmd.exe`: `asciimatics` won't give support for the 256 color-palette, and so a fallback is used with only black and white (no gray-gradient lighting D:).
-* Linux - `playsound` seems to bug out on Linux, where you'll have to manually install the `gi` module. It could also just not work at all, in which case, check out our sound-less fallback branch.
+* Linux - `playsound` seems to bug out on Linux, and you'll have to manually install the `gi` module. It could also just not work at all, in which case, check out our sound-less fallback branch.
