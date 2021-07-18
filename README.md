@@ -2,29 +2,29 @@
 
 <img src="https://upload.wikimedia.org/wikipedia/commons/d/d1/Incomplete_Ultimate_Tic-Tac-Toe_Board.png" alt="drawing" width="200"/>
 
-TODO Summary
+Thinking inside a box, that is inside a box, that is inside yet another box.
 
+# Table of contents
 This document will contain the following information:
 1. [How to play](#how-to-play)
 2. [How do I launch it?](#how-do-i-launch-it)
 3. [Terminology](#terminology)
 
 # How to play
-Each small 3 × 3 tic-tac-toe board is referred to as a Sub-Grid, and the larger 3 × 3 board is referred to as the global board.
+- `The Board` Each small 3 × 3 tic-tac-toe board is referred to as a Sub-Grid, and the larger 3 × 3 board is referred to as the global board.
 
-The game starts with player X placing a token wherever they want.
+- `Game Start` The game starts with player X placing a token wherever they want.
 
-This move will "send" their opponent to the sub-grid based on the space in the sub-grid player X placed their token. For example, if X placed thier token in the top right square in the bottom left sub-grid, then player O needs to play next in the sub-grid at the top right of the global board. Player O can then play in any one of the nine available spots in that sub-grid.
+- `Taking a Turn` This move will "send" their opponent to the sub-grid based on the space in the sub-grid player X placed their token. For example, if X placed thier token in the top right square in the bottom left sub-grid, then player O needs to play next in the sub-grid at the top right of the global board. Player O can then play in any one of the nine available spots in that sub-grid.
 
-If a move is played so that it is to win a sub-grid by the rules of normal tic-tac-toe, then the entire sub-grid is marked as a victory for the player in the global board.
+- `Winning a Sub-Grid` If a move is played so that it is to win a sub-grid by the rules of normal tic-tac-toe, then the entire sub-grid is marked as a victory for the player in the global board.
 
-Once a local board is won by a player or it is filled completely, no more moves may be played in that board. If a player is sent to such a board, then that player may play in any other board.
+- `Wildcard Selection` Once a local board is won by a player or it is filled completely, no more moves may be played in that board. If a player is sent to such a board, then that player may play in any other board.
 
-Game play ends when either a player wins the global board or there are no legal moves remaining.
+- `Victory Conditions` Game play ends when either a player wins the global board or there are no legal moves remaining.
 
 # How do I launch it
 ### Using the Default Pip Setup
-
 Our default setup includes a bare requirement file to be used with a [virtual environment](https://docs.python.org/3/library/venv.html).
 
 We recommend this if you never have used any other dependency manager, although if you have, feel free to switch to it. More on that below.
@@ -70,3 +70,4 @@ $ deactivate
 ```
 
 # Terminology
+<img src="https://github.com/A5rocks/code-jam-8/blob/main/docs/terminology.png?raw=true" alt="drawing" width="600"/>
