@@ -2,6 +2,9 @@
 
 ![Acute Aligators](/alligators1.png)
 
+## Demo
+https://youtu.be/nFNKscvKVQY
+
 ## Setup (tested on linux):
 Set up virtual enviroment: <br>
 `python3.9 -m venv venv` <br>
@@ -32,6 +35,3 @@ Use wasd to control your character. There are monsters that will try to kill you
 
 ## Framework and theme
 The TUI we used is Rich. We took advantage of its panels and colors among other features. The project is connected to the theme "Think inside the box" in several ways. Directories are a sort of box that hold folders and files. When playing without the path flag the dungeon of the game will be the same files and folders that make up the project. Finally, this game is inspired by rogue-likes, which is an in the box idea that has done many times before.
-
-## Demo
-https://youtu.be/nFNKscvKVQY
