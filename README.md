@@ -11,7 +11,7 @@ Sound effects credits at [`sfxcredits.md`](https://github.com/mirandazellnik/cod
 Below is a list of incompatibilities discovered so far that depends on your operating system/terminal.
 
 * Windows - Windows Shell, PowerShell, `cmd.exe`: `asciimatics` won't give support for the 256 color-palette, and so a fallback is used with only black and white (no gray-gradient lighting D:).
-* Linux - Library `PyGObject` used for playing sounds must be installed externally ([installation instructions here](https://pygobject.readthedocs.io/en/latest/getting_started.html)). In case of errors, a `no-sound` branch is available.
+* Linux - The library `PyGObject` used for playing sounds must be installed manually ([installation instructions here](https://pygobject.readthedocs.io/en/latest/getting_started.html)). Then, `Pycairo` and `gi` need to be installed as well. In case of errors, a `no-sound` fallback branch is available.
 
 ### Installation Steps
 1. Download [the VCS *Git*](https://git-scm.com/downloads). In your terminal, change to your desired directory that the code will be in (`cd` command), and run `git clone https://github.com/mirandazellnik/code-jam-2021`.
