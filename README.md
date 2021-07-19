@@ -8,7 +8,7 @@ Set up virtual enviroment: <br>
 Install requirements: <br>
 `pip install -r requirements.txt` <br>
 Start virtual environment: <br>
-source venv/bin/activate
+`source venv/bin/activate`
 
 ## Running game:
 The most basic run command is: <br>
