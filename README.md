@@ -47,13 +47,17 @@ Here is a list of the relevant files of the project, and what they contain:
 
 We had to face some serious challenges during this competition that I wanted to say a few words about:
 1. **Crew Problem**
+
     By the 3rd day of the coding part, just 2 of us have remained active, neither of us having more than a year of coding experience. So please don't view this project as a very serious work done by experts. We just wanted to gain experience and have fun.
     
 2. **Low resolution display**
+
     TUIs by their nature are not meant to display games with moving elements, and this shows in some aspects of the project. For example, the technology I based my physics engine on (pygame.Rect) uses only ints, and we used graphical elements that were less than 5 pixels high or wide, with the platform elements being only 1 pixel high. To this problem I came up with the solution of upscaling the whole physical simulation of the action, so that we can use bigger ints for accuracy, and then reducing the coordinates before rendering.
     
 3. **Flickering and building from chars**
+
     I asked Mihaela, what were some of the challenges she had to face.
+    
     *For me, the hardest part was dealing with a constantly blinking screen. It took pretty much time figuring out what was causing it, but it turned out it was the framework's problem so we left it this way. Another time consuming task I faced was building the objects from characters. It took some time and it was boring to copy paste the same command over and over, but I am happy on how the sprites turned out in the end.* - Mihaela
 
 ## Problems
