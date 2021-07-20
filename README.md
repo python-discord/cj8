@@ -85,35 +85,45 @@ For best results:
 
 Panthera's Box has 5 main modules:
 
-- Backend - state of the game
-- Frontend - displaying the game
-- Keyboard_handlers - receiving input from the user
-- Sounds - playing sounds
-- Story - Loading and displaying the correct story for the game state
+- `backend` - state of the game
+- `frontend` - displaying the game
+- `keyboard_handlers` - receiving input from the user
+- `sounds` - playing sounds
+- `story` - Loading and displaying the correct story for the game state
 
-Each of these modules are responsible for a corner stone of the application. Communication between these modules is
-handled by an `Event` system that allows modules to add a callback to hook into events that have been emitted. This
-allows each module to be independent and not need context of other modules. The backend module emits events such as
-`ball_movement` and `mutator_activation` to broadcast the fact that the game state has changed fundamentally.
+Each of these modules are responsible for a cornerstone of the application. Communication between these modules is
+handled by an event system (`backend.events`) that allows modules to add a callback to hook into events that have been emitted.
+This allows each module to be independent and not need context of other modules. The backend module emits events such as
+`ball_movement` and `level_loaded` to broadcast the fact that the game state has changed fundamentally.
 
 The frontend module is responsible for the render loop as well as prompting the backend to advance the game a single
 tick.
-`Mutators` are responsible for changing the parameters of the backend module to alter gameplay. These affects can be
-both positive and negative to increase the variety of gameplay.
+Mutators (`backend.mutators`) are responsible for changing the parameters of the backend module to alter gameplay.
+These effects increase the variety of gameplay.
 
 #### Key input
 
-Keyboard input has its own module due to having multiple packages for handling the input. A factory pattern is used to
-determine which type of keyboard handler to use. `Keyboard` is used on _Windows_ as it provides a very clean way to
-handle inputs - however on _Unix_ root is required so `pynput` is used instead to not require root access.
+Keyboard input has its own module, due to having multiple packages for handling the input. A factory pattern is used to
+determine which type of keyboard handler to use. `keyboard` is used on _Windows_, as it provides a very clean way to
+handle inputs. However, on _Unix_, root is required to access input devices (`uinput` kernel module), so `pynput` is used
+instead for its `xorg` backend.
 
 #### Logging
 
-Panthera's Box logs all the events that get emitted if logging is set to `debug` to get full visibility of the communication
-between the core components. If logging is set higher an `debug` then the events will not write to the logger at all to
+Panthera's Box logs all the events that get emitted, if logging is set to `DEBUG`, to get full visibility of the communication
+between the core components. If logging is set higher than `DEBUG`, then the events will only write warnings to the logger to
 save on performance.
 
 #### Config
 
 `pantheras_box/config.py` provides a simple way to alter file location of score and log files. It also allows for modifying the logging
 level.
+
+## Roadmap
+
+- Implement all the core modules as singletons
+   - They can be referenced without having to implicitly pass them as arguments
+   - Ensures only one instance of each module exists
+- Improve render loop so only updated elements are re-rendered to decrease load
+- Add trap tiles
+- Mutators with positive effect
