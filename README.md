@@ -89,7 +89,7 @@ Panthera's Box has 5 main modules:
 - `frontend` - displaying the game
 - `keyboard_handlers` - receiving input from the user
 - `sounds` - playing sounds
-- `story` - Loading and displaying the correct story for the game state
+- `story` - loading and displaying the correct story for the game state
 
 Each of these modules are responsible for a cornerstone of the application. Communication between these modules is
 handled by an event system (`backend.events`) that allows modules to add a callback to hook into events that have been emitted.
