@@ -13,6 +13,19 @@ Install requirements: <br>
 Start virtual environment: <br>
 `source venv/bin/activate`
 
+## Setup (tested on windows):
+Set up virtual enviroment: <br>
+`python3.9 -m venv venv` <br>
+Install requirements: <br>
+`pip install -r requirements.txt` <br>
+Start virtual environment: <br>
+<br>
+if running from the command line: <br>
+activate the venv with ``venv/scripts/activate.bat``
+
+if running from powershell:<br>
+activate the venv with ``venv/scripts/activate.ps1``
+
 ## Running game:
 The most basic run command is: <br>
 `python app.py` <br>
