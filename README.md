@@ -16,13 +16,13 @@ Panthera's Box can be installed and run using two different methods:
 
 1. Install with `pip`:
 
-    1.1a `pip install .` (Local)
+   1.1a `pip install .` (Local)
 
-    or
+   or
 
-    1.1b `pip install git+https://github.com/Willd14469/cj8-patient-panthers` (Git)
+   1.1b `pip install git+https://github.com/Willd14469/cj8-patient-panthers` (Git)
 
-    This will install the game as the package `pantheras_box`.
+   This will install the game as the package `pantheras_box`.
 
 2. Run the game: `pantheras-box`
 
@@ -46,17 +46,21 @@ The terminal should be at least 75x40, in order to render the board correctly.
 
 ## Game Guide
 
-The game consists of a ball and sets of redirector arrows. To complete each level, guide the ball towards the goal, by rotating the arrows. Hidden story tiles are scattered throughout the maps, requiring the player to take different paths.
+The game consists of a ball and sets of redirector arrows. To complete each level, guide the ball towards the goal, by
+rotating the arrows. Hidden story tiles are scattered throughout the maps, requiring the player to take different paths.
 
-On each level, a random set of mutators will be activated, modifying the gameplay slightly; this includes inverted controls, limited field of view and increased speed.
+On each level, a random set of mutators will be activated, modifying the gameplay slightly; this includes inverted
+controls, limited field of view and increased speed.
 
-Scores are determined by the number of moves and time taken during a level. The maximum score attainable is relative to the board size. If a player's score reaches zero, the game is over.
+Scores are determined by the number of moves and time taken during a level. The maximum score attainable is relative to
+the board size. If a player's score reaches zero, the game is over.
 
 ## Levels
 
 Levels are stored in `pantheras_box/backend/levels/`.
 
-In short, levels are images that define the layout of the initial board. After parsing colour and co-ordinates, they are translated into a two-dimensional list of tiles.
+In short, levels are images that define the layout of the initial board. After parsing colour and co-ordinates, they are
+translated into a two-dimensional list of tiles.
 
 ## Libraries
 
@@ -74,4 +78,42 @@ The game works and has been tested on both **Windows** and **Linux (Arch & Debia
 In theory, the game should work on **MacOS**, but this has not been tested.
 
 For best results:
-   - Use **Powershell** within **Windows Terminal** on Windows
+
+- Use **Powershell** within **Windows Terminal** on Windows
+
+## Architecture
+
+Panthera's Box has 5 main modules:
+
+- Backend - state of the game
+- Frontend - displaying the game
+- Keyboard_handlers - receiving input from the user
+- Sounds - playing sounds
+- Story - Loading and displaying the correct story for the game state
+
+Each of these modules are responsible for a corner stone of the application. Communication between these modules is
+handled by an `Event` system that allows modules to add a callback to hook into events that have been emitted. This
+allows each module to be independent and not need context of other modules. The backend module emits events such as
+`ball_movement` and `mutator_activation` to broadcast the fact that the game state has changed fundamentally.
+
+The frontend module is responsible for the render loop as well as prompting the backend to advance the game a single
+tick.
+`Mutators` are responsible for changing the parameters of the backend module to alter gameplay. These affects can be
+both positive and negative to increase the variety of gameplay.
+
+#### Key input
+
+Keyboard input has its own module due to having multiple packages for handling the input. A factory pattern is used to
+determine which type of keyboard handler to use. `Keyboard` is used on _Windows_ as it provides a very clean way to
+handle inputs - however on _Unix_ root is required so `pynput` is used instead to not require root access.
+
+#### Logging
+
+Panthera's Box logs all the events that get emitted if logging is set to `debug` to get full visibility of the communication
+between the core components. If logging is set higher an `debug` then the events will not write to the logger at all to
+save on performance.
+
+#### Config
+
+`pantheras_box/config.py` provides a simple way to alter file location of score and log files. It also allows for modifying the logging
+level.
