@@ -83,4 +83,5 @@ We had no time left in the end to document our code and make it comply with `fla
 
 Should you have any questions or recommendations, feel free to contact us at:
 - Daniel Buza (@danib-prog) - [9buza.dani@gmail.com](9buza.dani@gmail.com)
+- Mihaela Grajdan - [mihaelagrajdan3102003@gmail.com]
 
