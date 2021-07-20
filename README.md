@@ -55,6 +55,9 @@ controls, limited field of view and increased speed.
 Scores are determined by the number of moves and time taken during a level. The maximum score attainable is relative to
 the board size. If a player's score reaches zero, the game is over.
 
+## Showcase
+[![Showcase Video](https://img.youtube.com/vi/FOo8E-yrENI/0.jpg)](https://www.youtube.com/watch?v=https://youtu.be/FOo8E-yrENI)
+
 ## Levels
 
 Levels are stored in `pantheras_box/backend/levels/`.
