@@ -56,7 +56,7 @@ Scores are determined by the number of moves and time taken during a level. The 
 the board size. If a player's score reaches zero, the game is over.
 
 ## Showcase
-[![Showcase Video](https://img.youtube.com/vi/FOo8E-yrENI/0.jpg)](https://www.youtube.com/watch?v=https://youtu.be/FOo8E-yrENI)
+[![Showcase Video](https://img.youtube.com/vi/FOo8E-yrENI/0.jpg)](https://youtu.be/FOo8E-yrENI)
 
 ## Levels
 
