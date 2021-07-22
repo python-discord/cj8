@@ -7,6 +7,12 @@ Use arrow keys or WASD to move around, and whenever you're sure that you've foun
 Sound effects credits at [`sfxcredits.md`](https://github.com/mirandazellnik/code-jam-2021/blob/main/sfxcredits.md).
 
 -------------------
+## Demo Video
+A demonstration with explanation of basic mechanics can be seen below.
+
+[![fig1](https://i.ytimg.com/vi/mx8o-1wJdzc/hqdefault.jpg)](https://www.youtube.com/watch?v=mx8o-1wJdzc)
+
+
 
 ## Installation
 
