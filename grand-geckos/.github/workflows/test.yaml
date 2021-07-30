@@ -1,0 +1,55 @@
+name: Test Suite
+
+# Trigger the workflow on both push (to the main repository)
+# and pull requests (against the main repository, but from any repo).
+on: [push, pull_request]
+# Ensures that not more than one run can be triggered for the same commit.
+# Its useful for pull requests coming from the main repository since both triggers will match.
+concurrency: test-${{ github.sha }}
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    env:
+      POETRY_CACHE_DIR: /tmp/poetry
+      PYTHON_VERSION: 3.8
+
+    steps:
+      # Checks out the repository in the current folder.
+      - name: Checks out repository
+        uses: actions/checkout@v2
+
+      # Set up the right version of Python
+      - name: Set up Python ${{ env.PYTHON_VERSION }}
+        id: python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      # Install and configure Poetry
+      - name: Install Poetry
+        uses: snok/install-poetry@v1.1.6
+        with:
+          virtualenvs-create: true
+          virtualenvs-path: ${{ env.POETRY_CACHE_DIR }}
+
+      # Check for cached Poetry dependencies
+      - name: Restore Poetry cache
+        id: cached-poetry-dependencies
+        uses: actions/cache@v2
+        with:
+          path: ${{ env.POETRY_CACHE_DIR }}
+          key: python-poetry-${{ runner.os }}-${{ steps.python.outputs.python-version }}-${{ hashFiles('./poetry.lock') }}
+
+      # Install dependencies trough poetry
+      - name: Install dependencies
+        if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
+        run: poetry install --no-interaction --no-root
+
+      # Install the libary itself
+      - name: Install library
+        run: poetry install --no-interaction
+
+      - name: Run pytest
+        run: poetry run task test
