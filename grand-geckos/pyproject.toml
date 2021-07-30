@@ -1,0 +1,56 @@
+[tool.poetry]
+name = "grand_geckos"
+version = "0.1.0"
+description = ""
+authors = ["Sofi <imsofi@users.noreply.github.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+prompt-toolkit = "^3.0.19"
+password-strength = "^0.0.3"
+SQLAlchemy = "^1.4.20"
+cryptography = "^3.4.7"
+pyperclip = "^1.8.2"
+
+[tool.poetry.dev-dependencies]
+black = "^21.6b0"
+flake8 = "^3.9.2"
+isort = "^5.9.2"
+pre-commit = "^2.13.0"
+taskipy = "^1.8.1"
+pytest = "^6.2.4"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.isort]
+profile = "black"
+
+[tool.black]
+line-length = 119
+target-version = ['py39']
+include = '\.pyi?$'
+exclude = '''
+(
+  /(
+      \.eggs
+    | \.git
+    | \.hg
+    | \.mypy_cache
+    | \.tox
+    | \.venv
+    | _build
+    | buck-out
+    | build
+    | dist
+    | tests
+  )/
+)
+'''
+
+[tool.taskipy.tasks]
+main = "python -m grand_geckos"
+test = "python -m pytest tests/"
+lint = "pre-commit run --all-files"
+precommit = "pre-commit install"

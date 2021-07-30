@@ -1,0 +1,27 @@
+name: Lint Checker
+
+# Trigger the workflow on both push (to the main repository)
+# and pull requests (against the main repository, but from any repo).
+on: [push, pull_request]
+# Ensures that not more than one run can be triggered for the same commit.
+# Its useful for pull requests coming from the main repository since both triggers will match.
+concurrency: lint-${{ github.sha }}
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    env:
+      PYTHON_VERSION: 3.8
+
+    steps:
+      - name: Checks out repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python ${{ env.PYTHON_VERSION }}
+        id: python
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Run hooks
+        uses: pre-commit/action@v2.0.3
