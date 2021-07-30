@@ -1,0 +1,25 @@
+ ___  ___   ________   ________    ________   ________   ________   ________   ___  __
+|\  \|\  \ |\   __  \ |\   ___  \ |\   ___ \ |\   __  \ |\   __  \ |\   __  \ |\  \|\  \
+\ \  \\\  \\ \  \|\  \\ \  \\ \  \\ \  \_|\ \\ \  \|\ /_\ \  \|\  \\ \  \|\  \\ \  \/  /|_
+ \ \   __  \\ \   __  \\ \  \\ \  \\ \  \ \\ \\ \   __  \\ \  \\\  \\ \  \\\  \\ \   ___  \
+  \ \  \ \  \\ \  \ \  \\ \  \\ \  \\ \  \_\\ \\ \  \|\  \\ \  \\\  \\ \  \\\  \\ \  \\ \  \
+   \ \__\ \__\\ \__\ \__\\ \__\\ \__\\ \_______\\ \_______\\ \_______\\ \_______\\ \__\\ \__\
+    \|__|\|__| \|__|\|__| \|__| \|__| \|_______| \|_______| \|_______| \|_______| \|__| \|__|
+
+
+Welcome to Dungeons and Directories!
+-------------------------
+Do you have what it takes to make it to the bottom of your file system? Dungeons and Directories is a rogue-like that takes your file structure
+and builds a dungeon. Explore, fight, monsters, and collect loot as you make your way to the deepest, darkest branch of your directories.
+
+Press w, a, s, and d to move forward, left, backward, and right respectively.
+The green '#' symbol you see are the doors, which lead down to the children directories, and the further down you venture through these doors,
+the closer you are to the root of the virus.
+The '@' symbol is a color changer, which will allow you to change colors and fight the enemies, as each enemy is vulnerable to a certain color.
+
+Good luck!
+------------------------
+Made by Acute Alligators
+------------------------
+
+[b] back
