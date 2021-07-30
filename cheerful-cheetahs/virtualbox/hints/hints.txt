@@ -1,0 +1,33 @@
+USER LEVEL
+-desktop/info change numbers to letters (1-a,26-z ect) hint in hint.txt to get password atomic
+-decrypt hosting/hostdoc with atomic, scan the ip then translate the morse code for network user password, NeutronAtomNet
+-decrypt original_key with atomic. compare both keys for later to translate stuff.
+
+NETWORK LEVEL
+-login to network using NeutronAtomNet password
+-in netstats, find hidden words in netdata.txt = onesixfour,
+-scan port 164 to get net_config password: app12ut
+-open netconfig and decrypt content with app12ut
+-in data.txt find port 988, translate the morse code for password ATOMPASSWORDTEMP
+-use pwscan to find 5th password (54354fd32) and then add ATOMPASSWORD TEMP after it to get port decryption password
+-decrypt ports files with 54354fd32ATOMPASSWORDTEMP,
+-scan all three ports in each file (ports 7, 74, 522)
+-add them together in order to make ip, 444.5123.4123 then ipscan this ip to get password TUJ
+-decrpyt external_connections with TUJ,
+-in connections.txt find port 529 which hints to third ip
+-run ipsearch, third one when scanned returns AtomToortpf
+-decrypt rootpassword with password ^ AtomToortpf
+-get root password from file = CobaltAtomRoot
+
+ROOT LEVEL
+-login to root using password CobaltAtomRoot,
+-in desktop/meeting_transcript find port 62, scan this for zwqrt23p
+-decrypt meetingdata with this password (zwqrt23p), use the original key from user directory to translate content of meetingdata
+-translates to port 91 and port 80, scan both ports,
+-port 80 shows ttgrsfll which translates command.txt which shows the shutdown command.
+-port 91 explains that you need to add word 6+7+10+11 from meeting_transcript
+-add these words together to form AtomicProgramIranShutdown,
+-this password decrypts password.txt which is morse code,
+-translate that morse code to get CODEREDATOMNANO
+-use this password (CODEREDATOMNANO) to shutdown the operating system with: (must also be logged into root)
+-shutdown (password)
