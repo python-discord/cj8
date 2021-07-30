@@ -1,0 +1,38 @@
+main:
+  prologue: |
+    The urge to open the box overcame her. Horrible things flew out of the box including greed, envy, hatred,
+    pain, disease, hunger, poverty, war, and death. All of life’s miseries had been let out into the world.
+    She slammed the lid of the box back down. The last thing remaining inside of the box was hope.
+    Ever since, humans have been able to hold onto this hope in order to survive the wickedness that she had let out.
+  failed: |
+    The box has consumed all hope.
+
+    Nothing besides wickedness remains.
+  Greed: >
+    Greed is not a defect in the gold that is desired but in the man who loves it
+    - [/]St. Augustine
+  Envy: >
+    It is in the character of very few men to honour without envy a friend who has prospered
+    - [/]Aeschylus
+  Hatred: >
+    Hatred does not cease by hatred, but only by love; this is the eternal rule
+    - [/]Buddha
+  Pain: >
+    Pain is temporary. It may last a minute, or an hour, or a day, or a year, but eventually it will subside and
+    something else will take its place. If I quit, however, it lasts forever
+    - [/]Lance Armstrong
+  Disease: >
+    I think the biggest disease the world suffers from in this day and age is the disease of people feeling unloved. I
+    know that I can give love for a minute, for half an hour, for a day, for a month, but I can give. I am very happy to
+    do that; I want to do that
+    - [/]Princess Diana
+  Poverty: >
+    The world is a dangerous place, not because of those who do evil, but because of those who look on and do nothing
+    - [/]Albert Einstein
+  Malevolence: >
+    The evil that is in the world always comes of ignorance, and good intentions may do as much harm as malevolence, if
+    they lack understanding
+    - [/]Albert Camus
+  Wickedness: >
+    The belief in a supernatural source of evil is not necessary; men alone are quite capable of every wickedness
+    - [/]Joseph Conrad
